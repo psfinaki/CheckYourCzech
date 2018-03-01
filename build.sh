@@ -27,16 +27,6 @@ run() {
   fi
 }
 
-echo "Executing Paket..."
-
-FILE='paket.lock'     
-if [ -f $FILE ]; then
-   echo "paket.lock file found, restoring packages..."
-   run $PAKET_EXE restore
-else
-   echo "paket.lock was not found, installing packages..."
-   run $PAKET_EXE install
-fi
-
+run $PAKET_EXE restore
 run $FAKE_EXE "$@" $FSIARGS $FSIARGS2 build.fsx
 

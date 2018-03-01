@@ -1,22 +1,44 @@
-group Server
-  source https://api.nuget.org/v3/index.json
+source https://nuget.org/api/v2
+storage:none
 
-  nuget FSharp.Core
-  nuget Suave
+nuget FSharp.Core redirects: force
+nuget Fable.JsonConverter
+nuget Giraffe
+nuget Giraffe.TokenRouter
+nuget Microsoft.AspNetCore.StaticFiles
+nuget Microsoft.AspNetCore
+nuget Microsoft.AspNetCore.WebSockets
+nuget Microsoft.AspNetCore.WebSockets.Server
+nuget System.Net.NetworkInformation
+nuget jose-jwt
 
+nuget Fable.Core
+nuget Fable.Elmish.Browser
+nuget Fable.Elmish.Debugger
+nuget Fable.Elmish.React
+nuget Fable.Elmish.HMR
+nuget Microsoft.Azure.WebJobs prerelease
+nuget Microsoft.Azure.WebJobs.Extensions prerelease
+
+clitool dotnet-fable
+clitool Microsoft.DotNet.Watcher.Tools
+
+group ServerTests
+  source https://nuget.org/api/v2
+  storage:none
   clitool Microsoft.DotNet.Watcher.Tools
+  nuget FSharp.Core redirects: force
+  nuget Expecto
 
-group Client
-  source https://api.nuget.org/v3/index.json
-
-  nuget Fable.Core
-  nuget Fable.Elmish.Debugger
-  nuget Fable.Elmish.React
-  nuget Fable.Elmish.HMR
-
-  clitool dotnet-fable
+group UITests
+  source https://nuget.org/api/v2
+  framework >= net461
+  nuget FSharp.Core redirects: force
+  nuget Canopy
+  nuget Expecto
+  nuget phantomjs
 
 group Build
-  source https://api.nuget.org/v3/index.json
-
+  source https://nuget.org/api/v2
+  framework >= net461
   nuget FAKE
