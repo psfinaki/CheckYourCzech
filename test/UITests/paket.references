@@ -1,0 +1,4 @@
+group UITests
+Canopy
+Expecto
+FSharp.Core

@@ -1,12 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\Shared.fs" />
-    <Compile Include="Server.fs" />
+    <Compile Include="Shared/Domain.fs" />
+    <Compile Include="Shared/ServerUrls.fs" />
+    <Compile Include="ServerTypes.fs" />
+    <Compile Include="JsonWebToken.fs" />
+    <Compile Include="FableJson.fs" />
+    <Compile Include="Auth.fs" />
+    <Compile Include="WishList.fs" />
+    <Compile Include="Storage/Defaults.fs" />
+    <Compile Include="Storage/FileSystem.fs" />
+    <Compile Include="Storage/AzureTable.fs" />
+    <Compile Include="Storage/WebJobs.fs" />
+    <Compile Include="Database.fs" />
+    <Compile Include="WebServer.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
