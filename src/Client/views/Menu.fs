@@ -16,4 +16,5 @@ let view onLogout (model:Model) =
               yield viewLink Page.Login "Login"
           else
               yield buttonLink "logout" onLogout [ str "Logout" ]
+          yield viewLink Page.Multiples "Multiples"
         ]

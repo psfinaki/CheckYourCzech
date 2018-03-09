@@ -20,6 +20,7 @@ type PageModel =
     | HomePageModel
     | LoginModel of Login.Model
     | WishListModel of WishList.Model
+    | MultiplesModel
 
 /// The composed model for the application, which is a single page state plus login information
 type Model =
@@ -57,6 +58,9 @@ let urlUpdate (result:Page option) model =
 
     | Some Page.Home ->
         { model with PageModel = HomePageModel }, Cmd.none
+
+    | Some Page.Multiples ->
+        { model with PageModel = MultiplesModel }, []
 
 let loadUser () : UserData option =
     BrowserLocalStorage.load "user"
@@ -140,6 +144,9 @@ let viewPage model dispatch =
 
     | WishListModel m ->
         [ WishList.view m (WishListMsg >> dispatch) ]
+
+    | MultiplesModel ->
+        Multiples.view()
 
 /// Constructs the view for the application given the model.
 let view model dispatch =
