@@ -31,7 +31,6 @@ type Msg =
     | LoadForUser of string
     | FetchedWishList of WishList
     | FetchedResetTime of DateTime
-    | RemoveBook of Book
     | AddBook
     | TitleChanged of string
     | AuthorsChanged of string
@@ -130,13 +129,6 @@ let update (msg:Msg) model : Model*Cmd<Msg> =
             NewBook = newBook
             LinkErrorText = Validation.verifyBookLink link
             ErrorMsg = Validation.verifyBookisNotADuplicate model.WishList newBook }, Cmd.none
-
-    | RemoveBook book ->
-        let wishList = { model.WishList with Books = model.WishList.Books |> List.filter ((<>) book) }
-        { model with
-            WishList = wishList
-            ErrorMsg = Validation.verifyBookisNotADuplicate wishList model.NewBook }, 
-                postWishListCmd(model.Token,wishList)
 
     | AddBook ->
         if Validation.verifyBook model.NewBook then
@@ -252,9 +244,9 @@ let newBookForm (model:Model) dispatch =
         ]
     ]
 
-type [<Pojo>] BookProps = { key: string; book: Book; removeBook: unit -> unit }
+type [<Pojo>] BookProps = { key: string; book: Book }
 
-let bookComponent { book = book; removeBook = removeBook } =
+let bookComponent { book = book } =
   tr [] [
     td [] [
         if String.IsNullOrWhiteSpace book.Link then
@@ -262,7 +254,6 @@ let bookComponent { book = book; removeBook = removeBook } =
         else
             yield a [ Href book.Link; Target "_blank"] [str book.Title ] ]
     td [] [ str book.Authors ]
-    td [] [ buttonLink "" removeBook [ str "Remove" ] ]
     ]
 
 let inline BookComponent props = (ofFunction bookComponent) props []
@@ -285,7 +276,6 @@ let view (model:Model) (dispatch: Msg -> unit) =
                         BookComponent {
                             key = book.Title + book.Authors
                             book = book
-                            removeBook = (fun _ -> dispatch (RemoveBook book))
                     })
                     |> ofList
             ]
