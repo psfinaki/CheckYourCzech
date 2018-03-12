@@ -64,24 +64,6 @@ let loadWishListCmd token =
 let loadResetTimeCmd token =
     Cmd.ofPromise getResetTime token FetchedResetTime FetchError
 
-
-let postWishList (token,wishList) =
-    promise {
-        let url = ServerUrls.WishList
-        let body = toJson wishList
-        let props =
-            [ RequestProperties.Method HttpMethod.POST
-              Fetch.requestHeaders [
-                HttpRequestHeaders.Authorization ("Bearer " + token)
-                HttpRequestHeaders.ContentType "application/json" ]
-              RequestProperties.Body !^body ]
-
-        return! Fetch.fetchAs<WishList> url props
-    }
-
-let postWishListCmd (token,wishList) =
-    Cmd.ofPromise postWishList (token,wishList) FetchedWishList FetchError
-
 let init (user:UserData) =
     { WishList = WishList.New user.UserName
       Token = user.Token
