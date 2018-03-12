@@ -66,11 +66,3 @@ module Validation =
             Some "Your wishlist contains this book already."
         else
             None
-
-    let verifyBook book =
-        verifyBookTitle book.Title = None &&
-        verifyBookAuthors book.Authors = None &&
-        verifyBookLink book.Link = None
-
-    let verifyWishList wishList =
-        wishList.Books |> List.forall verifyBook

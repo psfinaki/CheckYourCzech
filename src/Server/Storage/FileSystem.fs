@@ -13,9 +13,3 @@ let getWishListFromDB userName =
     else
         File.ReadAllText(fi.FullName)
         |> FableJson.ofJson<WishList>
-
-let saveWishListToDB wishList =
-    let fi = FileInfo(getJSONFileName wishList.UserName)
-    if not fi.Directory.Exists then
-        fi.Directory.Create()
-    File.WriteAllText(fi.FullName, FableJson.toJson wishList)

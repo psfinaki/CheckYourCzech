@@ -23,6 +23,5 @@ let webApp databaseType root =
 
         POST [
             route ServerUrls.Login Auth.login
-            route ServerUrls.WishList => Auth.requiresJwtToken (WishList.postWishList db.SaveWishList)
         ]
     ]
