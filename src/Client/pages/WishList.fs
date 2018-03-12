@@ -31,7 +31,6 @@ type Msg =
     | LoadForUser of string
     | FetchedWishList of WishList
     | FetchedResetTime of DateTime
-    | AddBook
     | TitleChanged of string
     | AuthorsChanged of string
     | LinkChanged of string
@@ -130,22 +129,6 @@ let update (msg:Msg) model : Model*Cmd<Msg> =
             LinkErrorText = Validation.verifyBookLink link
             ErrorMsg = Validation.verifyBookisNotADuplicate model.WishList newBook }, Cmd.none
 
-    | AddBook ->
-        if Validation.verifyBook model.NewBook then
-            match Validation.verifyBookisNotADuplicate model.WishList model.NewBook with
-            | Some err ->
-                { model with ErrorMsg = Some err }, Cmd.none
-            | None ->
-                let wishList = { model.WishList with Books = (model.NewBook :: model.WishList.Books) |> List.sortBy (fun b -> b.Title) }
-                { model with WishList = wishList; NewBook = Book.empty; NewBookId = Guid.NewGuid(); ErrorMsg = None }, 
-                    postWishListCmd(model.Token,wishList)
-        else
-            { model with
-                TitleErrorText = Validation.verifyBookTitle model.NewBook.Title
-                AuthorsErrorText = Validation.verifyBookAuthors model.NewBook.Authors
-                LinkErrorText = Validation.verifyBookLink model.NewBook.Link
-                ErrorMsg = Validation.verifyBookisNotADuplicate model.WishList model.NewBook }, Cmd.none
-
     | FetchError e ->
         { model with ErrorMsg = Some e.Message }, Cmd.none
 
@@ -229,15 +212,6 @@ let newBookForm (model:Model) dispatch =
                          match model.LinkErrorText with
                          | Some e -> yield p [ClassName "text-danger"][str e]
                          | _ -> ()
-                    ]
-                    div [] [
-                        yield button [ ClassName ("btn " + buttonTag); OnClick (fun _ -> dispatch AddBook)] [
-                                  i [ClassName "glyphicon glyphicon-plus"; Style [PaddingRight 5]] []
-                                  str "Add"
-                        ]
-                        match model.ErrorMsg with
-                        | None -> ()
-                        | Some e -> yield p [ClassName "text-danger"][str e]
                     ]
                 ]
             ]
