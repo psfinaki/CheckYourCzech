@@ -40,43 +40,6 @@ let getWishListFromDB connectionString userName = task {
                   Authors = string result.Properties.["Authors"].StringValue
                   Link = string result.Properties.["Link"].StringValue } ] } }
 
-/// Save to the database
-let saveWishListToDB connectionString wishList = task {
-    let buildEntity userName book =
-        let isAllowed = string >> @"/\#?".Contains >> not
-        let entity = DynamicTableEntity()
-        entity.PartitionKey <- userName
-        entity.RowKey <- book.Title.ToCharArray() |> Array.filter isAllowed |> String
-        entity
-
-    let! existingWishList = getWishListFromDB connectionString wishList.UserName
-    let batch =
-        let operation = TableBatchOperation()
-        let existingBooks = existingWishList.Books |> Set
-        let newBooks = wishList.Books |> Set
-
-        // Delete obsolete books
-        (existingBooks - newBooks)
-        |> Set.iter(fun book ->
-            let entity = buildEntity wishList.UserName book
-            entity.ETag <- "*"
-            entity |> TableOperation.Delete |> operation.Add)
-
-        // Insert new / update existing books
-        (newBooks - existingBooks)
-        |> Set.iter(fun book ->
-            let entity = buildEntity wishList.UserName book
-            entity.Properties.["Title"] <- EntityProperty.GeneratePropertyForString book.Title
-            entity.Properties.["Authors"] <- EntityProperty.GeneratePropertyForString book.Authors
-            entity.Properties.["Link"] <- EntityProperty.GeneratePropertyForString book.Link
-            entity |> TableOperation.InsertOrReplace |> operation.Add)
-
-        operation
-
-    let! booksTable = getBooksTable connectionString
-    let! _ = booksTable.ExecuteBatchAsync batch
-    return () }
-
 module private StateManagement =
     let getStateBlob (AzureConnection connectionString) name = task {
         let client = (CloudStorageAccount.Parse connectionString).CreateCloudBlobClient()
@@ -101,5 +64,4 @@ let clearWishLists connectionString = task {
     let! table = getBooksTable connectionString
     let! _ = table.DeleteIfExistsAsync()
 
-    let! _ = Defaults.defaultWishList "test" |> saveWishListToDB connectionString
     do! StateManagement.storeResetTime connectionString }
