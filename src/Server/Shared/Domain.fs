@@ -7,18 +7,11 @@ open System
 type JWT = string
 
 // Login credentials.
-type Login =
-    { UserName   : string
-      Password   : string
-      PasswordId : Guid }
-
-    member this.IsValid() =
-        not ((this.UserName <> "test"  || this.Password <> "test") &&
-             (this.UserName <> "test2" || this.Password <> "test2"))
+type Login = bool
 
 type UserData =
   { UserName : string
-    Token    : JWT }
+    Token : JWT }
 
 /// The data for each book in /api/wishlist
 type Book =

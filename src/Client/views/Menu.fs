@@ -7,14 +7,9 @@ open ServerCode.Domain
 
 type Model = UserData option
 
-let view onLogout (model:Model) =
+let view () =
     div [ centerStyle "row" ] [
           yield viewLink Page.Home "Home"
-          if model <> None then
-              yield viewLink Page.WishList "Wishlist"
-          if model = None then
-              yield viewLink Page.Login "Login"
-          else
-              yield buttonLink "logout" onLogout [ str "Logout" ]
+          yield viewLink Page.WishList "Wishlist"
           yield viewLink Page.Multiples "Multiples"
         ]

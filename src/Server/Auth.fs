@@ -7,23 +7,12 @@ open Microsoft.AspNetCore.Http
 
 let createUserData (login : Domain.Login) =
     {
-        UserName = login.UserName
+        UserName = "test"
         Token    =
             ServerCode.JsonWebToken.encode (
-                { UserName = login.UserName } : ServerTypes.UserRights
+                { UserName = "test" } : ServerTypes.UserRights
             )
     } : Domain.UserData
-
-/// Authenticates a user and returns a token in the HTTP body.
-let login : HttpHandler =
-    fun (next : HttpFunc) (ctx : HttpContext) ->
-        task {
-            let! login = ctx.BindJsonAsync<Domain.Login>()
-            return!
-                match login.IsValid() with
-                | true  -> ctx.WriteJsonAsync (createUserData login)
-                | false -> UNAUTHORIZED "Bearer" "" (sprintf "User '%s' can't be logged in." login.UserName) next ctx
-        }
 
 let private missingToken = RequestErrors.BAD_REQUEST "Request doesn't contain a JSON Web Token"
 let private invalidToken = RequestErrors.FORBIDDEN "Accessing this API is not allowed"

@@ -21,7 +21,5 @@ let webApp databaseType root =
             route ServerUrls.ResetTime (WishList.getResetTime db.GetLastResetTime)
         ]
 
-        POST [
-            route ServerUrls.Login Auth.login
-        ]
+        POST []
     ]
