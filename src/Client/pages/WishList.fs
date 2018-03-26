@@ -58,25 +58,16 @@ let getResetTime token =
         return details.Time
     }
 
-let loadWishListCmd token =
-    Cmd.ofPromise getWishList token FetchedWishList FetchError
-
-let loadResetTimeCmd token =
-    Cmd.ofPromise getResetTime token FetchedResetTime FetchError
-
-let init (user:UserData) =
-    { WishList = WishList.New user.UserName
-      Token = user.Token
+let init () =
+    { WishList = WishList.New ""
+      Token = ""
       NewBook = Book.empty
       NewBookId = Guid.NewGuid()
       TitleErrorText = None
       AuthorsErrorText = None
       ResetTime = None
       LinkErrorText = None
-      ErrorMsg = None },
-        Cmd.batch [
-            loadWishListCmd user.Token
-            loadResetTimeCmd user.Token ]
+      ErrorMsg = None }
 
 let update (msg:Msg) model : Model*Cmd<Msg> =
     match msg with

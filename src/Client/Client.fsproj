@@ -11,7 +11,6 @@
     <Compile Include="views/Menu.fs" />
     <Compile Include="pages/Home.fs" />
     <Compile Include="pages/WishList.fs" />
-    <Compile Include="pages/Login.fs" />
     <Compile Include="pages\Multiples.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>

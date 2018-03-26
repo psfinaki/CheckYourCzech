@@ -6,5 +6,3 @@ module ServerCode.ServerUrls
 let WishList = "/api/wishlist/"
 [<Literal>]
 let ResetTime = "/api/wishlist/resetTime/"
-[<Literal>]
-let Login = "/api/users/login/"
