@@ -6,20 +6,17 @@ open Elmish.Browser.UrlParser
 [<RequireQualifiedAccess>]
 type Page = 
     | Home
-    | WishList
     | Multiples
 
 let toHash =
     function
     | Page.Home -> "#home"
-    | Page.WishList -> "#wishlist"
     | Page.Multiples -> "#multiples"
 
 /// The URL is turned into a Result.
 let pageParser : Parser<Page -> Page,_> =
     oneOf
         [ map Page.Home (s "home")
-          map Page.WishList (s "wishlist") 
           map Page.Multiples (s "multiples")]
 
 let urlParser location = parseHash pageParser location
