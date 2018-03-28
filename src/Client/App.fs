@@ -12,10 +12,13 @@ open Client.Pages
 JsInterop.importSideEffects "whatwg-fetch"
 JsInterop.importSideEffects "babel-polyfill"
 
+type Msg = 
+    | MultiplesMsg of Multiples.Msg
+
 /// The composed model for the different possible page states of the application
 type PageModel =
     | HomePageModel
-    | MultiplesModel
+    | MultiplesModel of Multiples.Model
 
 /// The composed model for the application, which is a single page state plus login information
 type Model =
@@ -33,7 +36,8 @@ let urlUpdate (result:Page option) model =
         { model with PageModel = HomePageModel }, Cmd.none
 
     | Some Page.Multiples ->
-        { model with PageModel = MultiplesModel }, Cmd.none
+        let m = Multiples.init()
+        { model with PageModel = MultiplesModel m }, Cmd.none
 
 let init result =
     let model =
@@ -42,7 +46,12 @@ let init result =
     urlUpdate result model
 
 let update msg model =
-    model, Cmd.none
+    match msg, model.PageModel with
+    | MultiplesMsg _, MultiplesModel m ->
+        let m = { m with Result = "Success!" }
+        { model with PageModel = MultiplesModel m }, Cmd.none
+    | MultiplesMsg _, _ ->
+        model, Cmd.none
 
 // VIEW
 
@@ -50,20 +59,20 @@ open Fable.Helpers.React
 open Client.Style
 
 /// Constructs the view for a page given the model and dispatcher.
-let viewPage model =
+let viewPage model dispatch =
     match model.PageModel with
     | HomePageModel ->
         Home.view ()
 
-    | MultiplesModel ->
-        Multiples.view()
+    | MultiplesModel m ->
+        Multiples.view m (MultiplesMsg >> dispatch)
 
 /// Constructs the view for the application given the model.
 let view model dispatch =
     div [] [ 
         Menu.view ()
         hr []
-        div [ centerStyle "column" ] (viewPage model)
+        div [ centerStyle "column" ] (viewPage model dispatch)
     ]
 
 open Elmish.Debug
