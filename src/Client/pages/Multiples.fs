@@ -4,7 +4,17 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Style
 
-let view() =
+type Model = {
+    Result : string
+}
+
+type Msg = 
+    | MarkTrue
+
+let init () =
+    { Result = "" }
+
+let view model dispatch =
     [ 
       words 60 "Write multiple for the word" 
       form [] [
@@ -17,12 +27,12 @@ let view() =
                 HTMLAttr.Type "text"
             ]
 
-            button [] [
+            button [ OnClick (fun _ -> dispatch MarkTrue) ] [
                 str "OK"
             ]
 
             label [] [
-                str "Correct!"
+                str model.Result
             ]
 
             button [] [
