@@ -47,8 +47,8 @@ let init result =
 
 let update msg model =
     match msg, model.PageModel with
-    | MultiplesMsg _, MultiplesModel m ->
-        let m = { m with Result = "Success!" }
+    | MultiplesMsg msg, MultiplesModel m ->
+        let m = Multiples.update msg m
         { model with PageModel = MultiplesModel m }, Cmd.none
     | MultiplesMsg _, _ ->
         model, Cmd.none
