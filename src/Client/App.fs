@@ -1,30 +1,20 @@
 module Client.App
 
 open Fable.Core
+open Fable.Core.JsInterop
 
 open Fable.Import
 open Elmish
 open Elmish.React
 open Elmish.Browser.Navigation
 open Elmish.HMR
+open Client.Shared
 open Client.Pages
 
 JsInterop.importSideEffects "whatwg-fetch"
 JsInterop.importSideEffects "babel-polyfill"
 
-type Msg = 
-    | MultiplesMsg of Multiples.Msg
-
-/// The composed model for the different possible page states of the application
-type PageModel =
-    | HomePageModel
-    | MultiplesModel of Multiples.Model
-
-/// The composed model for the application, which is a single page state plus login information
-type Model =
-    { PageModel : PageModel }
-
-/// The navigation logic of the application given a page identity parsed from the .../#info 
+/// The navigation logic of the application given a page identity parsed from the .../#info
 /// information in the URL.
 let urlUpdate (result:Page option) model =
     match result with
@@ -53,29 +43,13 @@ let update msg model =
     | MultiplesMsg _, _ ->
         model, Cmd.none
 
-// VIEW
-
-open Fable.Helpers.React
-open Client.Style
-
-/// Constructs the view for a page given the model and dispatcher.
-let viewPage model dispatch =
-    match model.PageModel with
-    | HomePageModel ->
-        Home.view ()
-
-    | MultiplesModel m ->
-        Multiples.view m (MultiplesMsg >> dispatch)
-
-/// Constructs the view for the application given the model.
-let view model dispatch =
-    div [] [ 
-        Menu.view ()
-        hr []
-        div [ centerStyle "column" ] (viewPage model dispatch)
-    ]
-
 open Elmish.Debug
+
+let withReact =
+    if (!!Browser.window?__INIT_MODEL__)
+    then Program.withReactHydrate
+    else Program.withReact
+
 
 // App
 Program.mkProgram init update view
@@ -84,7 +58,7 @@ Program.mkProgram init update view
 |> Program.withConsoleTrace
 |> Program.withHMR
 #endif
-|> Program.withReact "elmish-app"
+|> withReact "elmish-app"
 #if DEBUG
 |> Program.withDebugger
 #endif
