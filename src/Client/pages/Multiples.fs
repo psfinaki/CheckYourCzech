@@ -6,6 +6,7 @@ open Fable.Helpers.React.Props
 open Style
 
 type Model = {
+    Task : string
     Input : string
     Result : string
 }
@@ -15,7 +16,8 @@ type Msg =
     | ClickOk
 
 let init () =
-    { Input = ""
+    { Task = "panda"
+      Input = ""
       Result = "" }
 
 let update msg model =
@@ -32,7 +34,7 @@ let view model dispatch =
       form [] [
         div [ClassName ("form-group")] [
             label [] [
-                str "panda"
+                str model.Task
             ]
 
             input [ 
