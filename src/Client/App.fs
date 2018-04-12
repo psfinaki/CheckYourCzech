@@ -26,8 +26,8 @@ let urlUpdate (result:Page option) model =
         { model with PageModel = HomePageModel }, Cmd.none
 
     | Some Page.Multiples ->
-        let m = Multiples.init()
-        { model with PageModel = MultiplesModel m }, Cmd.none
+        let m, cmd = Multiples.init()
+        { model with PageModel = MultiplesModel m }, Cmd.map MultiplesMsg cmd
 
 let init result =
     let model =
