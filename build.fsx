@@ -24,16 +24,10 @@ let clientPath = "./src/Client" |> FullName
 
 let serverPath = "./src/Server/" |> FullName
 
-let serverTestsPath = "./test/ServerTests" |> FullName
-let clientTestsPath = "./test/UITests" |> FullName
-
 let dotnetcliVersion = DotNetCli.GetDotNetSDKVersionFromGlobalJson()
 let mutable dotnetExePath = "dotnet"
 
 let deployDir = "./deploy"
-
-// Pattern specifying assemblies to be tested using expecto
-let clientTestExecutables = "test/UITests/**/bin/**/*Tests*.exe"
 
 let dockerUser = getBuildParam "DockerUser"
 let dockerPassword = getBuildParam "DockerPassword"
@@ -120,14 +114,6 @@ Target "BuildServer" (fun _ ->
     runDotnet serverPath "build"
 )
 
-Target "BuildClientTests" (fun _ ->
-    runDotnet clientTestsPath "build"
-)
-
-Target "BuildServerTests" (fun _ ->
-    runDotnet serverTestsPath "build"
-)
-
 Target "InstallClient" (fun _ ->
     printfn "Node version:"
     run nodeTool "--version" __SOURCE_DIRECTORY__
@@ -156,30 +142,6 @@ Target "RenameDrivers" (fun _ ->
     | exn -> failwithf "Could not rename chromedriver at test/UITests/bin/Debug/net461/chromedriver. Message: %s" exn.Message
 )
 
-Target "RunServerTests" (fun _ ->
-    runDotnet serverTestsPath "run"
-)
-
-Target "RunClientTests" (fun _ ->
-    ActivateFinalTarget "KillProcess"
-
-    let serverProcess =
-        let info = System.Diagnostics.ProcessStartInfo()
-        info.FileName <- dotnetExePath
-        info.WorkingDirectory <- serverPath
-        info.Arguments <- " run"
-        info.UseShellExecute <- false
-        System.Diagnostics.Process.Start info
-
-    System.Threading.Thread.Sleep 15000 |> ignore  // give server some time to start
-
-    !! clientTestExecutables
-    |> Expecto (fun p -> { p with Parallel = false } )
-    |> ignore
-
-    serverProcess.Kill()
-)
-
 // --------------------------------------------------------------------------------------
 // Run the Website
 
@@ -195,23 +157,13 @@ FinalTarget "KillProcess" (fun _ ->
 
 Target "Run" (fun _ ->
     runDotnet clientPath "restore"
-    runDotnet serverTestsPath "restore"
-
-    let unitTestsWatch = async {
-        let result =
-            ExecProcess (fun info ->
-                info.FileName <- dotnetExePath
-                info.WorkingDirectory <- serverTestsPath
-                info.Arguments <- sprintf "watch msbuild /t:TestAndRun /p:DotNetHost=%s" dotnetExePath) TimeSpan.MaxValue
-
-        if result <> 0 then failwith "Website shut down." }
 
     let fablewatch = async { runDotnet clientPath "fable webpack-dev-server --port free -- --mode development" }
     let openBrowser = async {
         System.Threading.Thread.Sleep(5000)
         Diagnostics.Process.Start("http://"+ ipAddress + sprintf ":%d" port) |> ignore }
 
-    Async.Parallel [| unitTestsWatch; fablewatch; openBrowser |]
+    Async.Parallel [| fablewatch; openBrowser |]
     |> Async.RunSynchronously
     |> ignore
 )
@@ -219,23 +171,13 @@ Target "Run" (fun _ ->
 
 Target "RunSSR" (fun _ ->
     runDotnet clientPath "restore"
-    runDotnet serverTestsPath "restore"
-
-    let unitTestsWatch = async {
-        let result =
-            ExecProcess (fun info ->
-                info.FileName <- dotnetExePath
-                info.WorkingDirectory <- serverTestsPath
-                info.Arguments <- sprintf "watch msbuild /t:TestAndRun /p:DotNetHost=%s /p:DebugSSR=true" dotnetExePath) TimeSpan.MaxValue
-
-        if result <> 0 then failwith "Website shut down." }
 
     let fablewatch = async { runDotnet clientPath "fable webpack --port free -- -w --mode development" }
     let openBrowser = async {
         System.Threading.Thread.Sleep(10000)
         Diagnostics.Process.Start("http://"+ ipAddress + sprintf ":%d" serverPort) |> ignore }
 
-    Async.Parallel [| unitTestsWatch; fablewatch; openBrowser |]
+    Async.Parallel [| fablewatch; openBrowser |]
     |> Async.RunSynchronously
     |> ignore
 )
@@ -324,10 +266,6 @@ Target "TestDockerImage" (fun _ ->
 
     System.Threading.Thread.Sleep 5000 |> ignore  // give server some time to start
 
-    !! clientTestExecutables
-    |> Expecto (fun p -> { p with Parallel = false } )
-    |> ignore
-
     let result =
         ExecProcess (fun info ->
             info.FileName <- "docker"
@@ -361,11 +299,7 @@ Target "All" DoNothing
   ==> "SetReleaseNotes"
   ==> "BuildServer"
   ==> "BuildClient"
-  ==> "BuildServerTests"
-  ==> "RunServerTests"
-  ==> "BuildClientTests"
   ==> "RenameDrivers"
-  ==> "RunClientTests"
   ==> "BundleClient"
   ==> "All"
   ==> "CreateDockerImage"
