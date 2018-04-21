@@ -25,15 +25,11 @@ let clientPath = "./src/Client" |> FullName
 let serverPath = "./src/Server/" |> FullName
 
 let serverTestsPath = "./test/ServerTests" |> FullName
-let clientTestsPath = "./test/UITests" |> FullName
 
 let dotnetcliVersion = DotNetCli.GetDotNetSDKVersionFromGlobalJson()
 let mutable dotnetExePath = "dotnet"
 
 let deployDir = "./deploy"
-
-// Pattern specifying assemblies to be tested using expecto
-let clientTestExecutables = "test/UITests/**/bin/**/*Tests*.exe"
 
 let dockerUser = getBuildParam "DockerUser"
 let dockerPassword = getBuildParam "DockerPassword"
@@ -120,10 +116,6 @@ Target "BuildServer" (fun _ ->
     runDotnet serverPath "build"
 )
 
-Target "BuildClientTests" (fun _ ->
-    runDotnet clientTestsPath "build"
-)
-
 Target "BuildServerTests" (fun _ ->
     runDotnet serverTestsPath "build"
 )
@@ -158,26 +150,6 @@ Target "RenameDrivers" (fun _ ->
 
 Target "RunServerTests" (fun _ ->
     runDotnet serverTestsPath "run"
-)
-
-Target "RunClientTests" (fun _ ->
-    ActivateFinalTarget "KillProcess"
-
-    let serverProcess =
-        let info = System.Diagnostics.ProcessStartInfo()
-        info.FileName <- dotnetExePath
-        info.WorkingDirectory <- serverPath
-        info.Arguments <- " run"
-        info.UseShellExecute <- false
-        System.Diagnostics.Process.Start info
-
-    System.Threading.Thread.Sleep 15000 |> ignore  // give server some time to start
-
-    !! clientTestExecutables
-    |> Expecto (fun p -> { p with Parallel = false } )
-    |> ignore
-
-    serverProcess.Kill()
 )
 
 // --------------------------------------------------------------------------------------
@@ -324,10 +296,6 @@ Target "TestDockerImage" (fun _ ->
 
     System.Threading.Thread.Sleep 5000 |> ignore  // give server some time to start
 
-    !! clientTestExecutables
-    |> Expecto (fun p -> { p with Parallel = false } )
-    |> ignore
-
     let result =
         ExecProcess (fun info ->
             info.FileName <- "docker"
@@ -363,9 +331,7 @@ Target "All" DoNothing
   ==> "BuildClient"
   ==> "BuildServerTests"
   ==> "RunServerTests"
-  ==> "BuildClientTests"
   ==> "RenameDrivers"
-  ==> "RunClientTests"
   ==> "BundleClient"
   ==> "All"
   ==> "CreateDockerImage"
