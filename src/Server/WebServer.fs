@@ -9,8 +9,11 @@ open RequestErrors
 let webApp root =
     let notfound = NOT_FOUND "Page not found"
 
+    let getTask () : HttpHandler =
+        fun _ ctx -> task { return! ctx.WriteJsonAsync("panda") }
+
     router notfound [
         GET [
-            route "/" (htmlFile (System.IO.Path.Combine(root,"index.html")))
+            route "/api/task/" (getTask())
         ]
     ]
