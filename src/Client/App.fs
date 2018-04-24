@@ -38,8 +38,8 @@ let init result =
 let update msg model =
     match msg, model.PageModel with
     | MultiplesMsg msg, MultiplesModel m ->
-        let m = Multiples.update msg m
-        { model with PageModel = MultiplesModel m }, Cmd.none
+        let m, cmd = Multiples.update msg m
+        { model with PageModel = MultiplesModel m }, Cmd.map MultiplesMsg cmd
     | MultiplesMsg _, _ ->
         model, Cmd.none
 

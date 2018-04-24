@@ -18,6 +18,7 @@ type Msg =
     | SetInput of string
     | ClickOk
     | FetchedTask of string
+    | FetchedAnswer of string
     | FetchError of exn
 
 let getTask() =
@@ -26,8 +27,17 @@ let getTask() =
         return! Fetch.fetchAs<string> url []
     }
 
+let getAnswer() = 
+    promise {
+        let url = "/api/answer/"
+        return! Fetch.fetchAs<string> url []
+    }
+
 let loadTaskCmd() =
     Cmd.ofPromise getTask () FetchedTask FetchError
+
+let loadAnswerCmd() =
+    Cmd.ofPromise getAnswer () FetchedAnswer FetchError
 
 let init () =
     { Task = ""
@@ -38,14 +48,16 @@ let init () =
 let update msg model =
     match msg with
     | SetInput input ->
-        { model with Input = input }
+        { model with Input = input }, Cmd.none
     | ClickOk ->
-        let result = if model.Input = "pandy" then "Correct" else "Incorrect"
-        { model with Result = result }
+        model, loadAnswerCmd()
     | FetchedTask task ->
-        { model with Task = task }
+        { model with Task = task }, Cmd.none
+    | FetchedAnswer answer ->
+        let result = if model.Input = answer then "Correct" else "Incorrect"
+        { model with Result = result }, Cmd.none
     | FetchError _ ->
-        model
+        model, Cmd.none
 
 let view model dispatch =
     [ 

@@ -12,8 +12,12 @@ let webApp root =
     let getTask () : HttpHandler =
         fun _ ctx -> task { return! ctx.WriteJsonAsync("panda") }
 
+    let getAnswer () : HttpHandler =
+        fun _ ctx -> task { return! ctx.WriteJsonAsync("pandy") }
+
     router notfound [
         GET [
             route "/api/task/" (getTask())
+            route "/api/answer/" (getAnswer())
         ]
     ]
