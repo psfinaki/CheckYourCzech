@@ -6,6 +6,7 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Style
+open Fable.PowerPack.Fetch
 
 type Model = {
     Task : string
@@ -21,7 +22,8 @@ type Msg =
 
 let getTask() =
     promise {
-        return "panda"
+        let url = "/api/task/"
+        return! Fetch.fetchAs<string> url []
     }
 
 let loadTaskCmd() =

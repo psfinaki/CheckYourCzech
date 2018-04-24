@@ -11,6 +11,7 @@ open Fake.ReleaseNotesHelper
 open System
 open System.IO
 open Fake.Testing.Expecto
+open System.Diagnostics
 
 let project = "Suave/Fable sample"
 
@@ -158,12 +159,22 @@ FinalTarget "KillProcess" (fun _ ->
 Target "Run" (fun _ ->
     runDotnet clientPath "restore"
 
+    let serverWatch = async {
+        let proc = 
+            fun (info: ProcessStartInfo) ->
+                info.FileName <- dotnetExePath
+                info.WorkingDirectory <- serverPath
+                info.Arguments <- sprintf "watch msbuild /t:ServerRun /p:DotNetHost=%s" dotnetExePath
+
+        ExecProcess proc TimeSpan.MaxValue |> ignore
+    }
+
     let fablewatch = async { runDotnet clientPath "fable webpack-dev-server --port free -- --mode development" }
     let openBrowser = async {
         System.Threading.Thread.Sleep(5000)
         Diagnostics.Process.Start("http://"+ ipAddress + sprintf ":%d" port) |> ignore }
 
-    Async.Parallel [| fablewatch; openBrowser |]
+    Async.Parallel [| serverWatch; fablewatch; openBrowser |]
     |> Async.RunSynchronously
     |> ignore
 )
