@@ -14,9 +14,10 @@ let webApp root =
     let getTask () : HttpHandler =
         fun _ ctx -> task { return! ctx.WriteJsonAsync("panda") }
 
-    let getAnswer () : HttpHandler =
+    let getAnswer word : HttpHandler =
         fun _ ctx -> task {
-            let data = Wiki.Load "https://cs.wiktionary.org/wiki/panda"
+            let url = "https://cs.wiktionary.org/wiki/" + word
+            let data = Wiki.Load url
             let answer = data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
             return! ctx.WriteJsonAsync answer 
         }
@@ -24,6 +25,6 @@ let webApp root =
     router notfound [
         GET [
             route "/api/task/" (getTask())
-            route "/api/answer/" (getAnswer())
+            routef "/api/answer/%s" getAnswer
         ]
     ]

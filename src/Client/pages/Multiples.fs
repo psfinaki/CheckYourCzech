@@ -27,17 +27,17 @@ let getTask() =
         return! Fetch.fetchAs<string> url []
     }
 
-let getAnswer() = 
+let getAnswer task = 
     promise {
-        let url = "/api/answer/"
+        let url = "/api/answer/" + task
         return! Fetch.fetchAs<string> url []
     }
 
 let loadTaskCmd() =
     Cmd.ofPromise getTask () FetchedTask FetchError
 
-let loadAnswerCmd() =
-    Cmd.ofPromise getAnswer () FetchedAnswer FetchError
+let loadAnswerCmd task =
+    Cmd.ofPromise getAnswer task FetchedAnswer FetchError
 
 let init () =
     { Task = ""
@@ -50,7 +50,7 @@ let update msg model =
     | SetInput input ->
         { model with Input = input }, Cmd.none
     | ClickOk ->
-        model, loadAnswerCmd()
+        model, loadAnswerCmd model.Task
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
