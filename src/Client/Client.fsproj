@@ -14,7 +14,6 @@
   <ItemGroup>
     <Compile Include="Pages.fs" />
     <Compile Include="Style.fs" />
-    <Compile Include="ReleaseNotes.fs" />
     <Compile Include="pages\Home.fs" />
     <Compile Include="pages\Multiples.fs" />
     <Compile Include="views\Menu.fs" />
