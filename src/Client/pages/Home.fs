@@ -14,4 +14,4 @@ let view () =
       br []
       br []
       br []
-      words 20 ("version " + ReleaseNotes.Version) ]
+    ]
