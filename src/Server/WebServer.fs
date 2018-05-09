@@ -5,6 +5,7 @@ open Giraffe
 open Giraffe.TokenRouter
 open RequestErrors
 open FSharp.Data
+open ServerCode
 
 type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
@@ -12,7 +13,10 @@ let webApp root =
     let notfound = NOT_FOUND "Page not found"
 
     let getTask () : HttpHandler =
-        fun _ ctx -> task { return! ctx.WriteJsonAsync("panda") }
+        fun _ ctx -> task { 
+            let word = WordProvider.getCzechNoun()
+            return! ctx.WriteJsonAsync word
+        }
 
     let getAnswer word : HttpHandler =
         fun _ ctx -> task {
