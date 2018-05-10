@@ -6,22 +6,6 @@ open Xunit
 module WordProviderTests =
 
     [<Fact>]
-    let detectsCzechWord() =
-        let word = "panda"
-
-        let result = WordProvider.existsInCzech word
-
-        Assert.True result
-
-    [<Fact>]
-    let detectsNotCzechWord() =
-        let word = "table"
-
-        let result = WordProvider.existsInCzech word
-
-        Assert.False result
-
-    [<Fact>]
     let detectsCzechNoun() = 
         let word = "hudba"
 
