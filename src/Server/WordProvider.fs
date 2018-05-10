@@ -15,22 +15,10 @@ let getLanguageParts word =
     |> WikiArticle.Load
     |> fun data -> data.Lists.Obsah.Html.Elements()
 
-let existsInCzech word = 
+let getCzechPart word =
     word
     |> getLanguageParts
-    |> Seq.map getListItem 
-    |> Seq.exists ((=) "čeština")
-
-let getCzechPart word =
-    match existsInCzech word with
-    | true ->
-        word
-        |> getLanguageParts
-        |> Seq.where (getListItem >> (=) "čeština")
-        |> Seq.exactlyOne
-        |> Some
-    | false -> 
-        None
+    |> List.tryFind (getListItem >> (=) "čeština")
 
 let isCzechNoun word =
     match getCzechPart word with
