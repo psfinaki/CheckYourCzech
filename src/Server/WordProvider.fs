@@ -1,5 +1,6 @@
 ﻿module ServerCode.WordProvider
 
+open System.Collections.Generic
 open FSharp.Data
 
 type WikiArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
@@ -10,15 +11,23 @@ let randomWikiArticleUrl = "https://cs.wiktionary.org/wiki/Speciální:Náhodná
 let getListItem (x: HtmlNode) = 
     x.Elements().[0].Attributes().[0].Value().Trim('#')
 
-let getLanguageParts word = 
-    wikiUrl + word
-    |> WikiArticle.Load
-    |> fun data -> data.Lists.Obsah.Html.Elements()
+let getLanguageParts word =
+    try
+        wikiUrl + word
+        |> WikiArticle.Load
+        |> fun data -> data.Lists.Obsah.Html.Elements()
+        |> Some
+    with
+        | :? KeyNotFoundException ->
+           None
 
 let getCzechPart word =
-    word
-    |> getLanguageParts
-    |> List.tryFind (getListItem >> (=) "čeština")
+    match getLanguageParts word with
+    | Some languageParts ->
+        languageParts
+        |> Seq.tryFind (getListItem >> (=) "čeština")
+    | None ->
+        None
 
 let isCzechNoun word =
     match getCzechPart word with
