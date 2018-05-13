@@ -15,29 +15,27 @@ let getLanguageParts word =
     try
         wikiUrl + word
         |> WikiArticle.Load
-        |> fun data -> data.Lists.Obsah.Html.Elements()
+        |> fun data -> data.Lists.Obsah.Html
         |> Some
     with
         | :? KeyNotFoundException ->
            None
 
-let getCzechPart word =
-    match getLanguageParts word with
-    | Some languageParts ->
-        languageParts
-        |> Seq.tryFind (getListItem >> (=) "čeština")
-    | None ->
-        None
+let getCzechPart (html: HtmlNode) =
+    html.Elements()
+    |> Seq.tryFind (getListItem >> (=) "čeština")
+
+let getCzechNounPart (html: HtmlNode) =
+    html.Elements().[1].Elements()
+    |> Seq.map getListItem
+    |> Seq.tryFind ((=) "podstatné_jméno")
 
 let isCzechNoun word =
-    match getCzechPart word with
-    | Some czechPart ->
-        czechPart
-        |> fun node -> node.Elements().[1].Elements()
-        |> Seq.map getListItem
-        |> Seq.exists ((=) "podstatné_jméno")
-    | None ->
-        false
+    word
+    |> getLanguageParts
+    |> Option.bind getCzechPart
+    |> Option.bind getCzechNounPart
+    |> Option.isSome
 
 let getRandomWord () =
     randomWikiArticleUrl
