@@ -14,10 +14,26 @@ module WordProviderTests =
         Assert.True result
 
     [<Fact>]
-    let detectsCzechNotNoun() = 
+    let detectsNoCzechPart() = 
+        let word = "immigration"
+
+        let result = WordProvider.isAppropriate word
+        
+        Assert.False result
+
+    [<Fact>]
+    let detectsNoCzechNoun() = 
         let word = "koukat"
 
         let result = WordProvider.isAppropriate word
         
         Assert.False result
-    
+
+    [<Fact>]
+    let detectsNoCzechDeclination() = 
+        let word = "antilopu"
+
+        let result = WordProvider.isAppropriate word
+        
+        Assert.False result
+        
