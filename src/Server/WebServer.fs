@@ -14,7 +14,7 @@ let webApp root =
 
     let getTask () : HttpHandler =
         fun _ ctx -> task { 
-            let word = WordProvider.getCzechNoun()
+            let word = WordProvider.getNoun()
             return! ctx.WriteJsonAsync word
         }
 
