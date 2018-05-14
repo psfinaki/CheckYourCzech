@@ -9,7 +9,7 @@ module WordProviderTests =
     let detectsCzechNoun() = 
         let word = "hudba"
 
-        let result = WordProvider.isCzechNoun word
+        let result = WordProvider.isAppropriate word
         
         Assert.True result
 
@@ -17,7 +17,7 @@ module WordProviderTests =
     let detectsCzechNotNoun() = 
         let word = "koukat"
 
-        let result = WordProvider.isCzechNoun word
+        let result = WordProvider.isAppropriate word
         
         Assert.False result
     
