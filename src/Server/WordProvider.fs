@@ -27,14 +27,18 @@ let getCzechPart (html: HtmlNode) =
 
 let getCzechNounPart (html: HtmlNode) =
     html.Elements().[1].Elements()
-    |> Seq.map getListItem
-    |> Seq.tryFind ((=) "podstatné_jméno")
+    |> Seq.tryFind (getListItem >> (=) "podstatné_jméno")
 
-let isCzechNoun word =
+let getDeclination (html: HtmlNode) =
+    html.Elements().[1].Elements()
+    |> Seq.tryFind (getListItem >> (=) "skloňování")
+
+let isAppropriate word =
     word
     |> getLanguageParts
     |> Option.bind getCzechPart
     |> Option.bind getCzechNounPart
+    |> Option.bind getDeclination
     |> Option.isSome
 
 let getRandomWord () =
@@ -42,7 +46,7 @@ let getRandomWord () =
     |> WikiArticle.Load 
     |> fun node -> node.Html.Elements().[0].Elements().[0].Elements().[1].Elements().[0].InnerText().Split(" – ").[0]
 
-let getCzechNoun () = 
+let getNoun () = 
     fun _ -> getRandomWord()
     |> Seq.initInfinite
-    |> Seq.find isCzechNoun
+    |> Seq.find isAppropriate
