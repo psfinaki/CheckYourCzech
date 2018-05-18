@@ -8,10 +8,13 @@ type WikiArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 let wikiUrl = "https://cs.wiktionary.org/wiki/"
 let randomWikiArticleUrl = "https://cs.wiktionary.org/wiki/Speciální:Náhodná_stránka"
 
-let getListItem (x: HtmlNode) = 
+let getNodeName (x: HtmlNode) = 
     x.Elements().[0].Attributes().[0].Value().Trim('#')
 
-let getLanguageParts word =
+let getNodeChildren (x: HtmlNode) = 
+    x.Elements().[1].Elements()
+
+let getContent word =
     try
         wikiUrl + word
         |> WikiArticle.Load
@@ -23,19 +26,21 @@ let getLanguageParts word =
 
 let getCzechPart (html: HtmlNode) =
     html.Elements()
-    |> Seq.tryFind (getListItem >> (=) "čeština")
+    |> Seq.tryFind (getNodeName >> (=) "čeština")
 
-let getCzechNounPart (html: HtmlNode) =
-    html.Elements().[1].Elements()
-    |> Seq.tryFind (getListItem >> (=) "podstatné_jméno")
+let getCzechNounPart (node: HtmlNode) =
+    node
+    |> getNodeChildren
+    |> Seq.tryFind (getNodeName >> (=) "podstatné_jméno")
 
-let getDeclination (html: HtmlNode) =
-    html.Elements().[1].Elements()
-    |> Seq.tryFind (getListItem >> (=) "skloňování")
+let getDeclination (node: HtmlNode) =
+    node
+    |> getNodeChildren
+    |> Seq.tryFind (getNodeName >> (=) "skloňování")
 
 let isAppropriate word =
     word
-    |> getLanguageParts
+    |> getContent
     |> Option.bind getCzechPart
     |> Option.bind getCzechNounPart
     |> Option.bind getDeclination
