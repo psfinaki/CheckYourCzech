@@ -72,6 +72,7 @@ let view model dispatch =
                 HTMLAttr.Type "text"
                 DefaultValue model.Input
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
+                onEnter ClickOk dispatch
             ]
 
             button [ OnClick (fun _ -> dispatch ClickOk)
