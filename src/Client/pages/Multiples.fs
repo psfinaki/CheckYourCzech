@@ -74,7 +74,8 @@ let view model dispatch =
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
             ]
 
-            button [ OnClick (fun _ -> dispatch ClickOk) ] [
+            button [ OnClick (fun _ -> dispatch ClickOk)
+                     HTMLAttr.Type "button" ] [
                 str "OK"
             ]
 
