@@ -73,6 +73,7 @@ let view model dispatch =
                 DefaultValue model.Input
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
                 onEnter SubmitTask dispatch
+                AutoFocus true
             ]
 
             button [ OnClick (fun _ -> dispatch SubmitTask)
