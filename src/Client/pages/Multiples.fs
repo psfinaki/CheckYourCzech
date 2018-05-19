@@ -17,6 +17,7 @@ type Model = {
 type Msg = 
     | SetInput of string
     | SubmitTask
+    | UpdateTask
     | FetchedTask of string
     | FetchedAnswer of string
     | FetchError of exn
@@ -51,6 +52,8 @@ let update msg model =
         { model with Input = input }, Cmd.none
     | SubmitTask ->
         model, loadAnswerCmd model.Task
+    | UpdateTask ->
+        model, loadTaskCmd()
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
@@ -85,7 +88,8 @@ let view model dispatch =
                 str model.Result
             ]
 
-            button [] [
+            button [ OnClick (fun _ -> dispatch UpdateTask)
+                     HTMLAttr.Type "button" ] [
                 str "Repeat"
             ]
         ]
