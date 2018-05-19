@@ -16,7 +16,7 @@ type Model = {
 
 type Msg = 
     | SetInput of string
-    | ClickOk
+    | SubmitTask
     | FetchedTask of string
     | FetchedAnswer of string
     | FetchError of exn
@@ -49,7 +49,7 @@ let update msg model =
     match msg with
     | SetInput input ->
         { model with Input = input }, Cmd.none
-    | ClickOk ->
+    | SubmitTask ->
         model, loadAnswerCmd model.Task
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
@@ -72,10 +72,10 @@ let view model dispatch =
                 HTMLAttr.Type "text"
                 DefaultValue model.Input
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
-                onEnter ClickOk dispatch
+                onEnter SubmitTask dispatch
             ]
 
-            button [ OnClick (fun _ -> dispatch ClickOk)
+            button [ OnClick (fun _ -> dispatch SubmitTask)
                      HTMLAttr.Type "button" ] [
                 str "OK"
             ]
