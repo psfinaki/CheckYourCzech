@@ -17,6 +17,7 @@ type Model = {
 type Msg = 
     | SetInput of string
     | SubmitTask
+    | UpdateTask
     | FetchedTask of string
     | FetchedAnswer of string
     | FetchError of exn
@@ -51,6 +52,8 @@ let update msg model =
         { model with Input = input }, Cmd.none
     | SubmitTask ->
         model, loadAnswerCmd model.Task
+    | UpdateTask ->
+        { model with Task = ""; Input = ""; Result = "" }, loadTaskCmd()
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
@@ -70,7 +73,7 @@ let view model dispatch =
 
             input [ 
                 HTMLAttr.Type "text"
-                DefaultValue model.Input
+                Value model.Input
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
                 onEnter SubmitTask dispatch
                 AutoFocus true
@@ -85,7 +88,8 @@ let view model dispatch =
                 str model.Result
             ]
 
-            button [] [
+            button [ OnClick (fun _ -> dispatch UpdateTask)
+                     HTMLAttr.Type "button" ] [
                 str "Repeat"
             ]
         ]
