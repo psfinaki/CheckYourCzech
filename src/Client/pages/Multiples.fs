@@ -53,7 +53,7 @@ let update msg model =
     | SubmitTask ->
         model, loadAnswerCmd model.Task
     | UpdateTask ->
-        model, loadTaskCmd()
+        { model with Task = ""; Input = ""; Result = "" }, loadTaskCmd()
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
@@ -73,7 +73,7 @@ let view model dispatch =
 
             input [ 
                 HTMLAttr.Type "text"
-                DefaultValue model.Input
+                Value model.Input
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
                 onEnter SubmitTask dispatch
                 AutoFocus true
