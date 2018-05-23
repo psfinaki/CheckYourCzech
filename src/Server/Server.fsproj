@@ -15,6 +15,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnswerProvider.fs" />
     <Compile Include="WordProvider.fs" />
     <Compile Include="WebServer.fs" />
     <Compile Include="Program.fs" />
