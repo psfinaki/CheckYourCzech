@@ -19,7 +19,7 @@ type Msg =
     | SubmitTask
     | UpdateTask
     | FetchedTask of string
-    | FetchedAnswer of string
+    | FetchedAnswer of string[]
     | FetchError of exn
 
 let getTask() =
@@ -31,7 +31,7 @@ let getTask() =
 let getAnswer task = 
     promise {
         let url = "/api/answer/" + task
-        return! Fetch.fetchAs<string> url []
+        return! Fetch.fetchAs<string[]> url []
     }
 
 let loadTaskCmd() =
@@ -57,7 +57,7 @@ let update msg model =
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
-        let result = if model.Input = answer then "Correct" else "Incorrect"
+        let result = if answer |> Array.contains model.Input then "Correct" else "Incorrect"
         { model with Result = result }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
