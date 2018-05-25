@@ -64,13 +64,17 @@ let update msg model =
 
 let view model dispatch =
     [ 
-      words 60 "Write multiple for the word" 
-      form [] [
-        div [ClassName ("form-group")] [
+        words 60 "Write multiple for the word" 
+        br []
+
+        div [] [
             label [] [
                 str model.Task
-            ]
+            ] ]
 
+        br []
+
+        div [] [
             input [ 
                 HTMLAttr.Type "text"
                 Value model.Input
@@ -78,14 +82,17 @@ let view model dispatch =
                 onEnter SubmitTask dispatch
                 AutoFocus true
             ]
+            
+            label [] [
+                str model.Result
+            ] ]
 
+        br []
+
+        div [] [
             button [ OnClick (fun _ -> dispatch SubmitTask)
                      HTMLAttr.Type "button" ] [
                 str "OK"
-            ]
-
-            label [] [
-                str model.Result
             ]
 
             button [ OnClick (fun _ -> dispatch UpdateTask)
@@ -93,5 +100,4 @@ let view model dispatch =
                 str "Repeat"
             ]
         ]
-      ]
     ]
