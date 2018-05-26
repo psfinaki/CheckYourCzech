@@ -11,7 +11,7 @@ open Fable.PowerPack.Fetch
 type Model = {
     Task : string
     Input : string
-    Result : string
+    Result : bool option
 }
 
 type Msg = 
@@ -43,7 +43,7 @@ let loadAnswerCmd task =
 let init () =
     { Task = ""
       Input = ""
-      Result = "" },
+      Result = None },
       loadTaskCmd()
 
 let update msg model =
@@ -53,16 +53,30 @@ let update msg model =
     | SubmitTask ->
         model, loadAnswerCmd model.Task
     | UpdateTask ->
-        { model with Task = ""; Input = ""; Result = "" }, loadTaskCmd()
+        { model with Task = ""; Input = ""; Result = None }, loadTaskCmd()
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
-        let result = if answer |> Array.contains model.Input then "Correct" else "Incorrect"
-        { model with Result = result }, Cmd.none
+        let result = answer |> Array.contains model.Input
+        { model with Result = Some result }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
 
 let view model dispatch =
+    let resultContent = 
+        match model.Result with 
+        | Some result -> 
+            let imageSource = if result then "/images/correct.png" else "/images/incorrect.png"
+            let altText = if result then "Correct" else "Incorrect"
+            img [ 
+                HTMLAttr.Src imageSource
+                HTMLAttr.Width 25
+                HTMLAttr.Height 25 
+                HTMLAttr.Alt altText
+            ]
+        | None ->
+            str ""
+    
     [ 
         words 60 "Write multiple for the word" 
         br []
@@ -70,7 +84,8 @@ let view model dispatch =
         div [] [
             label [] [
                 str model.Task
-            ] ]
+            ] 
+        ]
 
         br []
 
@@ -84,8 +99,9 @@ let view model dispatch =
             ]
             
             label [] [
-                str model.Result
-            ] ]
+                resultContent
+            ] 
+        ]
 
         br []
 
