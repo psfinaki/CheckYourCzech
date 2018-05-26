@@ -9,7 +9,7 @@ open Style
 open Fable.PowerPack.Fetch
 
 type Model = {
-    Task : string
+    Task : string 
     Input : string
     Result : bool option
 }
@@ -75,30 +75,28 @@ let view model dispatch =
                 HTMLAttr.Alt altText
             ]
         | None ->
-            str ""
+            str "-"
     
     [ 
         words 60 "Write multiple for the word" 
         br []
-
-        div [] [
-            label [] [
-                str model.Task
-            ] 
-        ]
-
         br []
 
         div [] [
+            label [ Style [ Width 100; TextAlign "right"; BackgroundColor "grey" ] ] [
+                str (if model.Task <> "" then model.Task else "-")
+            ] 
+
             input [ 
-                HTMLAttr.Type "text"
+                Type "text"
+                Style [ Width 100; TextAlign "center"; Margin 5 ] 
                 Value model.Input
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
                 onEnter SubmitTask dispatch
                 AutoFocus true
             ]
             
-            label [] [
+            label [ Style [ Width 100; TextAlign "left"; BackgroundColor "grey" ] ] [
                 resultContent
             ] 
         ]
@@ -106,13 +104,13 @@ let view model dispatch =
         br []
 
         div [] [
-            button [ OnClick (fun _ -> dispatch UpdateTask)
-                     HTMLAttr.Type "button" ] [
+            button [ OnClick (fun _ -> dispatch UpdateTask); Type "button"; Style [ Width 150 ] ] [
                 str "Next"
             ]
 
-            button [ OnClick (fun _ -> dispatch SubmitTask)
-                     HTMLAttr.Type "button" ] [
+            div [ Style [ Width 10; Display "inline-block" ] ] []
+
+            button [ OnClick (fun _ -> dispatch SubmitTask); Type "button"; Style [ Width 150 ] ] [
                 str "Check"
             ]
         ]
