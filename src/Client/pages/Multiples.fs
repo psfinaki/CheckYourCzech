@@ -106,14 +106,14 @@ let view model dispatch =
         br []
 
         div [] [
-            button [ OnClick (fun _ -> dispatch SubmitTask)
-                     HTMLAttr.Type "button" ] [
-                str "OK"
-            ]
-
             button [ OnClick (fun _ -> dispatch UpdateTask)
                      HTMLAttr.Type "button" ] [
-                str "Repeat"
+                str "Next"
+            ]
+
+            button [ OnClick (fun _ -> dispatch SubmitTask)
+                     HTMLAttr.Type "button" ] [
+                str "Check"
             ]
         ]
     ]
