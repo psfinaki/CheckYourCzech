@@ -17,7 +17,7 @@ let webApp root =
 
     let getAnswer word : HttpHandler =
         fun _ ctx -> task {
-            let answer = AnswerProvider.getMultiple word
+            let answer = AnswerProvider.getPlural word
             return! ctx.WriteJsonAsync answer 
         }
 
