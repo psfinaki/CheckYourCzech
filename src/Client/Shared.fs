@@ -3,7 +3,7 @@ module Client.Shared
 /// The composed model for the different possible page states of the application
 type PageModel =
     | HomePageModel
-    | MultiplesModel of Multiples.Model
+    | PluralModel of Plural.Model
 
 /// The composed model for the application, which is a single page state plus login information
 type Model =
@@ -11,7 +11,7 @@ type Model =
 
 /// The composed set of messages that update the state of the application
 type Msg = 
-    | MultiplesMsg of Multiples.Msg
+    | PluralMsg of Plural.Msg
 
 // VIEW
 
@@ -24,8 +24,8 @@ let viewPage model dispatch =
     | HomePageModel ->
         Home.view ()
 
-    | MultiplesModel m ->
-        Multiples.view m (MultiplesMsg >> dispatch)
+    | PluralModel m ->
+        Plural.view m (PluralMsg >> dispatch)
 
 /// Constructs the view for the application given the model.
 let view model dispatch =
