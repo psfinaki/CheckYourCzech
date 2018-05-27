@@ -6,6 +6,7 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Style
+open Fable.Import.React
 
 type Model = {
     Task : string 
@@ -75,6 +76,15 @@ let view model dispatch =
             ]
         | None ->
             str "-"
+
+    let handleKeyDown (event: KeyboardEvent) =
+        match event.keyCode with
+        | Keyboard.Codes.enter ->
+            match event.shiftKey with
+            | false -> dispatch SubmitTask
+            | true  -> dispatch UpdateTask
+        | _ -> 
+            ()
     
     [ 
         words 60 "Write plural for the word" 
@@ -93,7 +103,7 @@ let view model dispatch =
                 Style [ Width "32%"; Height "100%"; FontSize "25px"; TextAlign "center"; MarginLeft "2%"; MarginRight "2%" ] 
                 Value model.Input
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
-                onEnter SubmitTask dispatch
+                OnKeyDown handleKeyDown
                 AutoFocus true
             ]
             
