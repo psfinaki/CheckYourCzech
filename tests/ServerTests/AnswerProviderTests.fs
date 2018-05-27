@@ -22,3 +22,12 @@ module AnswerProviderTests =
         let actual = AnswerProvider.getMultiple word
         
         Assert.Equal<string[]> (expected, actual)
+
+    [<Fact>]
+    let getsMultipleSeveralOptionsNoSpaces() = 
+        let word = "Edáček"
+        let expected = [|"Edáčci"; "Edáčkové"|]
+
+        let actual = AnswerProvider.getMultiple word
+        
+        Assert.Equal<string[]> (expected, actual)
