@@ -81,36 +81,39 @@ let view model dispatch =
         words 60 "Write multiple for the word" 
         br []
         br []
+        br []
+        br []
 
-        div [] [
-            label [ Style [ Width 100; TextAlign "right"; BackgroundColor "grey" ] ] [
+        div [ Style [ Width 700; Height 70; ] ] [
+            label [ Style [ Width "32%"; Height "100%"; FontSize "25px"; TextAlign "center"; BorderRadius "10%"; LineHeight "2.5"; VerticalAlign "middle"; BackgroundColor "LightGray" ] ] [
                 str (if model.Task <> "" then model.Task else "-")
             ] 
 
             input [ 
                 Type "text"
-                Style [ Width 100; TextAlign "center"; Margin 5 ] 
+                Style [ Width "32%"; Height "100%"; FontSize "25px"; TextAlign "center"; MarginLeft "2%"; MarginRight "2%" ] 
                 Value model.Input
                 OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
                 onEnter SubmitTask dispatch
                 AutoFocus true
             ]
             
-            label [ Style [ Width 100; TextAlign "left"; BackgroundColor "grey" ] ] [
+            label [ Style [ Width "32%"; Height "100%"; FontSize "25px"; TextAlign "center"; BorderRadius "10%"; LineHeight "2.5"; VerticalAlign "middle"; BackgroundColor "LightGray" ] ] [
                 resultContent
             ] 
         ]
 
         br []
+        br []
 
-        div [] [
-            button [ OnClick (fun _ -> dispatch UpdateTask); Type "button"; Style [ Width 150 ] ] [
+        div [ Style [ Width 700; Height 70 ] ] [
+            button [ OnClick (fun _ -> dispatch UpdateTask); Type "button"; Style [ Width "49%"; Height "100%"; FontSize "25px"; BorderRadius "33%"; BackgroundColor "White" ] ] [
                 str "Next"
             ]
 
-            div [ Style [ Width 10; Display "inline-block" ] ] []
+            div [ Style [ Width "2%"; Display "inline-block" ] ] []
 
-            button [ OnClick (fun _ -> dispatch SubmitTask); Type "button"; Style [ Width 150 ] ] [
+            button [ OnClick (fun _ -> dispatch SubmitTask); Type "button"; Style [ Width "49%"; Height "100%"; FontSize "25px"; BorderRadius "33%"; BackgroundColor "Lime" ] ] [
                 str "Check"
             ]
         ]
