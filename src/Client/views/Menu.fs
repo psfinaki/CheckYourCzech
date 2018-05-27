@@ -7,5 +7,5 @@ open Client.Pages
 let view () =
     div [ centerStyle "row" ] [
           yield viewLink Page.Home "Home"
-          yield viewLink Page.Multiples "Multiples"
+          yield viewLink Page.Plural "Plural"
         ]

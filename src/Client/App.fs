@@ -25,9 +25,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.Home ->
         { model with PageModel = HomePageModel }, Cmd.none
 
-    | Some Page.Multiples ->
-        let m, cmd = Multiples.init()
-        { model with PageModel = MultiplesModel m }, Cmd.map MultiplesMsg cmd
+    | Some Page.Plural ->
+        let m, cmd = Plural.init()
+        { model with PageModel = PluralModel m }, Cmd.map PluralMsg cmd
 
 let init result =
     let model =
@@ -37,10 +37,10 @@ let init result =
 
 let update msg model =
     match msg, model.PageModel with
-    | MultiplesMsg msg, MultiplesModel m ->
-        let m, cmd = Multiples.update msg m
-        { model with PageModel = MultiplesModel m }, Cmd.map MultiplesMsg cmd
-    | MultiplesMsg _, _ ->
+    | PluralMsg msg, PluralModel m ->
+        let m, cmd = Plural.update msg m
+        { model with PageModel = PluralModel m }, Cmd.map PluralMsg cmd
+    | PluralMsg _, _ ->
         model, Cmd.none
 
 open Elmish.Debug

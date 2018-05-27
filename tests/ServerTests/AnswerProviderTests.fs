@@ -6,28 +6,28 @@ open Xunit
 module AnswerProviderTests =
 
     [<Fact>]
-    let getsMultiple() = 
+    let getsPlural() = 
         let word = "svetr"
         let expected = [|"svetry"|]
 
-        let actual = AnswerProvider.getMultiple word
+        let actual = AnswerProvider.getPlural word
         
         Assert.Equal<string[]> (expected, actual)
 
     [<Fact>]
-    let getsMultipleSeveralOptions() = 
+    let getsPluralSeveralOptions() = 
         let word = "medvěd"
         let expected = [|"medvědi"; "medvědové"|]
 
-        let actual = AnswerProvider.getMultiple word
+        let actual = AnswerProvider.getPlural word
         
         Assert.Equal<string[]> (expected, actual)
 
     [<Fact>]
-    let getsMultipleSeveralOptionsNoSpaces() = 
+    let getsPluralSeveralOptionsNoSpaces() = 
         let word = "Edáček"
         let expected = [|"Edáčci"; "Edáčkové"|]
 
-        let actual = AnswerProvider.getMultiple word
+        let actual = AnswerProvider.getPlural word
         
         Assert.Equal<string[]> (expected, actual)

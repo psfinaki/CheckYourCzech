@@ -1,4 +1,4 @@
-module Client.Multiples
+module Client.Plural
 
 open Elmish
 open Fable.Core.JsInterop
@@ -6,7 +6,6 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Style
-open Fable.PowerPack.Fetch
 
 type Model = {
     Task : string 
@@ -78,7 +77,7 @@ let view model dispatch =
             str "-"
     
     [ 
-        words 60 "Write multiple for the word" 
+        words 60 "Write plural for the word" 
         br []
         br []
         br []
