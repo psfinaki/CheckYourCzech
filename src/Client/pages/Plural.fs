@@ -78,9 +78,9 @@ let view model dispatch =
             str "-"
 
     let handleKeyDown (event: KeyboardEvent) =
-        match event with 
-        | e when e.keyCode = Keyboard.Codes.enter ->
-            match e.shiftKey with
+        match event.keyCode with
+        | Keyboard.Codes.enter ->
+            match event.shiftKey with
             | false -> dispatch SubmitTask
             | true  -> dispatch UpdateTask
         | _ -> 
