@@ -5,38 +5,28 @@ open Xunit
 
 module AnswerProviderTests =
 
+    let equals (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)
+
     [<Fact>]
     let getsPlural() = 
-        let word = "svetr"
-        let expected = [|"svetry"|]
-
-        let actual = AnswerProvider.getPlural word
-        
-        Assert.Equal<string []>(expected, actual)
+        "svetr"
+        |> AnswerProvider.getPlural
+        |> equals [|"svetry"|]
 
     [<Fact>]
     let getsPluralSeveralOptions() = 
-        let word = "medvěd"
-        let expected = [|"medvědi"; "medvědové"|]
-
-        let actual = AnswerProvider.getPlural word
-        
-        Assert.Equal<string []>(expected, actual)
+        "medvěd"
+        |> AnswerProvider.getPlural
+        |> equals [|"medvědi"; "medvědové"|]
 
     [<Fact>]
     let getsPluralSeveralOptionsNoSpaces() = 
-        let word = "Edáček"
-        let expected = [|"Edáčci"; "Edáčkové"|]
-
-        let actual = AnswerProvider.getPlural word
-        
-        Assert.Equal<string []>(expected, actual)
+        "Edáček"
+        |> AnswerProvider.getPlural
+        |> equals [|"Edáčci"; "Edáčkové"|]
 
     [<Fact>]
     let getsPluralNoOptions() = 
-        let word = "Oxford"
-        let expected = [||] 
-
-        let actual = AnswerProvider.getPlural word
-        
-        Assert.Equal<string []>(expected, actual)
+        "Oxford"
+        |> AnswerProvider.getPlural
+        |> equals [||] 
