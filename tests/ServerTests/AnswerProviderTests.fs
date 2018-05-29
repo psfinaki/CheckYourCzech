@@ -12,7 +12,7 @@ module AnswerProviderTests =
 
         let actual = AnswerProvider.getPlural word
         
-        Assert.Equal<string[]> (expected, actual)
+        Assert.Equal<string []>(expected, actual)
 
     [<Fact>]
     let getsPluralSeveralOptions() = 
@@ -21,7 +21,7 @@ module AnswerProviderTests =
 
         let actual = AnswerProvider.getPlural word
         
-        Assert.Equal<string[]> (expected, actual)
+        Assert.Equal<string []>(expected, actual)
 
     [<Fact>]
     let getsPluralSeveralOptionsNoSpaces() = 
@@ -30,4 +30,13 @@ module AnswerProviderTests =
 
         let actual = AnswerProvider.getPlural word
         
-        Assert.Equal<string[]> (expected, actual)
+        Assert.Equal<string []>(expected, actual)
+
+    [<Fact>]
+    let getsPluralNoOptions() = 
+        let word = "Oxford"
+        let expected = [||] 
+
+        let actual = AnswerProvider.getPlural word
+        
+        Assert.Equal<string []>(expected, actual)
