@@ -38,13 +38,19 @@ let getDeclination (node: HtmlNode) =
     |> getNodeChildren
     |> Seq.tryFind (getNodeName >> (=) "skloňování")
 
-let isAppropriate word =
-    word
-    |> getContent
-    |> Option.bind getCzechPart
-    |> Option.bind getCzechNounPart
-    |> Option.bind getDeclination
-    |> Option.isSome
+let isProperNoun =
+    getContent
+    >> Option.bind getCzechPart
+    >> Option.bind getCzechNounPart
+    >> Option.bind getDeclination
+    >> Option.isSome
+
+let hasPlural = 
+    AnswerProvider.getPlural 
+    >> Array.isEmpty
+    >> not
+
+let isAppropriate word = isProperNoun word && hasPlural word
 
 let getRandomWord () =
     randomWikiArticleUrl
