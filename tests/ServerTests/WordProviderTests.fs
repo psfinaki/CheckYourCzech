@@ -9,7 +9,7 @@ module WordProviderTests =
     let detectsCzechNoun() = 
         let word = "hudba"
 
-        let result = WordProvider.isAppropriate word
+        let result = WordProvider.isProperNoun word
         
         Assert.True result
 
@@ -17,7 +17,7 @@ module WordProviderTests =
     let detectsNoCzechPart() = 
         let word = "immigration"
 
-        let result = WordProvider.isAppropriate word
+        let result = WordProvider.isProperNoun word
         
         Assert.False result
 
@@ -25,7 +25,7 @@ module WordProviderTests =
     let detectsNoCzechNoun() = 
         let word = "koukat"
 
-        let result = WordProvider.isAppropriate word
+        let result = WordProvider.isProperNoun word
         
         Assert.False result
 
@@ -33,7 +33,22 @@ module WordProviderTests =
     let detectsNoCzechDeclination() = 
         let word = "antilopu"
 
-        let result = WordProvider.isAppropriate word
+        let result = WordProvider.isProperNoun word
         
         Assert.False result
+
+    [<Fact>]
+    let detectsPlural() =
+        let word = "panda"
+
+        let result = WordProvider.hasPlural word
+
+        Assert.True result
+
+    [<Fact>]
+    let detectsNoPlural() = 
+        let word = "Oxford"
+
+        let result = WordProvider.hasPlural word
         
+        Assert.False result        
