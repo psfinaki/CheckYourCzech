@@ -1,4 +1,4 @@
-﻿module ServerCode.WordProvider
+﻿module WordProvider
 
 open System.Collections.Generic
 open FSharp.Data

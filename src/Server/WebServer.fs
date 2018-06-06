@@ -1,10 +1,8 @@
-﻿/// Functions for managing the Suave web server.
-module ServerCode.WebServer
+﻿module WebServer
 
 open Giraffe
 open Giraffe.TokenRouter
 open RequestErrors
-open ServerCode
 
 let webApp root =
     let notfound = NOT_FOUND "Page not found"

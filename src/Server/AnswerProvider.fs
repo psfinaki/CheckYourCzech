@@ -1,4 +1,4 @@
-﻿module ServerCode.AnswerProvider
+﻿module AnswerProvider
 
 open FSharp.Data
 

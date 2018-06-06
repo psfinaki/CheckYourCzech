@@ -1,6 +1,5 @@
 ﻿namespace ServerTests
 
-open ServerCode
 open Xunit
 
 module WordProviderTests =
