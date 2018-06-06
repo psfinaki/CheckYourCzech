@@ -1,6 +1,7 @@
 ﻿namespace ServerTests
 
 open Xunit
+open AnswerProvider
 
 module AnswerProviderTests =
 
@@ -9,23 +10,23 @@ module AnswerProviderTests =
     [<Fact>]
     let getsPlural() = 
         "svetr"
-        |> AnswerProvider.getPlural
+        |> getPlural
         |> equals [|"svetry"|]
 
     [<Fact>]
     let getsPluralSeveralOptions() = 
         "medvěd"
-        |> AnswerProvider.getPlural
+        |> getPlural
         |> equals [|"medvědi"; "medvědové"|]
 
     [<Fact>]
     let getsPluralSeveralOptionsNoSpaces() = 
         "Edáček"
-        |> AnswerProvider.getPlural
+        |> getPlural
         |> equals [|"Edáčci"; "Edáčkové"|]
 
     [<Fact>]
     let getsPluralNoOptions() = 
         "Oxford"
-        |> AnswerProvider.getPlural
+        |> getPlural
         |> equals [||] 

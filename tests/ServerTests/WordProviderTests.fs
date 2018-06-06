@@ -1,41 +1,42 @@
 ﻿namespace ServerTests
 
 open Xunit
+open WordProvider
 
 module WordProviderTests =
 
     [<Fact>]
     let detectsCzechNoun() = 
         "hudba"
-        |> WordProvider.isProperNoun
+        |> isProperNoun
         |> Assert.True
 
     [<Fact>]
     let detectsNoCzechPart() = 
         "immigration"
-        |> WordProvider.isProperNoun
+        |> isProperNoun
         |> Assert.False
 
     [<Fact>]
     let detectsNoCzechNoun() = 
         "koukat"
-        |> WordProvider.isProperNoun
+        |> isProperNoun
         |> Assert.False
 
     [<Fact>]
     let detectsNoCzechDeclination() = 
         "antilopu"
-        |> WordProvider.isProperNoun
+        |> isProperNoun
         |> Assert.False
 
     [<Fact>]
     let detectsPlural() =
         "panda"
-        |> WordProvider.hasPlural
+        |> hasPlural
         |> Assert.True
 
     [<Fact>]
     let detectsNoPlural() = 
         "Oxford"
-        |> WordProvider.hasPlural
+        |> hasPlural
         |> Assert.False        
