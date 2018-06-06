@@ -1,4 +1,4 @@
-module Client.Home
+module Home
 
 open Fable.Helpers.React
 open Style
