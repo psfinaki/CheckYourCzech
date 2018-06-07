@@ -1,4 +1,4 @@
-module Client.Plural
+module Plural
 
 open Elmish
 open Fable.Core.JsInterop

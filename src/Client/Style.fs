@@ -1,4 +1,4 @@
-module Client.Style
+module Style
 
 open Fable.Helpers.React.Props
 open Fable.Core

@@ -1,8 +1,8 @@
-module Client.Menu
+module Menu
 
 open Fable.Helpers.React
-open Client.Style
-open Client.Pages
+open Style
+open Pages
 
 let view () =
     div [ centerStyle "row" ] [

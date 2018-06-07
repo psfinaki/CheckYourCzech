@@ -1,4 +1,4 @@
-module Client.Shared
+module Shared
 
 /// The composed model for the different possible page states of the application
 type PageModel =
@@ -16,7 +16,7 @@ type Msg =
 // VIEW
 
 open Fable.Helpers.React
-open Client.Style
+open Style
 
 /// Constructs the view for a page given the model and dispatcher.
 let viewPage model dispatch =
