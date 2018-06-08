@@ -1,19 +1,9 @@
-FSharp.Core
-System.Net.NetworkInformation
-Fable.JsonConverter
-jose-jwt
-Microsoft.DotNet.Watcher.Tools
-Microsoft.Azure.WebJobs
-Microsoft.Azure.WebJobs.Extensions
-Giraffe
-Giraffe.TokenRouter
-Microsoft.AspNetCore.StaticFiles
-Microsoft.AspNetCore
-Microsoft.AspNetCore.WebSockets
-Microsoft.AspNetCore.WebSockets.Server
-
-Fable.Core
-Fable.React
-Fable.Import.Browser
-Fable.Elmish.Browser
-Fable.Elmish.React
+group Server
+	FSharp.Core
+	Fable.JsonConverter
+	Giraffe
+	Giraffe.TokenRouter
+	Microsoft.AspNetCore.StaticFiles
+	Microsoft.AspNetCore
+	FSharp.Data
+	Microsoft.DotNet.Watcher.Tools
