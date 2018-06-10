@@ -36,7 +36,13 @@ module WordProviderTests =
         |> Assert.True
 
     [<Fact>]
-    let detectsNoPlural() = 
+    let detectsNoPlural1() = 
         "Oxford"
         |> hasPlural
-        |> Assert.False        
+        |> Assert.False
+
+    [<Fact>]
+    let detectsNoPlural2() = 
+        "Pegas"
+        |> hasPlural
+        |> Assert.False     

@@ -10,5 +10,5 @@ let getPlural word =
     let answer = data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
     
     match answer with
-    | "—" -> [||]
-    | _   -> answer.Split "/" |> Array.map (fun s -> s.Trim()) 
+    | "—" | "" -> [||]
+    | _ -> answer.Split "/" |> Array.map (fun s -> s.Trim()) 
