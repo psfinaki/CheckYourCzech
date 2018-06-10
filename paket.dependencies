@@ -1,46 +1,37 @@
-source https://nuget.org/api/v2
-storage:none
+group Server
+    storage: none
+    source https://api.nuget.org/v3/index.json
 
-nuget FSharp.Core redirects: force
-nuget Fable.JsonConverter
-nuget Giraffe
-nuget Giraffe.TokenRouter
-nuget Microsoft.AspNetCore.StaticFiles
-nuget Microsoft.AspNetCore
-nuget Microsoft.AspNetCore.WebSockets
-nuget Microsoft.AspNetCore.WebSockets.Server
-nuget System.Net.NetworkInformation
-nuget jose-jwt
+	nuget FSharp.Core
+	nuget Fable.JsonConverter
+	nuget Giraffe
+	nuget Giraffe.TokenRouter
+	nuget Microsoft.AspNetCore.StaticFiles
+	nuget Microsoft.AspNetCore
+	nuget FSharp.Data 3.0.0-beta3
 
-nuget Fable.Core
-nuget Fable.React 3.0.0
-nuget Fable.Elmish
-nuget Fable.Elmish.React
-nuget Fable.Elmish.Browser
-nuget Fable.Elmish.Debugger
-nuget Fable.Elmish.HMR
-nuget Microsoft.Azure.WebJobs prerelease
-nuget Microsoft.Azure.WebJobs.Extensions prerelease
+	clitool Microsoft.DotNet.Watcher.Tools
+	
+group Client
+    storage: none
+    source https://api.nuget.org/v3/index.json
+	
+	nuget Fable.Core
+	nuget Fable.React
+	nuget Fable.Elmish.React
+	nuget Fable.Elmish.Browser
+	nuget Fable.Elmish.Debugger
+	nuget Fable.Elmish.HMR
 
-clitool dotnet-fable
-clitool Microsoft.DotNet.Watcher.Tools
+	clitool dotnet-fable
 
 group ServerTests
-  source https://nuget.org/api/v2
-  storage:none
-  clitool Microsoft.DotNet.Watcher.Tools
-  nuget FSharp.Core redirects: force
-  nuget Expecto
+	storage: none
+	source https://nuget.org/api/v2
 
-group UITests
-  source https://nuget.org/api/v2
-  framework >= net461
-  nuget FSharp.Core redirects: force
-  nuget Canopy
-  nuget Expecto
-  nuget phantomjs
+	nuget xunit
+	nuget xunit.runner.visualstudio
 
 group Build
-  source https://nuget.org/api/v2
-  framework >= net461
-  nuget FAKE
+	source https://nuget.org/api/v2
+	nuget FAKE

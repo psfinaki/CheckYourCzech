@@ -11,21 +11,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnswerProvider.fs" />
     <Compile Include="WordProvider.fs" />
     <Compile Include="WebServer.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="FSharp.Data" Version="3.0.0-beta3" />
-  </ItemGroup>
-  <PropertyGroup>
-    <DotNetHost Condition="'$(DotNetHost)' == ''">dotnet</DotNetHost>
-  </PropertyGroup>
   <Target Name="ServerRun">
     <Exec Command="$(DotNetHost) run" WorkingDirectory=".\" />
   </Target>
