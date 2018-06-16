@@ -3,13 +3,14 @@
 open Giraffe
 open Giraffe.TokenRouter
 open RequestErrors
+open Gender
 
 let webApp root =
     let notfound = NOT_FOUND "Page not found"
 
-    let getTask () : HttpHandler =
+    let getTask gender : HttpHandler =
         fun _ ctx -> task { 
-            let word = WordProvider.getNoun()
+            let word = WordProvider.getNoun (translateTo gender)
             return! ctx.WriteJsonAsync word
         }
 
@@ -21,7 +22,7 @@ let webApp root =
 
     router notfound [
         GET [
-            route "/api/task/" (getTask())
+            routef "/api/task/%s" getTask
             routef "/api/answer/%s" getAnswer
         ]
     ]

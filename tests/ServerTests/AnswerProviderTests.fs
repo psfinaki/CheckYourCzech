@@ -2,6 +2,7 @@
 
 open Xunit
 open AnswerProvider
+open Gender
 
 module AnswerProviderTests =
 
@@ -30,3 +31,31 @@ module AnswerProviderTests =
         "Oxford"
         |> getPlural
         |> equals [||] 
+
+    [<Fact>]
+    let getsGenderMasculineAnimate() =
+        "tata"
+        |> getGender
+        |> (=) MasculineAnimate
+        |> Assert.True
+
+    [<Fact>]
+    let getsGenderMasculineInanimate() =
+        "hrad"
+        |> getGender
+        |> (=) MasculineInanimate
+        |> Assert.True
+
+    [<Fact>]
+    let getsGenderFeminine() =
+        "panda"
+        |> getGender
+        |> (=) Feminine
+        |> Assert.True
+
+    [<Fact>]
+    let getsGenderNeuter() =
+        "okno"
+        |> getGender
+        |> (=) Neuter
+        |> Assert.True

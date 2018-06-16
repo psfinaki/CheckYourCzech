@@ -12,6 +12,7 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\Gender.fs" />
     <Compile Include="AnswerProvider.fs" />
     <Compile Include="WordProvider.fs" />
     <Compile Include="WebServer.fs" />
