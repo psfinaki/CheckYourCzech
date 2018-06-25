@@ -1,4 +1,4 @@
-module Plural
+﻿module Plural
 
 open Elmish
 open Fable.Core.JsInterop
@@ -7,14 +7,17 @@ open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Style
 open Fable.Import.React
+open Gender
 
 type Model = {
+    Gender : Gender
     Task : string 
     Input : string
     Result : bool option
 }
 
 type Msg = 
+    | SetGender of Gender
     | SetInput of string
     | SubmitTask
     | UpdateTask
@@ -22,9 +25,9 @@ type Msg =
     | FetchedAnswer of string[]
     | FetchError of exn
 
-let getTask() =
+let getTask gender =
     promise {
-        let url = "/api/task/"
+        let url = "/api/task/" + gender
         return! Fetch.fetchAs<string> url []
     }
 
@@ -34,26 +37,29 @@ let getAnswer task =
         return! Fetch.fetchAs<string[]> url []
     }
 
-let loadTaskCmd() =
-    Cmd.ofPromise getTask () FetchedTask FetchError
+let loadTaskCmd gender =
+    Cmd.ofPromise getTask (translateFrom gender) FetchedTask FetchError
 
 let loadAnswerCmd task =
     Cmd.ofPromise getAnswer task FetchedAnswer FetchError
 
 let init () =
-    { Task = ""
+    { Gender = MasculineAnimate
+      Task = ""
       Input = ""
       Result = None },
-      loadTaskCmd()
+      loadTaskCmd MasculineAnimate
 
 let update msg model =
     match msg with
+    | SetGender gender ->
+        { model with Gender = gender }, Cmd.none
     | SetInput input ->
         { model with Input = input }, Cmd.none
     | SubmitTask ->
         model, loadAnswerCmd model.Task
     | UpdateTask ->
-        { model with Task = ""; Input = ""; Result = None }, loadTaskCmd()
+        { model with Task = ""; Input = ""; Result = None }, loadTaskCmd model.Gender
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
@@ -90,6 +96,23 @@ let view model dispatch =
         words 60 "Write plural for the word" 
         br []
         br []
+        br []
+
+        div [ Style [ Width 700; Height 70 ] ] [
+            div [ Style [ Height "50%" ] ] [
+                label [ Style [ FontSize "20px"; TextAlign "center"; Display "block" ] ] [
+                    str "Gender"
+                ] ]
+            div [ Style [ Width "33%"; Height "50%"; Margin "auto"; Padding "0 2%" ] ] [
+                select [ OnChange (fun ev -> dispatch (SetGender (translateTo !!ev.target?value))); Style [ BorderRadius "10%"; FontSize "20px" ] ] [
+                    option [ Value (translateFrom MasculineAnimate) ] [ str "Masculine Animate" ]
+                    option [ Value (translateFrom MasculineInanimate) ] [ str "Masculine Inanimate" ]
+                    option [ Value (translateFrom Feminine) ] [ str "Feminine" ]
+                    option [ Value (translateFrom Neuter)] [ str "Neuter" ]
+                ]
+            ]
+        ]
+
         br []
         br []
 
