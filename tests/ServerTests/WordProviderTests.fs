@@ -45,4 +45,10 @@ module WordProviderTests =
     let detectsNoPlural2() = 
         "Pegas"
         |> hasPlural
-        |> Assert.False     
+        |> Assert.False
+        
+    [<Fact>]
+    let detectsGender() =
+        "panda"
+        |> hasGender Gender.Feminine
+        |> Assert.True
