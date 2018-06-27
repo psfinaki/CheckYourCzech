@@ -191,5 +191,6 @@ docs/content/release-notes.md
 .fake
 docs/tools/FSharp.Formatting.svclog
 node_modules
-src/Client/public/
+src/Client/public/bundle.js
+src/Client/public/bundle.js.map
 deploy
