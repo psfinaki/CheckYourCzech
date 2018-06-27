@@ -72,7 +72,7 @@ let view model dispatch =
     let resultContent = 
         match model.Result with 
         | Some result -> 
-            let imageSource = if result then "/images/correct.png" else "/images/incorrect.png"
+            let imageSource = if result then "images/correct.png" else "images/incorrect.png"
             let altText = if result then "Correct" else "Incorrect"
             img [ 
                 HTMLAttr.Src imageSource
