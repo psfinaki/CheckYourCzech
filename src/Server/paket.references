@@ -1,9 +1,9 @@
 group Server
 	FSharp.Core
 	Fable.JsonConverter
-	Giraffe
 	Giraffe.TokenRouter
-	Microsoft.AspNetCore.StaticFiles
-	Microsoft.AspNetCore
 	FSharp.Data
-	Microsoft.DotNet.Watcher.Tools
+    Microsoft.DotNet.Watcher.Tools
+	Saturn
+    Microsoft.ApplicationInsights.AspNetCore
+    WindowsAzure.Storage
