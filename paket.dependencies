@@ -3,7 +3,7 @@ group Server
     source https://api.nuget.org/v3/index.json
 
 	nuget FSharp.Core
-	nuget Fable.JsonConverter
+    nuget Fable.JsonConverter
 	nuget Giraffe.TokenRouter
 	nuget FSharp.Data 3.0.0-beta3
 	nuget Saturn
@@ -11,7 +11,7 @@ group Server
     nuget WindowsAzure.Storage
 
 	clitool Microsoft.DotNet.Watcher.Tools
-	
+
 group Client
     storage: none
     source https://api.nuget.org/v3/index.json
@@ -21,17 +21,21 @@ group Client
 	nuget Fable.Elmish.React
 	nuget Fable.Elmish.Browser
 	nuget Fable.Elmish.Debugger
-	nuget Fable.Elmish.HMR
+	nuget Fable.Elmish.HMR	
 
 	clitool dotnet-fable
-
+	
 group ServerTests
 	storage: none
 	source https://nuget.org/api/v2
 
 	nuget xunit
 	nuget xunit.runner.visualstudio
-
+	
 group Build
-	source https://nuget.org/api/v2
-	nuget FAKE
+    source https://api.nuget.org/v3/index.json
+    generate_load_scripts: true
+
+    nuget FAKE
+    nuget Microsoft.Azure.Management.ResourceManager.Fluent 1.4.1
+    github CompositionalIT/fshelpers src/FsHelpers/ArmHelper/ArmHelper.fs

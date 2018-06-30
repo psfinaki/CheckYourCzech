@@ -1,7 +1,18 @@
 #r @"packages/build/FAKE/tools/FakeLib.dll"
+#r "netstandard"
+#I "packages/build/Microsoft.Rest.ClientRuntime.Azure/lib/net452"
+#load ".paket/load/netcoreapp2.1/Build/build.group.fsx"
+#load @"paket-files/build/CompositionalIT/fshelpers/src/FsHelpers/ArmHelper/ArmHelper.fs"
 
+open Cit.Helpers.Arm
+open Cit.Helpers.Arm.Parameters
+open Microsoft.Azure.Management.ResourceManager.Fluent.Core
 open System
+open System.IO
+open System.Net
 open Fake
+
+let appName = "check-your-czech"
 
 let serverPath = "./src/Server" |> FullName
 let clientPath = "./src/Client" |> FullName
@@ -69,13 +80,72 @@ Target "Run" (fun () ->
     |> ignore
 )
 
+Target "Bundle" (fun () ->
+    run dotnetCli (sprintf "publish \"%s\" -c release -o \"%s\"" serverPath deployDir) __SOURCE_DIRECTORY__
+    CopyDir (deployDir </> "public") (clientPath </> "public") allFiles
+)
+
+type ArmOutput = { WebAppPassword : ParameterValue<string> }
+
+let mutable deploymentOutputs : ArmOutput option = None
+
+Target "ArmTemplate" (fun _ ->
+    let armTemplate = @"arm-template.json"
+    let resourceGroupName = appName
+
+    let authCtx =
+        let subscriptionId = Guid.Parse "f400689a-038c-49be-a6ee-2d98e5000d90"
+        let clientId = Guid.Parse "71312e3d-43da-424d-9e9d-0829289b4866"
+
+        tracefn "Deploying template '%s' to resource group '%s' in subscription '%O'..." armTemplate resourceGroupName subscriptionId
+        subscriptionId
+        |> authenticateDevice trace { ClientId = clientId; TenantId = None }
+        |> Async.RunSynchronously
+
+    let deployment =
+        { DeploymentName = appName
+          ResourceGroup = New(resourceGroupName, Region.Create Region.EuropeNorth.Name)
+          ArmTemplate = File.ReadAllText armTemplate
+          Parameters = Simple [ "appName", ArmString appName ]
+          DeploymentMode = Incremental }
+
+    deployment
+    |> deployWithProgress authCtx
+    |> Seq.iter(function
+        | DeploymentInProgress (state, operations) -> tracefn "State is %s, completed %d operations." state operations
+        | DeploymentError (statusCode, message) -> traceError <| sprintf "DEPLOYMENT ERROR: %s - '%s'" statusCode message
+        | DeploymentCompleted d -> deploymentOutputs <- d)
+)
+
+// https://stackoverflow.com/a/6994391/3232646
+type WebClient'() = 
+    inherit WebClient()
+    override this.GetWebRequest uri = 
+        let request = base.GetWebRequest uri
+        request.Timeout <- 30 * 60 * 1000
+        request
+
+Target "AppService" (fun _ ->
+    let zipFile = "deploy.zip"
+    File.Delete zipFile
+    Zip deployDir zipFile !!(deployDir + @"\**\**")
+
+    let appPassword = deploymentOutputs.Value.WebAppPassword.value
+    let destinationUri = sprintf "https://%s.scm.azurewebsites.net/api/zipdeploy" appName
+    let client = new WebClient'(Credentials = Net.NetworkCredential("$" + appName, appPassword))
+    tracefn "Uploading %s to %s" zipFile destinationUri
+    client.UploadData(destinationUri, IO.File.ReadAllBytes zipFile) |> ignore)
+
 "Clean"
-  ==> "InstallDotNetCore"
-  ==> "InstallClient"
-  ==> "Build"
+    ==> "InstallDotNetCore"
+    ==> "InstallClient"
+    ==> "Build"
+    ==> "Bundle"
+    ==> "ArmTemplate"
+    ==> "AppService"
 
 "InstallClient"
-  ==> "RestoreServer"
-  ==> "Run"
+    ==> "RestoreServer"
+    ==> "Run"
 
 RunTargetOrDefault "Build"
