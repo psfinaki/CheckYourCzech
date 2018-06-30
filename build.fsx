@@ -1,69 +1,36 @@
 #r @"packages/build/FAKE/tools/FakeLib.dll"
 
-open Fake
 open System
-open System.IO
-open System.Diagnostics
+open Fake
 
+let serverPath = "./src/Server" |> FullName
 let clientPath = "./src/Client" |> FullName
-let serverPath = "./src/Server/" |> FullName
-
-let dotnetcliVersion = DotNetCli.GetDotNetSDKVersionFromGlobalJson()
-let mutable dotnetExePath = "dotnet"
-
-let deployDir = "./deploy"
-
-let ipAddress = "localhost"
-let port = 8080
-
-
-let run' timeout cmd args dir =
-    if execProcess (fun info ->
-        info.FileName <- cmd
-        if not (String.IsNullOrWhiteSpace dir) then
-            info.WorkingDirectory <- dir
-        info.Arguments <- args
-    ) timeout |> not then
-        failwithf "Error while running '%s' with args: %s" cmd args
-
-let run = run' System.TimeSpan.MaxValue
-
-let runDotnet workingDir args =
-    let result =
-        ExecProcess (fun info ->
-            info.FileName <- dotnetExePath
-            info.WorkingDirectory <- workingDir
-            info.Arguments <- args) TimeSpan.MaxValue
-    if result <> 0 then failwithf "dotnet %s failed" args
+let deployDir = "./deploy" |> FullName
 
 let platformTool tool winTool =
     let tool = if isUnix then tool else winTool
-    tool
-    |> ProcessHelper.tryFindFileOnPath
-    |> function Some t -> t | _ -> failwithf "%s not found" tool
+    match tryFindFileOnPath tool with Some t -> t | _ -> failwithf "%s not found" tool
 
 let nodeTool = platformTool "node" "node.exe"
 let yarnTool = platformTool "yarn" "yarn.cmd"
 
+let dotnetcliVersion = DotNetCli.GetDotNetSDKVersionFromGlobalJson()
+let mutable dotnetCli = "dotnet"
+
+let run cmd args workingDir =
+    let result =
+        ExecProcess (fun info ->
+            info.FileName <- cmd
+            info.WorkingDirectory <- workingDir
+            info.Arguments <- args) TimeSpan.MaxValue
+    if result <> 0 then failwithf "'%s %s' failed" cmd args
 
 Target "Clean" (fun _ ->
-    !!"src/**/bin"
-    ++ "test/**/bin"
-    |> CleanDirs
-
-    !! "src/**/obj/*.nuspec"
-    ++ "test/**/obj/*.nuspec"
-    |> DeleteFiles
-
-    CleanDirs ["bin"; "temp"; "docs/output"; deployDir; Path.Combine(clientPath,"public/bundle")]
+    CleanDirs [deployDir]
 )
 
 Target "InstallDotNetCore" (fun _ ->
-    dotnetExePath <- DotNetCli.InstallDotNetSDK dotnetcliVersion
-)
-
-Target "BuildServer" (fun _ ->
-    runDotnet serverPath "build"
+    dotnetCli <- DotNetCli.InstallDotNetSDK dotnetcliVersion
 )
 
 Target "InstallClient" (fun _ ->
@@ -72,47 +39,43 @@ Target "InstallClient" (fun _ ->
     printfn "Yarn version:"
     run yarnTool "--version" __SOURCE_DIRECTORY__
     run yarnTool "install --frozen-lockfile" __SOURCE_DIRECTORY__
+    run dotnetCli "restore" clientPath
 )
 
-Target "BuildClient" (fun _ ->
-    runDotnet clientPath "restore"
-    runDotnet clientPath "fable webpack --port free -- -p --mode production"
+Target "RestoreServer" (fun () ->
+    run dotnetCli "restore" serverPath
 )
 
-Target "Run" (fun _ ->
-    runDotnet clientPath "restore"
+Target "Build" (fun () ->
+    run dotnetCli "build" serverPath
+    run dotnetCli "fable webpack -- -p" clientPath
+)
 
-    let serverWatch = async {
-        let proc = 
-            fun (info: ProcessStartInfo) ->
-                info.FileName <- dotnetExePath
-                info.WorkingDirectory <- serverPath
-                info.Arguments <- sprintf "watch msbuild /t:ServerRun /p:DotNetHost=%s" dotnetExePath
-
-        ExecProcess proc TimeSpan.MaxValue |> ignore
+Target "Run" (fun () ->
+    let server = async {
+        run dotnetCli "watch run" serverPath
+    }
+    let client = async {
+        run dotnetCli "fable webpack-dev-server" clientPath
+    }
+    let browser = async {
+        Threading.Thread.Sleep 5000
+        Diagnostics.Process.Start "http://localhost:8080" |> ignore
     }
 
-    let fablewatch = async { runDotnet clientPath "fable webpack-dev-server --port free -- --mode development" }
-    let openBrowser = async {
-        System.Threading.Thread.Sleep(5000)
-        Diagnostics.Process.Start("http://"+ ipAddress + sprintf ":%d" port) |> ignore }
-
-    Async.Parallel [| serverWatch; fablewatch; openBrowser |]
+    [ server; client; browser ]
+    |> Async.Parallel
     |> Async.RunSynchronously
     |> ignore
 )
 
-Target "Build" DoNothing
-
-
 "Clean"
   ==> "InstallDotNetCore"
   ==> "InstallClient"
-  ==> "BuildServer"
-  ==> "BuildClient"
   ==> "Build"
 
 "InstallClient"
+  ==> "RestoreServer"
   ==> "Run"
 
 RunTargetOrDefault "Build"

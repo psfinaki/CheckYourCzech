@@ -4,11 +4,11 @@ group Server
 
 	nuget FSharp.Core
 	nuget Fable.JsonConverter
-	nuget Giraffe
 	nuget Giraffe.TokenRouter
-	nuget Microsoft.AspNetCore.StaticFiles
-	nuget Microsoft.AspNetCore
 	nuget FSharp.Data 3.0.0-beta3
+	nuget Saturn
+	nuget Microsoft.ApplicationInsights.AspNetCore ~> 2.2
+    nuget WindowsAzure.Storage
 
 	clitool Microsoft.DotNet.Watcher.Tools
 	
