@@ -22,7 +22,7 @@ let detectsNoCzechNoun() =
     |> Assert.False
 
 [<Fact>]
-let detectsNoCzechDeclination() = 
+let detectsNoCzechDeclension() = 
     "antilopu"
     |> isProperNoun
     |> Assert.False

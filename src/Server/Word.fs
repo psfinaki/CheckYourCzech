@@ -33,7 +33,7 @@ let getCzechNounPart (node: HtmlNode) =
     |> getNodeChildren
     |> Seq.tryFind (getNodeName >> (=) "podstatné_jméno")
 
-let getDeclination (node: HtmlNode) =
+let getDeclension (node: HtmlNode) =
     node
     |> getNodeChildren
     |> Seq.tryFind (getNodeName >> (=) "skloňování")
@@ -42,7 +42,7 @@ let isProperNoun =
     getContent
     >> Option.bind getCzechPart
     >> Option.bind getCzechNounPart
-    >> Option.bind getDeclination
+    >> Option.bind getDeclension
     >> Option.isSome
 
 let hasGender gender =
