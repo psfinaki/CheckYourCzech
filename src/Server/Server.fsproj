@@ -13,8 +13,8 @@
 	</PropertyGroup>
     <ItemGroup>
 	    <Compile Include="..\Shared\Gender.fs" />
-        <Compile Include="AnswerProvider.fs" />
-        <Compile Include="WordProvider.fs" />
+        <Compile Include="Noun.fs" />
+        <Compile Include="Word.fs" />
         <Compile Include="WebServer.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>

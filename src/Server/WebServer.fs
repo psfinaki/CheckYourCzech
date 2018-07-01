@@ -6,13 +6,13 @@ open Gender
 
 let getTask gender : HttpHandler =
     fun _ ctx -> task { 
-        let word = WordProvider.getNoun (translateTo gender)
+        let word = Word.getNoun (translateTo gender)
         return! ctx.WriteJsonAsync word
     }
 
 let getAnswer word : HttpHandler =
     fun _ ctx -> task {
-        let answer = AnswerProvider.getPlural word
+        let answer = Noun.getPlural word
         return! ctx.WriteJsonAsync answer 
     }
 

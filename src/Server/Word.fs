@@ -1,4 +1,4 @@
-﻿module WordProvider
+﻿module Word
 
 open System.Collections.Generic
 open FSharp.Data
@@ -46,11 +46,11 @@ let isProperNoun =
     >> Option.isSome
 
 let hasGender gender =
-    AnswerProvider.getGender
+    Noun.getGender
     >> (=) gender
 
 let hasPlural = 
-    AnswerProvider.getPlural 
+    Noun.getPlural 
     >> Array.isEmpty
     >> not
 

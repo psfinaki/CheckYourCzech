@@ -1,7 +1,7 @@
-﻿module AnswerProviderTests
+﻿module NounTests
 
 open Xunit
-open AnswerProvider
+open Noun
 open Gender
 
 let equals (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)

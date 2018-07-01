@@ -1,7 +1,7 @@
-﻿module WordProviderTests
+﻿module WordTests
 
 open Xunit
-open WordProvider
+open Word
 
 [<Fact>]
 let detectsCzechNoun() = 
