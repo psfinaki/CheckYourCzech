@@ -1,4 +1,4 @@
-﻿module AnswerProvider
+﻿module Noun
 
 open FSharp.Data
 open Gender
