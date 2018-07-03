@@ -5,7 +5,6 @@ open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.PowerPack
-open Style
 open Fable.Import.React
 open Gender
 
@@ -69,20 +68,27 @@ let update msg model =
         model, Cmd.none
 
 let view model dispatch =
-    let resultContent = 
+    let result = 
         match model.Result with 
         | Some result -> 
             let imageSource = if result then "images/correct.png" else "images/incorrect.png"
             let altText = if result then "Correct" else "Incorrect"
-            img [ 
-                HTMLAttr.Src imageSource
-                HTMLAttr.Width 25
-                HTMLAttr.Height 25 
-                HTMLAttr.Alt altText
-            ]
+            Markup.icon imageSource 25 altText
         | None ->
             str "-"
 
+    let task = 
+        if model.Task <> "" 
+        then model.Task 
+        else "-"
+        |> str
+
+    let handleChangeAnswer (event: FormEvent) =
+        dispatch (SetInput !!event.target?value)
+        
+    let handleChangeGender (event: FormEvent) =
+        dispatch (SetGender (translateTo !!event.target?value))
+        
     let handleKeyDown (event: KeyboardEvent) =
         match event.keyCode with
         | Keyboard.Codes.enter ->
@@ -91,62 +97,48 @@ let view model dispatch =
             | true  -> dispatch UpdateTask
         | _ -> 
             ()
+
+    let handleUpdateClick _ = dispatch UpdateTask
+    let handleCheckClick _ = dispatch SubmitTask
     
     [ 
-        words 60 "Write plural for the word" 
-        br []
-        br []
-        br []
+        Markup.words 60 "Write plural for the word"
 
-        div [ Style [ Width 700; Height 70 ] ] [
-            div [ Style [ Height "50%" ] ] [
-                label [ Style [ FontSize "20px"; TextAlign "center"; Display "block" ] ] [
-                    str "Gender"
-                ] ]
-            div [ Style [ Width "33%"; Height "50%"; Margin "auto"; Padding "0 2%" ] ] [
-                select [ OnChange (fun ev -> dispatch (SetGender (translateTo !!ev.target?value))); Style [ BorderRadius "10%"; FontSize "20px" ] ] [
-                    option [ Value (translateFrom MasculineAnimate) ] [ str "Masculine Animate" ]
-                    option [ Value (translateFrom MasculineInanimate) ] [ str "Masculine Inanimate" ]
-                    option [ Value (translateFrom Feminine) ] [ str "Feminine" ]
-                    option [ Value (translateFrom Neuter)] [ str "Neuter" ]
-                ]
-            ]
-        ]
+        Markup.emptyLines 3
 
-        br []
-        br []
+        div [ Styles.row ] 
+            [
+                div [ Style [ Height "50%" ] ] 
+                    [
+                        Markup.label Styles.whiteLabel (str "Gender") 
+                    ]
 
-        div [ Style [ Width 700; Height 70; ] ] [
-            label [ Style [ Width "32%"; Height "100%"; FontSize "25px"; TextAlign "center"; BorderRadius "10%"; LineHeight "2.5"; VerticalAlign "middle"; BackgroundColor "LightGray" ] ] [
-                str (if model.Task <> "" then model.Task else "-")
-            ] 
-
-            input [ 
-                Type "text"
-                Style [ Width "32%"; Height "100%"; FontSize "25px"; TextAlign "center"; MarginLeft "2%"; MarginRight "2%" ] 
-                Value model.Input
-                OnChange (fun ev -> dispatch (SetInput !!ev.target?value))
-                OnKeyDown handleKeyDown
-                AutoFocus true
-            ]
-            
-            label [ Style [ Width "32%"; Height "100%"; FontSize "25px"; TextAlign "center"; BorderRadius "10%"; LineHeight "2.5"; VerticalAlign "middle"; BackgroundColor "LightGray" ] ] [
-                resultContent
-            ] 
-        ]
-
-        br []
-        br []
-
-        div [ Style [ Width 700; Height 70 ] ] [
-            button [ OnClick (fun _ -> dispatch UpdateTask); Type "button"; Style [ Width "49%"; Height "100%"; FontSize "25px"; BorderRadius "33%"; BackgroundColor "White" ] ] [
-                str "Next"
+                div [ Styles.select ] 
+                    [
+                        Markup.select handleChangeGender [
+                            Markup.option (translateFrom MasculineAnimate) "Masculine Animate"
+                            Markup.option (translateFrom MasculineInanimate) "Masculine Inanimate"
+                            Markup.option (translateFrom Feminine) "Feminine"
+                            Markup.option (translateFrom Neuter) "Neuter"
+                        ]
+                    ]
             ]
 
-            div [ Style [ Width "2%"; Display "inline-block" ] ] []
+        Markup.emptyLines 2
 
-            button [ OnClick (fun _ -> dispatch SubmitTask); Type "button"; Style [ Width "49%"; Height "100%"; FontSize "25px"; BorderRadius "33%"; BackgroundColor "Lime" ] ] [
-                str "Check"
+        div [ Styles.row ] 
+            [
+                Markup.label Styles.greyLabel task
+                Markup.input Styles.input model.Input handleChangeAnswer handleKeyDown
+                Markup.label Styles.greyLabel result
             ]
-        ]
+
+        Markup.emptyLines 2
+
+        div [ Styles.row ] 
+            [
+                Markup.button (Styles.button "White") handleUpdateClick "Next"
+                Markup.space()
+                Markup.button (Styles.button "Lime") handleCheckClick "Check"
+            ]
     ]

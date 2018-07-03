@@ -1,13 +1,8 @@
 module Home
 
-open Fable.Helpers.React
-open Style
-
 let view () =
     [
-        br []
-        br []
-        br []
-        words 100 "Check Your Czech"
-        words 20 "A service to practice Czech grammar"
+        Markup.emptyLines 3
+        Markup.words 100 "Check Your Czech"
+        Markup.words 20 "A service to practice Czech grammar"
     ]
