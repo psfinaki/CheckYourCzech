@@ -13,7 +13,8 @@
   <ItemGroup>
     <Compile Include="..\Shared\Gender.fs" />
     <Compile Include="Pages.fs" />
-    <Compile Include="Style.fs" />
+    <Compile Include="Markup.fs" />
+    <Compile Include="Styles.fs" />
     <Compile Include="pages\Home.fs" />
     <Compile Include="pages\Plural.fs" />
     <Compile Include="views\Menu.fs" />

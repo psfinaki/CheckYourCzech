@@ -16,7 +16,6 @@ type Msg =
 // VIEW
 
 open Fable.Helpers.React
-open Style
 
 /// Constructs the view for a page given the model and dispatcher.
 let viewPage model dispatch =
@@ -32,5 +31,5 @@ let view model dispatch =
     div [] [ 
         Menu.view ()
         hr []
-        div [ centerStyle "column" ] (viewPage model dispatch)
+        div [ Styles.center "column" ] (viewPage model dispatch)
     ]
