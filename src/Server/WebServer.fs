@@ -3,10 +3,17 @@
 open Giraffe
 open Saturn
 open Gender
+open Microsoft.Extensions.Logging
 
 let getTask gender : HttpHandler =
     fun _ ctx -> task { 
-        let iterator _ = WordGenerator.getRandomWord()
+        let logger = ctx.GetLogger()
+
+        let iterator _ = 
+            let word = WordGenerator.getRandomWord()
+            logger.Log(LogLevel.Information, word)
+            word
+
         let isMatch = Word.isAppropriateNoun (translateTo gender)
 
         let word = 
