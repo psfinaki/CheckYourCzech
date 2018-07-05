@@ -54,17 +54,7 @@ let hasPlural =
     >> Array.isEmpty
     >> not
 
-let isAppropriate gender word = 
+let isAppropriateNoun gender word = 
     isProperNoun word
     && hasGender gender word
     && hasPlural word
-
-let getRandomWord () =
-    randomWikiArticleUrl
-    |> WikiArticle.Load 
-    |> fun node -> node.Html.Elements().[0].Elements().[0].Elements().[1].Elements().[0].InnerText().Split(" – ").[0]
-
-let getNoun gender = 
-    fun _ -> getRandomWord()
-    |> Seq.initInfinite
-    |> Seq.find (isAppropriate gender)

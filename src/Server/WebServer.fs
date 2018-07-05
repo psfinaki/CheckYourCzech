@@ -6,7 +6,14 @@ open Gender
 
 let getTask gender : HttpHandler =
     fun _ ctx -> task { 
-        let word = Word.getNoun (translateTo gender)
+        let iterator _ = WordGenerator.getRandomWord()
+        let isMatch = Word.isAppropriateNoun (translateTo gender)
+
+        let word = 
+            iterator
+            |> Seq.initInfinite
+            |> Seq.find isMatch
+
         return! ctx.WriteJsonAsync word
     }
 
