@@ -4,6 +4,7 @@ module Shared
 type PageModel =
     | HomePageModel
     | PluralModel of Plural.Model
+    | ComparativesModel of Comparatives.Model
 
 /// The composed model for the application, which is a single page state plus login information
 type Model =
@@ -12,6 +13,7 @@ type Model =
 /// The composed set of messages that update the state of the application
 type Msg = 
     | PluralMsg of Plural.Msg
+    | ComparativesMsg of Comparatives.Msg
 
 // VIEW
 
@@ -22,9 +24,10 @@ let viewPage model dispatch =
     match model.PageModel with
     | HomePageModel ->
         Home.view ()
-
     | PluralModel m ->
         Plural.view m (PluralMsg >> dispatch)
+    | ComparativesModel m ->
+        Comparatives.view m (ComparativesMsg >> dispatch)
 
 /// Constructs the view for the application given the model.
 let view model dispatch =

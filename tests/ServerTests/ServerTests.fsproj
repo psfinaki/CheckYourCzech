@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AdjectiveTests.fs" />
     <Compile Include="NounTests.fs" />
     <Compile Include="WordTests.fs" />
   </ItemGroup>

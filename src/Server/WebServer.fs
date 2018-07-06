@@ -30,7 +30,35 @@ let getAnswer word : HttpHandler =
         return! ctx.WriteJsonAsync answer 
     }
 
+let getTaskComparative() : HttpHandler =
+    fun _ ctx -> task { 
+        let logger = ctx.GetLogger()
+
+        let iterator _ = 
+            let word = WordGenerator.getRandomWord()
+            logger.Log(LogLevel.Information, word)
+            word
+
+        let isMatch = Word.isAdjective
+
+        let word = 
+            iterator
+            |> Seq.initInfinite
+            |> Seq.find isMatch
+
+        return! ctx.WriteJsonAsync word
+    }
+
+let getAnswerComparative word : HttpHandler =
+    fun _ ctx -> task {
+        let answer = Adjective.getComparative word
+        return! ctx.WriteJsonAsync answer 
+    }
+
 let webApp = scope {
     getf "/api/task/%s" getTask
     getf "/api/answer/%s" getAnswer
+
+    get "/api/task-comparative/" (getTaskComparative())
+    getf "/api/answer-comparative/%s" getAnswerComparative
 }

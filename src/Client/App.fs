@@ -29,6 +29,10 @@ let urlUpdate (result:Page option) model =
         let m, cmd = Plural.init()
         { model with PageModel = PluralModel m }, Cmd.map PluralMsg cmd
 
+    | Some Page.Comparatives ->
+        let m, cmd = Comparatives.init()
+        { model with PageModel = ComparativesModel m }, Cmd.map ComparativesMsg cmd
+
 let init result =
     let model =
         { PageModel = HomePageModel }
@@ -41,6 +45,11 @@ let update msg model =
         let m, cmd = Plural.update msg m
         { model with PageModel = PluralModel m }, Cmd.map PluralMsg cmd
     | PluralMsg _, _ ->
+        model, Cmd.none
+    | ComparativesMsg msg, ComparativesModel m ->
+        let m, cmd = Comparatives.update msg m
+        { model with PageModel = ComparativesModel m }, Cmd.map ComparativesMsg cmd
+    | ComparativesMsg _, _ ->
         model, Cmd.none
 
 open Elmish.Debug

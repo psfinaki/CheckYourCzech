@@ -17,6 +17,7 @@
     <Compile Include="Styles.fs" />
     <Compile Include="pages\Home.fs" />
     <Compile Include="pages\Plural.fs" />
+    <Compile Include="pages\Comparatives.fs" />
     <Compile Include="views\Menu.fs" />
     <Compile Include="Shared.fs" />
     <Compile Include="App.fs" />

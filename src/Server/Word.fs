@@ -33,10 +33,20 @@ let getCzechNounPart (node: HtmlNode) =
     |> getNodeChildren
     |> Seq.tryFind (getNodeName >> (=) "podstatné_jméno")
 
+let getCzechAdjectivePart (node: HtmlNode) =
+    node
+    |> getNodeChildren
+    |> Seq.tryFind (getNodeName >> (=) "přídavné_jméno")
+
 let getDeclension (node: HtmlNode) =
     node
     |> getNodeChildren
     |> Seq.tryFind (getNodeName >> (=) "skloňování")
+
+let getComparison (node: HtmlNode) =
+    node
+    |> getNodeChildren
+    |> Seq.tryFind (getNodeName >> (=) "stupňování")
 
 let isProperNoun =
     getContent
@@ -58,3 +68,10 @@ let isAppropriateNoun gender word =
     isProperNoun word
     && hasGender gender word
     && hasPlural word
+
+let isAdjective =
+    getContent
+    >> Option.bind getCzechPart
+    >> Option.bind getCzechAdjectivePart
+    >> Option.bind getComparison
+    >> Option.isSome

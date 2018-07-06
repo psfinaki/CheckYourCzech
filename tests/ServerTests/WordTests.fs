@@ -50,3 +50,15 @@ let detectsGender() =
     "panda"
     |> hasGender Gender.Feminine
     |> Assert.True
+
+[<Fact>]
+let detectsCzechAdjective() = 
+    "dobrý"
+    |> isAdjective
+    |> Assert.True
+
+[<Fact>]
+let detectsNoCzechAdjective() = 
+    "nazdar"
+    |> isAdjective
+    |> Assert.False
