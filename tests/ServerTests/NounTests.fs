@@ -57,3 +57,27 @@ let getsGenderNeuter() =
     |> getGender
     |> (=) Neuter
     |> Assert.True
+
+[<Fact>]
+let detectsPlural() =
+    "panda"
+    |> hasPlural
+    |> Assert.True
+
+[<Fact>]
+let detectsNoPlural1() = 
+    "Oxford"
+    |> hasPlural
+    |> Assert.False
+
+[<Fact>]
+let detectsNoPlural2() = 
+    "Pegas"
+    |> hasPlural
+    |> Assert.False
+        
+[<Fact>]
+let detectsGender() =
+    "panda"
+    |> hasGender Gender.Feminine
+    |> Assert.True

@@ -6,13 +6,6 @@ open FSharp.Data
 type WikiArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
 let wikiUrl = "https://cs.wiktionary.org/wiki/"
-let randomWikiArticleUrl = "https://cs.wiktionary.org/wiki/Speciální:Náhodná_stránka"
-
-let getNodeName (x: HtmlNode) = 
-    x.Elements().[0].Attributes().[0].Value().Trim('#')
-
-let getNodeChildren (x: HtmlNode) = 
-    x.Elements().[1].Elements()
 
 let getContent word =
     try
@@ -24,54 +17,27 @@ let getContent word =
         | :? KeyNotFoundException ->
            None
 
+let getNodeName (x: HtmlNode) = 
+    x.Elements().[0].Attributes().[0].Value().Trim('#')
+
+let getPart nodeName (x: HtmlNode) =
+    x.Elements().[1].Elements()
+    |> Seq.tryFind (getNodeName >> (=) nodeName)
+
 let getCzechPart (html: HtmlNode) =
     html.Elements()
     |> Seq.tryFind (getNodeName >> (=) "čeština")
 
-let getCzechNounPart (node: HtmlNode) =
-    node
-    |> getNodeChildren
-    |> Seq.tryFind (getNodeName >> (=) "podstatné_jméno")
-
-let getCzechAdjectivePart (node: HtmlNode) =
-    node
-    |> getNodeChildren
-    |> Seq.tryFind (getNodeName >> (=) "přídavné_jméno")
-
-let getDeclension (node: HtmlNode) =
-    node
-    |> getNodeChildren
-    |> Seq.tryFind (getNodeName >> (=) "skloňování")
-
-let getComparison (node: HtmlNode) =
-    node
-    |> getNodeChildren
-    |> Seq.tryFind (getNodeName >> (=) "stupňování")
-
-let isProperNoun =
+let isNoun =
     getContent
     >> Option.bind getCzechPart
-    >> Option.bind getCzechNounPart
-    >> Option.bind getDeclension
+    >> Option.bind (getPart "podstatné_jméno")
+    >> Option.bind (getPart "skloňování")
     >> Option.isSome
-
-let hasGender gender =
-    Noun.getGender
-    >> (=) gender
-
-let hasPlural = 
-    Noun.getPlural 
-    >> Array.isEmpty
-    >> not
-
-let isAppropriateNoun gender word = 
-    isProperNoun word
-    && hasGender gender word
-    && hasPlural word
 
 let isAdjective =
     getContent
     >> Option.bind getCzechPart
-    >> Option.bind getCzechAdjectivePart
-    >> Option.bind getComparison
+    >> Option.bind (getPart "přídavné_jméno")
+    >> Option.bind (getPart "stupňování")
     >> Option.isSome

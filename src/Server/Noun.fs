@@ -14,6 +14,8 @@ let getPlural word =
     | "—" | "" -> [||]
     | _ -> answer.Split "/" |> Array.map (fun s -> s.Trim()) 
 
+let hasPlural = getPlural >> (not << Array.isEmpty)
+
 let getGender word =
     let getDirectInnerText (node : HtmlNode) = node.DirectInnerText()
     let containsText text (node : HtmlNode) = node.InnerText().Contains text
@@ -37,3 +39,5 @@ let getGender word =
         |> getDirectInnerText
 
     translateTo gender
+
+let hasGender gender = getGender >> (=) gender
