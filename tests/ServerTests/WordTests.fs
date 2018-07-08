@@ -6,50 +6,26 @@ open Word
 [<Fact>]
 let detectsCzechNoun() = 
     "hudba"
-    |> isProperNoun
+    |> isNoun
     |> Assert.True
 
 [<Fact>]
 let detectsNoCzechPart() = 
     "immigration"
-    |> isProperNoun
+    |> isNoun
     |> Assert.False
 
 [<Fact>]
 let detectsNoCzechNoun() = 
     "koukat"
-    |> isProperNoun
+    |> isNoun
     |> Assert.False
 
 [<Fact>]
 let detectsNoCzechDeclension() = 
     "antilopu"
-    |> isProperNoun
+    |> isNoun
     |> Assert.False
-
-[<Fact>]
-let detectsPlural() =
-    "panda"
-    |> hasPlural
-    |> Assert.True
-
-[<Fact>]
-let detectsNoPlural1() = 
-    "Oxford"
-    |> hasPlural
-    |> Assert.False
-
-[<Fact>]
-let detectsNoPlural2() = 
-    "Pegas"
-    |> hasPlural
-    |> Assert.False
-        
-[<Fact>]
-let detectsGender() =
-    "panda"
-    |> hasGender Gender.Feminine
-    |> Assert.True
 
 [<Fact>]
 let detectsCzechAdjective() = 
