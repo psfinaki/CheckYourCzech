@@ -8,4 +8,5 @@ let view () =
         [
             yield Markup.viewLink Page.Home "Home"
             yield Markup.viewLink Page.Plural "Plural"
+            yield Markup.viewLink Page.Comparatives "Comparatives"
         ]
