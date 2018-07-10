@@ -21,9 +21,9 @@ let urlUpdate (result:Page option) model =
         ( model, Navigation.modifyUrl (toHash Page.Home) )
     | Some Page.Home ->
         { model with PageModel = HomePageModel }, Cmd.none
-    | Some Page.Plural ->
-        let m, cmd = Plural.init()
-        { model with PageModel = PluralModel m }, Cmd.map PluralMsg cmd
+    | Some Page.Plurals ->
+        let m, cmd = Plurals.init()
+        { model with PageModel = PluralsModel m }, Cmd.map PluralsMsg cmd
     | Some Page.Comparatives ->
         let m, cmd = Comparatives.init()
         { model with PageModel = ComparativesModel m }, Cmd.map ComparativesMsg cmd
@@ -36,9 +36,9 @@ let init result =
 
 let update msg model =
     match msg, model.PageModel with
-    | PluralMsg msg, PluralModel m ->
-        let m, cmd = Plural.update msg m
-        { model with PageModel = PluralModel m }, Cmd.map PluralMsg cmd
+    | PluralsMsg msg, PluralsModel m ->
+        let m, cmd = Plurals.update msg m
+        { model with PageModel = PluralsModel m }, Cmd.map PluralsMsg cmd
     | ComparativesMsg msg, ComparativesModel m ->
         let m, cmd = Comparatives.update msg m
         { model with PageModel = ComparativesModel m }, Cmd.map ComparativesMsg cmd

@@ -3,7 +3,7 @@ module Shared
 /// The composed model for the different possible page states of the application
 type PageModel =
     | HomePageModel
-    | PluralModel of Plural.Model
+    | PluralsModel of Plurals.Model
     | ComparativesModel of Comparatives.Model
 
 /// The composed model for the application, which is a single page state plus login information
@@ -12,7 +12,7 @@ type Model =
 
 /// The composed set of messages that update the state of the application
 type Msg = 
-    | PluralMsg of Plural.Msg
+    | PluralsMsg of Plurals.Msg
     | ComparativesMsg of Comparatives.Msg
 
 // VIEW
@@ -24,8 +24,8 @@ let viewPage model dispatch =
     match model.PageModel with
     | HomePageModel ->
         Home.view ()
-    | PluralModel m ->
-        Plural.view m (PluralMsg >> dispatch)
+    | PluralsModel m ->
+        Plurals.view m (PluralsMsg >> dispatch)
     | ComparativesModel m ->
         Comparatives.view m (ComparativesMsg >> dispatch)
 

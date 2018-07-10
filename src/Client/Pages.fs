@@ -6,20 +6,20 @@ open Elmish.Browser.UrlParser
 [<RequireQualifiedAccess>]
 type Page = 
     | Home
-    | Plural
+    | Plurals
     | Comparatives
 
 let toHash =
     function
     | Page.Home -> "#home"
-    | Page.Plural -> "#plural"
+    | Page.Plurals -> "#plurals"
     | Page.Comparatives -> "#comparatives"
 
 /// The URL is turned into a Result.
 let pageParser : Parser<Page -> Page,_> =
     oneOf
         [ map Page.Home (s "home")
-          map Page.Plural (s "plural")
+          map Page.Plurals (s "plurals")
           map Page.Comparatives (s "comparatives")]
 
 let urlParser location = parseHash pageParser location
