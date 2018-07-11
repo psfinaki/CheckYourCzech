@@ -18,7 +18,7 @@ let getWord (ctx: HttpContext) matchRule =
     |> Seq.initInfinite
     |> Seq.find matchRule
 
-let getTask gender : HttpHandler =
+let getPluralsTask gender : HttpHandler =
     fun _ ctx -> task { 
         let isAppropriateNoun gender word = 
             Word.isNoun word
@@ -30,29 +30,29 @@ let getTask gender : HttpHandler =
         return! ctx.WriteJsonAsync word
     }
 
-let getAnswer word : HttpHandler =
+let getPluralsAnswer word : HttpHandler =
     fun _ ctx -> task {
         let answer = Noun.getPlural word
         return! ctx.WriteJsonAsync answer 
     }
 
-let getTaskComparative() : HttpHandler =
+let getComparativesTask() : HttpHandler =
     fun _ ctx -> task { 
         let matchRule = Word.isAdjective
         let word = getWord ctx matchRule
         return! ctx.WriteJsonAsync word
     }
 
-let getAnswerComparative word : HttpHandler =
+let getComparativesAnswer word : HttpHandler =
     fun _ ctx -> task {
         let answer = Adjective.getComparative word
         return! ctx.WriteJsonAsync answer 
     }
 
 let webApp = scope {
-    getf "/api/task/%s" getTask
-    getf "/api/answer/%s" getAnswer
+    getf "/api/plurals/task/%s"        getPluralsTask
+    getf "/api/plurals/answer/%s"      getPluralsAnswer
 
-    get "/api/task-comparative/" (getTaskComparative())
-    getf "/api/answer-comparative/%s" getAnswerComparative
+    get  "/api/comparatives/task/"     (getComparativesTask())
+    getf "/api/comparatives/answer/%s" getComparativesAnswer
 }

@@ -22,13 +22,13 @@ type Msg =
 
 let getTask() =
     promise {
-        let url = "/api/task-comparative/"
+        let url = "/api/comparatives/task/"
         return! Fetch.fetchAs<string> url []
     }
 
 let getAnswer task = 
     promise {
-        let url = "/api/answer-comparative/" + task
+        let url = "/api/comparatives/answer/" + task
         return! Fetch.fetchAs<string> url []
     }
 
