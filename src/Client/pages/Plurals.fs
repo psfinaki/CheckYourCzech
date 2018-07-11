@@ -26,13 +26,13 @@ type Msg =
 
 let getTask gender =
     promise {
-        let url = "/api/task/" + gender
+        let url = "/api/plurals/task/" + gender
         return! Fetch.fetchAs<string> url []
     }
 
 let getAnswer task = 
     promise {
-        let url = "/api/answer/" + task
+        let url = "/api/plurals/answer/" + task
         return! Fetch.fetchAs<string[]> url []
     }
 
