@@ -25,7 +25,7 @@ let getPluralsTask gender : HttpHandler =
             && Noun.hasGender gender word
             && Noun.hasPlural word
 
-        let matchRule = isAppropriateNoun (translateTo gender)
+        let matchRule = isAppropriateNoun (Gender.FromString gender)
         let word = getWord ctx matchRule
         return! ctx.WriteJsonAsync word
     }

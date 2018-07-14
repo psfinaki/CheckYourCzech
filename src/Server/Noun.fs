@@ -38,6 +38,6 @@ let getGender word =
         |> getNodeStartingWithDirectText "rod "
         |> getDirectInnerText
 
-    translateTo gender
+    Gender.FromString gender
 
 let hasGender gender = getGender >> (=) gender

@@ -37,7 +37,7 @@ let getAnswer task =
     }
 
 let loadTaskCmd gender =
-    Cmd.ofPromise getTask (translateFrom gender) FetchedTask FetchError
+    Cmd.ofPromise getTask (Gender.ToString gender) FetchedTask FetchError
 
 let loadAnswerCmd task =
     Cmd.ofPromise getAnswer task FetchedAnswer FetchError
@@ -87,7 +87,7 @@ let view model dispatch =
         dispatch (SetInput !!event.target?value)
         
     let handleChangeGender (event: FormEvent) =
-        dispatch (SetGender (translateTo !!event.target?value))
+        dispatch (SetGender (Gender.FromString !!event.target?value))
         
     let handleKeyDown (event: KeyboardEvent) =
         match event.keyCode with
@@ -116,10 +116,10 @@ let view model dispatch =
                 div [ Styles.select ] 
                     [
                         Markup.select handleChangeGender [
-                            Markup.option (translateFrom MasculineAnimate) "Masculine Animate"
-                            Markup.option (translateFrom MasculineInanimate) "Masculine Inanimate"
-                            Markup.option (translateFrom Feminine) "Feminine"
-                            Markup.option (translateFrom Neuter) "Neuter"
+                            Markup.option (Gender.ToString MasculineAnimate) "Masculine Animate"
+                            Markup.option (Gender.ToString MasculineInanimate) "Masculine Inanimate"
+                            Markup.option (Gender.ToString Feminine) "Feminine"
+                            Markup.option (Gender.ToString Neuter) "Neuter"
                         ]
                     ]
             ]
