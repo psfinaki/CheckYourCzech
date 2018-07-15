@@ -23,15 +23,17 @@ let getPluralsTask() : HttpHandler =
         let genderFromQuery = ctx.GetQueryStringValue "gender"
         let gender =
             match genderFromQuery with
-            | Ok g -> g 
-            | Error _ -> failwith "Currently gender must not be unset"
+            | Ok g -> Some (Gender.FromString g)
+            | Error _ -> None
 
         let isAppropriateNoun gender word = 
-            Word.isNoun word
-            && Noun.hasGender gender word
-            && Noun.hasPlural word
+            let basicFilter = Word.isNoun word && Noun.hasPlural word
+            let genderFilter gender = Noun.hasGender gender word
+            match gender with
+            | Some g -> basicFilter && (genderFilter g)
+            | None   -> basicFilter
 
-        let matchRule = isAppropriateNoun (Gender.FromString gender)
+        let matchRule = isAppropriateNoun gender
         let word = getWord ctx matchRule
         return! ctx.WriteJsonAsync word
     }

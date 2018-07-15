@@ -9,14 +9,14 @@ open Fable.Import.React
 open Gender
 
 type Model = {
-    Gender : Gender
+    Gender : Gender option
     Task : string 
     Input : string
     Result : bool option
 }
 
 type Msg = 
-    | SetGender of Gender
+    | SetGender of Gender option
     | SetInput of string
     | SubmitTask
     | UpdateTask
@@ -26,7 +26,10 @@ type Msg =
 
 let getTask gender =
     promise {
-        let url = "/api/plurals/task?gender=" + gender
+        let url = 
+            match gender with
+            | Some g -> "/api/plurals/task?gender=" + Gender.ToString g
+            | None   -> "/api/plurals/task"
         return! Fetch.fetchAs<string> url []
     }
 
@@ -36,18 +39,21 @@ let getAnswer task =
         return! Fetch.fetchAs<string[]> url []
     }
 
+[<Literal>]
+let GenderUnset = ""
+
 let loadTaskCmd gender =
-    Cmd.ofPromise getTask (Gender.ToString gender) FetchedTask FetchError
+    Cmd.ofPromise getTask gender FetchedTask FetchError
 
 let loadAnswerCmd task =
     Cmd.ofPromise getAnswer task FetchedAnswer FetchError
 
 let init () =
-    { Gender = MasculineAnimate
+    { Gender = None
       Task = ""
       Input = ""
       Result = None },
-      loadTaskCmd MasculineAnimate
+      loadTaskCmd None
 
 let update msg model =
     match msg with
@@ -87,7 +93,8 @@ let view model dispatch =
         dispatch (SetInput !!event.target?value)
         
     let handleChangeGender (event: FormEvent) =
-        dispatch (SetGender (Gender.FromString !!event.target?value))
+        let translate = function | GenderUnset -> None | x -> Some (Gender.FromString x)
+        dispatch (SetGender (translate !!event.target?value))
         
     let handleKeyDown (event: KeyboardEvent) =
         match event.keyCode with
@@ -116,6 +123,7 @@ let view model dispatch =
                 div [ Styles.select ] 
                     [
                         Markup.select handleChangeGender [
+                            Markup.option GenderUnset "Any"
                             Markup.option (Gender.ToString MasculineAnimate) "Masculine Animate"
                             Markup.option (Gender.ToString MasculineInanimate) "Masculine Inanimate"
                             Markup.option (Gender.ToString Feminine) "Feminine"
