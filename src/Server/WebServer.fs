@@ -61,6 +61,6 @@ let webApp = scope {
     get "/api/plurals/task"           (getPluralsTask())
     getf "/api/plurals/answer/%s"     getPluralsAnswer
 
-    get  "/api/comparatives/task/"     (getComparativesTask())
+    get  "/api/comparatives/task"     (getComparativesTask())
     getf "/api/comparatives/answer/%s" getComparativesAnswer
 }

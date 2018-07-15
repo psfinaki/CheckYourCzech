@@ -22,7 +22,7 @@ type Msg =
 
 let getTask() =
     promise {
-        let url = "/api/comparatives/task/"
+        let url = "/api/comparatives/task"
         return! Fetch.fetchAs<string> url []
     }
 
