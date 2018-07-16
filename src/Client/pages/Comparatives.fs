@@ -17,7 +17,7 @@ type Msg =
     | SubmitTask
     | UpdateTask
     | FetchedTask of string
-    | FetchedAnswer of string
+    | FetchedAnswer of string[]
     | FetchError of exn
 
 let getTask() =
@@ -29,7 +29,7 @@ let getTask() =
 let getAnswer task = 
     promise {
         let url = "/api/comparatives/answer/" + task
-        return! Fetch.fetchAs<string> url []
+        return! Fetch.fetchAs<string[]> url []
     }
 
 let loadTaskCmd() =
@@ -55,7 +55,7 @@ let update msg model =
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
-        let result = answer = model.Input
+        let result = answer |> Array.contains model.Input
         { model with Result = Some result }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
