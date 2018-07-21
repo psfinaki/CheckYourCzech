@@ -13,6 +13,22 @@
     "location": "northeurope"
   },
   "resources": [
+	{
+		"type": "microsoft.insights/actionGroups",
+		"name": "Email",
+		"apiVersion": "2018-03-01",
+		"location": "Global",
+		"properties": {
+			"groupShortName": "Email",
+			"enabled": true,
+			"emailReceivers": [
+				{
+					"name": "Send Email_-EmailAction-",
+					"emailAddress": "petersemkin@gmail.com"
+				}
+			]
+		}
+	},
     {
       "type": "Microsoft.Insights/components",
       "kind": "web",
@@ -24,6 +40,82 @@
         "name": "[variables('insights')]"
       }
     },
+	{
+		"type": "microsoft.insights/scheduledqueryrules",
+		"name": "Exceptions",
+		"apiVersion": "2018-04-16",
+		"location": "northeurope",
+		"tags": {
+			"[concat('hidden-link:/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
+		},
+		"properties": {
+			"description": "[concat('Any exceptions happening in the app')]",
+			"enabled": "true",
+			"source": {
+				"query": "exceptions",
+				"authorizedResources": [],
+				"dataSourceId": "[resourceId('microsoft.insights/components', variables('insights'))]",
+				"queryType": "ResultCount"
+			},
+			"schedule": {
+				"frequencyInMinutes": 5,
+				"timeWindowInMinutes": 5
+			},
+			"action": {
+				"odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+				"severity": 4,
+				"aznsAction": {
+					"actionGroup": "[array(concat('/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourceGroups/', parameters('appName'), '/providers/microsoft.insights/actiongroups/Email'))]",
+					"emailSubject": "Check Your Exceptions"
+			    },
+				"trigger": {
+					"thresholdOperator": "GreaterThan",
+					"threshold": 0
+				}
+			}
+		},
+		"dependsOn": [
+			"[resourceId('microsoft.insights/components', variables('insights'))]"
+		]
+	},
+	{
+		"type": "microsoft.insights/scheduledqueryrules",
+		"name": "Requests",
+		"apiVersion": "2018-04-16",
+		"location": "northeurope",
+		"tags": {
+			"[concat('hidden-link:/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
+		},
+		"properties": {
+			"description": "[concat('All the requests sent to the service')]",
+			"enabled": "true",
+			"source": {
+				"query": "requests",
+				"authorizedResources": [],
+				"dataSourceId": "[resourceId('microsoft.insights/components', variables('insights'))]",
+				"queryType": "ResultCount"
+			},
+			"schedule": {
+				"frequencyInMinutes": 30,
+				"timeWindowInMinutes": 30
+			},
+			"action": {
+				"odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+				"severity": 2,
+			    "aznsAction": {
+					"actionGroup": "[array(concat('/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourceGroups/', parameters('appName'), '/providers/microsoft.insights/actiongroups/Email'))]",
+					"emailSubject": "Check Your Requests"
+			    },
+				"trigger": {
+					"thresholdOperator": "GreaterThan",
+					"threshold": 0
+				}
+			}
+		},
+		"dependsOn": [
+			"[resourceId('microsoft.insights/components', variables('insights'))]"
+		]
+	},
     {
       "type": "Microsoft.Storage/storageAccounts",
       "sku": {
