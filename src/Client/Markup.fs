@@ -11,6 +11,15 @@ let goToUrl (e: React.MouseEvent) =
     let href = !!e.target?href
     Navigation.newUrl href |> List.map (fun f -> f ignore) |> ignore
 
+let viewLinkCentered page description =
+    a [ 
+        Style [ FontSize "30px"; TextAlign "center"; Float "right"; Width "100%" ]
+        Href (Pages.toHash page)
+        OnClick goToUrl 
+    ] [ 
+        str description
+    ]
+
 let viewLink page description =
     a [ 
         Style [ Padding "0 20px" ]
@@ -22,6 +31,9 @@ let viewLink page description =
 
 let words size message =
     span [ Style [ FontSize (size |> sprintf "%dpx") ] ] [ str message ]
+
+let wordsCentered message =
+    div [ Style [ TextAlign "center"; FontSize "30px" ] ] [ str message ] 
 
 let emptyLines count =
     br []

@@ -7,6 +7,19 @@ let row =
         Width 700
         Height 70 
     ] 
+
+let rowWide = 
+    Style [ 
+        Width 850
+        Height 70 
+    ]
+    
+let halfParent =
+    Style [
+        Width "50%"
+        Display "inline-block"
+        Height "25px"
+    ]
     
 let center direction =
     Style [ 
