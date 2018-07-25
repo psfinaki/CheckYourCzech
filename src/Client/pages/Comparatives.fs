@@ -68,13 +68,16 @@ let view model dispatch =
             let altText = if result then "Correct" else "Incorrect"
             Markup.icon imageSource 25 altText
         | None ->
-            str "-"
+            str ""
 
     let task = 
         if model.Task <> "" 
-        then model.Task 
-        else "-"
-        |> str
+        then 
+            str model.Task 
+        else
+            let imageSource = "images/loading.gif"
+            let altText = "Loading..."
+            Markup.icon imageSource 25 altText
 
     let handleChangeAnswer (event: FormEvent) =
         dispatch (SetInput !!event.target?value)
