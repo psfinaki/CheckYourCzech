@@ -6,7 +6,7 @@ open Gender
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Http
 
-let getWord (ctx: HttpContext) matchRule =
+let getWordExn (ctx: HttpContext) matchRule =
     let logger = ctx.GetLogger()
 
     let iterator _ = 
@@ -17,6 +17,22 @@ let getWord (ctx: HttpContext) matchRule =
     iterator
     |> Seq.initInfinite
     |> Seq.find matchRule
+
+let tryGetWord ctx matchRule =
+    try
+        getWordExn ctx matchRule
+        |> Some
+    with
+    | e ->
+        None
+
+let getWord ctx matchRule =
+    let iterator _ = tryGetWord ctx matchRule
+
+    iterator
+    |> Seq.initInfinite
+    |> Seq.find Option.isSome
+    |> Option.get
 
 let getPluralsTask() : HttpHandler =
     fun _ ctx -> task { 
