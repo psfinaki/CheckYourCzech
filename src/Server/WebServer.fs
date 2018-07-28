@@ -24,6 +24,8 @@ let tryGetWord ctx matchRule =
         |> Some
     with
     | e ->
+        let msg = "Exception when searching a word"
+        ctx.GetLogger().LogError(e, msg)
         None
 
 let getWord ctx matchRule =
