@@ -11,7 +11,7 @@ let getWordExn (ctx: HttpContext) matchRule =
 
     let iterator _ = 
         let word = WordGenerator.getRandomWord()
-        logger.Log(LogLevel.Information, word)
+        logger.LogInformation(word)
         word
 
     iterator
@@ -24,7 +24,7 @@ let tryGetWord ctx matchRule =
         |> Some
     with
     | e ->
-        let msg = "Exception when searching a word"
+        let msg = "Exception when searching for a word"
         ctx.GetLogger().LogError(e, msg)
         None
 
