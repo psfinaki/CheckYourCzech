@@ -13,6 +13,7 @@
 	</PropertyGroup>
     <ItemGroup>
 	    <Compile Include="..\Shared\Gender.fs" />
+	    <Compile Include="Article.fs" />
 	    <Compile Include="WordGenerator.fs" />
 	    <Compile Include="Adjective.fs" />
         <Compile Include="Noun.fs" />
