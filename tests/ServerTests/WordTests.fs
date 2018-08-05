@@ -4,37 +4,79 @@ open Xunit
 open Word
 
 [<Fact>]
-let detectsCzechNoun() = 
+let detectsWordIsForTaskPlurals() = 
     "hudba"
-    |> isNoun
+    |> isForTaskPlurals
     |> Assert.True
 
 [<Fact>]
-let detectsNoCzechPart() = 
+let detectsWordIsNotForTaskPluralsNoCzech() = 
     "immigration"
-    |> isNoun
+    |> isForTaskPlurals
     |> Assert.False
 
 [<Fact>]
-let detectsNoCzechNoun() = 
+let detectsWordIsNotForTaskPluralsNoCzechNoun() = 
     "koukat"
-    |> isNoun
+    |> isForTaskPlurals
     |> Assert.False
 
 [<Fact>]
-let detectsNoCzechDeclension() = 
+let detectsWordIsNotForTaskPluralsNoCzechNounDeclension() = 
     "antilopu"
-    |> isNoun
+    |> isForTaskPlurals
     |> Assert.False
 
 [<Fact>]
-let detectsCzechAdjective() = 
-    "dobrý"
-    |> isAdjective
+let detectsWordIsForTaskPluralsWithGender() = 
+    "gramofon"
+    |> isForTaskPluralsWithGender
     |> Assert.True
 
 [<Fact>]
-let detectsNoCzechAdjective() = 
+let detectsWordIsNotForTaskPluralsWithGenderNoCzech() = 
+    "glass"
+    |> isForTaskPluralsWithGender
+    |> Assert.False
+
+[<Fact>]
+let detectsWordIsNotForTaskPluralsWithGenderNoCzechNoun() = 
+    "skvělý"
+    |> isForTaskPluralsWithGender
+    |> Assert.False
+
+[<Fact>]
+let detectsWordIsNotForTaskPluralsWithGenderNoCzechNounDeclension() = 
+    "idem"
+    |> isForTaskPluralsWithGender
+    |> Assert.False
+
+[<Fact>]
+let detectsWordIsNotForTaskPluralsWithGenderNoCzechNounGender() = 
+    "trosečník"
+    |> isForTaskPluralsWithGender
+    |> Assert.False
+
+[<Fact>]
+let detectsWordIsForTaskComparatives() = 
+    "dobrý"
+    |> isForTaskComparatives
+    |> Assert.True
+
+[<Fact>]
+let detectsWordIsNotForTaskComparativesNoCzech() = 
+    "emergency"
+    |> isForTaskComparatives
+    |> Assert.False
+
+[<Fact>]
+let detectsWordIsNotForTaskComparativesNoCzechAdjective() = 
     "nazdar"
-    |> isAdjective
+    |> isForTaskComparatives
+    |> Assert.False
+
+[<Fact>]
+let detectsWordIsNotForTaskComparativesNoCzechAdjectiveComparison() = 
+    "stopkovýtrusý"
+    |> isForTaskComparatives
     |> Assert.False
