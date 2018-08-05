@@ -44,14 +44,11 @@ let getPluralsTask() : HttpHandler =
             | Ok g -> Some (Gender.FromString g)
             | Error _ -> None
 
-        let isAppropriateNoun gender word = 
-            let basicFilter = Word.isNoun word && Noun.hasPlural word
-            let genderFilter gender = Noun.hasGender gender word
+        let matchRule word =
             match gender with
-            | Some g -> basicFilter && (genderFilter g)
-            | None   -> basicFilter
+            | Some g -> Word.isForTaskPluralsWithGender word && Noun.hasGender g word
+            | None   -> Word.isForTaskPlurals word
 
-        let matchRule = isAppropriateNoun gender
         let word = getWord ctx matchRule
         return! ctx.WriteJsonAsync word
     }
@@ -64,7 +61,7 @@ let getPluralsAnswer word : HttpHandler =
 
 let getComparativesTask() : HttpHandler =
     fun _ ctx -> task { 
-        let matchRule = Word.isAdjective
+        let matchRule = Word.isForTaskComparatives
         let word = getWord ctx matchRule
         return! ctx.WriteJsonAsync word
     }
