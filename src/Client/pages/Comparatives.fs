@@ -9,6 +9,7 @@ open Fable.Import.React
 type Model = {
     Task : string 
     Input : string
+    InputSubmitted: bool
     Result : bool option
 }
 
@@ -41,6 +42,7 @@ let loadAnswerCmd task =
 let init () =
     { Task = ""
       Input = ""
+      InputSubmitted = false
       Result = None },
       loadTaskCmd() 
 
@@ -49,14 +51,14 @@ let update msg model =
     | SetInput input ->
         { model with Input = input }, Cmd.none
     | SubmitTask ->
-        model, loadAnswerCmd model.Task
+        { model with Result = None; InputSubmitted = true }, loadAnswerCmd model.Task
     | UpdateTask ->
         { model with Task = ""; Input = ""; Result = None }, loadTaskCmd()
     | FetchedTask task ->
         { model with Task = task }, Cmd.none
     | FetchedAnswer answer ->
         let result = answer |> Array.contains model.Input
-        { model with Result = Some result }, Cmd.none
+        { model with Result = Some result; InputSubmitted = false }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
 
@@ -66,6 +68,10 @@ let view model dispatch =
         | Some result -> 
             let imageSource = if result then "images/correct.png" else "images/incorrect.png"
             let altText = if result then "Correct" else "Incorrect"
+            Markup.icon imageSource 25 altText
+        | None when model.Task <> "" && model.InputSubmitted ->
+            let imageSource = "images/loading.gif"
+            let altText = "Loading..."
             Markup.icon imageSource 25 altText
         | None ->
             str ""
