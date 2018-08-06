@@ -46,8 +46,8 @@ let getPluralsTask() : HttpHandler =
 
         let matchRule word =
             match gender with
-            | Some g -> Word.isForTaskPluralsWithGender word && Noun.hasGender g word
-            | None   -> Word.isForTaskPlurals word
+            | Some g -> Word.isForTaskPluralsWithGender word && Noun.hasPlural word && Noun.hasGender g word
+            | None   -> Word.isForTaskPlurals word && Noun.hasPlural word
 
         let word = getWord ctx matchRule
         return! ctx.WriteJsonAsync word
