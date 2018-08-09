@@ -12,16 +12,22 @@ let view () =
 
         div [ Styles.rowWide ]
             [
-                div [ Styles.halfParent ]
+                div [ Styles.thirdParent ]
                     [
                         Markup.viewLinkCentered Page.Plurals "Nouns"
                         Markup.wordsCentered "Make plural"
                     ]
                 
-                div [ Styles.halfParent ]
+                div [ Styles.thirdParent ]
                     [
                         Markup.viewLinkCentered Page.Comparatives "Adjectives"
                         Markup.wordsCentered "Make comparative"
+                    ]
+
+                div [ Styles.thirdParent ]
+                    [
+                        Markup.viewLinkCentered Page.Imperatives "Verbs"
+                        Markup.wordsCentered "Make imperative"
                     ]
             ]
     ]

@@ -17,6 +17,7 @@
 	    <Compile Include="WordGenerator.fs" />
 	    <Compile Include="Adjective.fs" />
         <Compile Include="Noun.fs" />
+        <Compile Include="Verb.fs" />
         <Compile Include="Word.fs" />
         <Compile Include="WebServer.fs" />
         <Compile Include="Program.fs" />

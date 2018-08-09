@@ -72,10 +72,26 @@ let getComparativesAnswer word : HttpHandler =
         return! ctx.WriteJsonAsync answer 
     }
 
+let getImperativesTask() : HttpHandler =
+    fun _ ctx -> task { 
+        let matchRule = Word.isForTaskImperatives
+        let word = getWord ctx matchRule
+        return! ctx.WriteJsonAsync word
+    }
+
+let getImperativesAnswer word : HttpHandler =
+    fun _ ctx -> task {
+        let answer = Verb.getImperative word
+        return! ctx.WriteJsonAsync answer 
+    }
+
 let webApp = scope {
     get "/api/plurals/task"           (getPluralsTask())
     getf "/api/plurals/answer/%s"     getPluralsAnswer
 
     get  "/api/comparatives/task"     (getComparativesTask())
     getf "/api/comparatives/answer/%s" getComparativesAnswer
+
+    get  "/api/imperatives/task"     (getImperativesTask())
+    getf "/api/imperatives/answer/%s" getImperativesAnswer
 }
