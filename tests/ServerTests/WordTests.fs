@@ -80,3 +80,27 @@ let detectsWordIsNotForTaskComparativesNoCzechAdjectiveComparison() =
     "stopkovýtrusý"
     |> isForTaskComparatives
     |> Assert.False
+
+[<Fact>]
+let detectsWordIsForTaskImperatives() = 
+    "myslet"
+    |> isForTaskImperatives
+    |> Assert.True
+
+[<Fact>]
+let detectsWordIsNotForTaskImperativesNoCzech() = 
+    "jump"
+    |> isForTaskComparatives
+    |> Assert.False
+
+[<Fact>]
+let detectsWordIsNotForTaskImperativesNoCzechVerb() = 
+    "Lucie"
+    |> isForTaskComparatives
+    |> Assert.False
+
+[<Fact>]
+let detectsWordIsNotForTaskImperativesNoCzechVerbDeclension() = 
+    "chlastati"
+    |> isForTaskComparatives
+    |> Assert.False

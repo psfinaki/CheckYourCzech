@@ -28,3 +28,10 @@ let isForTaskComparatives =
     >> Option.bind (tryGetPart "přídavné jméno")
     >> Option.bind (tryGetPart "stupňování")
     >> Option.isSome
+
+let isForTaskImperatives =
+    tryGetContent
+    >> Option.bind (tryGetPart "čeština")
+    >> Option.bind (tryGetPart "sloveso")
+    >> Option.bind (tryGetPart "časování")
+    >> Option.isSome

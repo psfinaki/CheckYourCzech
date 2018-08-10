@@ -5,6 +5,7 @@ type PageModel =
     | HomePageModel
     | PluralsModel of Plurals.Model
     | ComparativesModel of Comparatives.Model
+    | ImperativesModel of Imperatives.Model
 
 /// The composed model for the application, which is a single page state plus login information
 type Model =
@@ -14,6 +15,7 @@ type Model =
 type Msg = 
     | PluralsMsg of Plurals.Msg
     | ComparativesMsg of Comparatives.Msg
+    | ImperativesMsg of Imperatives.Msg
 
 // VIEW
 
@@ -28,6 +30,8 @@ let viewPage model dispatch =
         Plurals.view m (PluralsMsg >> dispatch)
     | ComparativesModel m ->
         Comparatives.view m (ComparativesMsg >> dispatch)
+    | ImperativesModel m ->
+        Imperatives.view m (ImperativesMsg >> dispatch)
 
 /// Constructs the view for the application given the model.
 let view model dispatch =

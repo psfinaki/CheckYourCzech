@@ -27,6 +27,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.Comparatives ->
         let m, cmd = Comparatives.init()
         { model with PageModel = ComparativesModel m }, Cmd.map ComparativesMsg cmd
+    | Some Page.Imperatives ->
+        let m, cmd = Imperatives.init()
+        { model with PageModel = ImperativesModel m }, Cmd.map ImperativesMsg cmd
 
 let init result =
     let model =
@@ -42,6 +45,9 @@ let update msg model =
     | ComparativesMsg msg, ComparativesModel m ->
         let m, cmd = Comparatives.update msg m
         { model with PageModel = ComparativesModel m }, Cmd.map ComparativesMsg cmd
+    | ImperativesMsg msg, ImperativesModel m ->
+        let m, cmd = Imperatives.update msg m
+        { model with PageModel = ImperativesModel m }, Cmd.map ImperativesMsg cmd
     | _, _ ->
         model, Cmd.none
 

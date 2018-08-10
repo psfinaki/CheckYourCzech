@@ -6,6 +6,7 @@
     <Compile Include="ArticleTests.fs" />
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="NounTests.fs" />
+    <Compile Include="VerbTests.fs" />
     <Compile Include="WordTests.fs" />
   </ItemGroup>
   <ItemGroup>
