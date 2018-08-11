@@ -10,9 +10,6 @@ src/Server/Properties/launchSettings.json
 release.cmd
 release.sh
 deploy.zip
-.idea/
 .paket/load/
 deploy/
 *.DotSettings.user
-src/Client/public/bundle.js
-src/Client/public/bundle.js.map

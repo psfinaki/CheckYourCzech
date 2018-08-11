@@ -10,8 +10,6 @@ group Server
 	nuget Microsoft.ApplicationInsights.AspNetCore ~> 2.2
     nuget WindowsAzure.Storage
 
-	clitool Microsoft.DotNet.Watcher.Tools
-
 group Client
     storage: none
     source https://api.nuget.org/v3/index.json
@@ -33,9 +31,14 @@ group ServerTests
 	nuget xunit.runner.visualstudio
 	
 group Build
+	storage: none
     source https://api.nuget.org/v3/index.json
-    generate_load_scripts: true
 
-    nuget FAKE
-    nuget Microsoft.Azure.Management.ResourceManager.Fluent 1.4.1
+	nuget FSharp.Core 4.3.4 // https://github.com/fsharp/FAKE/issues/2001
+	nuget Fake.Core.Target
+    nuget Fake.DotNet.Cli
+    nuget Fake.IO.FileSystem
+    nuget Fake.Core.Environment
+    nuget Fake.Core.Trace
+    nuget Fake.IO.Zip
     github CompositionalIT/fshelpers src/FsHelpers/ArmHelper/ArmHelper.fs
