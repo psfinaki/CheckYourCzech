@@ -85,7 +85,7 @@ let getImperativesAnswer word : HttpHandler =
         return! ctx.WriteJsonAsync answer 
     }
 
-let webApp = scope {
+let webApp = router {
     get "/api/plurals/task"           (getPluralsTask())
     getf "/api/plurals/answer/%s"     getPluralsAnswer
 

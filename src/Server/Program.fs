@@ -20,7 +20,7 @@ let configureAzure (services:IServiceCollection) =
 
 let app = application {
     url ("http://0.0.0.0:" + port.ToString() + "/")
-    router WebServer.webApp
+    use_router WebServer.webApp
     memory_cache
     use_static publicPath
     service_config configureAzure
