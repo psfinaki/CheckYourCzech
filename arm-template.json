@@ -10,112 +10,28 @@
     "appServicePlan": "[concat(parameters('appName'), '-web-host')]",
     "storage": "[concat(replace(parameters('appName'),'-', ''), 'storage')]",
     "insights": "[concat(parameters('appName'), '-insights')]",
-    "location": "northeurope"
+    "location": "northeurope",
+    "appInsightsTemplateName": "appInsightsTemplate",
+    "appInsightsTemplateLink": "https://raw.githubusercontent.com/psfinaki/CheckYourCzech/master/arm-template.json"
   },
   "resources": [
-	{
-		"type": "microsoft.insights/actionGroups",
-		"name": "Email",
-		"apiVersion": "2018-03-01",
-		"location": "Global",
-		"properties": {
-			"groupShortName": "Email",
-			"enabled": true,
-			"emailReceivers": [
-				{
-					"name": "Send Email_-EmailAction-",
-					"emailAddress": "petersemkin@gmail.com"
-				}
-			]
-		}
-	},
     {
-      "type": "Microsoft.Insights/components",
-      "kind": "web",
-      "name": "[variables('insights')]",
-      "location": "[variables('location')]",
-      "apiVersion": "2014-04-01",
-      "scale": null,
+      "apiVersion": "2015-01-01",
+      "name": "[variables('appInsightsTemplateName')]",
+      "type": "Microsoft.Resources/deployments",
       "properties": {
-        "name": "[variables('insights')]"
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('appInsightsTemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appName": {
+            "value": "[parameters('appName')]"
+          }
+        }
       }
     },
-	{
-		"type": "microsoft.insights/scheduledqueryrules",
-		"name": "Exceptions",
-		"apiVersion": "2018-04-16",
-		"location": "northeurope",
-		"tags": {
-			"[concat('hidden-link:/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
-		},
-		"properties": {
-			"description": "[concat('Any exceptions happening in the app')]",
-			"enabled": "true",
-			"source": {
-				"query": "exceptions",
-				"authorizedResources": [],
-				"dataSourceId": "[resourceId('microsoft.insights/components', variables('insights'))]",
-				"queryType": "ResultCount"
-			},
-			"schedule": {
-				"frequencyInMinutes": 5,
-				"timeWindowInMinutes": 5
-			},
-			"action": {
-				"odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
-				"severity": 4,
-				"aznsAction": {
-					"actionGroup": "[array(concat('/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourceGroups/', parameters('appName'), '/providers/microsoft.insights/actiongroups/Email'))]",
-					"emailSubject": "Check Your Exceptions"
-			    },
-				"trigger": {
-					"thresholdOperator": "GreaterThan",
-					"threshold": 0
-				}
-			}
-		},
-		"dependsOn": [
-			"[resourceId('microsoft.insights/components', variables('insights'))]"
-		]
-	},
-	{
-		"type": "microsoft.insights/scheduledqueryrules",
-		"name": "Requests",
-		"apiVersion": "2018-04-16",
-		"location": "northeurope",
-		"tags": {
-			"[concat('hidden-link:/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
-		},
-		"properties": {
-			"description": "[concat('All the requests sent to the service')]",
-			"enabled": "true",
-			"source": {
-				"query": "requests",
-				"authorizedResources": [],
-				"dataSourceId": "[resourceId('microsoft.insights/components', variables('insights'))]",
-				"queryType": "ResultCount"
-			},
-			"schedule": {
-				"frequencyInMinutes": 30,
-				"timeWindowInMinutes": 30
-			},
-			"action": {
-				"odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
-				"severity": 2,
-			    "aznsAction": {
-					"actionGroup": "[array(concat('/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourceGroups/', parameters('appName'), '/providers/microsoft.insights/actiongroups/Email'))]",
-					"emailSubject": "Check Your Requests"
-			    },
-				"trigger": {
-					"thresholdOperator": "GreaterThan",
-					"threshold": 0
-				}
-			}
-		},
-		"dependsOn": [
-			"[resourceId('microsoft.insights/components', variables('insights'))]"
-		]
-	},
     {
       "type": "Microsoft.Storage/storageAccounts",
       "sku": {
@@ -156,7 +72,7 @@
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference(concat('Microsoft.Insights/components/', variables('insights'))).InstrumentationKey]"
+              "value": "[reference(variables('appInsightsTemplateName')).outputs.key.value]"
             },
             {
               "name": "STORAGE_CONNECTIONSTRING",
@@ -168,7 +84,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlan'))]",
         "[resourceId('Microsoft.Storage/storageAccounts/', variables('storage'))]",
-        "[resourceId('Microsoft.Insights/components/', variables('insights'))]"
+        "[resourceId('Microsoft.Resources/deployments/', variables('appInsightsTemplateName'))]"
       ],
       "resources": [
         {

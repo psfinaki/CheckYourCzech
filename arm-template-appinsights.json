@@ -1,0 +1,127 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "insights": "[concat(parameters('appName'), '-insights')]",
+    "queryDataSource": "[resourceId('microsoft.insights/components', variables('insights'))]",
+    "odataType": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+    "actionGroups": "[array(concat('/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourceGroups/', parameters('appName'), '/providers/microsoft.insights/actiongroups/Email'))]",
+    "location": "northeurope"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Insights/actionGroups",
+      "name": "Email",
+      "apiVersion": "2018-03-01",
+      "location": "Global",
+      "properties": {
+        "groupShortName": "Email",
+        "enabled": true,
+        "emailReceivers": [
+          {
+            "name": "Send Email_-EmailAction-",
+            "emailAddress": "petersemkin@gmail.com"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Insights/components",
+      "kind": "web",
+      "name": "[variables('insights')]",
+      "location": "[variables('location')]",
+      "apiVersion": "2014-04-01",
+      "scale": null,
+      "properties": {
+        "name": "[variables('insights')]"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "name": "Exceptions",
+      "apiVersion": "2018-04-16",
+      "location": "northeurope",
+      "tags": {
+        "[concat('hidden-link:/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
+      },
+      "properties": {
+        "description": "Any exceptions happening in the app",
+        "enabled": "true",
+        "source": {
+          "query": "exceptions",
+          "authorizedResources": [],
+          "dataSourceId": "[variables('queryDataSource')]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 5,
+          "timeWindowInMinutes": 5
+        },
+        "action": {
+          "odata.type": "[variables('odataType')]",
+          "severity": "4",
+          "aznsAction": {
+            "actionGroup": "[variables('actionGroups')]",
+            "emailSubject": "Check Your Exceptions"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', variables('insights'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "name": "Requests",
+      "apiVersion": "2018-04-16",
+      "location": "northeurope",
+      "tags": {
+        "[concat('hidden-link:/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
+      },
+      "properties": {
+        "description": "All the requests sent to the service",
+        "enabled": "true",
+        "source": {
+          "query": "requests",
+          "authorizedResources": [],
+          "dataSourceId": "[variables('queryDataSource')]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "[variables('odataType')]",
+          "severity": "2",
+          "aznsAction": {
+            "actionGroup": "[variables('actionGroups')]",
+            "emailSubject": "Check Your Requests"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', variables('insights'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "key": {
+      "type": "string",
+      "value": "[reference(concat('Microsoft.Insights/components/', variables('insights'))).InstrumentationKey]"
+    }
+  }
+}
