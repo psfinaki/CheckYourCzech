@@ -58,6 +58,12 @@ let detectsWordIsNotForTaskPluralsWithGenderNoCzechNounGender() =
     |> Assert.False
 
 [<Fact>]
+let detectsWordIsNotForTaskPluralsWithGenderNotRecognizedGender() = 
+    "benediktin"
+    |> isForTaskPluralsWithGender
+    |> Assert.False
+
+[<Fact>]
 let detectsWordIsForTaskComparatives() = 
     "dobrý"
     |> isForTaskComparatives

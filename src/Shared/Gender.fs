@@ -7,6 +7,8 @@ type BiMap<'a,'b when 'a : comparison and 'b : comparison>(item1s:'a list, item2
   
     member __.findBy1 key = Map.find key item1IsKey
     member __.findBy2 key = Map.find key item2IsKey 
+    member __.tryFindBy1 key = Map.tryFind key item1IsKey 
+    member __.tryFindBy2 key = Map.tryFind key item2IsKey 
 
 type Gender =
     | MasculineAnimate
@@ -19,5 +21,6 @@ let genderTranslations =
           [ "rod mužský životný"; "rod mužský neživotný"; "rod ženský"; "rod střední" ])
   
 type Gender with
-    static member ToString   = genderTranslations.findBy1  
-    static member FromString = genderTranslations.findBy2
+    static member ToString      = genderTranslations.findBy1  
+    static member FromString    = genderTranslations.findBy2
+    static member TryFromString = genderTranslations.tryFindBy2

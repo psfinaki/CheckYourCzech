@@ -1,6 +1,7 @@
 ﻿module Word
 
 open Article
+open Gender
 
 let isForTaskPlurals =
     tryGetContent
@@ -20,6 +21,7 @@ let isForTaskPluralsWithGender word =
     |> Option.bind (tryGetPart "čeština")
     |> Option.bind (tryGetPart "podstatné jméno")
     |> Option.bind (tryGetInfo "rod")
+    |> Option.bind Gender.TryFromString
     |> Option.isSome
 
 let isForTaskComparatives =
