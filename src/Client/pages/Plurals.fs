@@ -155,8 +155,8 @@ let view model dispatch =
 
         div [ Styles.row ] 
             [
-                Markup.button (Styles.button "White") handleUpdateClick "Next"
+                Markup.button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)"
                 Markup.space()
-                Markup.button (Styles.button "Lime") handleCheckClick "Check"
+                Markup.button (Styles.button "Lime") handleCheckClick "Check (⏎)"
             ]
     ]
