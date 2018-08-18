@@ -11,6 +11,20 @@ let headerTags   = [ "h2"; "h3"; "h4"; "h5"; "h6" ]
 
 let loadArticle word = Article.Load (wikiUrl + word)
 
+let getNameFromHtml (html: HtmlDocument) = 
+    let isTitleTag  (node: HtmlNode)  = node.Name() = "title"
+    let extractName (title: HtmlNode) = title.InnerText().Split(" – ").[0]
+
+    html.Descendants isTitleTag
+    |> Seq.exactlyOne
+    |> extractName
+
+// serves only for testing getTitle
+let getName word = 
+    loadArticle word
+    |> fun data -> data.Html
+    |> getNameFromHtml
+
 let getTableOfContents word =
     loadArticle word
     |> fun data -> data.Lists.Obsah.Html

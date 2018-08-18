@@ -4,6 +4,13 @@ open Xunit
 open Article
 
 [<Fact>]
+let getsName() =
+    "panda"
+    |> getName
+    |> (=) "panda"
+    |> Assert.True
+
+[<Fact>]
 let getsTableOfContents() =
     "panda"
     |> tryGetTableOfContents
