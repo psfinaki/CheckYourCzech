@@ -1,27 +1,11 @@
 ﻿module Noun
 
-open FSharp.Data
-open Gender
-open Article
+open Microsoft.WindowsAzure.Storage.Table
 
-type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
+type Noun() = 
+    inherit TableEntity(null, null)
 
-let getPlural word = 
-    let url = "https://cs.wiktionary.org/wiki/" + word
-    let data = Wiki.Load url
-    let answer = data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
-    
-    match answer with
-    | "—" | "" -> [||]
-    | _ -> answer.Split "/" |> Array.map (fun s -> s.Trim()) 
-
-let hasPlural = getPlural >> (not << Array.isEmpty)
-
-let getGender =
-    Article.getContent
-    >> getPart "čeština"
-    >> getPart "podstatné jméno"
-    >> getInfo "rod"
-    >> Gender.FromString
-
-let hasGender gender = getGender >> (=) gender
+    member val Singular : string = null with get, set
+    member val Gender   : string = null with get, set
+    member val Plurals  : string = null with get, set
+     

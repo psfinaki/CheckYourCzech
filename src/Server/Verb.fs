@@ -1,11 +1,9 @@
 ﻿module Verb
 
-open FSharp.Data
+open Microsoft.WindowsAzure.Storage.Table
 
-type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
-
-let getImperative word =
-    let url = "https://cs.wiktionary.org/wiki/" + word
-    let data = Wiki.Load url
-    let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
-    answer.Split "/" |> Array.map (fun s -> s.Trim())
+type Verb() =
+    inherit TableEntity(null, null)
+    
+    member val Indicative  : string = null with get, set
+    member val Imperatives : string = null with get, set

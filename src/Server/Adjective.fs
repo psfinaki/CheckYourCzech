@@ -1,11 +1,9 @@
 ﻿module Adjective
 
-open FSharp.Data
+open Microsoft.WindowsAzure.Storage.Table
 
-type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
-
-let getComparative word =
-    let url = "https://cs.wiktionary.org/wiki/" + word
-    let data = Wiki.Load url
-    let answer = data.Tables.``Stupňování[editovat]``.Rows.[1].tvar
-    answer.Split "/" |> Array.map (fun s -> s.Trim())
+type Adjective() =
+    inherit TableEntity(null, null)
+    
+    member val Positive     : string = null with get, set
+    member val Comparatives : string = null with get, set
