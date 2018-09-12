@@ -18,6 +18,10 @@ type CloudTable with
         |> Async.RunSynchronously 
         |> fun segment -> segment.Results
 
+type QueryCondition =
+    | Is
+    | IsNot
+
 let getTable name =
     let connectionString = Environment.GetEnvironmentVariable "STORAGE_CONNECTIONSTRING"
     let account = CloudStorageAccount.Parse connectionString
@@ -25,10 +29,10 @@ let getTable name =
     let table = client.GetTableReference name
     table
 
-let buildFilter (x, y, shouldBeEqual) = 
-    match shouldBeEqual with
-    | true  -> TableQuery.GenerateFilterCondition(x, QueryComparisons.Equal, y)
-    | false -> TableQuery.GenerateFilterCondition(x, QueryComparisons.NotEqual, y)
+let buildFilter (x, condition, y) = 
+    match condition with
+    | Is    -> TableQuery.GenerateFilterCondition(x, QueryComparisons.Equal, y)
+    | IsNot -> TableQuery.GenerateFilterCondition(x, QueryComparisons.NotEqual, y)
 
 let combineFilters f1 f2 = TableQuery.CombineFilters(f1, TableOperators.And, f2)
 
