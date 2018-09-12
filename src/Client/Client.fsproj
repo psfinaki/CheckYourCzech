@@ -11,7 +11,7 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\Gender.fs" />
+    <Compile Include="Gender.fs" />
     <Compile Include="Pages.fs" />
     <Compile Include="Markup.fs" />
     <Compile Include="Styles.fs" />
