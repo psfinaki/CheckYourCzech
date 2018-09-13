@@ -18,9 +18,17 @@ type CloudTable with
         |> Async.RunSynchronously 
         |> fun segment -> segment.Results
 
+    member this.Execute operation =
+        this.ExecuteAsync operation 
+        |> Async.AwaitTask 
+        |> Async.RunSynchronously 
+        |> ignore
+
 type QueryCondition =
     | Is
     | IsNot
+
+let mapSafe mapping = Option.ofObj >> Option.map mapping >> Option.toObj
 
 let getTable name =
     let connectionString = Environment.GetEnvironmentVariable "STORAGE_CONNECTIONSTRING"
@@ -61,3 +69,8 @@ let getSingle<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName 
     |> buildQuery<'T>
     |> table.ExecuteQuery
     |> Seq.exactlyOne
+
+let upsert tableName entity =
+    let table = getTable tableName
+    let operation = TableOperation.InsertOrReplace entity
+    table.Execute operation
