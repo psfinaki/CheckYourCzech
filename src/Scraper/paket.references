@@ -1,0 +1,3 @@
+group Scraper
+	FSharp.Data
+	WindowsAzure.Storage

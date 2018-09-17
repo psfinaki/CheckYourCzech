@@ -3,9 +3,6 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ArticleTests.fs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Server\Server.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />

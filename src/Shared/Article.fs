@@ -19,7 +19,7 @@ let getNameFromHtml (html: HtmlDocument) =
     |> Seq.exactlyOne
     |> extractName
 
-// serves only for testing getTitle
+// serves only for testing getName
 let getName word = 
     loadArticle word
     |> fun data -> data.Html
@@ -70,13 +70,40 @@ let getPart name elements =
     |> Seq.skip 1
     |> Seq.takeWhile (not << (fun node -> isHeaderTag node && node |> headerHasSize size))
 
-let getInfo name elements =
+let getInfo (name: string) elements =
     elements
     |> Seq.collect (fun (node: HtmlNode) -> node.Descendants())
     |> Seq.map     (fun (node: HtmlNode) -> node.DirectInnerText())
     |> Seq.where   (fun (text: string)   -> text.Contains name)
     |> Seq.distinct
     |> Seq.exactlyOne
+
+let getPartNames elements = 
+    let isHeaderTag   (node: HtmlNode) = headerTags |> Seq.contains (node.Name())
+
+    let biggestHeader = 
+        elements
+        |> Seq.filter isHeaderTag
+        |> Seq.map (fun node -> node.Name())
+        |> Seq.sort
+        |> Seq.head
+
+    let getHeaderContent (node: HtmlNode) = 
+        node.Elements()
+        |> Seq.filter (fun node -> node.HasClass "mw-headline")
+        |> Seq.exactlyOne
+        |> fun node -> node.DirectInnerText()
+
+    elements
+    |> Seq.filter (fun node -> node.Name() = biggestHeader)
+    |> Seq.map getHeaderContent
+
+let getPartsWithNames elements =
+    let getPartWithName name = name, elements |> getPart name
+
+    elements
+    |> getPartNames
+    |> Seq.map getPartWithName
 
 let tryFunc1 func x   = try func x   |> Some with _ -> None
 let tryFunc2 func x y = try func x y |> Some with _ -> None

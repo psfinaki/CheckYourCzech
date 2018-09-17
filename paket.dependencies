@@ -10,6 +10,13 @@ group Server
 	nuget Microsoft.ApplicationInsights.AspNetCore ~> 2.2
     nuget WindowsAzure.Storage
 
+group Scraper
+    storage: none
+    source https://api.nuget.org/v3/index.json
+
+	nuget FSharp.Data 3.0.0-beta3
+	nuget WindowsAzure.Storage
+	
 group Client
     storage: none
     source https://api.nuget.org/v3/index.json
@@ -22,6 +29,13 @@ group Client
 	nuget Fable.Elmish.HMR	
 
 	clitool dotnet-fable
+
+group ScraperTests
+	storage: none
+	source https://nuget.org/api/v2
+
+	nuget xunit
+	nuget xunit.runner.visualstudio	
 	
 group ServerTests
 	storage: none

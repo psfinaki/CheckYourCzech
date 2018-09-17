@@ -1,0 +1,3 @@
+group ScraperTests
+	xunit
+	xunit.runner.visualstudio

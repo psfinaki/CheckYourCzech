@@ -3,6 +3,9 @@
 open Xunit
 open Article
 
+let equals (x: string list) (y: seq<string>) = 
+    Assert.Equal<string list>(x, Seq.toList y)
+
 [<Fact>]
 let getsName() =
     "panda"
@@ -63,3 +66,10 @@ let detectsNoInfo() =
     |> tryGetInfo "evil"
     |> Option.isNone
     |> Assert.True
+
+[<Fact>]
+let getsPartNames() =
+    "drak"
+    |> getContent
+    |> getPartNames
+    |> equals [ "čeština"; "slovenština"; "poznámky"; "externí odkazy" ]
