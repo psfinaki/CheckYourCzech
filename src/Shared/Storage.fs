@@ -4,6 +4,7 @@ open System
 open System.Collections.Generic
 open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Table
+open Newtonsoft.Json
 
 module List = 
     let random (list : List<'T>) = 
@@ -28,7 +29,9 @@ type QueryCondition =
     | Is
     | IsNot
 
-let mapSafe mapping = Option.ofObj >> Option.map mapping >> Option.toObj
+let mapSafe mapping = Option.ofObj >> Option.map mapping >> Option.toObj >> JsonConvert.SerializeObject
+
+let getAs<'T> = JsonConvert.DeserializeObject<'T>
 
 let getTable name =
     let connectionString = Environment.GetEnvironmentVariable "STORAGE_CONNECTIONSTRING"
@@ -37,10 +40,11 @@ let getTable name =
     let table = client.GetTableReference name
     table
 
-let buildFilter (x, condition, y) = 
+let buildFilter (property, condition, value) =
+    let createFilter = TableQuery.GenerateFilterCondition
     match condition with
-    | Is    -> TableQuery.GenerateFilterCondition(x, QueryComparisons.Equal, y)
-    | IsNot -> TableQuery.GenerateFilterCondition(x, QueryComparisons.NotEqual, y)
+    | Is    -> createFilter (property, QueryComparisons.Equal,    JsonConvert.SerializeObject value)
+    | IsNot -> createFilter (property, QueryComparisons.NotEqual, JsonConvert.SerializeObject value)
 
 let combineFilters f1 f2 = TableQuery.CombineFilters(f1, TableOperators.And, f2)
 

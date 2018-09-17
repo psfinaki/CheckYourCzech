@@ -2,17 +2,16 @@
 
 open Giraffe
 open Saturn
-open Newtonsoft.Json
 open Storage
 
 let getPluralsTask : HttpHandler =
     fun _ ctx -> task {
-        let pluralsFilter = ("Plurals", IsNot, "[]")
+        let pluralsFilter = ("Plurals", IsNot, box [])
 
         let genderFromQuery = ctx.GetQueryStringValue "gender"
         let genderFilter = 
              match genderFromQuery with
-             | Ok gender -> Some ("Gender", Is, gender)
+             | Ok gender -> Some ("Gender", Is, box gender)
              | Error _   -> None
 
         let filters = 
@@ -21,7 +20,7 @@ let getPluralsTask : HttpHandler =
             | None        -> [ pluralsFilter ]
 
         let noun = Storage.getRandom<Noun.Noun> "nouns" filters
-        let task = noun.Singular
+        let task = Storage.getAs<string> noun.Singular
         return! ctx.WriteJsonAsync task
     }
 
@@ -29,15 +28,15 @@ let getPluralsAnswer word : HttpHandler =
     fun _ ctx -> task {
         let filters = [("Singular", Is, word)]
         let noun = Storage.getSingle<Noun.Noun> "nouns" filters
-        let answer = JsonConvert.DeserializeObject<string []> noun.Plurals
+        let answer = Storage.getAs<string []> noun.Plurals
         return! ctx.WriteJsonAsync answer
     }
 
 let getComparativesTask : HttpHandler =
     fun _ ctx -> task { 
-        let filters = [("Comparatives", IsNot, "[]")]
+        let filters = [("Comparatives", IsNot, box [])]
         let adjective = Storage.getRandom<Adjective.Adjective> "adjectives" filters
-        let task = adjective.Positive
+        let task = Storage.getAs<string> adjective.Positive
         return! ctx.WriteJsonAsync task
     }
 
@@ -45,15 +44,15 @@ let getComparativesAnswer word : HttpHandler =
     fun _ ctx -> task {
         let filters = [("Positive", Is, word)]
         let adjective = Storage.getSingle<Adjective.Adjective> "adjectives" filters
-        let answer = JsonConvert.DeserializeObject<string []> adjective.Comparatives
+        let answer = Storage.getAs<string []> adjective.Comparatives
         return! ctx.WriteJsonAsync answer
     }
 
 let getImperativesTask : HttpHandler =
     fun _ ctx -> task {
-        let filters = [("Imperatives", IsNot, "[]")]
+        let filters = [("Imperatives", IsNot, box [])]
         let verb = Storage.getRandom<Verb.Verb> "verbs" filters
-        let task = verb.Indicative 
+        let task = Storage.getAs<string> verb.Indicative 
         return! ctx.WriteJsonAsync task
     }
 
@@ -61,7 +60,7 @@ let getImperativesAnswer word : HttpHandler =
     fun _ ctx -> task {
         let filters =  [("Indicative", Is, word)]
         let verb = Storage.getSingle<Verb.Verb> "verbs" filters
-        let answer = JsonConvert.DeserializeObject<string []> verb.Imperatives
+        let answer = Storage.getAs<string []> verb.Imperatives
         return! ctx.WriteJsonAsync answer
     }
 

@@ -4,7 +4,6 @@ open FSharp.Data
 open Article
 open Gender
 open Microsoft.WindowsAzure.Storage.Table
-open Newtonsoft.Json
 
 type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
@@ -49,9 +48,9 @@ type Noun(word) =
     
     new() = Noun null
 
-    member val Singular = word |> Storage.mapSafe id with get, set
+    member val Singular = word |> Storage.mapSafe id                             with get, set
     member val Gender   = word |> Storage.mapSafe (getGender >> Gender.ToString) with get, set
-    member val Plurals  = word |> Storage.mapSafe getPlurals |> JsonConvert.SerializeObject with get, set
+    member val Plurals  = word |> Storage.mapSafe getPlurals                     with get, set
 
 let record word =
     if 
