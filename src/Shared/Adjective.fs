@@ -2,7 +2,6 @@
 
 open FSharp.Data
 open Microsoft.WindowsAzure.Storage.Table
-open Newtonsoft.Json
 open Article
 
 type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
@@ -25,8 +24,8 @@ type Adjective(word) =
     
     new() = Adjective null
 
-    member val Positive     = word |> Storage.mapSafe id                                             with get, set
-    member val Comparatives = word |> Storage.mapSafe getComparatives |> JsonConvert.SerializeObject with get, set
+    member val Positive     = word |> Storage.mapSafe id              with get, set
+    member val Comparatives = word |> Storage.mapSafe getComparatives with get, set
 
 let record word =
     if 

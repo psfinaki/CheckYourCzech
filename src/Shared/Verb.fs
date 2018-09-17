@@ -2,7 +2,6 @@
 
 open FSharp.Data
 open Microsoft.WindowsAzure.Storage.Table
-open Newtonsoft.Json
 open Article
 
 type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
@@ -25,8 +24,8 @@ type Verb(word) =
     
     new() = Verb null
     
-    member val Indicative  = word |> Storage.mapSafe id                                            with get, set
-    member val Imperatives = word |> Storage.mapSafe getImperatives |> JsonConvert.SerializeObject with get, set
+    member val Indicative  = word |> Storage.mapSafe id             with get, set
+    member val Imperatives = word |> Storage.mapSafe getImperatives with get, set
 
 let record word =
     if 
