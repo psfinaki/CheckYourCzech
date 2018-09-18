@@ -3,39 +3,38 @@
 open Xunit
 open Article
 
-let equals (x: string list) (y: seq<string>) = 
-    Assert.Equal<string list>(x, Seq.toList y)
+let equals (x: string list) (y: seq<string>) = Assert.Equal<string list>(x, Seq.toList y)
 
 [<Fact>]
-let getsName() =
+let ``Gets name``() =
     "panda"
     |> getName
     |> (=) "panda"
     |> Assert.True
 
 [<Fact>]
-let getsTableOfContents() =
+let ``Gets table of contents``() =
     "panda"
     |> tryGetTableOfContents
     |> Option.isSome
     |> Assert.True
 
 [<Fact>]
-let detectsNoTableOfContents() =
+let ``Detects no table of contents``() =
     "alik"
     |> tryGetTableOfContents
     |> Option.isNone
     |> Assert.True
     
 [<Fact>]
-let detectsContent() =
+let ``Detects content``() =
     "panda"
     |> tryGetContent
     |> Option.isSome
     |> Assert.True
 
 [<Fact>]
-let getsPart() =
+let ``Gets part``() =
     "panda"
     |> getContent
     |> tryGetPart "čeština"
@@ -43,7 +42,7 @@ let getsPart() =
     |> Assert.True
 
 [<Fact>]
-let detectsNoPart() =
+let ``Detects no part``() =
     "panda"
     |> getContent
     |> tryGetPart "ruština"
@@ -51,7 +50,7 @@ let detectsNoPart() =
     |> Assert.True
 
 [<Fact>]
-let detectsInfo() = 
+let ``Detects info``() = 
     "panda"
     |> getContent
     |> getPart "čeština"
@@ -60,7 +59,7 @@ let detectsInfo() =
     |> Assert.True
 
 [<Fact>]
-let detectsNoInfo() = 
+let ``Detects no info``() = 
     "panda"
     |> getContent
     |> tryGetInfo "evil"
@@ -68,7 +67,7 @@ let detectsNoInfo() =
     |> Assert.True
 
 [<Fact>]
-let getsPartNames() =
+let ``Gets part names``() =
     "drak"
     |> getContent
     |> getPartNames
