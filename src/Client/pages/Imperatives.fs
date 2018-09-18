@@ -102,7 +102,6 @@ let view model dispatch =
     
     [ 
         Markup.words 60 "Write imperative for the verb"
-        Markup.words 15 "(word generation currently takes time - up to a minute)"
 
         Markup.emptyLines 8
 

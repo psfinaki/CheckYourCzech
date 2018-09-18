@@ -119,7 +119,6 @@ let view model dispatch =
     
     [ 
         Markup.words 60 "Write plural for the word"
-        Markup.words 15 "(word generation currently takes time - up to a minute)"
 
         Markup.emptyLines 3
 
