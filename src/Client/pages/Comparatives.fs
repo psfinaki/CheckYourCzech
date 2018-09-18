@@ -102,7 +102,6 @@ let view model dispatch =
     
     [ 
         Markup.words 60 "Write comparative for the adjective"
-        Markup.words 15 "(word generation currently takes time - up to a minute)"
 
         Markup.emptyLines 8
 
