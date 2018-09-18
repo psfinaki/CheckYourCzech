@@ -19,7 +19,7 @@ let getNameFromHtml (html: HtmlDocument) =
     |> Seq.exactlyOne
     |> extractName
 
-// serves only for testing getName
+// serves only for testing getNameFromHtml
 let getName word = 
     loadArticle word
     |> fun data -> data.Html
