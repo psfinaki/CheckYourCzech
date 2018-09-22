@@ -3,6 +3,7 @@
 open Giraffe
 open Saturn
 open Storage
+open FSharp.Control.Tasks.V2
 
 let getPluralsTask : HttpHandler =
     fun _ ctx -> task {
