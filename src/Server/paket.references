@@ -2,7 +2,5 @@ group Server
 	FSharp.Core
 	Fable.JsonConverter
 	Giraffe.TokenRouter
-	FSharp.Data
 	Saturn
     Microsoft.ApplicationInsights.AspNetCore
-    WindowsAzure.Storage

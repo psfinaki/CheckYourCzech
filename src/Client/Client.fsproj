@@ -12,7 +12,6 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\Gender.fs" />
     <Compile Include="Pages.fs" />
     <Compile Include="Markup.fs" />
     <Compile Include="Styles.fs" />
@@ -23,6 +22,9 @@
     <Compile Include="views\Menu.fs" />
     <Compile Include="Shared.fs" />
     <Compile Include="App.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

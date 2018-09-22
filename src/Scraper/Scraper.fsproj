@@ -16,15 +16,13 @@
   </PropertyGroup>
 	
   <ItemGroup>
-  	<Compile Include="..\Shared\Article.fs" />
-    <Compile Include="..\Shared\Gender.fs" />
-    <Compile Include="..\Shared\Storage.fs" />
-    <Compile Include="..\Shared\Noun.fs" />
-    <Compile Include="..\Shared\Adjective.fs" />
-    <Compile Include="..\Shared\Verb.fs" />
     <Compile Include="Word.fs" />
     <Compile Include="WordGenerator.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.fsproj" />
   </ItemGroup>
   
   <Import Project="..\..\.paket\Paket.Restore.targets" />

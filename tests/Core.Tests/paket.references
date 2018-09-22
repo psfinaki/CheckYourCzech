@@ -1,3 +1,4 @@
-group ScraperTests
+group Core.Tests
+	FSharp.Core
 	xunit
 	xunit.runner.visualstudio

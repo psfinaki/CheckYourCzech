@@ -1,3 +1,0 @@
-group ServerTests
-	xunit
-	xunit.runner.visualstudio
