@@ -1,12 +1,10 @@
 group Core
-    storage: none
     source https://api.nuget.org/v3/index.json
 	
 	nuget FSharp.Data 3.0.0-beta3
 	nuget WindowsAzure.Storage
 
 group Server
-    storage: none
     source https://api.nuget.org/v3/index.json
 
 	nuget FSharp.Core
@@ -16,13 +14,11 @@ group Server
 	nuget Microsoft.ApplicationInsights.AspNetCore ~> 2.2
 
 group Scraper
-    storage: none
     source https://api.nuget.org/v3/index.json
 
 	nuget FSharp.Data 3.0.0-beta3
 	
 group Client
-    storage: none
     source https://api.nuget.org/v3/index.json
 	
 	nuget Fable.Core
@@ -35,7 +31,6 @@ group Client
 	clitool dotnet-fable
 
 group Core.Tests
-	storage: none
 	source https://nuget.org/api/v2
 
 	nuget FSharp.Core
@@ -43,7 +38,6 @@ group Core.Tests
 	nuget xunit.runner.visualstudio	
 	
 group Build
-	storage: none
     source https://api.nuget.org/v3/index.json
 
 	nuget FSharp.Core 4.3.4 // https://github.com/fsharp/FAKE/issues/2001
