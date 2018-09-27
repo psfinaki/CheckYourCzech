@@ -12,4 +12,4 @@ release.sh
 deploy.zip
 .paket/load/
 deploy/
-*.DotSettings.user
+*.user
