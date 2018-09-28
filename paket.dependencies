@@ -17,6 +17,7 @@ group Scraper
     source https://api.nuget.org/v3/index.json
 
 	nuget FSharp.Data 3.0.0-beta3
+	nuget Microsoft.ApplicationInsights
 	
 group Client
     source https://api.nuget.org/v3/index.json
