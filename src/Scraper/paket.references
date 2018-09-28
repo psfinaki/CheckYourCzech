@@ -1,2 +1,3 @@
 group Scraper
 	FSharp.Data
+	Microsoft.ApplicationInsights
