@@ -72,3 +72,10 @@ let ``Gets part names``() =
     |> getContent
     |> getPartNames
     |> equals [ "čeština"; "slovenština"; "poznámky"; "externí odkazy" ]
+
+[<Fact>]
+let ``Detects no part names``() =
+    "provozovat"
+    |> getContent
+    |> getPartNames
+    |> equals []
