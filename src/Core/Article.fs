@@ -79,23 +79,21 @@ let getInfo (name: string) elements =
     |> Seq.exactlyOne
 
 let getPartNames elements = 
-    let isHeaderTag   (node: HtmlNode) = headerTags |> Seq.contains (node.Name())
-
-    let biggestHeader = 
-        elements
-        |> Seq.filter isHeaderTag
-        |> Seq.map (fun node -> node.Name())
-        |> Seq.sort
-        |> Seq.head
+    let isHeaderTag (node: HtmlNode) = headerTags |> Seq.contains (node.Name())
 
     let getHeaderContent (node: HtmlNode) = 
         node.Elements()
         |> Seq.filter (fun node -> node.HasClass "mw-headline")
         |> Seq.exactlyOne
         |> fun node -> node.DirectInnerText()
-
+        
     elements
-    |> Seq.filter (fun node -> node.Name() = biggestHeader)
+    |> Seq.filter isHeaderTag
+    |> Seq.groupBy (fun x -> x.Name())
+    |> Seq.sortBy fst
+    |> Seq.tryHead
+    |> Option.bind (snd >> Some)
+    |> Option.defaultValue Seq.empty
     |> Seq.map getHeaderContent
 
 let getPartsWithNames elements =
