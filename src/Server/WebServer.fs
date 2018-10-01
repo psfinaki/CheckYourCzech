@@ -35,7 +35,19 @@ let getPluralsAnswer word : HttpHandler =
 
 let getComparativesTask : HttpHandler =
     fun _ ctx -> task { 
-        let filters = [("Comparatives", IsNot, box [])]
+        let comparativesFilter = ("Comparatives", IsNot, box [])
+
+        let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
+        let regularityFilter = 
+             match regularityFromQuery with
+             | Ok regularity -> Some ("IsRegular", Bool, box regularity)
+             | Error _       -> None
+
+        let filters = 
+            match regularityFilter with
+            | Some filter -> [ comparativesFilter; filter ]
+            | None        -> [ comparativesFilter ]
+
         let adjective = Storage.getRandom<Adjective.Adjective> "adjectives" filters
         let task = Storage.getAs<string> adjective.Positive
         return! ctx.WriteJsonAsync task

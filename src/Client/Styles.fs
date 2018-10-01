@@ -74,4 +74,5 @@ let select =
         Height "50%"
         Margin "auto"
         Padding "0 2%" 
+        TextAlign "center"
     ]

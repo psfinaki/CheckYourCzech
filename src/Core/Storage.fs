@@ -28,8 +28,10 @@ type CloudTable with
 type QueryCondition =
     | Is
     | IsNot
+    | Bool
 
-let mapSafe mapping = Option.ofObj >> Option.map mapping >> Option.toObj >> JsonConvert.SerializeObject
+let mapSafeString mapping = Option.ofObj >> Option.map mapping >> Option.toObj >> JsonConvert.SerializeObject
+let mapSafeBool mapping   = Option.ofObj >> Option.map mapping >> Option.defaultValue false
 
 let getAs<'T> = JsonConvert.DeserializeObject<'T>
 
@@ -40,11 +42,14 @@ let getTable name =
     let table = client.GetTableReference name
     table
 
-let buildFilter (property, condition, value) =
-    let createFilter = TableQuery.GenerateFilterCondition
+let buildFilter (property, condition, value : obj) =
+    let createStringFilter = TableQuery.GenerateFilterCondition
+    let createBoolFilter   = TableQuery.GenerateFilterConditionForBool
+
     match condition with
-    | Is    -> createFilter (property, QueryComparisons.Equal,    JsonConvert.SerializeObject value)
-    | IsNot -> createFilter (property, QueryComparisons.NotEqual, JsonConvert.SerializeObject value)
+    | Is    -> createStringFilter (property, QueryComparisons.Equal,    JsonConvert.SerializeObject value)
+    | IsNot -> createStringFilter (property, QueryComparisons.NotEqual, JsonConvert.SerializeObject value)
+    | Bool  -> createBoolFilter   (property, QueryComparisons.Equal,    Convert.ToBoolean value)
 
 let combineFilters f1 f2 = TableQuery.CombineFilters(f1, TableOperators.And, f2)
 
