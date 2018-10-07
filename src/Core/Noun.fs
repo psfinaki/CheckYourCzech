@@ -48,9 +48,9 @@ type Noun(word) =
     
     new() = Noun null
 
-    member val Singular = word |> Storage.mapSafe id                             with get, set
-    member val Gender   = word |> Storage.mapSafe (getGender >> Gender.ToString) with get, set
-    member val Plurals  = word |> Storage.mapSafe getPlurals                     with get, set
+    member val Singular = word |> Storage.mapSafeString id                             with get, set
+    member val Gender   = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
+    member val Plurals  = word |> Storage.mapSafeString getPlurals                     with get, set
 
 let record word =
     if 

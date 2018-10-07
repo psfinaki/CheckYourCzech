@@ -24,8 +24,8 @@ type Verb(word) =
     
     new() = Verb null
     
-    member val Indicative  = word |> Storage.mapSafe id             with get, set
-    member val Imperatives = word |> Storage.mapSafe getImperatives with get, set
+    member val Indicative  = word |> Storage.mapSafeString id             with get, set
+    member val Imperatives = word |> Storage.mapSafeString getImperatives with get, set
 
 let record word =
     if 
