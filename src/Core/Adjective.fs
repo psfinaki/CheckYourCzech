@@ -24,7 +24,10 @@ let getComparatives word =
     let url = "https://cs.wiktionary.org/wiki/" + word
     let data = Wiki.Load url
     let answer = data.Tables.``Stupňování[editovat]``.Rows.[1].tvar
-    answer.Split "/" |> Array.map (fun s -> s.Trim())
+
+    match answer with
+    | "—" -> [||]
+    | _ -> answer.Split "/" |> Array.map (fun s -> s.Trim())
 
 let isRegular word =
     let theoretical = buildTheoreticalComparative word

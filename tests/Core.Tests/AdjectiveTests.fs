@@ -18,6 +18,12 @@ let ``Gets comparatives - mulptiple options``() =
     |> equals [|"hrubší"; "hrubější"|]
 
 [<Fact>]
+let ``Gets comparatives - no options``() = 
+    "optimální"
+    |> getComparatives
+    |> equals [||]
+
+[<Fact>]
 let ``Validates proper adjective``() =
     "dobrý"
     |> isValid 
