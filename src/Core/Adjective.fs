@@ -34,6 +34,8 @@ let getComparatives word =
 
     match answer with
     | "—" -> [||]
+    | form when form = "víc " + word -> [||]
+    | form when form = "více " + word -> [||]
     | _ -> answer.Split "/" |> Array.map (fun s -> s.Trim())
 
 let isRegular word =
