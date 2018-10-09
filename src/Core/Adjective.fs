@@ -7,18 +7,25 @@ open Stem
 
 type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
 
+let getStem (word: string) = word.TrimEnd('í', 'ý')
+
 let buildTheoreticalComparative word = 
-    let getStem (word: string) = word.TrimEnd('í', 'ý')
-    
+    let isComparativePossible = not <| (getStem word).EndsWith 'c'
+
     let addSuffix = function
         | stem when stem |> endsHard -> stem + "ější"
         | stem when stem |> endsSoft -> stem + "ejší"
         | _ -> invalidArg word "odd adjective"
 
-    word
-    |> getStem
-    |> alternate
-    |> addSuffix
+    if isComparativePossible
+    then 
+        word
+        |> getStem
+        |> alternate
+        |> addSuffix
+        |> Some
+    else 
+        None
 
 let getComparatives word =
     let url = "https://cs.wiktionary.org/wiki/" + word
@@ -32,7 +39,10 @@ let getComparatives word =
 let isRegular word =
     let theoretical = buildTheoreticalComparative word
     let practical = getComparatives word
-    practical |> Array.contains theoretical
+
+    match theoretical with
+    | Some option -> practical |> Array.contains option
+    | None        -> practical |> Array.isEmpty
 
 let isValid =
     tryGetContent
