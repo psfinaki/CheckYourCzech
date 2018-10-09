@@ -18,8 +18,14 @@ let ``Gets comparatives - mulptiple options``() =
     |> equals [|"hrubší"; "hrubější"|]
 
 [<Fact>]
-let ``Gets comparatives - no options``() = 
+let ``Gets comparatives - no options - dash``() = 
     "optimální"
+    |> getComparatives
+    |> equals [||]
+    
+[<Fact>]
+let ``Gets comparatives - no options - více``() = 
+    "hyzdící"
     |> getComparatives
     |> equals [||]
 
@@ -107,6 +113,12 @@ let ``Detects regular adjective - stem ends soft``() =
 [<Fact>]
 let ``Detects regular adjective - stem alternates``() = 
     "dogmatický"
+    |> isRegular
+    |> Assert.True
+
+[<Fact>]
+let ``Detects regular adjective - no comparative``() = 
+    "vroucí"
     |> isRegular
     |> Assert.True
 
