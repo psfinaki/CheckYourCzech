@@ -58,7 +58,7 @@ let ``Invalidates improper adjective - no comparison``() =
 let ``Builds theoretical comparative - ější`` positive comparative =
     positive
     |> buildTheoreticalComparative
-    |> (=) comparative
+    |> (=) (Some comparative)
     |> Assert.True
 
 [<Theory>]
@@ -68,9 +68,9 @@ let ``Builds theoretical comparative - ější`` positive comparative =
 let ``Builds theoretical comparative - ejší`` positive comparative =
     positive
     |> buildTheoreticalComparative
-    |> (=) comparative
+    |> (=) (Some comparative)
     |> Assert.True
-    
+
 [<Theory>]
 // TODO: regular adjective ending with "ch"
 [<InlineData("chytrý", "chytřejší")>]
@@ -82,7 +82,14 @@ let ``Builds theoretical comparative - ejší`` positive comparative =
 let ``Builds theoretical comparative - stem alternation`` positive comparative =
     positive
     |> buildTheoreticalComparative
-    |> (=) comparative
+    |> (=) (Some comparative)
+    |> Assert.True
+
+[<Fact>]
+let ``Detects when cannot build theoretical comparative``() =
+    "vroucí"
+    |> buildTheoreticalComparative
+    |> (=) None
     |> Assert.True
 
 [<Fact>]
