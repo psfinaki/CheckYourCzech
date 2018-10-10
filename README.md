@@ -19,7 +19,8 @@ This service is supposed to give exercises like *"practice all the [exceptions](
 
 ## Features
 
-- For the plurals, the gender can be selected
+- For plurals, the gender can be selected
+- For comparatives, the regularity can be selected
 - Semi automated deployment
 - Alerts about requests and exceptions
 
