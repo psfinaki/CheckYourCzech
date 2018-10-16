@@ -6,13 +6,34 @@ open Adjective
 let equals (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)
 
 [<Fact>]
+let ``Gets positive - when positive``() = 
+    "dobrý"
+    |> getPositive
+    |> (=) "dobrý"
+    |> Assert.True
+
+[<Fact>]
+let ``Gets positive - when comparative``() = 
+    "lepší"
+    |> getPositive
+    |> (=) "dobrý"
+    |> Assert.True
+
+[<Fact>]
+let ``Gets positive - when superlative``() = 
+    "nejlepší"
+    |> getPositive
+    |> (=) "dobrý"
+    |> Assert.True
+
+[<Fact>]
 let ``Gets comparatives - one option``() = 
     "nový"
     |> getComparatives
     |> equals [|"novější"|]
 
 [<Fact>]
-let ``Gets comparatives - mulptiple options``() = 
+let ``Gets comparatives - multiple options``() = 
     "hrubý"
     |> getComparatives
     |> equals [|"hrubší"; "hrubější"|]
@@ -50,6 +71,18 @@ let ``Invalidates improper adjective - no adjective``() =
 [<Fact>]
 let ``Invalidates improper adjective - no comparison``() =
     "občasný"
+    |> isValid
+    |> Assert.False
+
+[<Fact>]
+let ``Invalidates improper adjective - not a positive form - comparative``() =
+    "horší"
+    |> isValid
+    |> Assert.False
+
+[<Fact>]
+let ``Invalidates improper adjective - not a positive form - superlative``() =
+    "nejširší"
     |> isValid
     |> Assert.False
 

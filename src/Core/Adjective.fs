@@ -27,6 +27,12 @@ let buildTheoreticalComparative word =
     else 
         None
 
+let getPositive word =
+    let url = "https://cs.wiktionary.org/wiki/" + word
+    let data = Wiki.Load url
+    let answer = data.Tables.``Stupňování[editovat]``.Rows.[0].tvar
+    answer
+
 let getComparatives word =
     let url = "https://cs.wiktionary.org/wiki/" + word
     let data = Wiki.Load url
@@ -46,12 +52,21 @@ let isRegular word =
     | Some option -> practical |> Array.contains option
     | None        -> practical |> Array.isEmpty
 
-let isValid =
+let hasAdjectiveContent = 
     tryGetContent
     >> Option.bind (tryGetPart "čeština")
     >> Option.bind (tryGetPart "přídavné jméno")
     >> Option.bind (tryGetPart "stupňování")
     >> Option.isSome
+
+let isValid word = 
+    if word |> hasAdjectiveContent
+    then
+        let adjective = word
+        let isPositive = adjective = getPositive adjective
+        isPositive
+    else
+        false
 
 type Adjective(word) =
     inherit TableEntity(word, word)
