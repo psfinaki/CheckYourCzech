@@ -8,8 +8,9 @@ let recordCzechPartOfSpeech word = function
     | "sloveso"         -> Verb.record word
     | _ -> ()
     
-let recordCzechPart word =
-    getPartNames
+let recordCzechPart word = 
+    getParts 
+    >> Seq.map fst
     >> Seq.iter (recordCzechPartOfSpeech word)
 
 let recordLanguagePart word = function
@@ -19,5 +20,5 @@ let recordLanguagePart word = function
 let record word =
     word
     |> getContent 
-    |> getPartsWithNames
+    |> getParts
     |> Seq.iter (recordLanguagePart word)

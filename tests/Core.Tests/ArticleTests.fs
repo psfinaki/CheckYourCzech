@@ -67,15 +67,36 @@ let ``Detects no info``() =
     |> Assert.True
 
 [<Fact>]
-let ``Gets part names``() =
+let ``Gets parts``() =
     "drak"
     |> getContent
-    |> getPartNames
+    |> getParts
+    |> Seq.map fst
     |> equals [ "čeština"; "slovenština"; "poznámky"; "externí odkazy" ]
 
 [<Fact>]
-let ``Detects no part names``() =
+let ``Gets parts - inner``() =
+    "ananas"
+    |> getContent
+    |> getPart "čeština"
+    |> getParts
+    |> Seq.map fst
+    |> equals [ "výslovnost"; "dělení"; "podstatné jméno" ]
+
+[<Fact>]
+let ``Detects no parts``() =
     "provozovat"
     |> getContent
-    |> getPartNames
+    |> getParts
+    |> Seq.map fst
+    |> equals []
+
+[<Fact>]
+let ``Detects no parts - inner``() =
+    "ananas"
+    |> getContent
+    |> getPart "čeština"
+    |> getPart "výslovnost"
+    |> getParts
+    |> Seq.map fst
     |> equals []
