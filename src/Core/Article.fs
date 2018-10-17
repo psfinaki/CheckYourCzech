@@ -40,36 +40,6 @@ let getContent word =
     |> getContentPart
     |> fun node -> node.Elements()
 
-// I failed to make this code expressive enough, thus comment.
-// We need to go through elements, 
-// find a header with required name,
-// take into account its size,
-// and stop iterating when meeting another header of this size.
-let getPart name elements =
-    let isHeaderTag   (node: HtmlNode) = headerTags |> Seq.contains (node.Name())
-    let isHeaderClass (node: HtmlNode) = node.HasClass headerClass
-
-    let getHeaderName (node: HtmlNode) = 
-        node.Elements()
-        |> Seq.where isHeaderClass
-        |> Seq.exactlyOne
-        |> fun node -> node.DirectInnerText()
-
-    let size = 
-        elements
-        |> Seq.where isHeaderTag
-        |> Seq.where (getHeaderName >> (=) name)
-        |> Seq.exactlyOne
-        |> fun node -> node.Name()
-
-    let headerHasSize size (header: HtmlNode) = header.Name() = size
-    let headerHasName name (header: HtmlNode) = getHeaderName header = name
-
-    elements
-    |> Seq.skipWhile (not << (fun node -> isHeaderTag node && node |> headerHasName name))
-    |> Seq.skip 1
-    |> Seq.takeWhile (not << (fun node -> isHeaderTag node && node |> headerHasSize size))
-
 let getInfo (name: string) elements =
     elements
     |> Seq.collect (fun (node: HtmlNode) -> node.Descendants())
@@ -78,30 +48,42 @@ let getInfo (name: string) elements =
     |> Seq.distinct
     |> Seq.exactlyOne
 
-let getPartNames elements = 
-    let isHeaderTag (node: HtmlNode) = headerTags |> Seq.contains (node.Name())
+let isHeader (node: HtmlNode) = 
+    headerTags 
+    |> Seq.contains (node.Name())
 
-    let getHeaderContent (node: HtmlNode) = 
-        node.Elements()
-        |> Seq.filter (fun node -> node.HasClass "mw-headline")
-        |> Seq.exactlyOne
-        |> fun node -> node.DirectInnerText()
-        
-    elements
-    |> Seq.filter isHeaderTag
-    |> Seq.groupBy (fun x -> x.Name())
-    |> Seq.sortBy fst
-    |> Seq.tryHead
-    |> Option.bind (snd >> Some)
-    |> Option.defaultValue Seq.empty
-    |> Seq.map getHeaderContent
+let getHeaderName (header: HtmlNode) = 
+    header.Elements()
+    |> Seq.filter (fun node -> node.HasClass headerClass)
+    |> Seq.exactlyOne
+    |> fun node -> node.DirectInnerText()
 
-let getPartsWithNames elements =
-    let getPartWithName name = name, elements |> getPart name
+let getParts elements =
+    let biggestHeader = 
+        elements
+        |> Seq.filter isHeader
+        |> Seq.map (fun node -> node.Name())
+        |> Seq.distinct
+        |> Seq.sort
+        |> Seq.tryHead
 
-    elements
-    |> getPartNames
-    |> Seq.map getPartWithName
+    match biggestHeader with
+    | Some header ->
+        let isBiggestHeader (node: HtmlNode) = node.Name() = header
+
+        elements
+        |> Seq.splitBy isBiggestHeader
+        |> Seq.where (fun group -> group |> Seq.head |> isBiggestHeader)
+        |> Seq.map Seq.behead
+        |> Seq.map (fun (header, nodes) -> (getHeaderName header, nodes))
+    | None -> 
+        Seq.empty
+
+let getPart name =
+    getParts
+    >> Seq.where (fun (header, _) -> header = name)
+    >> Seq.exactlyOne
+    >> snd
 
 let tryFunc1 func x   = try func x   |> Some with _ -> None
 let tryFunc2 func x y = try func x y |> Some with _ -> None
