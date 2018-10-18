@@ -59,6 +59,12 @@ let ``Gets plurals - no options``() =
     |> equals [||]
 
 [<Fact>]
+let ``Gets plurals - locked article``() = 
+    "debil"
+    |> getPlurals
+    |> equals [|"debilové"|]
+
+[<Fact>]
 let ``Validates proper noun``() =
     "panda"
     |> isValid 

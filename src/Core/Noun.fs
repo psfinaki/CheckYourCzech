@@ -5,7 +5,8 @@ open Article
 open Gender
 open Microsoft.WindowsAzure.Storage.Table
 
-type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
+type CommonArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
+type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
 
 let getGender =
     Article.getContent
@@ -16,9 +17,15 @@ let getGender =
 
 let getPlurals word = 
     let url = "https://cs.wiktionary.org/wiki/" + word
-    let data = Wiki.Load url
-    let answer = data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
-    
+    let answer = 
+        match isLocked word with
+        | false ->
+            let data = CommonArticle.Load url
+            data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
+        | true ->
+            let data = LockedArticle.Load url
+            data.Tables.Skloňování.Rows.[0].plurál
+
     match answer with
     | "—" | "" -> [||]
     | _ -> answer.Split "/" |> Array.map (fun s -> s.Trim()) 

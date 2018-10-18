@@ -6,6 +6,7 @@ type Article = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
 let wikiUrl = "https://cs.wiktionary.org/wiki/"
 let contentClass = "mw-parser-output"
+let navigationId = "mw-head"
 let headerClass  = "mw-headline"
 let headerTags   = [ "h2"; "h3"; "h4"; "h5"; "h6" ]
 
@@ -47,6 +48,28 @@ let getInfo (name: string) elements =
     |> Seq.where   (fun (text: string)   -> text.Contains name)
     |> Seq.distinct
     |> Seq.exactlyOne
+
+let getEditInfo word = 
+    let getEverything (data: Article)  = data.Html.Body().Descendants()
+    let isNavigationPart (node: HtmlNode) = node.HasId navigationId
+
+    let getNavigationPart = Seq.where isNavigationPart >> Seq.exactlyOne
+
+    word
+    |> loadArticle
+    |> getEverything
+    |> getNavigationPart
+    |> fun node -> node.Descendants()
+    |> Seq.collect (fun (node: HtmlNode) -> node.Attributes())
+    |> Seq.map     (fun (attr: HtmlAttribute) -> attr.Value())
+    |> Seq.where   (fun (text: string) -> text.Contains "[e]")
+    |> Seq.exactlyOne
+
+let isLocked word = 
+    match (getEditInfo word) with
+    | s when s.Contains "Tato stránka je zamčena" -> true
+    | s when s.Contains "Editovat tuto stránku" -> false
+    | _ -> invalidArg word "odd article"
 
 let isHeader (node: HtmlNode) = 
     headerTags 
