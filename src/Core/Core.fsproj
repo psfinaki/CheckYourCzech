@@ -12,6 +12,7 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Html.fs" />
     <Compile Include="SequenceExtensions.fs" />
     <Compile Include="Stem.fs" />
     <Compile Include="Storage.fs" />
