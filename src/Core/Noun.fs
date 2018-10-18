@@ -9,26 +9,27 @@ type CommonArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
 
 let getGender =
-    Article.getContent
+    getContent
     >> getPart "čeština"
     >> getPart "podstatné jméno"
     >> getInfo "rod "
     >> Gender.FromString
 
-let getPlurals word = 
+let getWikiPlural word = 
     let url = "https://cs.wiktionary.org/wiki/" + word
-    let answer = 
-        match isLocked word with
-        | false ->
-            let data = CommonArticle.Load url
-            data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
-        | true ->
-            let data = LockedArticle.Load url
-            data.Tables.Skloňování.Rows.[0].plurál
+    match isLocked word with
+    | false ->
+        let data = CommonArticle.Load url
+        data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
+    | true ->
+        let data = LockedArticle.Load url
+        data.Tables.Skloňování.Rows.[0].plurál
 
-    match answer with
+let parseWikiPlural = function
     | "—" | "" -> [||]
-    | _ -> answer.Split "/" |> Array.map (fun s -> s.Trim()) 
+    | plural -> plural.Split "/" |> Array.map (fun s -> s.Trim()) 
+
+let getPlurals = getWikiPlural >> parseWikiPlural
 
 let isValid word = 
     let nounPart =

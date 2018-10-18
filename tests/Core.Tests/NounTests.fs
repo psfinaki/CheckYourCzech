@@ -35,34 +35,42 @@ let ``Gets gender neuter``() =
     |> Assert.True
 
 [<Fact>]
-let ``Gets plural - one option``() = 
-    "svetr"
-    |> getPlurals
+let ``Parses plural - one option``() = 
+    "svetry"
+    |> parseWikiPlural
     |> equals [|"svetry"|]
 
 [<Fact>]
-let ``Gets plurals - multiple options, spaces near slash``() = 
-    "medvěd"
-    |> getPlurals
+let ``Parses plural - multiple options, spaces near slash``() = 
+    "medvědi / medvědové"
+    |> parseWikiPlural
     |> equals [|"medvědi"; "medvědové"|]
 
 [<Fact>]
-let ``Gets plurals - multiple options, no spaces near slash``() = 
-    "Edáček"
-    |> getPlurals
+let ``Parses plural - multiple options, no spaces near slash``() = 
+    "Edáčci/Edáčkové"
+    |> parseWikiPlural
     |> equals [|"Edáčci"; "Edáčkové"|]
 
-[<Fact>]
-let ``Gets plurals - no options``() = 
-    "Oxford"
-    |> getPlurals
+[<Theory>]
+[<InlineData "">]
+[<InlineData "—">]
+let ``Parses plural - no options`` plural = 
+    plural
+    |> parseWikiPlural
     |> equals [||]
 
 [<Fact>]
-let ``Gets plurals - locked article``() = 
+let ``Gets wiki plural - common article``() = 
+    "panda"
+    |> getWikiPlural
+    |> (=) "pandy"
+
+[<Fact>]
+let ``Gets wiki plural - locked article``() = 
     "debil"
-    |> getPlurals
-    |> equals [|"debilové"|]
+    |> getWikiPlural
+    |> (=) "debilové"
 
 [<Fact>]
 let ``Validates proper noun``() =
