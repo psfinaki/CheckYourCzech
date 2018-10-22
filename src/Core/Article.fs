@@ -17,7 +17,7 @@ let getEverything (data: Article)  = data.Html.Body().Descendants()
 
 let getNameFromHtml (html: HtmlDocument) = 
     let isTitleTag  (node: HtmlNode)  = node.Name() = "title"
-    let extractName (title: HtmlNode) = title.InnerText().Split(" – ").[0]
+    let extractName (title: HtmlNode) = title.InnerText().Replace(" – Wikislovník", "")
 
     html.Descendants isTitleTag
     |> Seq.exactlyOne

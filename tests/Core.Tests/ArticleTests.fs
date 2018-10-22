@@ -5,11 +5,15 @@ open Article
 
 let equals (x: string list) (y: seq<string>) = Assert.Equal<string list>(x, Seq.toList y)
 
-[<Fact>]
-let ``Gets name``() =
-    "panda"
+[<Theory>]
+[<InlineData "panda">]
+[<InlineData "mnoho myslivců – zajícova smrt">]
+[<InlineData "הַהֶרְגֵּל – טֶבַע שֵׁנִי">]
+[<InlineData "lengyel, magyar – két jó barát, együtt harcol, s issza borát">]
+let ``Gets name`` title =
+    title
     |> getName
-    |> (=) "panda"
+    |> (=) title
     |> Assert.True
 
 [<Fact>]
