@@ -10,6 +10,7 @@ let equals (x: string list) (y: seq<string>) = Assert.Equal<string list>(x, Seq.
 [<InlineData "mnoho myslivců – zajícova smrt">]
 [<InlineData "הַהֶרְגֵּל – טֶבַע שֵׁנִי">]
 [<InlineData "lengyel, magyar – két jó barát, együtt harcol, s issza borát">]
+[<InlineData "El cielo está enladrillado. ¿Quién lo desenladrillará? El desenladrillador que lo desenladrille, buen desenladrillador será.">]
 let ``Gets name`` title =
     title
     |> getName
