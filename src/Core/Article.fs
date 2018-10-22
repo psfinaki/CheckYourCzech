@@ -1,5 +1,6 @@
 ﻿module Article
 
+open System
 open FSharp.Data
 open Html
 
@@ -11,7 +12,10 @@ let headerClass  = "mw-headline"
 let navigationId = "mw-navigation"
 let lockInfoIndicator = "[e]"
 
-let loadArticle word = Article.Load (wikiUrl + word)
+let loadArticle = 
+    Uri.EscapeDataString
+    >> (+) wikiUrl
+    >> Article.Load
 
 let getEverything (data: Article)  = data.Html.Body().Descendants()
 
