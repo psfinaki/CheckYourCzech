@@ -100,3 +100,15 @@ let ``Detects no parts - inner``() =
     |> getParts
     |> Seq.map fst
     |> equals []
+
+[<Fact>]
+let ``Detects non-locked article``() =
+    "hudba"
+    |> isLocked
+    |> Assert.False
+
+[<Fact>]
+let ``Detects locked article``() =
+    "debil"
+    |> isLocked
+    |> Assert.True
