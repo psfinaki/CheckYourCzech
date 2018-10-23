@@ -20,8 +20,9 @@ let getPluralsTask : HttpHandler =
             | Some filter -> [ pluralsFilter; filter ]
             | None        -> [ pluralsFilter ]
 
-        let noun = Storage.getRandom<Noun.Noun> "nouns" filters
-        let task = Storage.getAs<string> noun.Singular
+        let noun = Storage.tryGetRandom<Noun.Noun> "nouns" filters
+        let getSingular (noun : Noun.Noun) = Storage.getAs<string> noun.Singular
+        let task = noun |> Option.map getSingular
         return! ctx.WriteJsonAsync task
     }
 
@@ -48,8 +49,9 @@ let getComparativesTask : HttpHandler =
             | Some filter -> [ comparativesFilter; filter ]
             | None        -> [ comparativesFilter ]
 
-        let adjective = Storage.getRandom<Adjective.Adjective> "adjectives" filters
-        let task = Storage.getAs<string> adjective.Positive
+        let adjective = Storage.tryGetRandom<Adjective.Adjective> "adjectives" filters
+        let getPositive (adjective : Adjective.Adjective) = Storage.getAs<string> adjective.Positive
+        let task = adjective |> Option.map getPositive
         return! ctx.WriteJsonAsync task
     }
 
@@ -64,8 +66,9 @@ let getComparativesAnswer word : HttpHandler =
 let getImperativesTask : HttpHandler =
     fun _ ctx -> task {
         let filters = [("Imperatives", IsNot, box [])]
-        let verb = Storage.getRandom<Verb.Verb> "verbs" filters
-        let task = Storage.getAs<string> verb.Indicative 
+        let verb = Storage.tryGetRandom<Verb.Verb> "verbs" filters
+        let getImperative (verb : Verb.Verb) = Storage.getAs<string> verb.Indicative
+        let task = verb |> Option.map getImperative |> Option.toObj
         return! ctx.WriteJsonAsync task
     }
 
