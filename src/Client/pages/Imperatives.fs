@@ -7,7 +7,7 @@ open Fable.PowerPack
 open Fable.Import.React
 
 type Model = {
-    Task : string 
+    Task : string option 
     Input : string
     InputSubmitted: bool
     Result : bool option
@@ -39,8 +39,12 @@ let loadTaskCmd() =
 let loadAnswerCmd task =
     Cmd.ofPromise getAnswer task FetchedAnswer FetchError
 
+let submitTask = function
+    | Some task -> loadAnswerCmd task
+    | None -> Cmd.none
+
 let init () =
-    { Task = ""
+    { Task = None
       Input = ""
       InputSubmitted = false
       Result = None },
@@ -51,11 +55,11 @@ let update msg model =
     | SetInput input ->
         { model with Input = input }, Cmd.none
     | SubmitTask ->
-        { model with Result = None; InputSubmitted = true }, loadAnswerCmd model.Task
+        { model with Result = None; InputSubmitted = true }, submitTask model.Task
     | UpdateTask ->
-        { model with Task = ""; Input = ""; Result = None }, loadTaskCmd()
+        { model with Task = None; Input = ""; Result = None }, loadTaskCmd()
     | FetchedTask task ->
-        { model with Task = task }, Cmd.none
+        { model with Task = Some task }, Cmd.none
     | FetchedAnswer answer ->
         let result = answer |> Array.contains model.Input
         { model with Result = Some result; InputSubmitted = false }, Cmd.none
@@ -69,7 +73,7 @@ let view model dispatch =
             let imageSource = if result then "images/correct.png" else "images/incorrect.png"
             let altText = if result then "Correct" else "Incorrect"
             Markup.icon imageSource 25 altText
-        | None when model.Task <> "" && model.InputSubmitted ->
+        | None when model.Task.IsSome && model.InputSubmitted ->
             let imageSource = "images/loading.gif"
             let altText = "Loading..."
             Markup.icon imageSource 25 altText
@@ -77,10 +81,10 @@ let view model dispatch =
             str ""
 
     let task = 
-        if model.Task <> "" 
-        then 
-            str model.Task 
-        else
+        match model.Task with
+        | Some t -> 
+            str t
+        | None ->
             let imageSource = "images/loading.gif"
             let altText = "Loading..."
             Markup.icon imageSource 25 altText
