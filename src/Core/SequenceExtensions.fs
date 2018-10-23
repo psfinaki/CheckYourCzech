@@ -1,5 +1,7 @@
 ﻿module Seq 
 
+open System
+
 let behead seq = 
     seq |> Seq.head, 
     seq |> Seq.tail
@@ -14,3 +16,17 @@ let splitBy func input =
     input
     |> Seq.groupBy projection
     |> Seq.map snd
+
+let random (seq: seq<'T>) = 
+    seq
+    |> Seq.sortBy (fun _ -> Guid.NewGuid())
+    |> Seq.take 1
+    |> Seq.exactlyOne
+
+let tryRandom = function
+    | seq when seq |> Seq.isEmpty ->
+        None
+    | seq ->
+        seq
+        |> random
+        |> Some
