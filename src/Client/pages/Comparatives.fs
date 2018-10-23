@@ -80,7 +80,7 @@ let update msg model =
     | UpdateTask ->
         { model with Task = None; Input = ""; Result = None }, loadTaskCmd model.Regularity
     | FetchedTask task ->
-        { model with Task = Some task }, Cmd.none
+        { model with Task = task |> Option.ofObj }, Cmd.none
     | FetchedAnswer answer ->
         let result = answer |> Array.contains model.Input
         { model with Result = Some result; InputSubmitted = false }, Cmd.none

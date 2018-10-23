@@ -1,16 +1,9 @@
 ﻿module Storage
 
 open System
-open System.Collections.Generic
 open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Table
 open Newtonsoft.Json
-
-module List = 
-    let random (list : List<'T>) = 
-        let maxValue = list.Count
-        let randomIndex = Random().Next maxValue
-        list.[randomIndex]
 
 type CloudTable with
     member this.ExecuteQuery (query : TableQuery<'T>) =
@@ -63,14 +56,14 @@ let buildQuery<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> filters =
         |> Seq.reduce combineFilters
         |> TableQuery<'T>().Where
 
-let getRandom<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName filters =
+let tryGetRandom<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName filters =
     let table = getTable tableName
 
     filters
     |> buildQuery<'T>
     |> table.ExecuteQuery
-    |> List.random
-    
+    |> Seq.tryRandom
+
 let getSingle<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName filters = 
     let table = getTable tableName
 
