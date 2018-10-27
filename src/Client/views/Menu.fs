@@ -10,4 +10,5 @@ let view () =
             yield Markup.viewLink Page.Plurals "Plurals"
             yield Markup.viewLink Page.Comparatives "Comparatives"
             yield Markup.viewLink Page.Imperatives "Imperatives"
+            yield Markup.viewLink Page.Participles "Participles"
         ]

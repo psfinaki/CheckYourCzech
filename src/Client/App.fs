@@ -30,6 +30,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.Imperatives ->
         let m, cmd = Imperatives.init()
         { model with PageModel = ImperativesModel m }, Cmd.map ImperativesMsg cmd
+    | Some Page.Participles ->
+        let m, cmd = Participles.init()
+        { model with PageModel = ParticiplesModel m }, Cmd.map ParticiplesMsg cmd
 
 let init result =
     let model =
@@ -48,6 +51,9 @@ let update msg model =
     | ImperativesMsg msg, ImperativesModel m ->
         let m, cmd = Imperatives.update msg m
         { model with PageModel = ImperativesModel m }, Cmd.map ImperativesMsg cmd
+    | ParticiplesMsg msg, ParticiplesModel m ->
+        let m, cmd = Participles.update msg m
+        { model with PageModel = ParticiplesModel m }, Cmd.map ParticiplesMsg cmd
     | _, _ ->
         model, Cmd.none
 

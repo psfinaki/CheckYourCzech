@@ -15,6 +15,7 @@
     <Compile Include="Pages.fs" />
     <Compile Include="Markup.fs" />
     <Compile Include="Styles.fs" />
+    <Compile Include="pages\Participles.fs" />
     <Compile Include="pages\Home.fs" />
     <Compile Include="pages\Plurals.fs" />
     <Compile Include="pages\Comparatives.fs" />

@@ -80,6 +80,23 @@ let getImperativesAnswer word : HttpHandler =
         return! ctx.WriteJsonAsync answer
     }
 
+let getParticiplesTask : HttpHandler =
+    fun _ ctx -> task {
+        let filters = [("Participles", IsNot, box [])]
+        let verb = Storage.tryGetRandom<Verb.Verb> "verbs" filters
+        let getParticiple (verb : Verb.Verb) = Storage.getAs<string> verb.Indicative
+        let task = verb |> Option.map getParticiple |> Option.toObj
+        return! ctx.WriteJsonAsync task
+    }
+
+let getParticiplesAnswer word : HttpHandler =
+    fun _ ctx -> task {
+        let filters =  [("Indicative", Is, word)]
+        let verb = Storage.getSingle<Verb.Verb> "verbs" filters
+        let answer = Storage.getAs<string []> verb.Participles
+        return! ctx.WriteJsonAsync answer
+    }
+
 let webApp = router {
     get  "/api/plurals/task"           getPluralsTask
     getf "/api/plurals/answer/%s"      getPluralsAnswer
@@ -89,4 +106,7 @@ let webApp = router {
 
     get  "/api/imperatives/task"       getImperativesTask
     getf "/api/imperatives/answer/%s"  getImperativesAnswer
+
+    get  "/api/participles/task"       getParticiplesTask
+    getf "/api/participles/answer/%s"  getParticiplesAnswer
 }

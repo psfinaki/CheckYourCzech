@@ -18,6 +18,18 @@ let ``Gets imperatives - multiple options``() =
     |> equals [|"čisť"; "čisti"|]
 
 [<Fact>]
+let ``Gets participles - one option``() = 
+    "spát"
+    |> getParticiples
+    |> equals [|"spal"|]
+
+[<Fact>]
+let ``Gets participles - multiple options``() = 
+    "klepnout"
+    |> getParticiples
+    |> equals [|"klepl"; "klepnul"|]
+
+[<Fact>]
 let ``Validates proper verb``() =
     "spát"
     |> isValid 

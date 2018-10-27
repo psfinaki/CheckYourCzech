@@ -1,7 +1,6 @@
 module Home
 
 open Fable.Helpers.React
-open Fable.Helpers.React.Props
 open Pages
 
 let view () =
@@ -14,20 +13,21 @@ let view () =
             [
                 div [ Styles.thirdParent ]
                     [
-                        Markup.viewLinkCentered Page.Plurals "Nouns"
-                        Markup.wordsCentered "Make plural"
+                        Markup.wordsCentered "Nouns"
+                        Markup.viewLinkCentered Page.Plurals "Make plural"
                     ]
                 
                 div [ Styles.thirdParent ]
                     [
-                        Markup.viewLinkCentered Page.Comparatives "Adjectives"
-                        Markup.wordsCentered "Make comparative"
+                        Markup.wordsCentered "Adjectives"
+                        Markup.viewLinkCentered Page.Comparatives "Make comparative"
                     ]
 
                 div [ Styles.thirdParent ]
                     [
-                        Markup.viewLinkCentered Page.Imperatives "Verbs"
-                        Markup.wordsCentered "Make imperative"
+                        Markup.wordsCentered "Verbs"
+                        Markup.viewLinkCentered Page.Imperatives "Make imperative"
+                        Markup.viewLinkCentered Page.Participles "Make participle"
                     ]
             ]
     ]
