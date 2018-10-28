@@ -9,6 +9,7 @@ type Page =
     | Plurals
     | Comparatives
     | Imperatives
+    | Participles
 
 let toHash =
     function
@@ -16,6 +17,7 @@ let toHash =
     | Page.Plurals -> "#plurals"
     | Page.Comparatives -> "#comparatives"
     | Page.Imperatives -> "#imperatives"
+    | Page.Participles -> "#participles"
 
 /// The URL is turned into a Result.
 let pageParser : Parser<Page -> Page,_> =
@@ -23,6 +25,7 @@ let pageParser : Parser<Page -> Page,_> =
         [ map Page.Home (s "home")
           map Page.Plurals (s "plurals")
           map Page.Comparatives (s "comparatives")
-          map Page.Imperatives (s "imperatives")]
+          map Page.Imperatives (s "imperatives")
+          map Page.Participles (s "participles")]
 
 let urlParser location = parseHash pageParser location

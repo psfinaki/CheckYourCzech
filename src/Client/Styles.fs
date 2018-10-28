@@ -11,7 +11,6 @@ let row =
 let rowWide = 
     Style [ 
         Width 850
-        Height 70 
     ]
     
 let thirdParent =
@@ -19,6 +18,7 @@ let thirdParent =
         Width "33%"
         Display "inline-block"
         Height "25px"
+        VerticalAlign "top"
     ]
     
 let center direction =

@@ -12,6 +12,12 @@ let getImperatives word =
     let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
     answer.Split "/" |> Array.map (fun s -> s.Trim())
 
+let getParticiples word =
+    let url = "https://cs.wiktionary.org/wiki/" + word
+    let data = Wiki.Load url
+    let answer = data.Tables.``Časování[editovat]3``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
+    answer.Split "/" |> Array.map (fun s -> s.Trim())
+
 let isValid =
     tryGetContent
     >> Option.bind (tryGetPart "čeština")
@@ -26,6 +32,7 @@ type Verb(word) =
     
     member val Indicative  = word |> Storage.mapSafeString id             with get, set
     member val Imperatives = word |> Storage.mapSafeString getImperatives with get, set
+    member val Participles = word |> Storage.mapSafeString getParticiples with get, set
 
 let record word =
     if 
