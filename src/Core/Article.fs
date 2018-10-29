@@ -11,6 +11,8 @@ let contentClass = "mw-parser-output"
 let headerClass  = "mw-headline"
 let navigationId = "mw-navigation"
 let lockInfoIndicator = "[e]"
+let tableElementName     = "table"
+let tableNameElementName = "caption"
 
 let loadArticle = 
     Uri.EscapeDataString
@@ -59,6 +61,24 @@ let getInfo text nodes =
     nodes
     |> getNodeByInnerText text
     |> fun (node: HtmlNode) -> node.DirectInnerText()
+
+let getTables nodes =
+    let isTable     (node: HtmlNode) = node.HasName tableElementName
+    let isTableName (node: HtmlNode) = node.HasName tableNameElementName
+
+    let getTableName (table: HtmlNode) =
+        table.Elements()
+        |> Seq.filter isTableName
+        |> Seq.exactlyOne
+        |> fun node -> node.DirectInnerText()
+        // for some reason, extracted captions end with an extra space
+        |> fun name -> name.TrimEnd()
+
+    let getTable table = (getTableName table, table)
+
+    nodes
+    |> Seq.filter isTable
+    |> Seq.map getTable
 
 let getParts elements =
     let biggestHeader = 
