@@ -4,19 +4,43 @@ open FSharp.Data
 open Microsoft.WindowsAzure.Storage.Table
 open Article
 
-type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
+type WikiImperativesPresent = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
+type WikiImperativesAbsent  = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
+
+let hasImperatives = 
+    getContent
+    >> getPart "čeština"
+    >> getPart "sloveso"
+    >> getPart "časování"
+    >> getTables
+    >> Seq.map fst
+    >> Seq.contains "Rozkazovací způsob"
 
 let getImperatives word =
-    let url = "https://cs.wiktionary.org/wiki/" + word
-    let data = Wiki.Load url
-    let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
-    answer.Split "/" |> Array.map (fun s -> s.Trim())
+    match hasImperatives word with
+    | true -> 
+        let url = "https://cs.wiktionary.org/wiki/" + word
+        let data = WikiImperativesPresent.Load url
+        let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
+        answer.Split "/" |> Array.map (fun s -> s.Trim())
+    | false ->
+        [||]
 
-let getParticiples word =
+let getWikiParticiples word =
     let url = "https://cs.wiktionary.org/wiki/" + word
-    let data = Wiki.Load url
-    let answer = data.Tables.``Časování[editovat]3``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
-    answer.Split "/" |> Array.map (fun s -> s.Trim())
+    match hasImperatives word with
+    | true ->
+        let data = WikiImperativesPresent.Load url
+        data.Tables.``Časování[editovat]3``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
+    | false ->
+        let data = WikiImperativesAbsent.Load url
+        data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
+
+let parseParticiples (s: string) = 
+    s.Split "/" 
+    |> Array.map (fun s -> s.Trim())
+
+let getParticiples = getWikiParticiples >> parseParticiples
 
 let isValid =
     tryGetContent

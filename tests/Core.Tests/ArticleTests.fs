@@ -97,6 +97,28 @@ let ``Detects no parts``() =
     |> equals []
 
 [<Fact>]
+let ``Gets tables``() =
+    "musit"
+    |> getContent
+    |> getPart "čeština"
+    |> getPart "sloveso"
+    |> getPart "časování"
+    |> getTables
+    |> Seq.map fst
+    |> equals [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
+
+[<Fact>]
+let ``Detects no tables``() =
+    "musit"
+    |> getContent
+    |> getPart "čeština"
+    |> getPart "sloveso"
+    |> getPart "význam"
+    |> getTables
+    |> Seq.map fst
+    |> equals []
+
+[<Fact>]
 let ``Detects no parts - inner``() =
     "ananas"
     |> getContent
