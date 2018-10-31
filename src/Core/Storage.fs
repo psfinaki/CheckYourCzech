@@ -18,6 +18,12 @@ type CloudTable with
         |> Async.RunSynchronously 
         |> ignore
 
+    member this.CreateIfNotExists() =
+        this.CreateIfNotExistsAsync() 
+        |> Async.AwaitTask 
+        |> Async.RunSynchronously 
+        |> ignore
+
 type QueryCondition =
     | Is
     | IsNot
@@ -33,6 +39,7 @@ let getTable name =
     let account = CloudStorageAccount.Parse connectionString
     let client = account.CreateCloudTableClient()
     let table = client.GetTableReference name
+    table.CreateIfNotExists()
     table
 
 let buildFilter (property, condition, value : obj) =
