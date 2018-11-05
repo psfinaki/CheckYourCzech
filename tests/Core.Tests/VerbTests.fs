@@ -18,16 +18,34 @@ let ``Detects imperatives absent``() =
     |> Assert.False
 
 [<Fact>]
-let ``Gets imperatives - one option``() = 
-    "spát"
-    |> getImperatives
+let ``Parses imperatives - one option``() = 
+    "spi"
+    |> parseImperatives
     |> equals [|"spi"|]
 
 [<Fact>]
-let ``Gets imperatives - multiple options``() = 
-    "čistit"
-    |> getImperatives
+let ``Parses imperatives - multiple options``() = 
+    "čisť / čisti"
+    |> parseImperatives
     |> equals [|"čisť"; "čisti"|]
+
+[<Fact>]
+let ``Parses imperatives - bookish``() = 
+    "prohraj / (knižně) prohrej"
+    |> parseImperatives
+    |> equals [|"prohraj"; "prohrej"|]
+
+[<Fact>]
+let ``Parses imperatives - informal``() = 
+    "slzej, (hovorově) slz"
+    |> parseImperatives
+    |> equals [|"slzej"|]
+
+[<Fact>]
+let ``Parses imperatives - rearer``() = 
+    "pohaň / (řidč.) pohaněj"
+    |> parseImperatives
+    |> equals [|"pohaň"; "pohaněj"|]
 
 [<Fact>]
 let ``Gets imperatives - no options``() = 
