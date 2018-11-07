@@ -8,6 +8,7 @@ Three exercises are available now:
 1. [Plurals](https://check-your-czech.azurewebsites.net/#plurals) - make plural number for nouns
 2. [Comparatives](https://check-your-czech.azurewebsites.net/#comparatives) - make comparative degree for adjectives
 3. [Imperatives](https://check-your-czech.azurewebsites.net/#imperatives) - make imperative mood for verbs
+4. [Participles](https://check-your-czech.azurewebsites.net/#participles) - make active participle for verbs
 
 ## Concept
 
