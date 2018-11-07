@@ -12,6 +12,8 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="StringHelper.fs" />
+    <Compile Include="WikiString.fs" />
     <Compile Include="Html.fs" />
     <Compile Include="SequenceExtensions.fs" />
     <Compile Include="Stem.fs" />

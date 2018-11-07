@@ -4,6 +4,7 @@ open FSharp.Data
 open Microsoft.WindowsAzure.Storage.Table
 open Article
 open Stem
+open WikiString
 
 type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
 
@@ -33,16 +34,18 @@ let getPositive word =
     let answer = data.Tables.``Stupňování[editovat]``.Rows.[0].tvar
     answer
 
+let isSyntacticComparison (comparison: string) = comparison.StartsWith "více "
+
 let getComparatives word =
+    let isMorphologicalComparison = not << isSyntacticComparison
+    
     let url = "https://cs.wiktionary.org/wiki/" + word
     let data = Wiki.Load url
-    let answer = data.Tables.``Stupňování[editovat]``.Rows.[1].tvar
+    let wikiString = data.Tables.``Stupňování[editovat]``.Rows.[1].tvar
 
-    match answer with
-    | "—" -> [||]
-    | form when form = "víc " + word -> [||]
-    | form when form = "více " + word -> [||]
-    | _ -> answer.Split "/" |> Array.map (fun s -> s.Trim())
+    wikiString 
+    |> getForms
+    |> Array.filter isMorphologicalComparison
 
 let isRegular word =
     let theoretical = buildTheoreticalComparative word

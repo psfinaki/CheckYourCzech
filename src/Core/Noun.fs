@@ -4,6 +4,7 @@ open FSharp.Data
 open Article
 open Gender
 open Microsoft.WindowsAzure.Storage.Table
+open WikiString
 
 type CommonArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
@@ -25,11 +26,7 @@ let getWikiPlural word =
         let data = LockedArticle.Load url
         data.Tables.Skloňování.Rows.[0].plurál
 
-let parseWikiPlural = function
-    | "—" | "" -> [||]
-    | plural -> plural.Split "/" |> Array.map (fun s -> s.Trim()) 
-
-let getPlurals = getWikiPlural >> parseWikiPlural
+let getPlurals = getWikiPlural >> getForms
 
 let isValid word = 
     let nounPart =

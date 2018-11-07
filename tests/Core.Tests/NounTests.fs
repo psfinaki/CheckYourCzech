@@ -4,8 +4,6 @@ open Xunit
 open Noun
 open Gender
 
-let equals (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)
-
 [<Fact>]
 let ``Gets gender masculine animate``() =
     "tata"
@@ -33,32 +31,6 @@ let ``Gets gender neuter``() =
     |> getGender
     |> (=) Neuter
     |> Assert.True
-
-[<Fact>]
-let ``Parses plural - one option``() = 
-    "svetry"
-    |> parseWikiPlural
-    |> equals [|"svetry"|]
-
-[<Fact>]
-let ``Parses plural - multiple options, spaces near slash``() = 
-    "medvědi / medvědové"
-    |> parseWikiPlural
-    |> equals [|"medvědi"; "medvědové"|]
-
-[<Fact>]
-let ``Parses plural - multiple options, no spaces near slash``() = 
-    "Edáčci/Edáčkové"
-    |> parseWikiPlural
-    |> equals [|"Edáčci"; "Edáčkové"|]
-
-[<Theory>]
-[<InlineData "">]
-[<InlineData "—">]
-let ``Parses plural - no options`` plural = 
-    plural
-    |> parseWikiPlural
-    |> equals [||]
 
 [<Fact>]
 let ``Gets wiki plural - common article``() = 
