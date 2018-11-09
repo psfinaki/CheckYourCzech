@@ -3,6 +3,7 @@
 open FSharp.Data
 open Microsoft.WindowsAzure.Storage.Table
 open Article
+open WikiString
 
 type WikiImperativesPresent = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 type WikiImperativesAbsent  = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
@@ -22,7 +23,7 @@ let getImperatives word =
         let url = "https://cs.wiktionary.org/wiki/" + word
         let data = WikiImperativesPresent.Load url
         let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
-        answer.Split "/" |> Array.map (fun s -> s.Trim())
+        getForms answer
     | false ->
         [||]
 
@@ -36,11 +37,7 @@ let getWikiParticiples word =
         let data = WikiImperativesAbsent.Load url
         data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
 
-let parseParticiples (s: string) = 
-    s.Split "/" 
-    |> Array.map (fun s -> s.Trim())
-
-let getParticiples = getWikiParticiples >> parseParticiples
+let getParticiples = getWikiParticiples >> getForms
 
 let isValid =
     tryGetContent

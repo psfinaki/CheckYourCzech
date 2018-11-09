@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="WikiStringTests.fs" />
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="ArticleTests.fs" />
     <Compile Include="NounTests.fs" />

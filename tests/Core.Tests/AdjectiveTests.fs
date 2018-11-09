@@ -3,8 +3,6 @@
 open Xunit
 open Adjective
 
-let equals (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)
-
 [<Fact>]
 let ``Gets positive - when positive``() = 
     "dobrý"
@@ -27,28 +25,16 @@ let ``Gets positive - when superlative``() =
     |> Assert.True
 
 [<Fact>]
-let ``Gets comparatives - one option``() = 
-    "nový"
-    |> getComparatives
-    |> equals [|"novější"|]
+let ``Detects syntactic comparison``() = 
+    "více hyzdící"
+    |> isSyntacticComparison
+    |> Assert.True
 
 [<Fact>]
-let ``Gets comparatives - multiple options``() = 
-    "hrubý"
-    |> getComparatives
-    |> equals [|"hrubší"; "hrubější"|]
-
-[<Fact>]
-let ``Gets comparatives - no options - dash``() = 
-    "optimální"
-    |> getComparatives
-    |> equals [||]
-    
-[<Fact>]
-let ``Gets comparatives - no options - více``() = 
-    "hyzdící"
-    |> getComparatives
-    |> equals [||]
+let ``Detects morphological comparison``() = 
+    "novější"
+    |> isSyntacticComparison
+    |> Assert.False
 
 [<Fact>]
 let ``Validates proper adjective``() =
