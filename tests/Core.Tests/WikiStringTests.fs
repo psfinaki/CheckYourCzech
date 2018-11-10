@@ -52,14 +52,19 @@ let ``Detects colloquial form``() =
     |> Assert.True
     
 [<Fact>]
-let ``Detects official form``() = 
+let ``Detects literary form``() = 
     "slzej"
     |> isColloquial
     |> Assert.False
 
 [<Fact>]
-let ``Removes allowed labels``() =
+let ``Removes allowed labels - rearer``() =
     "(řidč.) pohaněj"
     |> removeLabels
     |> (=) "pohaněj"
-
+    
+[<Fact>]
+let ``Removes allowed labels - bookish``() =
+    "(knižně) prohrej"
+    |> removeLabels
+    |> (=) "prohrej"
