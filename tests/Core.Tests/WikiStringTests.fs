@@ -32,3 +32,34 @@ let ``Detects word``() =
     "Brussels"
     |> isBlank
     |> Assert.False
+
+[<Fact>]
+let ``Detects archaic form``() = 
+    "(zastarale) pec"
+    |> isArchaic
+    |> Assert.True
+    
+[<Fact>]
+let ``Detects modern form``() = 
+    "peč"
+    |> isArchaic
+    |> Assert.False
+
+[<Fact>]
+let ``Detects colloquial form``() = 
+    "(hovorově) slz"
+    |> isColloquial
+    |> Assert.True
+    
+[<Fact>]
+let ``Detects official form``() = 
+    "slzej"
+    |> isColloquial
+    |> Assert.False
+
+[<Fact>]
+let ``Removes allowed labels``() =
+    "(řidč.) pohaněj"
+    |> removeLabels
+    |> (=) "pohaněj"
+
