@@ -2,6 +2,8 @@
 
 open StringHelper
 
+let formSeparators = [|'/'; ','|]
+
 let isBlank s = 
     s = "" ||
     s = "—"  
@@ -9,6 +11,6 @@ let isBlank s =
 let isWord = not << isBlank
 
 let getForms =
-    split '/'
+    split formSeparators
     >> Array.map trim
     >> Array.filter isWord

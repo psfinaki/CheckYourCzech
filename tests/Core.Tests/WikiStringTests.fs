@@ -11,9 +11,11 @@ let ``Gets forms - one form``() =
     |> getForms
     |> equals [|"pastila"|]
 
-[<Fact>]
-let ``Gets forms - multiple forms``() = 
-    "Edáčci/Edáčkové"
+[<Theory>]
+[<InlineData("Edáčci/Edáčkové")>]
+[<InlineData("Edáčci,Edáčkové")>]
+let ``Gets forms - multiple forms`` s = 
+    s
     |> getForms
     |> equals [|"Edáčci"; "Edáčkové"|]
 
