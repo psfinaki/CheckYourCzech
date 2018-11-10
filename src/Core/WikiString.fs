@@ -3,7 +3,7 @@
 open StringHelper
 
 let formSeparators = [|'/'; ','|]
-let allowedLabels  = [|"(řidč.)"|]
+let allowedLabels  = [|"(řidč.)"; "(knižně)"|]
 
 let isBlank s = 
     s = "" ||
