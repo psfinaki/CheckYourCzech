@@ -2,4 +2,4 @@
 
 let trim (s: string) = s.Trim()
 
-let split (separator: char) (s: string) = s.Split separator
+let split (separators: char[]) (s: string) = s.Split separators
