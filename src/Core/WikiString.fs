@@ -3,7 +3,8 @@
 open StringHelper
 
 let formSeparators = [|'/'; ','|]
-let allowedLabels  = [|"(řidč.)"; "(knižně)"|]
+let allowedLabels  = ["(řidč.)"; "(knižně)"]
+let rejectedLabels = ["(zastarale)"; "(hovorově)"]
 let referencePattern = "\[\d*\]"
 
 let isBlank s = 
@@ -11,13 +12,7 @@ let isBlank s =
     s = "—"  
 
 let isWord = not << isBlank
-
-let isArchaic = starts "(zastarale)"
-let isColloquial = starts "(hovorově)"
-
-let isOfficial s = 
-    not <| isColloquial s &&
-    not <| isArchaic s
+let isOfficial = not << containsAny rejectedLabels
 
 let removeLabels = removeMany allowedLabels >> trim
 let removeReferences = removePattern referencePattern >> trim
