@@ -35,27 +35,21 @@ let ``Detects word``() =
     |> Assert.False
 
 [<Fact>]
-let ``Detects archaic form``() = 
-    "(zastarale) pec"
-    |> isArchaic
+let ``Detects official form``() = 
+    "poslouchat"
+    |> isOfficial
     |> Assert.True
-    
-[<Fact>]
-let ``Detects modern form``() = 
-    "peč"
-    |> isArchaic
-    |> Assert.False
 
 [<Fact>]
-let ``Detects colloquial form``() = 
-    "(hovorově) slz"
-    |> isColloquial
-    |> Assert.True
+let ``Detects unofficial form - archaic``() = 
+    "(zastarale) pec"
+    |> isOfficial
+    |> Assert.False
     
 [<Fact>]
-let ``Detects literary form``() = 
-    "slzej"
-    |> isColloquial
+let ``Detects unofficial form - colloquial``() = 
+    "(hovorově) slz"
+    |> isOfficial
     |> Assert.False
 
 [<Fact>]
