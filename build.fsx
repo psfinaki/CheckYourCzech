@@ -21,8 +21,6 @@ open Cit.Helpers.Arm
 open Cit.Helpers.Arm.Parameters
 open Microsoft.Azure.Management.ResourceManager.Fluent.Core
 
-let appName = "check-your-czech"
-
 let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
 let deployDir = Path.getFullName "./deploy"
@@ -115,7 +113,8 @@ type ArmOutput = { WebAppPassword : ParameterValue<string> }
 
 let mutable deploymentOutputs : ArmOutput option = None
 
-Target.create "ArmTemplate" (fun _ ->
+Target.create "ArmTemplate" (fun args ->
+    let appName = args.Context.Arguments |> List.exactlyOne
     let armTemplate = @"arm-template.json"
     let resourceGroupName = appName
 
@@ -151,7 +150,8 @@ type WebClient'() =
         request.Timeout <- 30 * 60 * 1000
         request
 
-Target.create "AppService" (fun _ ->
+Target.create "AppService" (fun args ->
+    let appName = args.Context.Arguments |> List.exactlyOne
     let zipFile = "deploy.zip"
     File.Delete zipFile
     Zip.zip deployDir zipFile !!(deployDir + @"\**\**")
@@ -174,4 +174,4 @@ Target.create "AppService" (fun _ ->
     ==> "RestoreServer"
     ==> "Run"
 
-Target.runOrDefault "Build"
+Target.runOrDefaultWithArguments "Build"
