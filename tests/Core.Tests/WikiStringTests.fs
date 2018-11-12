@@ -68,3 +68,14 @@ let ``Removes allowed labels - bookish``() =
     "(knižně) prohrej"
     |> removeLabels
     |> (=) "prohrej"
+
+[<Theory>]
+[<InlineData("rci[1]")>]
+[<InlineData("rci[2]")>]
+[<InlineData("rci[12]")>]
+[<InlineData("rci[1][2]")>]
+let ``Removes references`` s =
+    s
+    |> removeReferences
+    |> (=) "rci"
+    |> Assert.True
