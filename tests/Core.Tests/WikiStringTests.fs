@@ -53,6 +53,12 @@ let ``Detects unofficial form - colloquial``() =
     |> Assert.False
 
 [<Fact>]
+let ``Detects unofficial form - informal``() = 
+    "(v obecném jazyce) zab"
+    |> isOfficial
+    |> Assert.False
+
+[<Fact>]
 let ``Removes allowed labels - rearer``() =
     "(řidč.) pohaněj"
     |> removeLabels

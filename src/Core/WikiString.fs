@@ -4,7 +4,7 @@ open StringHelper
 
 let formSeparators = [|'/'; ','|]
 let allowedLabels  = ["(řidč.)"; "(knižně)"]
-let rejectedLabels = ["(zastarale)"; "(hovorově)"]
+let rejectedLabels = ["(zastarale)"; "(hovorově)"; "(v obecném jazyce)"]
 let referencePattern = "\[\d*\]"
 
 let isBlank s = 
