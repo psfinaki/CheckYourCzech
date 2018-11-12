@@ -1,5 +1,7 @@
 ﻿module StringHelper
 
+open System.Text.RegularExpressions
+
 let trim (s: string) = s.Trim()
 
 let split (separators: char[]) (s: string) = s.Split separators
@@ -11,3 +13,5 @@ let remove (value: string) (s: string) = s.Replace(value, "")
 let removeMany (values: string[]) (s: string) = 
     let folder acc value = acc |> remove value
     values |> Array.fold folder s
+
+let removePattern pattern s = Regex.Replace(s, pattern, "")

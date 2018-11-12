@@ -4,6 +4,7 @@ open StringHelper
 
 let formSeparators = [|'/'; ','|]
 let allowedLabels  = [|"(řidč.)"; "(knižně)"|]
+let referencePattern = "\[\d*\]"
 
 let isBlank s = 
     s = "" ||
@@ -19,6 +20,7 @@ let isOfficial s =
     not <| isArchaic s
 
 let removeLabels = removeMany allowedLabels >> trim
+let removeReferences = removePattern referencePattern >> trim
 
 let getForms =
     split formSeparators
@@ -26,3 +28,4 @@ let getForms =
     >> Array.filter isWord
     >> Array.filter isOfficial
     >> Array.map removeLabels
+    >> Array.map removeReferences
