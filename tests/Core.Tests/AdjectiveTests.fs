@@ -3,26 +3,25 @@
 open Xunit
 open Adjective
 
+let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
+
 [<Fact>]
 let ``Gets positive - when positive``() = 
     "dobrý"
     |> getPositive
-    |> (=) "dobrý"
-    |> Assert.True
+    |> equals "dobrý"
 
 [<Fact>]
 let ``Gets positive - when comparative``() = 
     "lepší"
     |> getPositive
-    |> (=) "dobrý"
-    |> Assert.True
+    |> equals "dobrý"
 
 [<Fact>]
 let ``Gets positive - when superlative``() = 
     "nejlepší"
     |> getPositive
-    |> (=) "dobrý"
-    |> Assert.True
+    |> equals "dobrý"
 
 [<Fact>]
 let ``Detects syntactic comparison``() = 
@@ -83,8 +82,7 @@ let ``Invalidates improper adjective - not a positive form - superlative``() =
 let ``Builds theoretical comparative - ější`` positive comparative =
     positive
     |> buildTheoreticalComparative
-    |> (=) (Some comparative)
-    |> Assert.True
+    |> equals (Some comparative)
 
 [<Theory>]
 [<InlineData("pomalý", "pomalejší")>]
@@ -93,8 +91,7 @@ let ``Builds theoretical comparative - ější`` positive comparative =
 let ``Builds theoretical comparative - ejší`` positive comparative =
     positive
     |> buildTheoreticalComparative
-    |> (=) (Some comparative)
-    |> Assert.True
+    |> equals (Some comparative)
 
 [<Theory>]
 // TODO: regular adjective ending with "ch"
@@ -108,15 +105,13 @@ let ``Builds theoretical comparative - ejší`` positive comparative =
 let ``Builds theoretical comparative - stem alternation`` positive comparative =
     positive
     |> buildTheoreticalComparative
-    |> (=) (Some comparative)
-    |> Assert.True
+    |> equals (Some comparative)
 
 [<Fact>]
 let ``Detects when cannot build theoretical comparative``() =
     "vroucí"
     |> buildTheoreticalComparative
-    |> (=) None
-    |> Assert.True
+    |> equals None
 
 [<Fact>]
 let ``Detects regular adjective - stem ends hard``() = 

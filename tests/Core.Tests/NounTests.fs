@@ -4,45 +4,43 @@ open Xunit
 open Noun
 open Gender
 
+let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
+
 [<Fact>]
 let ``Gets gender masculine animate``() =
     "tata"
     |> getGender
-    |> (=) MasculineAnimate
-    |> Assert.True
+    |> equals MasculineAnimate
 
 [<Fact>]
 let ``Gets gender masculine inanimate``() =
     "hrad"
     |> getGender
-    |> (=) MasculineInanimate
-    |> Assert.True
+    |> equals MasculineInanimate
 
 [<Fact>]
 let ``Gets gender feminine``() =
     "panda"
     |> getGender
-    |> (=) Feminine
-    |> Assert.True
+    |> equals Feminine
 
 [<Fact>]
 let ``Gets gender neuter``() =
     "okno"
     |> getGender
-    |> (=) Neuter
-    |> Assert.True
+    |> equals Neuter
 
 [<Fact>]
 let ``Gets wiki plural - common article``() = 
     "panda"
     |> getWikiPlural
-    |> (=) "pandy"
+    |> equals "pandy"
 
 [<Fact>]
 let ``Gets wiki plural - locked article``() = 
     "debil"
     |> getWikiPlural
-    |> (=) "debilové"
+    |> equals "debilové"
 
 [<Fact>]
 let ``Validates proper noun``() =

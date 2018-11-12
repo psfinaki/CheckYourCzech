@@ -3,7 +3,8 @@
 open Xunit
 open Article
 
-let equals (x: string list) (y: seq<string>) = Assert.Equal<string list>(x, Seq.toList y)
+let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
+let equalsMany (x: string list) (y: seq<string>) = Assert.Equal<string list>(x, Seq.toList y)
 
 [<Theory>]
 [<InlineData "panda">]
@@ -14,8 +15,7 @@ let equals (x: string list) (y: seq<string>) = Assert.Equal<string list>(x, Seq.
 let ``Gets name`` title =
     title
     |> getName
-    |> (=) title
-    |> Assert.True
+    |> equals title
 
 [<Fact>]
 let ``Gets table of contents``() =
@@ -60,8 +60,7 @@ let ``Detects info``() =
     |> getContent
     |> getPart "čeština"
     |> getInfo "rod"
-    |> (=) "rod ženský"
-    |> Assert.True
+    |> equals "rod ženský"
 
 [<Fact>]
 let ``Detects no info``() = 
@@ -77,7 +76,7 @@ let ``Gets parts``() =
     |> getContent
     |> getParts
     |> Seq.map fst
-    |> equals [ "čeština"; "slovenština"; "poznámky"; "externí odkazy" ]
+    |> equalsMany [ "čeština"; "slovenština"; "poznámky"; "externí odkazy" ]
 
 [<Fact>]
 let ``Gets parts - inner``() =
@@ -86,7 +85,7 @@ let ``Gets parts - inner``() =
     |> getPart "čeština"
     |> getParts
     |> Seq.map fst
-    |> equals [ "výslovnost"; "dělení"; "podstatné jméno" ]
+    |> equalsMany [ "výslovnost"; "dělení"; "podstatné jméno" ]
 
 [<Fact>]
 let ``Detects no parts``() =
@@ -94,7 +93,7 @@ let ``Detects no parts``() =
     |> getContent
     |> getParts
     |> Seq.map fst
-    |> equals []
+    |> equalsMany []
 
 [<Fact>]
 let ``Gets tables``() =
@@ -105,7 +104,7 @@ let ``Gets tables``() =
     |> getPart "časování"
     |> getTables
     |> Seq.map fst
-    |> equals [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
+    |> equalsMany [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
 
 [<Fact>]
 let ``Detects no tables``() =
@@ -116,7 +115,7 @@ let ``Detects no tables``() =
     |> getPart "význam"
     |> getTables
     |> Seq.map fst
-    |> equals []
+    |> equalsMany []
 
 [<Fact>]
 let ``Detects no parts - inner``() =
@@ -126,7 +125,7 @@ let ``Detects no parts - inner``() =
     |> getPart "výslovnost"
     |> getParts
     |> Seq.map fst
-    |> equals []
+    |> equalsMany []
 
 [<Fact>]
 let ``Detects non-locked article``() =

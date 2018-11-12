@@ -3,13 +3,14 @@
 open WikiString
 open Xunit
 
-let equals (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)
+let equals expected actual = Assert.Equal(expected, actual)
+let equalsMany (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)
 
 [<Fact>]
 let ``Gets forms - one form``() = 
     "pastila"
     |> getForms
-    |> equals [|"pastila"|]
+    |> equalsMany [|"pastila"|]
 
 [<Theory>]
 [<InlineData("Edáčci/Edáčkové")>]
@@ -17,7 +18,7 @@ let ``Gets forms - one form``() =
 let ``Gets forms - multiple forms`` s = 
     s
     |> getForms
-    |> equals [|"Edáčci"; "Edáčkové"|]
+    |> equalsMany [|"Edáčci"; "Edáčkové"|]
 
 [<Theory>]
 [<InlineData("")>]
@@ -61,13 +62,13 @@ let ``Detects literary form``() =
 let ``Removes allowed labels - rearer``() =
     "(řidč.) pohaněj"
     |> removeLabels
-    |> (=) "pohaněj"
+    |> equals "pohaněj"
     
 [<Fact>]
 let ``Removes allowed labels - bookish``() =
     "(knižně) prohrej"
     |> removeLabels
-    |> (=) "prohrej"
+    |> equals "prohrej"
 
 [<Theory>]
 [<InlineData("rci[1]")>]
@@ -77,5 +78,4 @@ let ``Removes allowed labels - bookish``() =
 let ``Removes references`` s =
     s
     |> removeReferences
-    |> (=) "rci"
-    |> Assert.True
+    |> equals "rci"
