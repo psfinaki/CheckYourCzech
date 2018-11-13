@@ -15,6 +15,7 @@ let view () =
                     [
                         Markup.wordsCentered "Nouns"
                         Markup.viewLinkCentered Page.Plurals "Make plural"
+                        Markup.viewLinkCentered Page.Accusatives "Make accusative"
                     ]
                 
                 div [ Styles.thirdParent ]

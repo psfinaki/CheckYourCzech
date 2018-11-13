@@ -4,6 +4,7 @@ module Shared
 type PageModel =
     | HomePageModel
     | PluralsModel of Plurals.Model
+    | AccusativesModel of Accusatives.Model
     | ComparativesModel of Comparatives.Model
     | ImperativesModel of Imperatives.Model
     | ParticiplesModel of Participles.Model
@@ -15,6 +16,7 @@ type Model =
 /// The composed set of messages that update the state of the application
 type Msg = 
     | PluralsMsg of Plurals.Msg
+    | AccusativesMsg of Accusatives.Msg
     | ComparativesMsg of Comparatives.Msg
     | ImperativesMsg of Imperatives.Msg
     | ParticiplesMsg of Participles.Msg
@@ -30,6 +32,8 @@ let viewPage model dispatch =
         Home.view ()
     | PluralsModel m ->
         Plurals.view m (PluralsMsg >> dispatch)
+    | AccusativesModel m ->
+        Accusatives.view m (AccusativesMsg >> dispatch)
     | ComparativesModel m ->
         Comparatives.view m (ComparativesMsg >> dispatch)
     | ImperativesModel m ->
