@@ -13,9 +13,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="StringHelper.fs" />
+    <Compile Include="SequenceExtensions.fs" />
     <Compile Include="WikiString.fs" />
     <Compile Include="Html.fs" />
-    <Compile Include="SequenceExtensions.fs" />
     <Compile Include="Stem.fs" />
     <Compile Include="Storage.fs" />
     <Compile Include="Gender.fs" />
