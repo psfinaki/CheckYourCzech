@@ -24,3 +24,7 @@ let getForms =
     >> Array.filter isOfficial
     >> Array.map removeLabels
     >> Array.map removeReferences
+
+let getForm =
+    getForms
+    >> Seq.trySingle 

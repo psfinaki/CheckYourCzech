@@ -7,6 +7,20 @@ let equals expected actual = Assert.Equal(expected, actual)
 let equalsMany (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)
 
 [<Fact>]
+let ``Gets form - form exists``() = 
+    "pastila"
+    |> getForm
+    |> Option.isSome
+    |> Assert.True
+
+[<Fact>]
+let ``Gets form - form does not exist``() = 
+    "—"
+    |> getForm
+    |> Option.isNone
+    |> Assert.True
+
+[<Fact>]
 let ``Gets forms - one form``() = 
     "pastila"
     |> getForms
