@@ -43,6 +43,18 @@ let ``Gets wiki plural - locked article``() =
     |> equals "debilové"
 
 [<Fact>]
+let ``Gets wiki accusative - common article``() = 
+    "panda"
+    |> getWikiAccusative
+    |> equals "pandu"
+
+[<Fact>]
+let ``Gets wiki accusative - locked article``() = 
+    "debil"
+    |> getWikiAccusative
+    |> equals "debila"
+
+[<Fact>]
 let ``Validates proper noun``() =
     "panda"
     |> isValid 

@@ -24,6 +24,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.Plurals ->
         let m, cmd = Plurals.init()
         { model with PageModel = PluralsModel m }, Cmd.map PluralsMsg cmd
+    | Some Page.Accusatives ->
+        let m, cmd = Accusatives.init()
+        { model with PageModel = AccusativesModel m }, Cmd.map AccusativesMsg cmd
     | Some Page.Comparatives ->
         let m, cmd = Comparatives.init()
         { model with PageModel = ComparativesModel m }, Cmd.map ComparativesMsg cmd
@@ -45,6 +48,9 @@ let update msg model =
     | PluralsMsg msg, PluralsModel m ->
         let m, cmd = Plurals.update msg m
         { model with PageModel = PluralsModel m }, Cmd.map PluralsMsg cmd
+    | AccusativesMsg msg, AccusativesModel m ->
+        let m, cmd = Accusatives.update msg m
+        { model with PageModel = AccusativesModel m }, Cmd.map AccusativesMsg cmd
     | ComparativesMsg msg, ComparativesModel m ->
         let m, cmd = Comparatives.update msg m
         { model with PageModel = ComparativesModel m }, Cmd.map ComparativesMsg cmd

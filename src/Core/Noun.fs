@@ -26,7 +26,18 @@ let getWikiPlural word =
         let data = LockedArticle.Load url
         data.Tables.Skloňování.Rows.[0].plurál
 
+let getWikiAccusative word = 
+    let url = "https://cs.wiktionary.org/wiki/" + word
+    match isLocked word with
+    | false ->
+        let data = CommonArticle.Load url
+        data.Tables.``Skloňování[editovat]``.Rows.[3].singulár
+    | true ->
+        let data = LockedArticle.Load url
+        data.Tables.Skloňování.Rows.[3].singulár
+
 let getPlurals = getWikiPlural >> getForms
+let getAccusatives = getWikiAccusative >> getForms
 
 let isValid word = 
     let nounPart =
@@ -53,9 +64,10 @@ type Noun(word) =
     
     new() = Noun null
 
-    member val Singular = word |> Storage.mapSafeString id                             with get, set
-    member val Gender   = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
-    member val Plurals  = word |> Storage.mapSafeString getPlurals                     with get, set
+    member val Singular    = word |> Storage.mapSafeString id                             with get, set
+    member val Gender      = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
+    member val Plurals     = word |> Storage.mapSafeString getPlurals                     with get, set
+    member val Accusatives = word |> Storage.mapSafeString getAccusatives                 with get, set
 
 let record word =
     if 

@@ -34,6 +34,35 @@ let getPluralsAnswer word : HttpHandler =
         return! ctx.WriteJsonAsync answer
     }
 
+let getAccusativesTask : HttpHandler =
+    fun _ ctx -> task {
+        let accusativesFilter = ("Accusatives", IsNot, box [])
+
+        let genderFromQuery = ctx.GetQueryStringValue "gender"
+        let genderFilter = 
+             match genderFromQuery with
+             | Ok gender -> Some ("Gender", Is, box gender)
+             | Error _   -> None
+
+        let filters = 
+            match genderFilter with
+            | Some filter -> [ accusativesFilter; filter ]
+            | None        -> [ accusativesFilter ]
+
+        let noun = Storage.tryGetRandom<Noun.Noun> "nouns" filters
+        let getSingular (noun : Noun.Noun) = Storage.getAs<string> noun.Singular
+        let task = noun |> Option.map getSingular |> Option.toObj
+        return! ctx.WriteJsonAsync task
+    }
+
+let getAccusativesAnswer word : HttpHandler =
+    fun _ ctx -> task {
+        let filters = [("Singular", Is, word)]
+        let noun = Storage.getSingle<Noun.Noun> "nouns" filters
+        let answer = Storage.getAs<string []> noun.Accusatives
+        return! ctx.WriteJsonAsync answer
+    }
+
 let getComparativesTask : HttpHandler =
     fun _ ctx -> task { 
         let comparativesFilter = ("Comparatives", IsNot, box [])
@@ -100,6 +129,9 @@ let getParticiplesAnswer word : HttpHandler =
 let webApp = router {
     get  "/api/plurals/task"           getPluralsTask
     getf "/api/plurals/answer/%s"      getPluralsAnswer
+
+    get  "/api/accusatives/task"       getAccusativesTask
+    getf "/api/accusatives/answer/%s"  getAccusativesAnswer
 
     get  "/api/comparatives/task"      getComparativesTask
     getf "/api/comparatives/answer/%s" getComparativesAnswer
