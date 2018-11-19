@@ -4,7 +4,9 @@ open Elmish
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.PowerPack
+open Fable.PowerPack.Fetch
 open Fable.Import.React
+open Thoth.Json
 
 type Model = {
     Task : string option 
@@ -21,23 +23,19 @@ type Msg =
     | FetchedAnswer of string[]
     | FetchError of exn
 
-let getTask() =
-    promise {
-        let url = "/api/participles/task"
-        return! Fetch.fetchAs<string> url []
-    }
+let getTask =
+    let url = "/api/participles/task"
+    fetchAs<string> url (Decode.Auto.generateDecoder())
 
 let getAnswer task = 
-    promise {
-        let url = "/api/participles/answer/" + task
-        return! Fetch.fetchAs<string[]> url []
-    }
+    let url = "/api/participles/answer/" + task
+    fetchAs<string[]> url (Decode.Auto.generateDecoder())
 
 let loadTaskCmd() =
-    Cmd.ofPromise getTask () FetchedTask FetchError
+    Cmd.ofPromise getTask [] FetchedTask FetchError
 
 let loadAnswerCmd task =
-    Cmd.ofPromise getAnswer task FetchedAnswer FetchError
+    Cmd.ofPromise (getAnswer task) [] FetchedAnswer FetchError
 
 let submitTask = function
     | Some task -> loadAnswerCmd task

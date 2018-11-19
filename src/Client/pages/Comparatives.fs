@@ -6,7 +6,9 @@ open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.PowerPack
+open Fable.PowerPack.Fetch
 open Fable.Import.React
+open Thoth.Json
 
 // because Fable cannot compile bool.Parse
 type Boolean with
@@ -33,29 +35,25 @@ type Msg =
     | FetchError of exn
 
 let getTask regularity =
-    promise {
-        let url = 
-            match regularity with
-            | Some r -> "/api/comparatives/task?isRegular=" + r.ToString()
-            | None   -> "/api/comparatives/task"
+    let url = 
+        match regularity with
+        | Some r -> "/api/comparatives/task?isRegular=" + r.ToString()
+        | None   -> "/api/comparatives/task"
 
-        return! Fetch.fetchAs<string> url []
-    }
+    fetchAs<string> url (Decode.Auto.generateDecoder())
 
 let getAnswer task = 
-    promise {
-        let url = "/api/comparatives/answer/" + task
-        return! Fetch.fetchAs<string[]> url []
-    }
+    let url = "/api/comparatives/answer/" + task
+    Fetch.fetchAs<string[]> url (Decode.Auto.generateDecoder())
 
 [<Literal>]
 let RegularityUnset = ""
 
 let loadTaskCmd regularity =
-    Cmd.ofPromise getTask regularity FetchedTask FetchError
+    Cmd.ofPromise (getTask regularity) [] FetchedTask FetchError
 
 let loadAnswerCmd task =
-    Cmd.ofPromise getAnswer task FetchedAnswer FetchError
+    Cmd.ofPromise (getAnswer task) [] FetchedAnswer FetchError
 
 let submitTask = function
     | Some task -> loadAnswerCmd task

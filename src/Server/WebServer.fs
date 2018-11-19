@@ -1,12 +1,13 @@
-﻿module WebServer
+module WebServer
 
+open FSharp.Control.Tasks.V2
 open Giraffe
 open Saturn
 open Storage
-open FSharp.Control.Tasks.V2
+open Microsoft.AspNetCore.Http
 
-let getPluralsTask : HttpHandler =
-    fun _ ctx -> task {
+let getPluralsTask next (ctx: HttpContext) =
+    task {
         let pluralsFilter = ("Plurals", IsNot, box [])
 
         let genderFromQuery = ctx.GetQueryStringValue "gender"
@@ -23,19 +24,19 @@ let getPluralsTask : HttpHandler =
         let noun = Storage.tryGetRandom<Noun.Noun> "nouns" filters
         let getSingular (noun : Noun.Noun) = Storage.getAs<string> noun.Singular
         let task = noun |> Option.map getSingular |> Option.toObj
-        return! ctx.WriteJsonAsync task
+        return! Successful.OK task next ctx
     }
 
-let getPluralsAnswer word : HttpHandler =
-    fun _ ctx -> task {
+let getPluralsAnswer word next ctx =
+    task {
         let filters = [("Singular", Is, word)]
         let noun = Storage.getSingle<Noun.Noun> "nouns" filters
         let answer = Storage.getAs<string []> noun.Plurals
-        return! ctx.WriteJsonAsync answer
+        return! Successful.OK answer next ctx
     }
 
-let getAccusativesTask : HttpHandler =
-    fun _ ctx -> task {
+let getAccusativesTask next (ctx : HttpContext) =
+    task {
         let accusativesFilter = ("Accusatives", IsNot, box [])
 
         let genderFromQuery = ctx.GetQueryStringValue "gender"
@@ -52,19 +53,19 @@ let getAccusativesTask : HttpHandler =
         let noun = Storage.tryGetRandom<Noun.Noun> "nouns" filters
         let getSingular (noun : Noun.Noun) = Storage.getAs<string> noun.Singular
         let task = noun |> Option.map getSingular |> Option.toObj
-        return! ctx.WriteJsonAsync task
+        return! Successful.OK task next ctx
     }
 
-let getAccusativesAnswer word : HttpHandler =
-    fun _ ctx -> task {
+let getAccusativesAnswer word next ctx =
+    task {
         let filters = [("Singular", Is, word)]
         let noun = Storage.getSingle<Noun.Noun> "nouns" filters
         let answer = Storage.getAs<string []> noun.Accusatives
-        return! ctx.WriteJsonAsync answer
+        return! Successful.OK answer next ctx
     }
 
-let getComparativesTask : HttpHandler =
-    fun _ ctx -> task { 
+let getComparativesTask next (ctx : HttpContext) =
+    task { 
         let comparativesFilter = ("Comparatives", IsNot, box [])
 
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
@@ -81,49 +82,49 @@ let getComparativesTask : HttpHandler =
         let adjective = Storage.tryGetRandom<Adjective.Adjective> "adjectives" filters
         let getPositive (adjective : Adjective.Adjective) = Storage.getAs<string> adjective.Positive
         let task = adjective |> Option.map getPositive |> Option.toObj
-        return! ctx.WriteJsonAsync task
+        return! Successful.OK task next ctx
     }
 
-let getComparativesAnswer word : HttpHandler =
-    fun _ ctx -> task {
+let getComparativesAnswer word next ctx =
+    task {
         let filters = [("Positive", Is, word)]
         let adjective = Storage.getSingle<Adjective.Adjective> "adjectives" filters
         let answer = Storage.getAs<string []> adjective.Comparatives
-        return! ctx.WriteJsonAsync answer
+        return! Successful.OK answer next ctx
     }
 
-let getImperativesTask : HttpHandler =
-    fun _ ctx -> task {
+let getImperativesTask next ctx =
+    task {
         let filters = [("Imperatives", IsNot, box [])]
         let verb = Storage.tryGetRandom<Verb.Verb> "verbs" filters
         let getImperative (verb : Verb.Verb) = Storage.getAs<string> verb.Indicative
         let task = verb |> Option.map getImperative |> Option.toObj
-        return! ctx.WriteJsonAsync task
+        return! Successful.OK task next ctx
     }
 
-let getImperativesAnswer word : HttpHandler =
-    fun _ ctx -> task {
+let getImperativesAnswer word next ctx =
+    task {
         let filters =  [("Indicative", Is, word)]
         let verb = Storage.getSingle<Verb.Verb> "verbs" filters
         let answer = Storage.getAs<string []> verb.Imperatives
-        return! ctx.WriteJsonAsync answer
+        return! Successful.OK answer next ctx
     }
 
-let getParticiplesTask : HttpHandler =
-    fun _ ctx -> task {
+let getParticiplesTask next ctx =
+    task {
         let filters = [("Participles", IsNot, box [])]
         let verb = Storage.tryGetRandom<Verb.Verb> "verbs" filters
         let getParticiple (verb : Verb.Verb) = Storage.getAs<string> verb.Indicative
         let task = verb |> Option.map getParticiple |> Option.toObj
-        return! ctx.WriteJsonAsync task
+        return! Successful.OK task next ctx
     }
 
-let getParticiplesAnswer word : HttpHandler =
-    fun _ ctx -> task {
+let getParticiplesAnswer word next ctx =
+    task {
         let filters =  [("Indicative", Is, word)]
         let verb = Storage.getSingle<Verb.Verb> "verbs" filters
         let answer = Storage.getAs<string []> verb.Participles
-        return! ctx.WriteJsonAsync answer
+        return! Successful.OK answer next ctx
     }
 
 let webApp = router {

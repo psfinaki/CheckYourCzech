@@ -5,8 +5,10 @@ open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.PowerPack
+open Fable.PowerPack.Fetch
 open Fable.Import.React
 open Gender
+open Thoth.Json
 
 type Model = {
     Gender : Gender option
@@ -26,28 +28,24 @@ type Msg =
     | FetchError of exn
 
 let getTask gender =
-    promise {
-        let url = 
-            match gender with
-            | Some g -> "/api/accusatives/task?gender=" + Gender.ToString g
-            | None   -> "/api/accusatives/task"
-        return! Fetch.fetchAs<string> url []
-    }
+    let url = 
+        match gender with
+        | Some g -> "/api/accusatives/task?gender=" + Gender.ToString g
+        | None   -> "/api/accusatives/task"
+    fetchAs<string> url (Decode.Auto.generateDecoder())
 
 let getAnswer task = 
-    promise {
-        let url = "/api/accusatives/answer/" + task
-        return! Fetch.fetchAs<string[]> url []
-    }
+    let url = "/api/accusatives/answer/" + task
+    fetchAs<string[]> url (Decode.Auto.generateDecoder())
 
 [<Literal>]
 let GenderUnset = ""
 
 let loadTaskCmd gender =
-    Cmd.ofPromise getTask gender FetchedTask FetchError
+    Cmd.ofPromise (getTask gender) [] FetchedTask FetchError
 
 let loadAnswerCmd task =
-    Cmd.ofPromise getAnswer task FetchedAnswer FetchError
+    Cmd.ofPromise (getAnswer task) [] FetchedAnswer FetchError
 
 let submitTask = function
     | Some task -> loadAnswerCmd task

@@ -11,7 +11,7 @@ type Wiki = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
 let getStem (word: string) = word.TrimEnd('í', 'ý')
 
 let buildTheoreticalComparative word = 
-    let isComparativePossible = not <| (getStem word).EndsWith 'c'
+    let isComparativePossible = not <| (getStem word).EndsWith "c"
 
     let addSuffix = function
         | stem when stem |> endsHard -> stem + "ější"
