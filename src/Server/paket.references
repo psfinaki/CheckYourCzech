@@ -1,6 +1,4 @@
 group Server
-	FSharp.Core
-	Fable.JsonConverter
-	Giraffe.TokenRouter
+	Thoth.Json.Giraffe
 	Saturn
-    Microsoft.ApplicationInsights.AspNetCore
+	Microsoft.ApplicationInsights.AspNetCore

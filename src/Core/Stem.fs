@@ -5,6 +5,7 @@ open System
 type String with
     member this.EndsWith (values: seq<char>) = 
         values
+        |> Seq.map string
         |> Seq.exists this.EndsWith
     
     member this.EndsWith (values: seq<string>) = 

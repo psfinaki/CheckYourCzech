@@ -1,8 +1,9 @@
-// https://github.com/ionide/ionide-vscode-fsharp/issues/839
 #r "paket: groupref build //"
 #load "./.fake/build.fsx/intellisense.fsx"
+
 #if !FAKE
-  #r "netstandard"
+#r "netstandard"
+#r "Facades/netstandard" // https://github.com/ionide/ionide-vscode-fsharp/issues/839#issuecomment-396296095
 #endif
 
 #load @"paket-files/build/CompositionalIT/fshelpers/src/FsHelpers/ArmHelper/ArmHelper.fs"
@@ -25,44 +26,41 @@ let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
 let deployDir = Path.getFullName "./deploy"
 
-let platformTool tool =
-    match Process.tryFindFileOnPath tool with 
-    | Some t -> t 
-    | _ -> failwithf "%s not found" tool
+let platformTool tool winTool =
+    let tool = if Environment.isUnix then tool else winTool
+    match ProcessUtils.tryFindFileOnPath tool with
+    | Some t -> t
+    | _ ->
+        let errorMsg =
+            tool + " was not found in path. " +
+            "Please install it and make sure it's available from your path. " +
+            "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
+        failwith errorMsg
 
-let nodeTool = platformTool "node.exe"
-let yarnTool = platformTool "yarn.cmd"
-
-let install = lazy DotNet.install DotNet.Versions.Release_2_1_300
-
-let inline withWorkDir wd =
-    DotNet.Options.lift install.Value
-    >> DotNet.Options.withWorkingDirectory wd
+let nodeTool = platformTool "node" "node.exe"
+let yarnTool = platformTool "yarn" "yarn.cmd"
 
 let runTool cmd args workingDir =
-    let result =
-        Process.execSimple (fun info ->
-            { info with
-                FileName = cmd
-                WorkingDirectory = workingDir
-                Arguments = args })
-            TimeSpan.MaxValue
-    if result <> 0 then failwithf "'%s %s' failed" cmd args
+    let arguments = args |> String.split ' ' |> Arguments.OfArgs
+    Command.RawCommand (cmd, arguments)
+    |> CreateProcess.fromCommand
+    |> CreateProcess.withWorkingDirectory workingDir
+    |> CreateProcess.ensureExitCode
+    |> Proc.run
+    |> ignore
 
 let runDotNet cmd workingDir =
     let result =
-        DotNet.exec (withWorkDir workingDir) cmd ""
+        DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
     if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s" cmd workingDir
 
 let openBrowser url =
-    let result =
-        //https://github.com/dotnet/corefx/issues/10361
-        Process.execSimple (fun info ->
-            { info with
-                FileName = url
-                UseShellExecute = true })
-            TimeSpan.MaxValue
-    if result <> 0 then failwithf "opening browser failed"
+    //https://github.com/dotnet/corefx/issues/10361
+    Command.ShellCommand url
+    |> CreateProcess.fromCommand
+    |> CreateProcess.ensureExitCodeWithMessage "opening browser failed"
+    |> Proc.run
+    |> ignore
 
 Target.create "Clean" (fun _ ->
     Shell.cleanDirs [deployDir]
@@ -83,7 +81,7 @@ Target.create "RestoreServer" (fun _ ->
 
 Target.create "Build" (fun _ ->
     runDotNet "build" serverPath
-    runDotNet "fable webpack -- -p" clientPath
+    runDotNet "fable webpack-cli -- --config src/Client/webpack.config.js -p" clientPath
 )
 
 Target.create "Run" (fun _ ->
@@ -91,7 +89,7 @@ Target.create "Run" (fun _ ->
         runDotNet "watch run" serverPath
     }
     let client = async {
-        runDotNet "fable webpack-dev-server" clientPath
+        runDotNet "fable webpack-dev-server -- --config src/Client/webpack.config.js" clientPath
     }
     let browser = async {
         do! Async.Sleep 5000
@@ -142,10 +140,11 @@ Target.create "ArmTemplate" (fun args ->
         | DeploymentCompleted d -> deploymentOutputs <- d)
 )
 
+// https://github.com/SAFE-Stack/SAFE-template/issues/120
 // https://stackoverflow.com/a/6994391/3232646
-type WebClient'() = 
+type TimeoutWebClient() =
     inherit WebClient()
-    override this.GetWebRequest uri = 
+    override this.GetWebRequest uri =
         let request = base.GetWebRequest uri
         request.Timeout <- 30 * 60 * 1000
         request
@@ -158,7 +157,7 @@ Target.create "AppService" (fun args ->
 
     let appPassword = deploymentOutputs.Value.WebAppPassword.value
     let destinationUri = sprintf "https://%s.scm.azurewebsites.net/api/zipdeploy" appName
-    let client = new WebClient'(Credentials = Net.NetworkCredential("$" + appName, appPassword))
+    let client = new TimeoutWebClient(Credentials = Net.NetworkCredential("$" + appName, appPassword))
     Trace.tracefn "Uploading %s to %s" zipFile destinationUri
     client.UploadData(destinationUri, File.ReadAllBytes zipFile) |> ignore)
 

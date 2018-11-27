@@ -7,11 +7,9 @@ group Core
 group Server
     source https://api.nuget.org/v3/index.json
 
-	nuget FSharp.Core
-    nuget Fable.JsonConverter
-	nuget Giraffe.TokenRouter
-	nuget Saturn
-	nuget Microsoft.ApplicationInsights.AspNetCore ~> 2.2
+    nuget Saturn
+    nuget Thoth.Json.Giraffe
+    nuget Microsoft.ApplicationInsights.AspNetCore ~> 2.2
 
 group Scraper
     source https://api.nuget.org/v3/index.json
@@ -21,15 +19,15 @@ group Scraper
 	
 group Client
     source https://api.nuget.org/v3/index.json
-	
+
 	nuget Fable.Core
 	nuget Fable.React
 	nuget Fable.Elmish.React
 	nuget Fable.Elmish.Browser
 	nuget Fable.Elmish.Debugger
-	nuget Fable.Elmish.HMR	
+	nuget Fable.Elmish.HMR
 
-	clitool dotnet-fable
+    clitool dotnet-fable
 
 group Core.Tests
 	source https://nuget.org/api/v2
@@ -40,9 +38,9 @@ group Core.Tests
 	
 group Build
     source https://api.nuget.org/v3/index.json
-
-	nuget FSharp.Core 4.3.4 // https://github.com/fsharp/FAKE/issues/2001
-	nuget Fake.Core.Target
+	
+    nuget FSharp.Core 4.3.4 // https://github.com/fsharp/FAKE/issues/2001
+    nuget Fake.Core.Target
     nuget Fake.DotNet.Cli
     nuget Fake.IO.FileSystem
     nuget Fake.Core.Environment
