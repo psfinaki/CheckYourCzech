@@ -16,6 +16,16 @@ let getGender =
     >> getInfo "rod "
     >> Gender.FromString
 
+let getWikiSingular word = 
+    let url = "https://cs.wiktionary.org/wiki/" + word
+    match isLocked word with
+    | false ->
+        let data = CommonArticle.Load url
+        data.Tables.``Skloňování[editovat]``.Rows.[0].singulár
+    | true ->
+        let data = LockedArticle.Load url
+        data.Tables.Skloňování.Rows.[0].singulár
+
 let getWikiPlural word = 
     let url = "https://cs.wiktionary.org/wiki/" + word
     match isLocked word with
@@ -36,6 +46,7 @@ let getWikiAccusative word =
         let data = LockedArticle.Load url
         data.Tables.Skloňování.Rows.[3].singulár
 
+let getSingular = getWikiSingular >> getForm
 let getPlurals = getWikiPlural >> getForms
 let getAccusatives = getWikiAccusative >> getForms
 
@@ -64,7 +75,7 @@ type Noun(word) =
     
     new() = Noun null
 
-    member val Singular    = word |> Storage.mapSafeString id                             with get, set
+    member val Singular    = word |> Storage.mapSafeOption getSingular                    with get, set
     member val Gender      = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
     member val Plurals     = word |> Storage.mapSafeString getPlurals                     with get, set
     member val Accusatives = word |> Storage.mapSafeString getAccusatives                 with get, set

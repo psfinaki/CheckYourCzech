@@ -29,6 +29,7 @@ type QueryCondition =
     | IsNot
     | Bool
 
+let mapSafeOption mapping = Option.ofObj >> Option.map mapping >> Option.flatten >> Option.toObj >> JsonConvert.SerializeObject
 let mapSafeString mapping = Option.ofObj >> Option.map mapping >> Option.toObj >> JsonConvert.SerializeObject
 let mapSafeBool mapping   = Option.ofObj >> Option.map mapping >> Option.defaultValue false
 
