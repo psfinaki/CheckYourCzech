@@ -8,6 +8,7 @@ open Microsoft.AspNetCore.Http
 
 let getPluralsTask next (ctx: HttpContext) =
     task {
+        let singularFilter = ("Singular", IsNot, box None)
         let pluralsFilter = ("Plurals", IsNot, box [])
 
         let genderFromQuery = ctx.GetQueryStringValue "gender"
@@ -18,8 +19,8 @@ let getPluralsTask next (ctx: HttpContext) =
 
         let filters = 
             match genderFilter with
-            | Some filter -> [ pluralsFilter; filter ]
-            | None        -> [ pluralsFilter ]
+            | Some filter -> [ singularFilter; pluralsFilter; filter ]
+            | None        -> [ singularFilter; pluralsFilter ]
 
         let noun = Storage.tryGetRandom<Noun.Noun> "nouns" filters
         let getSingular (noun : Noun.Noun) = Storage.getAs<string> noun.Singular
@@ -37,6 +38,7 @@ let getPluralsAnswer word next ctx =
 
 let getAccusativesTask next (ctx : HttpContext) =
     task {
+        let singularFilter = ("Singular", IsNot, box None)
         let accusativesFilter = ("Accusatives", IsNot, box [])
 
         let genderFromQuery = ctx.GetQueryStringValue "gender"
@@ -47,8 +49,8 @@ let getAccusativesTask next (ctx : HttpContext) =
 
         let filters = 
             match genderFilter with
-            | Some filter -> [ accusativesFilter; filter ]
-            | None        -> [ accusativesFilter ]
+            | Some filter -> [ singularFilter; accusativesFilter; filter ]
+            | None        -> [ singularFilter; accusativesFilter ]
 
         let noun = Storage.tryGetRandom<Noun.Noun> "nouns" filters
         let getSingular (noun : Noun.Noun) = Storage.getAs<string> noun.Singular
