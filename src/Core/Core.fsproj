@@ -22,7 +22,8 @@
     <Compile Include="Article.fs" />
     <Compile Include="Adjective.fs" />
     <Compile Include="Noun.fs" />
-    <Compile Include="Verb.fs" />
+    <Compile Include="Participle.fs" />
+    <Compile Include="Imperative.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

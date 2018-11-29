@@ -5,7 +5,9 @@ open Article
 let recordCzechPartOfSpeech word = function
     | "podstatné jméno" -> Noun.record word
     | "přídavné jméno"  -> Adjective.record word
-    | "sloveso"         -> Verb.record word
+    | "sloveso"         -> 
+        Imperative.record word
+        Participle.record word
     | _ -> ()
     
 let recordCzechPart word = 
