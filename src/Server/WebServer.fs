@@ -5,6 +5,8 @@ open Giraffe
 open Saturn
 open Storage
 open Microsoft.AspNetCore.Http
+open Imperative
+open Participle
 
 let getPluralsTask next (ctx: HttpContext) =
     task {
@@ -98,8 +100,8 @@ let getComparativesAnswer word next ctx =
 let getImperativesTask next ctx =
     task {
         let filters = [("Imperatives", IsNot, box [])]
-        let verb = Storage.tryGetRandom<Verb.Verb> "verbs" filters
-        let getImperative (verb : Verb.Verb) = Storage.getAs<string> verb.Indicative
+        let verb = Storage.tryGetRandom<Imperative> "imperatives" filters
+        let getImperative (verb : Imperative) = Storage.getAs<string> verb.Indicative
         let task = verb |> Option.map getImperative |> Option.toObj
         return! Successful.OK task next ctx
     }
@@ -107,7 +109,7 @@ let getImperativesTask next ctx =
 let getImperativesAnswer word next ctx =
     task {
         let filters =  [("Indicative", Is, word)]
-        let verb = Storage.getSingle<Verb.Verb> "verbs" filters
+        let verb = Storage.getSingle<Imperative> "imperatives" filters
         let answer = Storage.getAs<string []> verb.Imperatives
         return! Successful.OK answer next ctx
     }
@@ -115,8 +117,8 @@ let getImperativesAnswer word next ctx =
 let getParticiplesTask next ctx =
     task {
         let filters = [("Participles", IsNot, box [])]
-        let verb = Storage.tryGetRandom<Verb.Verb> "verbs" filters
-        let getParticiple (verb : Verb.Verb) = Storage.getAs<string> verb.Indicative
+        let verb = Storage.tryGetRandom<Participle> "participles" filters
+        let getParticiple (verb : Participle) = Storage.getAs<string> verb.Indicative
         let task = verb |> Option.map getParticiple |> Option.toObj
         return! Successful.OK task next ctx
     }
@@ -124,7 +126,7 @@ let getParticiplesTask next ctx =
 let getParticiplesAnswer word next ctx =
     task {
         let filters =  [("Indicative", Is, word)]
-        let verb = Storage.getSingle<Verb.Verb> "verbs" filters
+        let verb = Storage.getSingle<Participle> "participles" filters
         let answer = Storage.getAs<string []> verb.Participles
         return! Successful.OK answer next ctx
     }

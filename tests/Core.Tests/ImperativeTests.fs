@@ -1,20 +1,8 @@
-﻿module VerbTests
+﻿module ImperativeTests
 
 open Xunit
-open Verb
+open Imperative
 
-[<Fact>]
-let ``Detects imperatives present``() = 
-    "myslet"
-    |> hasImperatives
-    |> Assert.True
-
-[<Fact>]
-let ``Detects imperatives absent``() = 
-    "musit"
-    |> hasImperatives
-    |> Assert.False
-    
 [<Fact>]
 let ``Validates proper verb``() =
     "spát"
