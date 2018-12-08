@@ -40,3 +40,4 @@ let alternate (stem: string) =
 
 let endsHard (s: string) = s.EndsWith (hardConsonants @ neutralHardConsonants)
 let endsSoft (s: string) = s.EndsWith (softConsonants @ neutralSoftConsonants)
+let endsIf isPattern = Seq.last >> isPattern

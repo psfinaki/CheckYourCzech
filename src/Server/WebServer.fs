@@ -114,18 +114,30 @@ let getImperativesAnswer word next ctx =
         return! Successful.OK answer next ctx
     }
 
-let getParticiplesTask next ctx =
+let getParticiplesTask next (ctx: HttpContext) =
     task {
-        let filters = [("Participles", IsNot, box [])]
+        let participlesFilter = ("Participles", IsNot, box [])
+
+        let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
+        let regularityFilter = 
+             match regularityFromQuery with
+             | Ok regularity -> Some ("IsRegular", Bool, box regularity)
+             | Error _       -> None
+
+        let filters = 
+            match regularityFilter with
+            | Some filter -> [ participlesFilter; filter ]
+            | None        -> [ participlesFilter ]
+
         let verb = Storage.tryGetRandom<Participle> "participles" filters
-        let getParticiple (verb : Participle) = Storage.getAs<string> verb.Indicative
+        let getParticiple (verb : Participle) = Storage.getAs<string> verb.Infinitive
         let task = verb |> Option.map getParticiple |> Option.toObj
         return! Successful.OK task next ctx
     }
 
 let getParticiplesAnswer word next ctx =
     task {
-        let filters =  [("Indicative", Is, word)]
+        let filters =  [("Infinitive", Is, word)]
         let verb = Storage.getSingle<Participle> "participles" filters
         let answer = Storage.getAs<string []> verb.Participles
         return! Successful.OK answer next ctx

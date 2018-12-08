@@ -34,3 +34,85 @@ let ``Invalidates improper verb - no verb``() =
     "nazdar"
     |> isValid
     |> Assert.False
+
+[<Theory>]
+[<InlineData("dělat", "dělal")>]
+[<InlineData("tisknout", "tiskl")>]
+[<InlineData("minout", "minul")>]
+let ``Builds theoretical participle`` infinitive participle =
+    infinitive
+    |> buildTheoreticalParticiple
+    |> equals participle
+
+[<Fact>]
+let ``Detects regular participle - pattern tisknout``() = 
+    "sednout"
+    |> isRegular
+    |> Assert.True
+
+[<Fact>]
+let ``Detects regular participle - pattern minout``() = 
+    "minout"
+    |> isRegular
+    |> Assert.True
+
+[<Fact>]
+let ``Detects regular participle - common pattern``() = 
+    "dělat"
+    |> isRegular
+    |> Assert.True
+
+[<Fact>]
+let ``Detects irregular participle``() = 
+    "jít"
+    |> isRegular
+    |> Assert.False
+
+[<Fact>]
+let ``Detects pattern tisknout``() =
+    "tisknout"
+    |> isPatternTisknout
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "dělat">]
+[<InlineData "minout">]
+[<InlineData "shrnout">]
+let ``Detects pattern is not tisknout`` word =
+    word
+    |> isPatternTisknout
+    |> Assert.False
+
+[<Theory>]
+[<InlineData "minout">]
+[<InlineData "shrnout">]
+let ``Detects pattern minout`` word =
+    word
+    |> isPatternMinout
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "dělat">]
+[<InlineData "tisknout">]
+let ``Detects pattern is not minout`` word =
+    word
+    |> isPatternMinout
+    |> Assert.False
+
+[<Fact>]
+let ``Builds participle for pattern tisknout``() =
+    "tisknout"
+    |> buildParticipleTisknout
+    |> equals "tiskl"
+
+[<Fact>]
+let ``Builds participle for pattern minout``() =
+    "minout"
+    |> buildParticipleMinout
+    |> equals "minul"
+
+[<Fact>]
+let ``Builds participle for common pattern``() =
+    "dělat"
+    |> buildParticipleCommon
+    |> equals "dělal"

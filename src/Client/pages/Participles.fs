@@ -1,14 +1,24 @@
 ﻿module Participles
 
+open System
 open Elmish
 open Fable.Core.JsInterop
 open Fable.Helpers.React
+open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Fable.PowerPack.Fetch
 open Fable.Import.React
 open Thoth.Json
 
+// because Fable cannot compile bool.Parse
+type Boolean with
+    static member FromString = function
+        | "True" -> true
+        | "False" -> false
+        | _ -> invalidOp "Value cannot be converted to boolean."
+
 type Model = {
+    Regularity : bool option
     Task : string option 
     Input : string
     InputSubmitted: bool
@@ -16,6 +26,7 @@ type Model = {
 }
 
 type Msg = 
+    | SetRegularity of bool option
     | SetInput of string
     | SubmitTask
     | UpdateTask
@@ -23,16 +34,23 @@ type Msg =
     | FetchedAnswer of string[]
     | FetchError of exn
 
-let getTask =
-    let url = "/api/participles/task"
+let getTask regularity =
+    let url = 
+        match regularity with
+        | Some r -> "/api/participles/task?isRegular=" + r.ToString()
+        | None   -> "/api/participles/task"
+
     fetchAs<string> url (Decode.Auto.generateDecoder())
 
 let getAnswer task = 
     let url = "/api/participles/answer/" + task
     fetchAs<string[]> url (Decode.Auto.generateDecoder())
 
-let loadTaskCmd() =
-    Cmd.ofPromise getTask [] FetchedTask FetchError
+[<Literal>]
+let RegularityUnset = ""
+
+let loadTaskCmd regularity =
+    Cmd.ofPromise (getTask regularity) [] FetchedTask FetchError
 
 let loadAnswerCmd task =
     Cmd.ofPromise (getAnswer task) [] FetchedAnswer FetchError
@@ -43,19 +61,22 @@ let submitTask = function
 
 let init () =
     { Task = None
+      Regularity = None
       Input = ""
       InputSubmitted = false
       Result = None },
-      loadTaskCmd() 
+      loadTaskCmd None 
 
 let update msg model =
     match msg with
+    | SetRegularity regularity ->
+        { model with Regularity = regularity }, Cmd.none
     | SetInput input ->
         { model with Input = input }, Cmd.none
     | SubmitTask ->
         { model with Result = None; InputSubmitted = true }, submitTask model.Task
     | UpdateTask ->
-        { model with Task = None; Input = ""; Result = None }, loadTaskCmd()
+        { model with Task = None; Input = ""; Result = None }, loadTaskCmd model.Regularity
     | FetchedTask task ->
         { model with Task = task |> Option.ofObj }, Cmd.none
     | FetchedAnswer answer ->
@@ -90,6 +111,10 @@ let view model dispatch =
     let handleChangeAnswer (event: FormEvent) =
         dispatch (SetInput !!event.target?value)
            
+    let handleChangeRegularity (event: FormEvent) =
+        let translate = function | RegularityUnset -> None | x -> Some (bool.FromString x)
+        dispatch (SetRegularity (translate !!event.target?value))
+
     let handleKeyDown (event: KeyboardEvent) =
         match event.keyCode with
         | Keyboard.Codes.enter ->
@@ -105,7 +130,26 @@ let view model dispatch =
     [ 
         Markup.words 60 "Write active participle for the verb"
 
-        Markup.emptyLines 8
+        Markup.emptyLines 3
+
+        div [ Styles.row ] 
+            [
+                div [ Style [ Height "50%" ] ] 
+                    [
+                        Markup.label Styles.whiteLabel (str "Regularity") 
+                    ]
+
+                div [ Styles.select ] 
+                    [
+                        Markup.select handleChangeRegularity [
+                            Markup.option RegularityUnset "Any"
+                            Markup.option "True" "Regular"     // true.ToString()  does not work
+                            Markup.option "False" "Exceptions" // false.ToString() does not work
+                        ]
+                    ]
+            ]
+
+        Markup.emptyLines 2
 
         div [ Styles.row ] 
             [
