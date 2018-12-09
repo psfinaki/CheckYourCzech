@@ -47,7 +47,7 @@ type Participle(word) =
 
     new() =  Participle null
 
-    member val Indicative  = word |> Storage.mapSafeString id             with get, set
+    member val Infinitive  = word |> Storage.mapSafeString id             with get, set
     member val Participles = word |> Storage.mapSafeString getParticiples with get, set
 
 let record word =

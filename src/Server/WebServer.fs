@@ -118,14 +118,14 @@ let getParticiplesTask next ctx =
     task {
         let filters = [("Participles", IsNot, box [])]
         let verb = Storage.tryGetRandom<Participle> "participles" filters
-        let getParticiple (verb : Participle) = Storage.getAs<string> verb.Indicative
+        let getParticiple (verb : Participle) = Storage.getAs<string> verb.Infinitive
         let task = verb |> Option.map getParticiple |> Option.toObj
         return! Successful.OK task next ctx
     }
 
 let getParticiplesAnswer word next ctx =
     task {
-        let filters =  [("Indicative", Is, word)]
+        let filters =  [("Infinitive", Is, word)]
         let verb = Storage.getSingle<Participle> "participles" filters
         let answer = Storage.getAs<string []> verb.Participles
         return! Successful.OK answer next ctx
