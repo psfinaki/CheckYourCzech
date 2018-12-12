@@ -39,6 +39,7 @@ let ``Invalidates improper verb - no verb``() =
 [<InlineData("dělat", "dělal")>]
 [<InlineData("tisknout", "tiskl")>]
 [<InlineData("minout", "minul")>]
+[<InlineData("starat se", "staral se")>]
 let ``Builds theoretical participle`` infinitive participle =
     infinitive
     |> buildTheoreticalParticiple
@@ -116,3 +117,33 @@ let ``Builds participle for common pattern``() =
     "dělat"
     |> buildParticipleCommon
     |> equals "dělal"
+
+[<Fact>]
+let ``Gets reflexive - se``() = 
+    "starat se"
+    |> getReflexive
+    |> equals (Some "se")
+
+[<Fact>]
+let ``Gets reflexive - si``() = 
+    "vážit si"
+    |> getReflexive
+    |> equals (Some "si")
+
+[<Fact>]
+let ``Detects no reflexive``() = 
+    "spát"
+    |> getReflexive
+    |> equals None
+
+[<Fact>]
+let ``Removes reflexive - se``() = 
+    "starat se"
+    |> removeReflexive
+    |> equals "starat"
+
+[<Fact>]
+let ``Removes reflexive - si``() = 
+    "vážit si"
+    |> removeReflexive
+    |> equals "vážit"

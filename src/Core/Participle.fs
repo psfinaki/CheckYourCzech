@@ -37,10 +37,29 @@ let buildParticipleTisknout = removeLast 4 >> append "l"
 let buildParticipleMinout   = removeLast 4 >> append "nul"
 let buildParticipleCommon   = removeLast 1 >> append "l"
 
-let buildTheoreticalParticiple = function
-    | verb when verb |> isPatternTisknout -> buildParticipleTisknout verb
-    | verb when verb |> isPatternMinout -> buildParticipleMinout verb
-    | verb -> buildParticipleCommon verb
+let getReflexive = function
+    | word when word |> ends " se" -> Some "se"
+    | word when word |> ends " si" -> Some "si"
+    | _ -> None
+
+let removeReflexive = remove " se" >> remove " si"
+
+let buildTheoreticalParticiple verb =
+    let buildTheoreticalParticipleNonReflexive = function
+        | verb when verb |> isPatternTisknout -> buildParticipleTisknout verb
+        | verb when verb |> isPatternMinout -> buildParticipleMinout verb
+        | verb -> buildParticipleCommon verb
+
+    let reflexive = getReflexive verb
+    match reflexive with 
+    | Some pronoun ->
+        verb
+        |> removeReflexive
+        |> buildTheoreticalParticipleNonReflexive
+        |> append (" " + pronoun)
+    | None ->
+        verb
+        |> buildTheoreticalParticipleNonReflexive
 
 let getParticiplesTable2 = 
     (+) "https://cs.wiktionary.org/wiki/"
