@@ -141,15 +141,3 @@ let ``Detects no reflexive``() =
     "spát"
     |> getReflexive
     |> equals None
-
-[<Fact>]
-let ``Removes reflexive - se``() = 
-    "starat se"
-    |> removeReflexive
-    |> equals "starat"
-
-[<Fact>]
-let ``Removes reflexive - si``() = 
-    "vážit si"
-    |> removeReflexive
-    |> equals "vážit"
