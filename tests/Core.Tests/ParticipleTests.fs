@@ -35,6 +35,12 @@ let ``Invalidates improper verb - no verb``() =
     |> isValid
     |> Assert.False
 
+[<Fact>]
+let ``Invalidates improper verb - archaic``() =
+    "péci"
+    |> isValid
+    |> Assert.False
+
 [<Theory>]
 [<InlineData("dělat", "dělal")>]
 [<InlineData("tisknout", "tiskl")>]

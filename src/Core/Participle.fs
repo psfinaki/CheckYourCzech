@@ -93,12 +93,17 @@ let isRegular word =
     let practical = getParticiples word
     practical |> Array.contains theoretical
 
-let isValid =
+let isVerbWithDeclension =
     tryGetContent
     >> Option.bind (tryGetPart "čeština")
     >> Option.bind (tryGetPart "sloveso")
     >> Option.bind (tryGetPart "časování")
     >> Option.isSome
+
+let isValid word = 
+    let isNotArchaicVerb = not << Verb.isArchaic
+    word |> isVerbWithDeclension &&
+    word |> isNotArchaicVerb
 
 type Participle(word) =
     inherit TableEntity(word, word)

@@ -26,3 +26,9 @@ let ``Invalidates improper verb - no imperative``() =
     "chlastati"
     |> isValid
     |> Assert.False
+
+[<Fact>]
+let ``Invalidates improper verb - archaic``() =
+    "péci"
+    |> isValid
+    |> Assert.False

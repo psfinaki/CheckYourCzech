@@ -13,7 +13,7 @@ let getImperatives word =
     let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
     getForms answer
 
-let isValid =
+let isVerbWithImperative =
     tryGetContent
     >> Option.bind (tryGetPart "čeština")
     >> Option.bind (tryGetPart "sloveso")
@@ -22,6 +22,11 @@ let isValid =
     >> Option.map (Seq.map fst)
     >> Option.map (Seq.contains "Rozkazovací způsob")
     >> Option.isSome
+
+let isValid word = 
+    let isNotArchaicVerb = not << Verb.isArchaic
+    word |> isVerbWithImperative &&
+    word |> isNotArchaicVerb
 
 type Imperative(word) =
     inherit TableEntity(word, word)
