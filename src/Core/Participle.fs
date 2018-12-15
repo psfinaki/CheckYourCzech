@@ -42,8 +42,6 @@ let getReflexive = function
     | word when word |> ends " si" -> Some "si"
     | _ -> None
 
-let removeReflexive = remove " se" >> remove " si"
-
 let buildTheoreticalParticiple verb =
     let buildTheoreticalParticipleNonReflexive = function
         | verb when verb |> isPatternTisknout -> buildParticipleTisknout verb
@@ -54,7 +52,7 @@ let buildTheoreticalParticiple verb =
     match reflexive with 
     | Some pronoun ->
         verb
-        |> removeReflexive
+        |> Verb.removeReflexive
         |> buildTheoreticalParticipleNonReflexive
         |> append (" " + pronoun)
     | None ->
