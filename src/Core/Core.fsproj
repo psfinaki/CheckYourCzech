@@ -22,6 +22,7 @@
     <Compile Include="Gender.fs" />
     <Compile Include="Article.fs" />
     <Compile Include="Adjective.fs" />
+    <Compile Include="Verb.fs" />
     <Compile Include="Noun.fs" />
     <Compile Include="Participle.fs" />
     <Compile Include="Imperative.fs" />
