@@ -5,8 +5,7 @@ open Giraffe
 open Saturn
 open Storage
 open Microsoft.AspNetCore.Http
-open Imperative
-open Participle
+open Tasks
 
 let getPluralsTask next (ctx: HttpContext) =
     task {
@@ -24,18 +23,14 @@ let getPluralsTask next (ctx: HttpContext) =
             | Some filter -> [ singularFilter; pluralsFilter; filter ]
             | None        -> [ singularFilter; pluralsFilter ]
 
-        let noun = Storage.tryGetRandom<Noun.Noun> "nouns" filters
-        let getSingular (noun : Noun.Noun) = Storage.getAs<string> noun.Singular
-        let task = noun |> Option.map getSingular |> Option.toObj
+        let noun = tryGetRandom<Noun.Noun> "nouns" filters
+        let getTask (noun: Noun.Noun) = 
+            let positive = getAs<string> noun.Singular
+            let plurals = getAs<string []> noun.Plurals
+            PluralsTask(positive, plurals)
+        
+        let task = noun |> Option.map getTask |> Option.toObj
         return! Successful.OK task next ctx
-    }
-
-let getPluralsAnswer word next ctx =
-    task {
-        let filters = [("Singular", Is, word)]
-        let noun = Storage.getSingle<Noun.Noun> "nouns" filters
-        let answer = Storage.getAs<string []> noun.Plurals
-        return! Successful.OK answer next ctx
     }
 
 let getAccusativesTask next (ctx : HttpContext) =
@@ -54,18 +49,14 @@ let getAccusativesTask next (ctx : HttpContext) =
             | Some filter -> [ singularFilter; accusativesFilter; filter ]
             | None        -> [ singularFilter; accusativesFilter ]
 
-        let noun = Storage.tryGetRandom<Noun.Noun> "nouns" filters
-        let getSingular (noun : Noun.Noun) = Storage.getAs<string> noun.Singular
-        let task = noun |> Option.map getSingular |> Option.toObj
-        return! Successful.OK task next ctx
-    }
+        let noun = tryGetRandom<Noun.Noun> "nouns" filters
+        let getTask (noun: Noun.Noun) = 
+            let positive = getAs<string> noun.Singular
+            let accusatives = getAs<string []> noun.Accusatives
+            AccusativesTask(positive, accusatives)
 
-let getAccusativesAnswer word next ctx =
-    task {
-        let filters = [("Singular", Is, word)]
-        let noun = Storage.getSingle<Noun.Noun> "nouns" filters
-        let answer = Storage.getAs<string []> noun.Accusatives
-        return! Successful.OK answer next ctx
+        let task = noun |> Option.map getTask |> Option.toObj
+        return! Successful.OK task next ctx
     }
 
 let getComparativesTask next (ctx : HttpContext) =
@@ -83,35 +74,29 @@ let getComparativesTask next (ctx : HttpContext) =
             | Some filter -> [ comparativesFilter; filter ]
             | None        -> [ comparativesFilter ]
 
-        let adjective = Storage.tryGetRandom<Adjective.Adjective> "adjectives" filters
-        let getPositive (adjective : Adjective.Adjective) = Storage.getAs<string> adjective.Positive
-        let task = adjective |> Option.map getPositive |> Option.toObj
-        return! Successful.OK task next ctx
-    }
+        let adjective = tryGetRandom<Adjective.Adjective> "adjectives" filters
+        
+        let getTask (adjective: Adjective.Adjective) = 
+            let positive = getAs<string> adjective.Positive
+            let comparatives = getAs<string []> adjective.Comparatives
+            ComparativesTask(positive, comparatives)
 
-let getComparativesAnswer word next ctx =
-    task {
-        let filters = [("Positive", Is, word)]
-        let adjective = Storage.getSingle<Adjective.Adjective> "adjectives" filters
-        let answer = Storage.getAs<string []> adjective.Comparatives
-        return! Successful.OK answer next ctx
+        let task = adjective |> Option.map getTask |> Option.toObj 
+        return! Successful.OK task next ctx
     }
 
 let getImperativesTask next ctx =
     task {
         let filters = [("Imperatives", IsNot, box [])]
-        let verb = Storage.tryGetRandom<Imperative> "imperatives" filters
-        let getImperative (verb : Imperative) = Storage.getAs<string> verb.Indicative
-        let task = verb |> Option.map getImperative |> Option.toObj
-        return! Successful.OK task next ctx
-    }
+        let verb = tryGetRandom<Imperative.Imperative> "imperatives" filters
 
-let getImperativesAnswer word next ctx =
-    task {
-        let filters =  [("Indicative", Is, word)]
-        let verb = Storage.getSingle<Imperative> "imperatives" filters
-        let answer = Storage.getAs<string []> verb.Imperatives
-        return! Successful.OK answer next ctx
+        let getTask (verb: Imperative.Imperative) = 
+            let indicative = getAs<string> verb.Indicative
+            let imperatives = getAs<string []> verb.Imperatives
+            ImperativesTask(indicative, imperatives)
+
+        let task = verb |> Option.map getTask |> Option.toObj 
+        return! Successful.OK task next ctx
     }
 
 let getParticiplesTask next (ctx: HttpContext) =
@@ -129,33 +114,21 @@ let getParticiplesTask next (ctx: HttpContext) =
             | Some filter -> [ participlesFilter; filter ]
             | None        -> [ participlesFilter ]
 
-        let verb = Storage.tryGetRandom<Participle> "participles" filters
-        let getParticiple (verb : Participle) = Storage.getAs<string> verb.Infinitive
-        let task = verb |> Option.map getParticiple |> Option.toObj
+        let verb = tryGetRandom<Participle.Participle> "participles" filters
+
+        let getTask (verb: Participle.Participle) = 
+            let infinitive = getAs<string> verb.Infinitive
+            let participles = getAs<string []> verb.Participles
+            ParticiplesTask(infinitive, participles)
+
+        let task = verb |> Option.map getTask |> Option.toObj 
         return! Successful.OK task next ctx
     }
 
-let getParticiplesAnswer word next ctx =
-    task {
-        let filters =  [("Infinitive", Is, word)]
-        let verb = Storage.getSingle<Participle> "participles" filters
-        let answer = Storage.getAs<string []> verb.Participles
-        return! Successful.OK answer next ctx
-    }
-
 let webApp = router {
-    get  "/api/plurals/task"           getPluralsTask
-    getf "/api/plurals/answer/%s"      getPluralsAnswer
-
-    get  "/api/accusatives/task"       getAccusativesTask
-    getf "/api/accusatives/answer/%s"  getAccusativesAnswer
-
-    get  "/api/comparatives/task"      getComparativesTask
-    getf "/api/comparatives/answer/%s" getComparativesAnswer
-
-    get  "/api/imperatives/task"       getImperativesTask
-    getf "/api/imperatives/answer/%s"  getImperativesAnswer
-
-    get  "/api/participles/task"       getParticiplesTask
-    getf "/api/participles/answer/%s"  getParticiplesAnswer
+    get "/api/plurals"      getPluralsTask
+    get "/api/accusatives"  getAccusativesTask
+    get "/api/comparatives" getComparativesTask
+    get "/api/imperatives"  getImperativesTask
+    get "/api/participles"  getParticiplesTask
 }

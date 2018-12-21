@@ -9,6 +9,7 @@ open Fable.PowerPack
 open Fable.PowerPack.Fetch
 open Fable.Import.React
 open Thoth.Json
+open Tasks
 
 // because Fable cannot compile bool.Parse
 type Boolean with
@@ -19,9 +20,9 @@ type Boolean with
 
 type Model = {
     Regularity : bool option
-    Task : string option 
+    Task : string option
+    Answers: string[] option
     Input : string
-    InputSubmitted: bool
     Result : bool option
 }
 
@@ -30,21 +31,16 @@ type Msg =
     | SetInput of string
     | SubmitTask
     | UpdateTask
-    | FetchedTask of string
-    | FetchedAnswer of string[]
+    | FetchedTask of ParticiplesTask option
     | FetchError of exn
 
 let getTask regularity =
     let url = 
         match regularity with
-        | Some r -> "/api/participles/task?isRegular=" + r.ToString()
-        | None   -> "/api/participles/task"
+        | Some r -> "/api/participles?isRegular=" + r.ToString()
+        | None   -> "/api/participles"
 
-    fetchAs<string> url (Decode.Auto.generateDecoder())
-
-let getAnswer task = 
-    let url = "/api/participles/answer/" + task
-    fetchAs<string[]> url (Decode.Auto.generateDecoder())
+    fetchAs<ParticiplesTask option> url (Decode.Auto.generateDecoder())
 
 [<Literal>]
 let RegularityUnset = ""
@@ -52,18 +48,11 @@ let RegularityUnset = ""
 let loadTaskCmd regularity =
     Cmd.ofPromise (getTask regularity) [] FetchedTask FetchError
 
-let loadAnswerCmd task =
-    Cmd.ofPromise (getAnswer task) [] FetchedAnswer FetchError
-
-let submitTask = function
-    | Some task -> loadAnswerCmd task
-    | None -> Cmd.none
-
 let init () =
     { Task = None
+      Answers = None
       Regularity = None
       Input = ""
-      InputSubmitted = false
       Result = None },
       loadTaskCmd None 
 
@@ -73,15 +62,16 @@ let update msg model =
         { model with Regularity = regularity }, Cmd.none
     | SetInput input ->
         { model with Input = input }, Cmd.none
-    | SubmitTask ->
-        { model with Result = None; InputSubmitted = true }, submitTask model.Task
+    | SubmitTask -> 
+        let result = model.Answers |> Option.map (Array.contains model.Input)
+        { model with Result = result }, Cmd.none
     | UpdateTask ->
         { model with Task = None; Input = ""; Result = None }, loadTaskCmd model.Regularity
-    | FetchedTask task ->
-        { model with Task = task |> Option.ofObj }, Cmd.none
-    | FetchedAnswer answer ->
-        let result = answer |> Array.contains model.Input
-        { model with Result = Some result; InputSubmitted = false }, Cmd.none
+    | FetchedTask task -> 
+        { model with 
+            Task = task |> Option.map (fun t -> t.Infinitive)
+            Answers = task |> Option.map (fun t -> t.Participles)
+        }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
 
@@ -91,10 +81,6 @@ let view model dispatch =
         | Some result -> 
             let imageSource = if result then "images/correct.png" else "images/incorrect.png"
             let altText = if result then "Correct" else "Incorrect"
-            Markup.icon imageSource 25 altText
-        | None when model.Task.IsSome && model.InputSubmitted ->
-            let imageSource = "images/loading.gif"
-            let altText = "Loading..."
             Markup.icon imageSource 25 altText
         | None ->
             str ""
