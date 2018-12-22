@@ -46,7 +46,7 @@ let getWikiAccusative word =
         let data = LockedArticle.Load url
         data.Tables.Skloňování.Rows.[3].singulár
 
-let getSingular = getWikiSingular >> getForm
+let getSingulars = getWikiSingular >> getForms
 let getPlurals = getWikiPlural >> getForms
 let getAccusatives = getWikiAccusative >> getForms
 
@@ -75,7 +75,7 @@ type Noun(word) =
     
     new() = Noun null
 
-    member val Singular    = word |> Storage.mapSafeOption getSingular                    with get, set
+    member val Singulars   = word |> Storage.mapSafeString getSingulars                   with get, set
     member val Gender      = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
     member val Plurals     = word |> Storage.mapSafeString getPlurals                     with get, set
     member val Accusatives = word |> Storage.mapSafeString getAccusatives                 with get, set

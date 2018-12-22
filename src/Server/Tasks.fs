@@ -1,13 +1,13 @@
 ﻿module Tasks
 
 [<AllowNullLiteral>]
-type PluralsTask(singular, plurals) = 
-    member this.Singular = singular
+type PluralsTask(singulars, plurals) = 
+    member this.Singulars = singulars
     member this.Plurals = plurals
 
 [<AllowNullLiteral>]
-type AccusativesTask(singular, accusatives) = 
-    member this.Singular = singular
+type AccusativesTask(singulars, accusatives) = 
+    member this.Singulars = singulars
     member this.Accusatives = accusatives
 
 [<AllowNullLiteral>]

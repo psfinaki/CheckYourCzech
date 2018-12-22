@@ -1,12 +1,12 @@
 module Tasks
 
 type PluralsTask = { 
-    Singular: string 
+    Singulars: string[]
     Plurals:  string[]
 }
 
 type AccusativesTask = { 
-    Singular: string 
+    Singulars: string[]
     Accusatives:  string[]
 }
 

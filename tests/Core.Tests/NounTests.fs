@@ -89,3 +89,21 @@ let ``Invalidates improper noun - incorrect gender``() =
     "benediktin"
     |> isValid
     |> Assert.False
+
+[<Fact>]
+let ``Gets singulars - single option``() =
+    "hrad"
+    |> getSingulars
+    |> equals [|"hrad"|]
+
+[<Fact>]
+let ``Gets singulars - no options``() =
+    "záda"
+    |> getSingulars
+    |> equals [||]
+
+[<Fact>]
+let ``Gets singulars - multiple options``() =
+    "temeno"
+    |> getSingulars
+    |> equals [|"temeno"; "témě"|]

@@ -9,7 +9,7 @@ open Tasks
 
 let getPluralsTask next (ctx: HttpContext) =
     task {
-        let singularFilter = ("Singular", IsNot, box None)
+        let singularsFilter = ("Singulars", IsNot, box [])
         let pluralsFilter = ("Plurals", IsNot, box [])
 
         let genderFromQuery = ctx.GetQueryStringValue "gender"
@@ -20,14 +20,14 @@ let getPluralsTask next (ctx: HttpContext) =
 
         let filters = 
             match genderFilter with
-            | Some filter -> [ singularFilter; pluralsFilter; filter ]
-            | None        -> [ singularFilter; pluralsFilter ]
+            | Some filter -> [ singularsFilter; pluralsFilter; filter ]
+            | None        -> [ singularsFilter; pluralsFilter ]
 
         let noun = tryGetRandom<Noun.Noun> "nouns" filters
         let getTask (noun: Noun.Noun) = 
-            let positive = getAs<string> noun.Singular
+            let singulars = getAs<string[]> noun.Singulars
             let plurals = getAs<string []> noun.Plurals
-            PluralsTask(positive, plurals)
+            PluralsTask(singulars, plurals)
         
         let task = noun |> Option.map getTask |> Option.toObj
         return! Successful.OK task next ctx
@@ -35,7 +35,7 @@ let getPluralsTask next (ctx: HttpContext) =
 
 let getAccusativesTask next (ctx : HttpContext) =
     task {
-        let singularFilter = ("Singular", IsNot, box None)
+        let singularsFilter = ("Singulars", IsNot, box [])
         let accusativesFilter = ("Accusatives", IsNot, box [])
 
         let genderFromQuery = ctx.GetQueryStringValue "gender"
@@ -46,14 +46,14 @@ let getAccusativesTask next (ctx : HttpContext) =
 
         let filters = 
             match genderFilter with
-            | Some filter -> [ singularFilter; accusativesFilter; filter ]
-            | None        -> [ singularFilter; accusativesFilter ]
+            | Some filter -> [ singularsFilter; accusativesFilter; filter ]
+            | None        -> [ singularsFilter; accusativesFilter ]
 
         let noun = tryGetRandom<Noun.Noun> "nouns" filters
         let getTask (noun: Noun.Noun) = 
-            let positive = getAs<string> noun.Singular
+            let singulars = getAs<string[]> noun.Singulars
             let accusatives = getAs<string []> noun.Accusatives
-            AccusativesTask(positive, accusatives)
+            AccusativesTask(singulars, accusatives)
 
         let task = noun |> Option.map getTask |> Option.toObj
         return! Successful.OK task next ctx
