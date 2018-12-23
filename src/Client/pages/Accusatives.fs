@@ -61,7 +61,7 @@ let update msg model =
         { model with Task = None; Input = ""; Result = None }, loadTaskCmd model.Gender
     | FetchedTask task ->
         { model with 
-            Task = task |> Option.map (fun t -> t.Singular)
+            Task = task |> Option.map (fun t -> t.Singulars |> Seq.random)
             Answers = task |> Option.map (fun t -> t.Accusatives)    
         }, Cmd.none
     | FetchError _ ->
