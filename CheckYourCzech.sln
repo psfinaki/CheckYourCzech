@@ -11,7 +11,12 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Scraper", "src\Scraper\Scra
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Core.Tests", "tests\Core.Tests\Core.Tests.fsproj", "{AF1ED000-4BA5-4968-8B98-24317EFFE1D6}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Core", "src\Core\Core.fsproj", "{2A9F3A06-47C2-483A-9F86-0632E39787DA}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Core", "src\Core\Core.fsproj", "{2A9F3A06-47C2-483A-9F86-0632E39787DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EA3B76E7-FA4F-4F17-BEDF-7088E8E27442}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
