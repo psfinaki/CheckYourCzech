@@ -11,12 +11,13 @@ let getTelemetryClient() =
 
 let getLogger() = (lazy getTelemetryClient()).Value
 
-let logMessage (message : string) =
+let logMessage (message: string) =
     let logger = getLogger()
     logger.TrackTrace message
     logger.Flush()
 
-let logError (error : exn) =
+let logError (error: exn, data) =
     let logger = getLogger()
-    logger.TrackException error
+    logger.TrackException(error, dict[data])
     logger.Flush()
+
