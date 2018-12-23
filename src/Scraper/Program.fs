@@ -8,7 +8,7 @@ let main argv =
             Word.record word
             Logger.logMessage ("Processed word: " + word)
         with e ->
-            Logger.logError e
+            Logger.logError(e, ("word", word))
             reraise()
 
     iterator
