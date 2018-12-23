@@ -79,6 +79,8 @@ let getParticipleByTableIndex word n =
 let getWikiParticiples word =
     word
     |> getContent
+    |> getPart "čeština"
+    |> getPart "sloveso"
     |> getTables
     |> Seq.map fst
     |> Seq.findIndex ((=) "Příčestí")
