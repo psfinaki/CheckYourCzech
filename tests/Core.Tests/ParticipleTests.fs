@@ -93,6 +93,7 @@ let ``Detects pattern is not tisknout`` word =
 [<Theory>]
 [<InlineData "minout">]
 [<InlineData "shrnout">]
+[<InlineData "přilnout">]
 let ``Detects pattern minout`` word =
     word
     |> isPatternMinout

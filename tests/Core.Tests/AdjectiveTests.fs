@@ -101,7 +101,6 @@ let ``Builds theoretical comparative - ejší`` positive comparative =
 [<InlineData("tenoučký", "tenoučtější")>]
 [<InlineData("ubohý", "ubožejší")>]
 [<InlineData("divoký", "divočejší")>]
-[<InlineData("chytrý", "chytřejší")>]
 let ``Builds theoretical comparative - stem alternation`` positive comparative =
     positive
     |> buildTheoreticalComparative
