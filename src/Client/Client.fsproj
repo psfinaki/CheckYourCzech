@@ -12,6 +12,7 @@
 		<WarningsAsErrors />
 	</PropertyGroup>
     <ItemGroup>
+		<Compile Include="Rules.fs" />
 		<Compile Include="Tasks.fs" />
 		<Compile Include="Pages.fs" />
 		<Compile Include="Markup.fs" />

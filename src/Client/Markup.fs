@@ -47,7 +47,42 @@ let icon source length text =
         HTMLAttr.Height length
         Alt text
     ]
-        
+
+// inspiration: https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
+let toggleLink text content =
+    let id = System.Guid.NewGuid().ToString()
+
+    let toggle _ = 
+        let spoiler = Browser.document.getElementById id
+        let display = if spoiler.style.display = "none" then "block" else "none"
+        spoiler.style.display <- display
+
+    div [] 
+        [
+            // inspiration: https://stackoverflow.com/a/1368286/3232646
+            button [
+                OnClick toggle
+                Style [
+                    FontSize "25px"
+                    Display "block"
+                    Margin "0 auto"
+                    Background "none"
+                    Border "none"
+                    Padding 0
+                    Color "#069"
+                    TextDecoration "Underline"
+                    Cursor "pointer"
+                ]
+            ] [
+                str text
+            ]
+
+            div [ Id id; Style [ Display "none" ] ]
+                [
+                    pre [] [ str content ]
+                ]
+        ]
+
 let button style handler text =
     button [ 
         OnClick handler
