@@ -116,7 +116,7 @@ let view model dispatch =
     [ 
         Markup.words 60 "Write active participle for the verb"
 
-        Markup.emptyLines 3
+        Markup.emptyLines 2
 
         div [ Styles.row ] 
             [
@@ -151,5 +151,12 @@ let view model dispatch =
                 Markup.button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)"
                 Markup.space()
                 Markup.button (Styles.button "Lime") handleCheckClick "Check (⏎)"
+            ]
+
+        Markup.emptyLines 1
+
+        div [ Styles.row ]
+            [
+                Markup.toggleLink "rules" Rules.participles
             ]
     ]
