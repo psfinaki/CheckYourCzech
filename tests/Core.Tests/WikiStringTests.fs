@@ -54,9 +54,11 @@ let ``Detects official form``() =
     |> isOfficial
     |> Assert.True
 
-[<Fact>]
-let ``Detects unofficial form - archaic``() = 
-    "(zastarale) pec"
+[<Theory>]
+[<InlineData "(zastarale) pec">]
+[<InlineData "(archaicky) sloul">]
+let ``Detects unofficial form - archaic`` form = 
+    form
     |> isOfficial
     |> Assert.False
     
