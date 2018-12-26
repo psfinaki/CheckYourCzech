@@ -16,7 +16,7 @@ let rejectedLabels = [
     "(archaicky)"
     ]
 
-let referencePattern = "\[\d*\]"
+let referencePattern = "\[(p )?\d*\]"
 
 let isBlank s = 
     s = "" ||

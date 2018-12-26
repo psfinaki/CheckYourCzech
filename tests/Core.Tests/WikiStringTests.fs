@@ -91,7 +91,14 @@ let ``Removes allowed labels - bookish``() =
 [<InlineData("rci[2]")>]
 [<InlineData("rci[12]")>]
 [<InlineData("rci[1][2]")>]
-let ``Removes references`` s =
+let ``Removes references - numbers`` s =
     s
     |> removeReferences
     |> equals "rci"
+
+
+[<Fact>]
+let ``Removes references - letter 'p'``() =
+    "budiž[p 3]"
+    |> removeReferences
+    |> equals "budiž"
