@@ -3,8 +3,19 @@
 open StringHelper
 
 let formSeparators = [|'/'; ','|]
-let allowedLabels  = ["(řidč.)"; "(knižně)"]
-let rejectedLabels = ["(zastarale)"; "(hovorově)"; "(v obecném jazyce)"]
+
+let allowedLabels  = [
+    "(řidč.)"
+    "(knižně)"
+    ]
+
+let rejectedLabels = [
+    "(zastarale)"
+    "(hovorově)"
+    "(v obecném jazyce)"
+    "(archaicky)"
+    ]
+
 let referencePattern = "\[\d*\]"
 
 let isBlank s = 
