@@ -31,6 +31,12 @@ let ``Gets gender neuter``() =
     |> equals Neuter
 
 [<Fact>]
+let ``Gets wiki plural - indeclinable``() = 
+    "dada"
+    |> getWikiPlural
+    |> equals "dada"
+
+[<Fact>]
 let ``Gets wiki plural - common article``() = 
     "panda"
     |> getWikiPlural
@@ -41,6 +47,12 @@ let ``Gets wiki plural - locked article``() =
     "debil"
     |> getWikiPlural
     |> equals "debilové"
+
+[<Fact>]
+let ``Gets wiki accusative - indeclinable``() = 
+    "dada"
+    |> getWikiAccusative
+    |> equals "dada"
 
 [<Fact>]
 let ``Gets wiki accusative - common article``() = 
@@ -89,6 +101,12 @@ let ``Invalidates improper noun - incorrect gender``() =
     "benediktin"
     |> isValid
     |> Assert.False
+    
+[<Fact>]
+let ``Gets singulars - indeclinable``() =
+    "dada"
+    |> getSingulars
+    |> equals [|"dada"|]
 
 [<Fact>]
 let ``Gets singulars - single option``() =
@@ -107,3 +125,15 @@ let ``Gets singulars - multiple options``() =
     "temeno"
     |> getSingulars
     |> equals [|"temeno"; "témě"|]
+    
+[<Fact>]
+let ``Detects indeclinable``() =
+    "dada"
+    |> isIndeclinable
+    |> Assert.True
+    
+[<Fact>]
+let ``Detects declinable``() =
+    "panda"
+    |> isIndeclinable
+    |> Assert.False

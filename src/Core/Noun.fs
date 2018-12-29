@@ -16,35 +16,49 @@ let getGender =
     >> getInfo "rod "
     >> Gender.FromString
 
+let isIndeclinable = 
+    getContent
+    >> getPart "čeština"
+    >> getPart "podstatné jméno"
+    >> getPart "skloňování"
+    >> tryGetInfo "nesklonné"
+    >> Option.isSome
+
 let getWikiSingular word = 
     let url = "https://cs.wiktionary.org/wiki/" + word
-    match isLocked word with
-    | false ->
-        let data = CommonArticle.Load url
-        data.Tables.``Skloňování[editovat]``.Rows.[0].singulár
-    | true ->
+    match word with
+    | _ when word |> isIndeclinable ->
+        word
+    | _ when word |> isLocked ->
         let data = LockedArticle.Load url
         data.Tables.Skloňování.Rows.[0].singulár
+    | _ ->
+        let data = CommonArticle.Load url
+        data.Tables.``Skloňování[editovat]``.Rows.[0].singulár
 
 let getWikiPlural word = 
     let url = "https://cs.wiktionary.org/wiki/" + word
-    match isLocked word with
-    | false ->
-        let data = CommonArticle.Load url
-        data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
-    | true ->
+    match word with
+    | _ when word |> isIndeclinable ->
+        word
+    | _ when word |> isLocked ->
         let data = LockedArticle.Load url
         data.Tables.Skloňování.Rows.[0].plurál
+    | _ ->
+        let data = CommonArticle.Load url
+        data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
 
 let getWikiAccusative word = 
     let url = "https://cs.wiktionary.org/wiki/" + word
-    match isLocked word with
-    | false ->
-        let data = CommonArticle.Load url
-        data.Tables.``Skloňování[editovat]``.Rows.[3].singulár
-    | true ->
+    match word with
+    | _ when word |> isIndeclinable ->
+        word
+    | _ when word |> isLocked ->
         let data = LockedArticle.Load url
         data.Tables.Skloňování.Rows.[3].singulár
+    | _ ->
+        let data = CommonArticle.Load url
+        data.Tables.``Skloňování[editovat]``.Rows.[3].singulár
 
 let getSingulars = getWikiSingular >> getForms
 let getPlurals = getWikiPlural >> getForms
