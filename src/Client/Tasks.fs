@@ -10,17 +10,7 @@ type AccusativesTask = {
     Accusatives:  string[]
 }
 
-type ComparativesTask = { 
-    Positive    : string 
-    Comparatives: string[]
-}
-
-type ImperativesTask = { 
-    Indicative : string 
-    Imperatives: string[]
-}
-
-type ParticiplesTask = { 
-    Infinitive : string 
-    Participles: string[]
+type CommonTask = { 
+    Task : string 
+    Answers: string[]
 }

@@ -5,7 +5,6 @@ open Elmish
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
-open Fable.PowerPack
 open Fable.PowerPack.Fetch
 open Fable.Import.React
 open Thoth.Json
@@ -20,19 +19,12 @@ type Boolean with
 
 type Model = {
     Regularity : bool option
-    Task : string option
-    Answers: string[] option
-    Input : string
-    Result : bool option
+    TaskModel : Task.Model
 }
 
 type Msg = 
     | SetRegularity of bool option
-    | SetInput of string
-    | SubmitTask
-    | UpdateTask
-    | FetchedTask of ComparativesTask option
-    | FetchError of exn
+    | TaskMsg of Task.Msg
 
 let getTask regularity =
     let url = 
@@ -40,78 +32,29 @@ let getTask regularity =
         | Some r -> "/api/comparatives?isRegular=" + r.ToString()
         | None   -> "/api/comparatives"
 
-    fetchAs<ComparativesTask option> url (Decode.Auto.generateDecoder())
+    fetchAs<CommonTask option> url (Decode.Auto.generateDecoder())
 
 [<Literal>]
 let RegularityUnset = ""
 
-let loadTaskCmd regularity =
-    Cmd.ofPromise (getTask regularity) [] FetchedTask FetchError
-
-let init () =
-    { Task = None
-      Answers = None
-      Regularity = None
-      Input = ""
-      Result = None },
-      loadTaskCmd None
+let init() =
+    let taskModel, taskCmd = Task.init (getTask None)
+    { Regularity = None
+      TaskModel = taskModel },
+      Cmd.map TaskMsg taskCmd
 
 let update msg model =
     match msg with
     | SetRegularity regularity ->
         { model with Regularity = regularity }, Cmd.none
-    | SetInput input ->
-        { model with Input = input }, Cmd.none
-    | SubmitTask ->
-        let result = model.Answers |> Option.map (Array.contains model.Input)
-        { model with Result = result }, Cmd.none
-    | UpdateTask ->
-        { model with Task = None; Input = ""; Result = None }, loadTaskCmd model.Regularity
-    | FetchedTask task ->
-        { model with 
-            Task = task |> Option.map (fun t -> t.Positive)
-            Answers = task |> Option.map (fun t -> t.Comparatives)    
-        }, Cmd.none
-    | FetchError _ ->
-        model, Cmd.none
+    | TaskMsg msg' ->
+        let result, cmd = Task.update msg' model.TaskModel (getTask model.Regularity)
+        { model with TaskModel = result }, Cmd.map TaskMsg cmd
 
 let view model dispatch =
-    let result = 
-        match model.Result with 
-        | Some result -> 
-            let imageSource = if result then "images/correct.png" else "images/incorrect.png"
-            let altText = if result then "Correct" else "Incorrect"
-            Markup.icon imageSource 25 altText
-        | None ->
-            str ""
-
-    let task = 
-        match model.Task with
-        | Some t -> 
-            str t
-        | None ->
-            let imageSource = "images/loading.gif"
-            let altText = "Loading..."
-            Markup.icon imageSource 25 altText
-
-    let handleChangeAnswer (event: FormEvent) =
-        dispatch (SetInput !!event.target?value)
-        
     let handleChangeRegularity (event: FormEvent) =
         let translate = function | RegularityUnset -> None | x -> Some (bool.FromString x)
         dispatch (SetRegularity (translate !!event.target?value))
-
-    let handleKeyDown (event: KeyboardEvent) =
-        match event.keyCode with
-        | Keyboard.Codes.enter ->
-            match event.shiftKey with
-            | false -> dispatch SubmitTask
-            | true  -> dispatch UpdateTask
-        | _ -> 
-            ()
-
-    let handleUpdateClick _ = dispatch UpdateTask
-    let handleCheckClick _ = dispatch SubmitTask
     
     [ 
         Markup.words 60 "Write comparative for the adjective"
@@ -137,22 +80,8 @@ let view model dispatch =
 
         Markup.emptyLines 2
 
-        div [ Styles.row ] 
-            [
-                Markup.label Styles.greyLabel task
-                Markup.input Styles.input model.Input handleChangeAnswer handleKeyDown
-                Markup.label Styles.greyLabel result
-            ]
+        div [] (Task.view model.TaskModel (TaskMsg >> dispatch))
 
-        Markup.emptyLines 2
-
-        div [ Styles.row ] 
-            [
-                Markup.button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)"
-                Markup.space()
-                Markup.button (Styles.button "Lime") handleCheckClick "Check (⏎)"
-            ]
-        
         Markup.emptyLines 1
 
         div [ Styles.row ]

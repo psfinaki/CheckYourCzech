@@ -17,13 +17,14 @@
 		<Compile Include="Pages.fs" />
 		<Compile Include="Markup.fs" />
 		<Compile Include="Styles.fs" />
+		<Compile Include="views\Task.fs" />
+		<Compile Include="views\Menu.fs" />
 		<Compile Include="pages\Accusatives.fs" />
 		<Compile Include="pages\Participles.fs" />
 		<Compile Include="pages\Home.fs" />
 		<Compile Include="pages\Plurals.fs" />
 		<Compile Include="pages\Comparatives.fs" />
 		<Compile Include="pages\Imperatives.fs" />
-		<Compile Include="views\Menu.fs" />
 		<Compile Include="App.fs" />
     </ItemGroup>
     <ItemGroup>
