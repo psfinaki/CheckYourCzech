@@ -5,11 +5,15 @@ open Fable.Helpers.React
 open Fable.PowerPack
 open Fable.Import.React
 open Fable.Core.JsInterop
-open Tasks
+
+type Task = { 
+    Task : string 
+    Answers : string[]
+}
 
 type Model = {
     Task : string option
-    Answers: string[] option
+    Answers : string[] option
     Input : string
     Result : bool option
 }
@@ -18,7 +22,7 @@ type Msg =
     | SetInput of string
     | SubmitTask
     | UpdateTask
-    | FetchedTask of CommonTask option
+    | FetchedTask of Task option
     | FetchError of exn
 
 let loadTaskCmd getTask =

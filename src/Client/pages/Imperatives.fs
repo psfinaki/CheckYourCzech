@@ -4,7 +4,6 @@ open Elmish
 open Fable.Helpers.React
 open Fable.PowerPack.Fetch
 open Thoth.Json
-open Tasks
 
 type Model = { TaskModel : Task.Model }
 
@@ -12,7 +11,7 @@ type Msg = | TaskMsg of Task.Msg
 
 let getTask =
     let url = "/api/imperatives"
-    fetchAs<CommonTask option> url (Decode.Auto.generateDecoder())
+    fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init() =
     let model, cmd = Task.init getTask

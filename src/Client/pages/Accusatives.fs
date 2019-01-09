@@ -8,7 +8,6 @@ open Fable.PowerPack.Fetch
 open Fable.Import.React
 open Gender
 open Thoth.Json
-open Tasks
 
 type Model = {
     Gender : Gender option
@@ -25,7 +24,7 @@ let getTask gender =
         | Some g -> "/api/accusatives?gender=" + Gender.ToString g
         | None   -> "/api/accusatives"
 
-    fetchAs<CommonTask option> url (Decode.Auto.generateDecoder())
+    fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 [<Literal>]
 let GenderUnset = ""
