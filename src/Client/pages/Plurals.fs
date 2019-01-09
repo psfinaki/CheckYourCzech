@@ -4,7 +4,6 @@ open Elmish
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
-open Fable.PowerPack
 open Fable.PowerPack.Fetch
 open Fable.Import.React
 open Gender
@@ -13,97 +12,41 @@ open Tasks
 
 type Model = {
     Gender : Gender option
-    Task : string option
-    Answers: string[] option
-    Input : string
-    Result : bool option
+    TaskModel : Task.Model
 }
 
 type Msg = 
     | SetGender of Gender option
-    | SetInput of string
-    | SubmitTask
-    | UpdateTask
-    | FetchedTask of PluralsTask option
-    | FetchError of exn
+    | TaskMsg of Task.Msg
 
 let getTask gender =
     let url = 
         match gender with
         | Some g -> "/api/plurals?gender=" + Gender.ToString g
         | None   -> "/api/plurals"
-    fetchAs<PluralsTask option> url (Decode.Auto.generateDecoder())
+    fetchAs<CommonTask option> url (Decode.Auto.generateDecoder())
 
 [<Literal>]
 let GenderUnset = ""
 
-let loadTaskCmd gender =
-    Cmd.ofPromise (getTask gender) [] FetchedTask FetchError
-
 let init () =
+    let taskModel, taskCmd = Task.init (getTask None)
     { Gender = None
-      Task = None
-      Answers = None
-      Input = ""
-      Result = None },
-      loadTaskCmd None
+      TaskModel = taskModel },
+      Cmd.map TaskMsg taskCmd
 
 let update msg model =
     match msg with
     | SetGender gender ->
         { model with Gender = gender }, Cmd.none
-    | SetInput input ->
-        { model with Input = input }, Cmd.none
-    | SubmitTask ->
-        let result = model.Answers |> Option.map (Array.contains model.Input)
-        { model with Result = result }, Cmd.none
-    | UpdateTask ->
-        { model with Task = None; Input = ""; Result = None }, loadTaskCmd model.Gender
-    | FetchedTask task ->
-        { model with 
-            Task = task |> Option.map (fun t -> t.Singulars |> Seq.random)
-            Answers = task |> Option.map (fun t -> t.Plurals)    
-        }, Cmd.none
-    | FetchError _ ->
-        model, Cmd.none
+    | TaskMsg msg' ->
+        let result, cmd = Task.update msg' model.TaskModel (getTask model.Gender)
+        { model with TaskModel = result }, Cmd.map TaskMsg cmd
 
 let view model dispatch =
-    let result = 
-        match model.Result with 
-        | Some result -> 
-            let imageSource = if result then "images/correct.png" else "images/incorrect.png"
-            let altText = if result then "Correct" else "Incorrect"
-            Markup.icon imageSource 25 altText
-        | None ->
-            str ""
-
-    let task = 
-        match model.Task with
-        | Some t -> 
-            str t 
-        | None ->
-            let imageSource = "images/loading.gif"
-            let altText = "Loading..."
-            Markup.icon imageSource 25 altText
-
-    let handleChangeAnswer (event: FormEvent) =
-        dispatch (SetInput !!event.target?value)
-        
     let handleChangeGender (event: FormEvent) =
         let translate = function | GenderUnset -> None | x -> Some (Gender.FromString x)
         dispatch (SetGender (translate !!event.target?value))
-        
-    let handleKeyDown (event: KeyboardEvent) =
-        match event.keyCode with
-        | Keyboard.Codes.enter ->
-            match event.shiftKey with
-            | false -> dispatch SubmitTask
-            | true  -> dispatch UpdateTask
-        | _ -> 
-            ()
-
-    let handleUpdateClick _ = dispatch UpdateTask
-    let handleCheckClick _ = dispatch SubmitTask
     
     [ 
         Markup.words 60 "Write plural for the word"
@@ -131,19 +74,5 @@ let view model dispatch =
 
         Markup.emptyLines 2
 
-        div [ Styles.row ] 
-            [
-                Markup.label Styles.greyLabel task
-                Markup.input Styles.input model.Input handleChangeAnswer handleKeyDown
-                Markup.label Styles.greyLabel result
-            ]
-
-        Markup.emptyLines 2
-
-        div [ Styles.row ] 
-            [
-                Markup.button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)"
-                Markup.space()
-                Markup.button (Styles.button "Lime") handleCheckClick "Check (⏎)"
-            ]
+        div [] (Task.view model.TaskModel (TaskMsg >> dispatch))
     ]
