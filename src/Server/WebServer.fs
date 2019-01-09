@@ -25,9 +25,9 @@ let getPluralsTask next (ctx: HttpContext) =
 
         let noun = tryGetRandom<Noun.Noun> "nouns" filters
         let getTask (noun: Noun.Noun) = 
-            let singulars = getAs<string[]> noun.Singulars
+            let singular = noun.Singulars |> getAs<string[]> |> Seq.random
             let plurals = getAs<string []> noun.Plurals
-            PluralsTask(singulars, plurals)
+            PluralsTask(singular, plurals)
         
         let task = noun |> Option.map getTask |> Option.toObj
         return! Successful.OK task next ctx
@@ -51,9 +51,9 @@ let getAccusativesTask next (ctx : HttpContext) =
 
         let noun = tryGetRandom<Noun.Noun> "nouns" filters
         let getTask (noun: Noun.Noun) = 
-            let singulars = getAs<string[]> noun.Singulars
+            let singular = noun.Singulars |> getAs<string[]> |> Seq.random
             let accusatives = getAs<string []> noun.Accusatives
-            AccusativesTask(singulars, accusatives)
+            AccusativesTask(singular, accusatives)
 
         let task = noun |> Option.map getTask |> Option.toObj
         return! Successful.OK task next ctx
