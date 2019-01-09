@@ -86,20 +86,21 @@ let view model dispatch =
     let handleUpdateClick _ = dispatch UpdateTask
     let handleCheckClick _ = dispatch SubmitTask
     
-    [
-        div [ Styles.row ] 
-            [
-                Markup.label Styles.greyLabel task
-                Markup.input Styles.input model.Input handleChangeAnswer handleKeyDown
-                Markup.label Styles.greyLabel result
-            ]
+    div []
+        [
+            div [ Styles.row ] 
+                [
+                    Markup.label Styles.greyLabel task
+                    Markup.input Styles.input model.Input handleChangeAnswer handleKeyDown
+                    Markup.label Styles.greyLabel result
+                ]
 
-        Markup.emptyLines 2
+            Markup.emptyLines 2
 
-        div [ Styles.row ]
-            [
-                Markup.button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)"
-                Markup.space()
-                Markup.button (Styles.button "Lime") handleCheckClick "Check (⏎)"
-            ]
-    ]
+            div [ Styles.row ]
+                [
+                    Markup.button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)"
+                    Markup.space()
+                    Markup.button (Styles.button "Lime") handleCheckClick "Check (⏎)"
+                ]
+        ]
