@@ -5,7 +5,11 @@ open Giraffe
 open Saturn
 open Storage
 open Microsoft.AspNetCore.Http
-open Tasks
+
+[<AllowNullLiteral>]
+type Task(task, answers) = 
+    member this.Task = task
+    member this.Answers = answers
 
 let getPluralsTask next (ctx: HttpContext) =
     task {
@@ -27,7 +31,7 @@ let getPluralsTask next (ctx: HttpContext) =
         let getTask (noun: Noun.Noun) = 
             let singular = noun.Singulars |> getAs<string[]> |> Seq.random
             let plurals = getAs<string []> noun.Plurals
-            PluralsTask(singular, plurals)
+            Task(singular, plurals)
         
         let task = noun |> Option.map getTask |> Option.toObj
         return! Successful.OK task next ctx
@@ -53,7 +57,7 @@ let getAccusativesTask next (ctx : HttpContext) =
         let getTask (noun: Noun.Noun) = 
             let singular = noun.Singulars |> getAs<string[]> |> Seq.random
             let accusatives = getAs<string []> noun.Accusatives
-            AccusativesTask(singular, accusatives)
+            Task(singular, accusatives)
 
         let task = noun |> Option.map getTask |> Option.toObj
         return! Successful.OK task next ctx
@@ -79,7 +83,7 @@ let getComparativesTask next (ctx : HttpContext) =
         let getTask (adjective: Adjective.Adjective) = 
             let positive = getAs<string> adjective.Positive
             let comparatives = getAs<string []> adjective.Comparatives
-            ComparativesTask(positive, comparatives)
+            Task(positive, comparatives)
 
         let task = adjective |> Option.map getTask |> Option.toObj 
         return! Successful.OK task next ctx
@@ -93,7 +97,7 @@ let getImperativesTask next ctx =
         let getTask (verb: Imperative.Imperative) = 
             let indicative = getAs<string> verb.Indicative
             let imperatives = getAs<string []> verb.Imperatives
-            ImperativesTask(indicative, imperatives)
+            Task(indicative, imperatives)
 
         let task = verb |> Option.map getTask |> Option.toObj 
         return! Successful.OK task next ctx
@@ -119,7 +123,7 @@ let getParticiplesTask next (ctx: HttpContext) =
         let getTask (verb: Participle.Participle) = 
             let infinitive = getAs<string> verb.Infinitive
             let participles = getAs<string []> verb.Participles
-            ParticiplesTask(infinitive, participles)
+            Task(infinitive, participles)
 
         let task = verb |> Option.map getTask |> Option.toObj 
         return! Successful.OK task next ctx

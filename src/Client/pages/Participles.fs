@@ -8,7 +8,6 @@ open Fable.Helpers.React.Props
 open Fable.PowerPack.Fetch
 open Fable.Import.React
 open Thoth.Json
-open Tasks
 
 // because Fable cannot compile bool.Parse
 type Boolean with
@@ -32,7 +31,7 @@ let getTask regularity =
         | Some r -> "/api/participles?isRegular=" + r.ToString()
         | None   -> "/api/participles"
 
-    fetchAs<CommonTask option> url (Decode.Auto.generateDecoder())
+    fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 [<Literal>]
 let RegularityUnset = ""
