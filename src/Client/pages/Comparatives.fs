@@ -79,12 +79,9 @@ let view model dispatch =
 
         Markup.emptyLines 2
 
-        div [] (Task.view model.TaskModel (TaskMsg >> dispatch))
+        Task.view model.TaskModel (TaskMsg >> dispatch)
 
         Markup.emptyLines 1
 
-        div [ Styles.row ]
-            [
-                Markup.toggleLink "rules" Rules.comparatives
-            ]
+        Rule.view Rules.comparatives
     ]

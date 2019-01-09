@@ -29,6 +29,6 @@ let view model dispatch =
 
         Markup.emptyLines 8
 
-        div [] (Task.view model.TaskModel (TaskMsg >> dispatch))
+        Task.view model.TaskModel (TaskMsg >> dispatch)
     ]
 
