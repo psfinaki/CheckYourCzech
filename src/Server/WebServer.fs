@@ -7,8 +7,8 @@ open Storage
 open Microsoft.AspNetCore.Http
 
 [<AllowNullLiteral>]
-type Task(task, answers) = 
-    member this.Task = task
+type Task(word, answers) = 
+    member this.Word = word
     member this.Answers = answers
 
 let getPluralsTask next (ctx: HttpContext) =

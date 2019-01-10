@@ -6,13 +6,13 @@ open Gender
 open Thoth.Json
 
 type Model = {
-    GenderModel : Gender.Model
-    TaskModel : Task.Model
+    Gender : Gender.Model
+    Task : Task.Model
 }
 
 type Msg = 
-    | GenderMsg of Gender.Msg
-    | TaskMsg of Task.Msg
+    | Gender of Gender.Msg
+    | Task of Task.Msg
 
 let getTask gender =
     let url = 
@@ -23,21 +23,21 @@ let getTask gender =
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init () =
-    let genderModel = Gender.init()
-    let taskModel, taskCmd = Task.init (getTask None)
+    let gender = Gender.init()
+    let task, cmd = Task.init (getTask None)
 
-    { GenderModel = genderModel
-      TaskModel = taskModel },
-    Cmd.map TaskMsg taskCmd
+    { Gender = gender
+      Task = task },
+    Cmd.map Task cmd
 
 let update msg model =
     match msg with
-    | GenderMsg msg' ->
-        let result = Gender.update msg' model.GenderModel
-        { model with GenderModel = result }, Cmd.none
-    | TaskMsg msg' ->
-        let result, cmd = Task.update msg' model.TaskModel (getTask model.GenderModel.Gender)
-        { model with TaskModel = result }, Cmd.map TaskMsg cmd
+    | Gender msg' ->
+        let gender = Gender.update msg' model.Gender
+        { model with Gender = gender }, Cmd.none
+    | Task msg' ->
+        let task, cmd = Task.update msg' model.Task (getTask model.Gender.Gender)
+        { model with Task = task }, Cmd.map Task cmd
 
 let view model dispatch =    
     [ 
@@ -45,9 +45,9 @@ let view model dispatch =
 
         Markup.emptyLines 3
 
-        Gender.view (GenderMsg >> dispatch)
+        Gender.view (Gender >> dispatch)
 
         Markup.emptyLines 2
 
-        Task.view model.TaskModel (TaskMsg >> dispatch)
+        Task.view model.Task (Task >> dispatch)
     ]

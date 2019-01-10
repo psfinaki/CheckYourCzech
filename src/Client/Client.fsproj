@@ -16,11 +16,11 @@
 		<Compile Include="Pages.fs" />
 		<Compile Include="Markup.fs" />
 		<Compile Include="Styles.fs" />
-		<Compile Include="views\Gender.fs" />
-		<Compile Include="views\Regularity.fs" />
-		<Compile Include="views\Task.fs" />
 		<Compile Include="views\Menu.fs" />
 		<Compile Include="views\Rule.fs" />
+		<Compile Include="widgets\Gender.fs" />
+		<Compile Include="widgets\Regularity.fs" />
+		<Compile Include="widgets\Task.fs" />
 		<Compile Include="pages\Accusatives.fs" />
 		<Compile Include="pages\Participles.fs" />
 		<Compile Include="pages\Home.fs" />

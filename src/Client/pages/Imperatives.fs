@@ -4,23 +4,23 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 
-type Model = { TaskModel : Task.Model }
+type Model = { Task : Task.Model }
 
-type Msg = | TaskMsg of Task.Msg
+type Msg = | Task of Task.Msg
 
 let getTask =
     let url = "/api/imperatives"
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init() =
-    let model, cmd = Task.init getTask
-    { TaskModel = model }, Cmd.batch [ Cmd.map TaskMsg cmd ]
+    let task, cmd = Task.init getTask
+    { Task = task }, Cmd.map Task cmd
 
 let update msg model =
     match msg with
-    | TaskMsg msg' ->
-        let result, cmd = Task.update msg' model.TaskModel getTask
-        { model with TaskModel = result }, Cmd.map TaskMsg cmd
+    | Task msg' ->
+        let task, cmd = Task.update msg' model.Task getTask
+        { model with Task = task }, Cmd.map Task cmd
 
 let view model dispatch = 
     [ 
@@ -28,6 +28,5 @@ let view model dispatch =
 
         Markup.emptyLines 8
 
-        Task.view model.TaskModel (TaskMsg >> dispatch)
+        Task.view model.Task (Task >> dispatch)
     ]
-

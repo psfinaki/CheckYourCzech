@@ -5,13 +5,13 @@ open Fable.PowerPack.Fetch
 open Thoth.Json
 
 type Model = {
-    RegularityModel : Regularity.Model
-    TaskModel : Task.Model
+    Regularity : Regularity.Model
+    Task : Task.Model
 }
 
 type Msg = 
-    | RegularityMsg of Regularity.Msg
-    | TaskMsg of Task.Msg
+    | Regularity of Regularity.Msg
+    | Task of Task.Msg
 
 let getTask regularity =
     let url = 
@@ -22,21 +22,21 @@ let getTask regularity =
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init() =
-    let regularityModel = Regularity.init()
-    let taskModel, taskCmd = Task.init (getTask None)
+    let regularity = Regularity.init()
+    let task, cmd = Task.init (getTask None)
 
-    { RegularityModel = regularityModel
-      TaskModel = taskModel },
-    Cmd.map TaskMsg taskCmd
+    { Regularity = regularity
+      Task = task },
+    Cmd.map Task cmd
 
 let update msg model =
     match msg with
-    | RegularityMsg msg' ->
-        let result = Regularity.update msg' model.RegularityModel
-        { model with RegularityModel = result }, Cmd.none
-    | TaskMsg msg' ->
-        let result, cmd = Task.update msg' model.TaskModel (getTask model.RegularityModel.Regularity)
-        { model with TaskModel = result }, Cmd.map TaskMsg cmd
+    | Regularity msg' ->
+        let regularity = Regularity.update msg' model.Regularity
+        { model with Regularity = regularity }, Cmd.none
+    | Task msg' ->
+        let task, cmd = Task.update msg' model.Task (getTask model.Regularity.Regularity)
+        { model with Task = task }, Cmd.map Task cmd
 
 let view model dispatch =          
     [ 
@@ -44,11 +44,11 @@ let view model dispatch =
 
         Markup.emptyLines 2
 
-        Regularity.view (RegularityMsg >> dispatch)
+        Regularity.view (Regularity >> dispatch)
 
         Markup.emptyLines 2
 
-        Task.view model.TaskModel (TaskMsg >> dispatch)
+        Task.view model.Task (Task >> dispatch)
 
         Markup.emptyLines 1
 
