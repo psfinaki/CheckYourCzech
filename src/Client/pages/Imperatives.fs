@@ -1,7 +1,6 @@
 ﻿module Imperatives
 
 open Elmish
-open Fable.Helpers.React
 open Fable.PowerPack.Fetch
 open Thoth.Json
 

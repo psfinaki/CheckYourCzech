@@ -16,6 +16,7 @@
 		<Compile Include="Pages.fs" />
 		<Compile Include="Markup.fs" />
 		<Compile Include="Styles.fs" />
+		<Compile Include="views\Regularity.fs" />
 		<Compile Include="views\Task.fs" />
 		<Compile Include="views\Menu.fs" />
 		<Compile Include="views\Rule.fs" />
