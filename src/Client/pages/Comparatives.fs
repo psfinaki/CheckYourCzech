@@ -1,28 +1,16 @@
 ﻿module Comparatives
 
-open System
 open Elmish
-open Fable.Core.JsInterop
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
 open Fable.PowerPack.Fetch
-open Fable.Import.React
 open Thoth.Json
 
-// because Fable cannot compile bool.Parse
-type Boolean with
-    static member FromString = function
-        | "True" -> true
-        | "False" -> false
-        | _ -> invalidOp "Value cannot be converted to boolean."
-
 type Model = {
-    Regularity : bool option
+    RegularityModel : Regularity.Model
     TaskModel : Task.Model
 }
 
 type Msg = 
-    | SetRegularity of bool option
+    | RegularityMsg of Regularity.Msg
     | TaskMsg of Task.Msg
 
 let getTask regularity =
@@ -33,49 +21,30 @@ let getTask regularity =
 
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
-[<Literal>]
-let RegularityUnset = ""
-
 let init() =
+    let regularityModel = Regularity.init()
     let taskModel, taskCmd = Task.init (getTask None)
-    { Regularity = None
+
+    { RegularityModel = regularityModel
       TaskModel = taskModel },
-      Cmd.map TaskMsg taskCmd
+    Cmd.map TaskMsg taskCmd
 
 let update msg model =
     match msg with
-    | SetRegularity regularity ->
-        { model with Regularity = regularity }, Cmd.none
+    | RegularityMsg msg' ->
+        let result = Regularity.update msg' model.RegularityModel
+        { model with RegularityModel = result }, Cmd.none
     | TaskMsg msg' ->
-        let result, cmd = Task.update msg' model.TaskModel (getTask model.Regularity)
+        let result, cmd = Task.update msg' model.TaskModel (getTask model.RegularityModel.Regularity)
         { model with TaskModel = result }, Cmd.map TaskMsg cmd
 
 let view model dispatch =
-    let handleChangeRegularity (event: FormEvent) =
-        let translate = function | RegularityUnset -> None | x -> Some (bool.FromString x)
-        dispatch (SetRegularity (translate !!event.target?value))
-    
     [ 
         Markup.words 60 "Write comparative for the adjective"
 
         Markup.emptyLines 2
 
-        div [ Styles.row ] 
-            [
-                div [ Style [ Height "50%" ] ] 
-                    [
-                        Markup.label Styles.whiteLabel (str "Regularity") 
-                    ]
-
-                div [ Styles.select ] 
-                    [
-                        Markup.select handleChangeRegularity [
-                            Markup.option RegularityUnset "Any"
-                            Markup.option "True" "Regular"     // true.ToString()  does not work
-                            Markup.option "False" "Exceptions" // false.ToString() does not work
-                        ]
-                    ]
-            ]
+        Regularity.view (RegularityMsg >> dispatch)
 
         Markup.emptyLines 2
 
