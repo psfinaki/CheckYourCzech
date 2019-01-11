@@ -6,6 +6,10 @@ open Fable.Core.JsInterop
 open Fable.Import
 open Elmish.Browser.Navigation
 
+type Clickability =
+    | Clickable
+    | Unclickable
+
 let goToUrl (e: React.MouseEvent) =
     e.preventDefault()
     let href = !!e.target?href
@@ -83,10 +87,12 @@ let toggleLink text content =
                 ]
         ]
 
-let button style handler text =
+let button style handler text clickability =
+    let isDisabled = clickability = Unclickable
     button [ 
         OnClick handler
         Type "button"
+        Disabled isDisabled
         style
     ] [
         str text
