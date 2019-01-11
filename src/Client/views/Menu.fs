@@ -3,7 +3,7 @@ module Menu
 open Fable.Helpers.React
 open Pages
 
-let view () =
+let view() =
     div [ Styles.center "row" ] 
         [
             yield Markup.viewLink Page.Home "Home"

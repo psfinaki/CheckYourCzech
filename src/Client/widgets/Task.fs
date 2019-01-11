@@ -7,12 +7,12 @@ open Fable.Import.React
 open Fable.Core.JsInterop
 
 type Task = { 
-    Task : string 
+    Word : string 
     Answers : string[]
 }
 
 type Model = {
-    Task : string option
+    Word : string option
     Answers : string[] option
     Input : string
     Result : bool option
@@ -20,7 +20,7 @@ type Model = {
 
 type Msg = 
     | SetInput of string
-    | SubmitTask
+    | SubmitAnswer
     | UpdateTask
     | FetchedTask of Task option
     | FetchError of exn
@@ -29,7 +29,7 @@ let loadTaskCmd getTask =
     Cmd.ofPromise getTask [] FetchedTask FetchError
 
 let init getTask =
-    { Task = None
+    { Word = None
       Answers = None
       Input = ""
       Result = None },
@@ -39,14 +39,14 @@ let update msg model getTask =
     match msg with
     | SetInput input ->
         { model with Input = input }, Cmd.none
-    | SubmitTask -> 
+    | SubmitAnswer -> 
         let result = model.Answers |> Option.map (Array.contains model.Input)
         { model with Result = result }, Cmd.none
     | UpdateTask ->
-        { model with Task = None; Input = ""; Result = None }, loadTaskCmd getTask
+        { model with Word = None; Input = ""; Result = None }, loadTaskCmd getTask
     | FetchedTask task -> 
         { model with 
-            Task = task |> Option.map (fun t -> t.Task)
+            Word = task |> Option.map (fun t -> t.Word)
             Answers = task |> Option.map (fun t -> t.Answers)
         }, Cmd.none
     | FetchError _ ->
@@ -63,7 +63,7 @@ let view model dispatch =
             str ""
 
     let task = 
-        match model.Task with
+        match model.Word with
         | Some t -> 
             str t
         | None ->
@@ -78,13 +78,13 @@ let view model dispatch =
         match event.keyCode with
         | Keyboard.Codes.enter ->
             match event.shiftKey with
-            | false -> dispatch SubmitTask
+            | false -> dispatch SubmitAnswer
             | true  -> dispatch UpdateTask
         | _ -> 
             ()
 
     let handleUpdateClick _ = dispatch UpdateTask
-    let handleCheckClick _ = dispatch SubmitTask
+    let handleCheckClick _ = dispatch SubmitAnswer
     
     div []
         [

@@ -14,13 +14,13 @@ open Elmish.HMR
 
 let urlParser location = parseHash pageParser location
 
-type PageModel =
-    | HomeModel
-    | PluralsModel of Plurals.Model
-    | AccusativesModel of Accusatives.Model
-    | ComparativesModel of Comparatives.Model
-    | ImperativesModel of Imperatives.Model
-    | ParticiplesModel of Participles.Model
+type Model =
+    | Home
+    | Plurals of Plurals.Model
+    | Accusatives of Accusatives.Model
+    | Comparatives of Comparatives.Model
+    | Imperatives of Imperatives.Model
+    | Participles of Participles.Model
 
 type Msg = 
     | PluralsMsg of Plurals.Msg
@@ -31,17 +31,17 @@ type Msg =
 
 let viewPage model dispatch =
     match model with
-    | HomeModel ->
+    | Home ->
         Home.view ()
-    | PluralsModel m ->
+    | Plurals m ->
         Plurals.view m (PluralsMsg >> dispatch)
-    | AccusativesModel m ->
+    | Accusatives m ->
         Accusatives.view m (AccusativesMsg >> dispatch)
-    | ComparativesModel m ->
+    | Comparatives m ->
         Comparatives.view m (ComparativesMsg >> dispatch)
-    | ImperativesModel m ->
+    | Imperatives m ->
         Imperatives.view m (ImperativesMsg >> dispatch)
-    | ParticiplesModel m ->
+    | Participles m ->
         Participles.view m (ParticiplesMsg >> dispatch)
 
 let urlUpdate (result:Page option) model =
@@ -49,48 +49,48 @@ let urlUpdate (result:Page option) model =
     | None ->
         ( model, Navigation.modifyUrl (Pages.toHash Page.Home) )
     | Some Page.Home ->
-        HomeModel, Cmd.none
+        Home, Cmd.none
     | Some Page.Plurals ->
         let m, cmd = Plurals.init()
-        PluralsModel m, Cmd.map PluralsMsg cmd
+        Plurals m, Cmd.map PluralsMsg cmd
     | Some Page.Accusatives ->
         let m, cmd = Accusatives.init()
-        AccusativesModel m, Cmd.map AccusativesMsg cmd
+        Accusatives m, Cmd.map AccusativesMsg cmd
     | Some Page.Comparatives ->
         let m, cmd = Comparatives.init()
-        ComparativesModel m, Cmd.map ComparativesMsg cmd
+        Comparatives m, Cmd.map ComparativesMsg cmd
     | Some Page.Imperatives ->
         let m, cmd = Imperatives.init()
-        ImperativesModel m, Cmd.map ImperativesMsg cmd
+        Imperatives m, Cmd.map ImperativesMsg cmd
     | Some Page.Participles ->
         let m, cmd = Participles.init()
-        ParticiplesModel m, Cmd.map ParticiplesMsg cmd
+        Participles m, Cmd.map ParticiplesMsg cmd
 
-let init result = urlUpdate result HomeModel
+let init result = urlUpdate result Home
 
 let update msg model =
     match msg, model with
-    | PluralsMsg msg, PluralsModel m ->
+    | PluralsMsg msg, Plurals m ->
         let m, cmd = Plurals.update msg m
-        PluralsModel m, Cmd.map PluralsMsg cmd
-    | AccusativesMsg msg, AccusativesModel m ->
+        Plurals m, Cmd.map PluralsMsg cmd
+    | AccusativesMsg msg, Accusatives m ->
         let m, cmd = Accusatives.update msg m
-        AccusativesModel m, Cmd.map AccusativesMsg cmd
-    | ComparativesMsg msg, ComparativesModel m ->
+        Accusatives m, Cmd.map AccusativesMsg cmd
+    | ComparativesMsg msg, Comparatives m ->
         let m, cmd = Comparatives.update msg m
-        ComparativesModel m, Cmd.map ComparativesMsg cmd
-    | ImperativesMsg msg, ImperativesModel m ->
+        Comparatives m, Cmd.map ComparativesMsg cmd
+    | ImperativesMsg msg, Imperatives m ->
         let m, cmd = Imperatives.update msg m
-        ImperativesModel m, Cmd.map ImperativesMsg cmd
-    | ParticiplesMsg msg, ParticiplesModel m ->
+        Imperatives m, Cmd.map ImperativesMsg cmd
+    | ParticiplesMsg msg, Participles m ->
         let m, cmd = Participles.update msg m
-        ParticiplesModel m, Cmd.map ParticiplesMsg cmd
+        Participles m, Cmd.map ParticiplesMsg cmd
     | _, _ ->
         model, Cmd.none
 
 let view model dispatch =
     div [] [ 
-        Menu.view ()
+        Menu.view()
         hr []
         div [ Styles.center "column" ] (viewPage model dispatch)
     ]
