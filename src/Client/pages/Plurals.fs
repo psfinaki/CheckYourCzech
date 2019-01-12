@@ -2,7 +2,7 @@
 
 open Elmish
 open Fable.PowerPack.Fetch
-open Gender
+open Genders
 open Thoth.Json
 
 type Model = {

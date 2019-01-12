@@ -2,7 +2,7 @@
 
 open FSharp.Data
 open Article
-open Gender
+open Genders
 open Microsoft.WindowsAzure.Storage.Table
 open WikiString
 

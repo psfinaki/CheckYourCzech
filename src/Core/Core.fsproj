@@ -19,7 +19,7 @@
     <Compile Include="Html.fs" />
     <Compile Include="Stem.fs" />
     <Compile Include="Storage.fs" />
-    <Compile Include="Gender.fs" />
+    <Compile Include="Genders.fs" />
     <Compile Include="Article.fs" />
     <Compile Include="Adjective.fs" />
     <Compile Include="Verb.fs" />

@@ -2,7 +2,7 @@
 
 open Xunit
 open Noun
-open Gender
+open Genders
 
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
