@@ -4,7 +4,7 @@ open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
-open Gender
+open Genders
 
 [<Literal>]
 let GenderUnset = ""

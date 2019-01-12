@@ -1,4 +1,4 @@
-﻿module Gender
+﻿module Genders
 
 // http://www.fssnip.net/9h/title/Bi-directional-map
 type BiMap<'a,'b when 'a : comparison and 'b : comparison>(item1s:'a list, item2s:'b list) =
