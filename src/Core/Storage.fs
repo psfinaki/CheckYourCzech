@@ -32,6 +32,7 @@ type QueryCondition =
 let mapSafeOption mapping = Option.ofObj >> Option.map mapping >> Option.flatten >> Option.toObj >> JsonConvert.SerializeObject
 let mapSafeString mapping = Option.ofObj >> Option.map mapping >> Option.toObj >> JsonConvert.SerializeObject
 let mapSafeBool mapping   = Option.ofObj >> Option.map mapping >> Option.defaultValue false
+let mapSafeInt mapping    = Option.ofObj >> Option.map mapping >> Option.defaultValue 0
 
 let getAs<'T> = JsonConvert.DeserializeObject<'T>
 

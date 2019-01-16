@@ -30,11 +30,3 @@ let tryRandom = function
         seq
         |> random
         |> Some
-
-let trySingle = function
-    | seq when seq |> Seq.isEmpty ->
-        None
-    | seq ->
-        seq
-        |> Seq.exactlyOne
-        |> Some
