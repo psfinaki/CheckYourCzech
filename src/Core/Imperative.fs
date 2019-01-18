@@ -34,6 +34,7 @@ let getClassByThirdPersonSingular = function
 
 let getClass =
     getThirdPersonSingular
+    >> Verb.removeReflexive
     >> getClassByThirdPersonSingular
 
 let isVerbWithImperative =
