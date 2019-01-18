@@ -38,4 +38,4 @@ let getForms =
 
 let getForm =
     getForms
-    >> Seq.trySingle 
+    >> Seq.exactlyOne
