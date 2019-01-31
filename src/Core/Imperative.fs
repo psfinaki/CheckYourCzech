@@ -22,7 +22,7 @@ let getImperatives verb =
 let getThirdPersonSingular verb = 
     let data = getWikiData verb
     let answer = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
-    getForm answer
+    getForms answer
 
 let getClassByThirdPersonSingular = function
     | form when form |> ends "á"  -> 5
@@ -34,8 +34,9 @@ let getClassByThirdPersonSingular = function
 
 let getClass =
     getThirdPersonSingular
-    >> Verb.removeReflexive
-    >> getClassByThirdPersonSingular
+    >> Seq.tryExactlyOne
+    >> Option.map Verb.removeReflexive
+    >> Option.map getClassByThirdPersonSingular
 
 let isVerbWithImperative =
     tryGetContent
@@ -59,7 +60,7 @@ type Imperative(word) =
 
     member val Indicative  = word |> Storage.mapSafeString id             with get, set
     member val Imperatives = word |> Storage.mapSafeString getImperatives with get, set
-    member val Class       = word |> Storage.mapSafeInt    getClass       with get, set
+    member val Class       = word |> Storage.mapSafeIntOption getClass    with get, set
 
 let record word =
     if 
