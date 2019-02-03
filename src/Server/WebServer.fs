@@ -89,9 +89,21 @@ let getComparativesTask next (ctx : HttpContext) =
         return! Successful.OK task next ctx
     }
 
-let getImperativesTask next ctx =
+let getImperativesTask next (ctx : HttpContext) =
     task {
-        let filters = [("Imperatives", IsNot, box [])]
+        let imperativesFilter = ("Imperatives", IsNot, box [])
+
+        let classFromQuery = ctx.GetQueryStringValue "class"
+        let ``class`` = 
+             match classFromQuery with
+             | Ok ``class``  -> Some ("Class", Int, box ``class``)
+             | Error _       -> None
+
+        let filters = 
+            match ``class`` with
+            | Some filter -> [ imperativesFilter; filter ]
+            | None        -> [ imperativesFilter ]
+            
         let verb = tryGetRandom<Imperative.Imperative> "imperatives" filters
 
         let getTask (verb: Imperative.Imperative) = 
