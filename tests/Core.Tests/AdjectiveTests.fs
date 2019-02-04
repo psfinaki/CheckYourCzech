@@ -71,6 +71,12 @@ let ``Invalidates improper adjective - not a positive form - superlative``() =
     |> isValid
     |> Assert.False
 
+[<Fact>]
+let ``Invalidates improper adjective - no comparatives``() =
+    "optimální"
+    |> isValid
+    |> Assert.False
+
 [<Theory>]
 [<InlineData("rudý", "rudější")>]
 [<InlineData("důležitý", "důležitější")>]

@@ -65,18 +65,11 @@ let getAccusativesTask next (ctx : HttpContext) =
 
 let getComparativesTask next (ctx : HttpContext) =
     task { 
-        let comparativesFilter = ("Comparatives", IsNot, box [])
-
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
-        let regularityFilter = 
-             match regularityFromQuery with
-             | Ok regularity -> Some ("IsRegular", Bool, box regularity)
-             | Error _       -> None
-
         let filters = 
-            match regularityFilter with
-            | Some filter -> [ comparativesFilter; filter ]
-            | None        -> [ comparativesFilter ]
+             match regularityFromQuery with
+             | Ok regularity -> [ ("IsRegular", Bool, box regularity) ]
+             | Error _       -> []
 
         let adjective = tryGetRandom<Adjective.Adjective> "adjectives" filters
         
@@ -91,18 +84,11 @@ let getComparativesTask next (ctx : HttpContext) =
 
 let getImperativesTask next (ctx : HttpContext) =
     task {
-        let imperativesFilter = ("Imperatives", IsNot, box [])
-
         let classFromQuery = ctx.GetQueryStringValue "class"
-        let ``class`` = 
-             match classFromQuery with
-             | Ok ``class``  -> Some ("Class", Int, box ``class``)
-             | Error _       -> None
-
         let filters = 
-            match ``class`` with
-            | Some filter -> [ imperativesFilter; filter ]
-            | None        -> [ imperativesFilter ]
+             match classFromQuery with
+             | Ok ``class``  -> [ ("Class", Int, box ``class``) ]
+             | Error _       -> []
             
         let verb = tryGetRandom<Imperative.Imperative> "imperatives" filters
 
@@ -117,18 +103,11 @@ let getImperativesTask next (ctx : HttpContext) =
 
 let getParticiplesTask next (ctx: HttpContext) =
     task {
-        let participlesFilter = ("Participles", IsNot, box [])
-
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
-        let regularityFilter = 
-             match regularityFromQuery with
-             | Ok regularity -> Some ("IsRegular", Bool, box regularity)
-             | Error _       -> None
-
         let filters = 
-            match regularityFilter with
-            | Some filter -> [ participlesFilter; filter ]
-            | None        -> [ participlesFilter ]
+             match regularityFromQuery with
+             | Ok regularity -> [ ("IsRegular", Bool, box regularity) ]
+             | Error _       -> []
 
         let verb = tryGetRandom<Participle.Participle> "participles" filters
 

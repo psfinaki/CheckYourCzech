@@ -63,13 +63,12 @@ let hasAdjectiveContent =
     >> Option.isSome
 
 let isValid word = 
-    if word |> hasAdjectiveContent
-    then
-        let adjective = word
-        let isPositive = adjective = getPositive adjective
-        isPositive
-    else
-        false
+    let hasComparatives = getComparatives >> Seq.isEmpty >> not
+    let isPositive adjective = (adjective = getPositive adjective)
+
+    word |> hasAdjectiveContent &&
+    word |> hasComparatives &&
+    word |> isPositive
 
 type Adjective(word) =
     inherit TableEntity(word, word)
