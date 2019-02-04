@@ -19,6 +19,7 @@
 		<Compile Include="views\Menu.fs" />
 		<Compile Include="views\Rule.fs" />
 		<Compile Include="widgets\Gender.fs" />
+		<Compile Include="widgets\Class.fs" />
 		<Compile Include="widgets\Regularity.fs" />
 		<Compile Include="widgets\Task.fs" />
 		<Compile Include="pages\Accusatives.fs" />

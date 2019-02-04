@@ -28,6 +28,7 @@ type QueryCondition =
     | Is
     | IsNot
     | Bool
+    | Int
 
 let mapSafeIntOption (mapping: 'a -> int option) = Option.ofObj >> Option.map mapping >> Option.flatten >> Option.map string >> Option.defaultValue ""
 let mapSafeString mapping = Option.ofObj >> Option.map mapping >> Option.toObj >> JsonConvert.SerializeObject
@@ -52,6 +53,7 @@ let buildFilter (property, condition, value : obj) =
     | Is    -> createStringFilter (property, QueryComparisons.Equal,    JsonConvert.SerializeObject value)
     | IsNot -> createStringFilter (property, QueryComparisons.NotEqual, JsonConvert.SerializeObject value)
     | Bool  -> createBoolFilter   (property, QueryComparisons.Equal,    Convert.ToBoolean value)
+    | Int   -> createStringFilter (property, QueryComparisons.Equal,    value.ToString())
 
 let combineFilters f1 f2 = TableQuery.CombineFilters(f1, TableOperators.And, f2)
 
