@@ -1,1 +1,1 @@
-﻿dotnet Scraper.dll
+﻿"%ProgramFiles%"\dotnet\dotnet.exe Scraper.dll
