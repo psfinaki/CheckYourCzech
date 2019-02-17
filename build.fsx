@@ -16,8 +16,8 @@ open Fake.IO
 let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
 
-let platformTool tool winTool =
-    let tool = if Environment.isUnix then tool else winTool
+let yarnTool =
+    let tool = if Environment.isUnix then "yarn" else "yarn.cmd"
     match ProcessUtils.tryFindFileOnPath tool with
     | Some t -> t
     | _ ->
@@ -26,9 +26,6 @@ let platformTool tool winTool =
             "Please install it and make sure it's available from your path. " +
             "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
         failwith errorMsg
-
-let nodeTool = platformTool "node" "node.exe"
-let yarnTool = platformTool "yarn" "yarn.cmd"
 
 let runTool cmd args workingDir =
     let arguments = args |> String.split ' ' |> Arguments.OfArgs
@@ -53,8 +50,6 @@ let openBrowser url =
     |> ignore
 
 Target.create "InstallClient" (fun _ ->
-    printfn "Node version:"
-    runTool nodeTool "--version" __SOURCE_DIRECTORY__
     printfn "Yarn version:"
     runTool yarnTool "--version" __SOURCE_DIRECTORY__
     runTool yarnTool "install --frozen-lockfile" __SOURCE_DIRECTORY__
