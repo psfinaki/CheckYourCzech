@@ -15,7 +15,6 @@ open Fake.IO
 
 let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
-let deployDir = Path.getFullName "./deploy"
 
 let platformTool tool winTool =
     let tool = if Environment.isUnix then tool else winTool
@@ -53,10 +52,6 @@ let openBrowser url =
     |> Proc.run
     |> ignore
 
-Target.create "Clean" (fun _ ->
-    Shell.cleanDirs [deployDir]
-)
-
 Target.create "InstallClient" (fun _ ->
     printfn "Node version:"
     runTool nodeTool "--version" __SOURCE_DIRECTORY__
@@ -93,12 +88,10 @@ Target.create "Run" (fun _ ->
     |> ignore
 )
 
-"Clean"
-    ==> "InstallClient"
+"InstallClient"
     ==> "Build"
 
-"Clean"
-    ==> "InstallClient"
+"InstallClient"
     ==> "RestoreServer"
     ==> "Run"
 
