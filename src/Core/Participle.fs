@@ -5,33 +5,12 @@ open Microsoft.WindowsAzure.Storage.Table
 open Article
 open WikiString
 open StringHelper
-open Letters
 open Stem
 
 type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
 type WikiParticiplesTable3 = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 
 let hasStemPattern getStem isPattern = getStem >> endsIf isPattern
-
-let isPatternTisknout (word: string) = 
-    let getStem = removeLast 4
-    
-    let isPattern letter = 
-        letter |> isConsonant && 
-        letter |> isNotSyllabicConsonant
-    
-    word |> ends "nout" && 
-    word |> getStem |> endsIf isPattern
-
-let isPatternMinout (word: string) = 
-    let getStem = removeLast 4
-    
-    let isPattern letter =
-        letter |> isVowel ||
-        letter |> isSyllabicConsonant
-
-    word |> ends "nout" &&
-    word |> getStem |> endsIf isPattern
 
 let buildParticipleTisknout = removeLast 4 >> append "l"
 let buildParticipleMinout   = removeLast 4 >> append "nul"
@@ -44,8 +23,8 @@ let getReflexive = function
 
 let buildTheoreticalParticiple verb =
     let buildTheoreticalParticipleNonReflexive = function
-        | verb when verb |> isPatternTisknout -> buildParticipleTisknout verb
-        | verb when verb |> isPatternMinout -> buildParticipleMinout verb
+        | verb when verb |> Verb.isPatternTisknout -> buildParticipleTisknout verb
+        | verb when verb |> Verb.isPatternMinout -> buildParticipleMinout verb
         | verb -> buildParticipleCommon verb
 
     let reflexive = getReflexive verb
