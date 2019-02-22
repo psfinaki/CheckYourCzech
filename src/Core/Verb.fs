@@ -40,3 +40,46 @@ let isPatternMinout (word: string) =
     word |> ends "nout" &&
     word |> getStem |> endsIf isPattern
 
+let invalidVerb verb verbClass = 
+    sprintf "The verb %s does not belong to the class %i." verb verbClass
+    |> invalidArg "verb"
+
+let getTemplateClass1 = function
+    | verb when verb |> ends "ést" -> "nést"
+    | verb when verb |> ends "íst" -> "číst"
+    | verb when verb |> ends "éct" -> "péct"
+    | verb when verb |> ends "ít" -> "třít"
+    | verb when verb |> ends "át" -> "brát"
+    | verb when verb |> ends "at" -> "mazat"
+    | verb -> invalidVerb verb 1
+
+let getTemplateClass2 = function
+    | verb when verb |> isPatternTisknout -> "tisknout"
+    | verb when verb |> isPatternMinout -> "minout"
+    | verb when verb |> ends "ít" -> "začít"
+    | verb -> invalidVerb verb 2
+
+let getTemplateClass3 = function
+    | verb when verb |> ends "ovat" -> "kupovat"
+    | verb when verb |> ends "ýt" -> "krýt"
+    | verb -> invalidVerb verb 3
+
+let getTemplateClass4 = function
+    | verb when verb |> ends "sit" -> "prosit"
+    | verb when verb |> ends "stit" -> "čistit"
+    | verb when verb |> ends "ět" -> "trpět"
+    | verb when verb |> ends "et" -> "sázet"
+    | verb -> invalidVerb verb 4
+
+let getTemplateClass5 = function
+    | verb when verb |> ends "at" -> "dělat"
+    | verb -> invalidVerb verb 5
+
+let templateClassMap =
+    dict [ (1, getTemplateClass1)
+           (2, getTemplateClass2)
+           (3, getTemplateClass3)
+           (4, getTemplateClass4)
+           (5, getTemplateClass5) ]
+
+let getTemplateByClass verb verbClass = templateClassMap.[verbClass] verb

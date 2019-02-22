@@ -76,3 +76,73 @@ let ``Detects pattern is not minout`` word =
     word
     |> isPatternMinout
     |> Assert.False
+
+[<Theory>]
+[<InlineData("vést", "nést")>]
+[<InlineData("příst", "číst")>]
+[<InlineData("téct", "péct")>]
+[<InlineData("dřít", "třít")>]
+[<InlineData("prát", "brát")>]
+[<InlineData("vázat", "mazat")>]
+let ``Gets template class 1`` verb template =
+    verb
+    |> getTemplateClass1
+    |> equals template
+
+[<Fact>]
+let ``Throws for invalid verb class 1``() =
+    let action () = getTemplateClass1 "kreslit" |> ignore
+    Assert.Throws<ArgumentException> action
+
+[<Theory>]
+[<InlineData("prasknout", "tisknout")>]
+[<InlineData("hynout", "minout")>]
+[<InlineData("načít", "začít")>]
+let ``Gets template class 2`` verb template =
+    verb
+    |> getTemplateClass2
+    |> equals template
+
+[<Fact>]
+let ``Throws for invalid verb class 2``() =
+    let action () = getTemplateClass2 "kreslit" |> ignore
+    Assert.Throws<ArgumentException> action
+
+[<Theory>]
+[<InlineData("pracovat", "kupovat")>]
+[<InlineData("výt", "krýt")>]
+let ``Gets template class 3`` verb template =
+    verb
+    |> getTemplateClass3
+    |> equals template
+
+[<Fact>]
+let ``Throws for invalid verb class 3``() =
+    let action () = getTemplateClass3 "kreslit" |> ignore
+    Assert.Throws<ArgumentException> action
+
+[<Theory>]
+[<InlineData("nosit", "prosit")>]
+[<InlineData("mastit", "čistit")>]
+[<InlineData("sedět", "trpět")>]
+[<InlineData("házet", "sázet")>]
+let ``Gets template class 4`` verb template =
+    verb
+    |> getTemplateClass4
+    |> equals template
+
+[<Fact>]
+let ``Throws for invalid verb class 4``() =
+    let action () = getTemplateClass4 "dělat" |> ignore
+    Assert.Throws<ArgumentException> action
+
+[<Fact>]
+let ``Gets template class 5``() =
+    "létat"
+    |> getTemplateClass5
+    |> equals "dělat"
+
+[<Fact>]
+let ``Throws for invalid verb class 5``() =
+    let action () = getTemplateClass5 "kreslit" |> ignore
+    Assert.Throws<ArgumentException> action
