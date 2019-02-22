@@ -76,38 +76,6 @@ let ``Detects irregular participle``() =
     |> Assert.False
 
 [<Fact>]
-let ``Detects pattern tisknout``() =
-    "tisknout"
-    |> isPatternTisknout
-    |> Assert.True
-
-[<Theory>]
-[<InlineData "dělat">]
-[<InlineData "minout">]
-[<InlineData "shrnout">]
-let ``Detects pattern is not tisknout`` word =
-    word
-    |> isPatternTisknout
-    |> Assert.False
-
-[<Theory>]
-[<InlineData "minout">]
-[<InlineData "shrnout">]
-[<InlineData "přilnout">]
-let ``Detects pattern minout`` word =
-    word
-    |> isPatternMinout
-    |> Assert.True
-
-[<Theory>]
-[<InlineData "dělat">]
-[<InlineData "tisknout">]
-let ``Detects pattern is not minout`` word =
-    word
-    |> isPatternMinout
-    |> Assert.False
-
-[<Fact>]
 let ``Builds participle for pattern tisknout``() =
     "tisknout"
     |> buildParticipleTisknout
