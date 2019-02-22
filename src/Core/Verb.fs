@@ -40,6 +40,10 @@ let isPatternMinout (word: string) =
     word |> ends "nout" &&
     word |> getStem |> endsIf isPattern
 
+let isPatternČistit (word: string) =
+    word |> ends "it" &&
+    word |> removeLast 2 |> takeLast 2 |> isConsonantGroup
+
 let invalidVerb verb verbClass = 
     sprintf "The verb %s does not belong to the class %i." verb verbClass
     |> invalidArg "verb"
@@ -66,7 +70,7 @@ let getTemplateClass3 = function
 
 let getTemplateClass4 = function
     | verb when verb |> ends "sit" -> "prosit"
-    | verb when verb |> ends "stit" -> "čistit"
+    | verb when verb |> isPatternČistit -> "čistit"
     | verb when verb |> ends "ět" -> "trpět"
     | verb when verb |> ends "et" -> "sázet"
     | verb -> invalidVerb verb 4

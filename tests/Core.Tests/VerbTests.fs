@@ -78,6 +78,21 @@ let ``Detects pattern is not minout`` word =
     |> Assert.False
 
 [<Theory>]
+[<InlineData "mastit">]
+[<InlineData "zvýraznit">]
+let ``Detects pattern čistit`` word =
+    word
+    |> isPatternČistit
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "dělat">]
+let ``Detects pattern is not čistit`` word =
+    word
+    |> isPatternČistit
+    |> Assert.False
+
+[<Theory>]
 [<InlineData("vést", "nést")>]
 [<InlineData("příst", "číst")>]
 [<InlineData("téct", "péct")>]
