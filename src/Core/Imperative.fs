@@ -30,6 +30,11 @@ let getClass =
     >> Option.map Verb.removeReflexive
     >> Option.map Verb.getClassByThirdPersonSingular
 
+let getTemplate verb =
+    verb
+    |> getClass
+    |> Option.map (Verb.getTemplateByClass verb)
+
 let isVerbWithImperative =
     tryGetContent
     >> Option.bind (tryGetPart "čeština")
@@ -50,9 +55,10 @@ type Imperative(word) =
 
     new() = Imperative null
 
-    member val Indicative  = word |> Storage.mapSafeString id             with get, set
-    member val Imperatives = word |> Storage.mapSafeString getImperatives with get, set
-    member val Class       = word |> Storage.mapSafeIntOption getClass    with get, set
+    member val Indicative  = word |> Storage.mapSafeString id                with get, set
+    member val Imperatives = word |> Storage.mapSafeString getImperatives    with get, set
+    member val Class       = word |> Storage.mapSafeIntOption getClass       with get, set
+    member val Template    = word |> Storage.mapSafeStringOption getTemplate with get, set
 
 let record word =
     if 
