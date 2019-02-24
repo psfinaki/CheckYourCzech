@@ -39,7 +39,7 @@ let invalidVerb verb verbClass =
 let getPatternClass1 = function
     | verb when verb |> ends "ést" -> "nést"
     | verb when verb |> ends "íst" -> "číst"
-    | verb when verb |> ends "éct" -> "péct"
+    | verb when verb |> ends "ct" -> "péct"
     | verb when verb |> ends "ít" -> "třít"
     | verb when verb |> ends "át" -> "brát"
     | verb when verb |> ends "at" -> "mazat"
