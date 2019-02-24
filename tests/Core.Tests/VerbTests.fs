@@ -178,3 +178,11 @@ let ``Gets template class 5``() =
 let ``Throws for invalid verb class 5``() =
     let action () = getTemplateClass5 "kreslit" |> ignore
     Assert.Throws<ArgumentException> action
+
+[<Theory>]
+[<InlineData("ohlásit", 4, "prosit")>]
+[<InlineData("ohlásit se", 4, "prosit")>]
+let ``Gets template by class`` verb verbClass pattern =
+    getTemplateByClass verb verbClass
+    |> equals pattern
+
