@@ -40,7 +40,11 @@ let isPatternMinout (word: string) =
     word |> ends "nout" &&
     word |> getStem |> endsIf isPattern
 
-let isPatternČistit (word: string) =
+let isPatternProsit word = 
+    word |> ends "it" &&
+    word |> removeLast 2 |> takeLast 2 |> (not << isConsonantGroup)
+
+let isPatternČistit word =
     word |> ends "it" &&
     word |> removeLast 2 |> takeLast 2 |> isConsonantGroup
 
@@ -69,7 +73,7 @@ let getTemplateClass3 = function
     | verb -> invalidVerb verb 3
 
 let getTemplateClass4 = function
-    | verb when verb |> ends "sit" -> "prosit"
+    | verb when verb |> isPatternProsit -> "prosit"
     | verb when verb |> isPatternČistit -> "čistit"
     | verb when verb |> ends "ět" -> "trpět"
     | verb when verb |> ends "et" -> "sázet"
