@@ -23,8 +23,8 @@ let getReflexive = function
 
 let buildTheoreticalParticiple verb =
     let buildTheoreticalParticipleNonReflexive = function
-        | verb when verb |> Verb.isPatternTisknout -> buildParticipleTisknout verb
-        | verb when verb |> Verb.isPatternMinout -> buildParticipleMinout verb
+        | verb when verb |> VerbPatternDetector.isPatternTisknout -> buildParticipleTisknout verb
+        | verb when verb |> VerbPatternDetector.isPatternMinout -> buildParticipleMinout verb
         | verb -> buildParticipleCommon verb
 
     let reflexive = getReflexive verb

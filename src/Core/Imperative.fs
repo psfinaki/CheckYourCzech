@@ -4,7 +4,6 @@ open FSharp.Data
 open Microsoft.WindowsAzure.Storage.Table
 open Article
 open WikiString
-open StringHelper
 
 type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 
@@ -30,10 +29,10 @@ let getClass =
     >> Option.map Verb.removeReflexive
     >> Option.map Verb.getClassByThirdPersonSingular
 
-let getTemplate verb =
+let getPattern verb =
     verb
     |> getClass
-    |> Option.map (Verb.getTemplateByClass verb)
+    |> Option.map (VerbPatternDetector.getPatternByClass verb)
 
 let isVerbWithImperative =
     tryGetContent
@@ -58,7 +57,7 @@ type Imperative(word) =
     member val Indicative  = word |> Storage.mapSafeString id                with get, set
     member val Imperatives = word |> Storage.mapSafeString getImperatives    with get, set
     member val Class       = word |> Storage.mapSafeIntOption getClass       with get, set
-    member val Template    = word |> Storage.mapSafeStringOption getTemplate with get, set
+    member val Pattern     = word |> Storage.mapSafeStringOption getPattern with get, set
 
 let record word =
     if 
