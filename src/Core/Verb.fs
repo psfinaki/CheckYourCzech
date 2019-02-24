@@ -90,4 +90,7 @@ let templateClassMap =
            (4, getTemplateClass4)
            (5, getTemplateClass5) ]
 
-let getTemplateByClass verb verbClass = templateClassMap.[verbClass] verb
+let getTemplateByClass verb verbClass = 
+    verb 
+    |> removeReflexive 
+    |> templateClassMap.[verbClass]
