@@ -10,3 +10,5 @@ let isConsonant = not << isVowel
 
 let isSyllabicConsonant letter = syllabicConsonants |> List.contains letter
 let isNotSyllabicConsonant = not << isSyllabicConsonant
+
+let isConsonantGroup letters = letters |> Seq.forall isConsonant

@@ -25,3 +25,5 @@ let removePattern pattern s = Regex.Replace(s, pattern, "")
 let containsAny (values: seq<string>) (s: string) = 
     let containsOne = s.Contains
     values |> Seq.exists containsOne
+
+let takeLast n (s: string) = s.Substring (s.Length - n)
