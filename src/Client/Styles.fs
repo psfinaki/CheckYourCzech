@@ -13,6 +13,13 @@ let rowWide =
         Width 850
     ]
     
+let halfParent =
+    Style [
+        Width "50%"
+        Display "inline-block"
+        Height "25px"
+    ]
+
 let thirdParent =
     Style [
         Width "33%"

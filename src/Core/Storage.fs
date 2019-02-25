@@ -29,6 +29,7 @@ type QueryCondition =
     | IsNot
     | Bool
     | Int
+    | String
 
 let mapSafeIntOption    (mapping: 'a -> int option)    = Option.ofObj >> Option.map mapping >> Option.flatten >> Option.map string >> Option.defaultValue ""
 let mapSafeStringOption (mapping: 'a -> string option) = Option.ofObj >> Option.map mapping >> Option.flatten >> Option.map string >> Option.defaultValue ""
@@ -51,10 +52,11 @@ let buildFilter (property, condition, value : obj) =
     let createBoolFilter   = TableQuery.GenerateFilterConditionForBool
 
     match condition with
-    | Is    -> createStringFilter (property, QueryComparisons.Equal,    JsonConvert.SerializeObject value)
-    | IsNot -> createStringFilter (property, QueryComparisons.NotEqual, JsonConvert.SerializeObject value)
-    | Bool  -> createBoolFilter   (property, QueryComparisons.Equal,    Convert.ToBoolean value)
-    | Int   -> createStringFilter (property, QueryComparisons.Equal,    value.ToString())
+    | Is     -> createStringFilter (property, QueryComparisons.Equal,    JsonConvert.SerializeObject value)
+    | IsNot  -> createStringFilter (property, QueryComparisons.NotEqual, JsonConvert.SerializeObject value)
+    | Bool   -> createBoolFilter   (property, QueryComparisons.Equal,    Convert.ToBoolean value)
+    | Int    -> createStringFilter (property, QueryComparisons.Equal,    value.ToString())
+    | String -> createStringFilter (property, QueryComparisons.Equal,    value.ToString())
 
 let combineFilters f1 f2 = TableQuery.CombineFilters(f1, TableOperators.And, f2)
 
