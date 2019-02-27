@@ -11,22 +11,19 @@ type Task(word, answers) =
     member this.Word = word
     member this.Answers = answers
 
+let getFilter columnName queryCondition = function
+    | Ok parameterValue -> Some (columnName, queryCondition, box parameterValue)
+    | Error _ -> None
+
 let getPluralsTask next (ctx: HttpContext) =
     task {
         let singularsFilter = ("Singulars", IsNot, box [])
         let pluralsFilter = ("Plurals", IsNot, box [])
-
+        
         let genderFromQuery = ctx.GetQueryStringValue "gender"
-        let genderFilter = 
-             match genderFromQuery with
-             | Ok gender -> Some ("Gender", Is, box gender)
-             | Error _   -> None
+        let genderFilter = getFilter "Gender" Is genderFromQuery
 
-        let filters = 
-            match genderFilter with
-            | Some filter -> [ singularsFilter; pluralsFilter; filter ]
-            | None        -> [ singularsFilter; pluralsFilter ]
-
+        let filters = [ singularsFilter; pluralsFilter ] @ ([genderFilter] |> List.choose id)
         let noun = tryGetRandom<Noun.Noun> "nouns" filters
         let getTask (noun: Noun.Noun) = 
             let singular = noun.Singulars |> getAs<string[]> |> Seq.random
@@ -43,16 +40,9 @@ let getAccusativesTask next (ctx : HttpContext) =
         let accusativesFilter = ("Accusatives", IsNot, box [])
 
         let genderFromQuery = ctx.GetQueryStringValue "gender"
-        let genderFilter = 
-             match genderFromQuery with
-             | Ok gender -> Some ("Gender", Is, box gender)
-             | Error _   -> None
+        let genderFilter = getFilter "Gender" Is genderFromQuery
 
-        let filters = 
-            match genderFilter with
-            | Some filter -> [ singularsFilter; accusativesFilter; filter ]
-            | None        -> [ singularsFilter; accusativesFilter ]
-
+        let filters = [ singularsFilter; accusativesFilter ] @ ([genderFilter] |> List.choose id)
         let noun = tryGetRandom<Noun.Noun> "nouns" filters
         let getTask (noun: Noun.Noun) = 
             let singular = noun.Singulars |> getAs<string[]> |> Seq.random
@@ -66,11 +56,9 @@ let getAccusativesTask next (ctx : HttpContext) =
 let getComparativesTask next (ctx : HttpContext) =
     task { 
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
-        let filters = 
-             match regularityFromQuery with
-             | Ok regularity -> [ ("IsRegular", Bool, box regularity) ]
-             | Error _       -> []
+        let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
 
+        let filters = [ regularityFilter ] |> Seq.choose id
         let adjective = tryGetRandom<Adjective.Adjective> "adjectives" filters
         
         let getTask (adjective: Adjective.Adjective) = 
@@ -85,16 +73,10 @@ let getComparativesTask next (ctx : HttpContext) =
 let getImperativesTask next (ctx : HttpContext) =
     task {
         let classFromQuery = ctx.GetQueryStringValue "class"
-        let classFilter = 
-             match classFromQuery with
-             | Ok ``class`` -> Some ("Class", Int, box ``class``)
-             | Error _      -> None
+        let classFilter = getFilter "Class" Int classFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilter = 
-            match patternFromQuery with
-            | Ok pattern -> Some ("Pattern", String, box pattern)
-            | Error _     -> None
+        let patternFilter = getFilter "Pattern" String patternFromQuery
 
         let filters = 
             [ classFilter; patternFilter ]
@@ -114,11 +96,9 @@ let getImperativesTask next (ctx : HttpContext) =
 let getParticiplesTask next (ctx: HttpContext) =
     task {
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
-        let filters = 
-             match regularityFromQuery with
-             | Ok regularity -> [ ("IsRegular", Bool, box regularity) ]
-             | Error _       -> []
+        let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
 
+        let filters = [ regularityFilter ] |> Seq.choose id
         let verb = tryGetRandom<Participle.Participle> "participles" filters
 
         let getTask (verb: Participle.Participle) = 
