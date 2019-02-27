@@ -114,6 +114,9 @@ let input style value changeHandler keyDownHandler =
         AutoFocus true
     ]
 
+let simpleOption text =
+    option [ Value text ] [ str text ]
+
 let option value text =
     option [ Value value] [ str text ]
 

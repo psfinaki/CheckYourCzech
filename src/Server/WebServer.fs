@@ -85,10 +85,20 @@ let getComparativesTask next (ctx : HttpContext) =
 let getImperativesTask next (ctx : HttpContext) =
     task {
         let classFromQuery = ctx.GetQueryStringValue "class"
-        let filters = 
+        let classFilter = 
              match classFromQuery with
-             | Ok ``class``  -> [ ("Class", Int, box ``class``) ]
-             | Error _       -> []
+             | Ok ``class`` -> Some ("Class", Int, box ``class``)
+             | Error _      -> None
+
+        let patternFromQuery = ctx.GetQueryStringValue "pattern"
+        let patternFilter = 
+            match patternFromQuery with
+            | Ok pattern -> Some ("Pattern", String, box pattern)
+            | Error _     -> None
+
+        let filters = 
+            [ classFilter; patternFilter ]
+            |> Seq.choose id
             
         let verb = tryGetRandom<Imperative.Imperative> "imperatives" filters
 
