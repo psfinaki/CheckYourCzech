@@ -29,7 +29,7 @@ let view dispatch =
         let translate = function | ClassUnset -> None | x -> Some (Int32.Parse x)
         dispatch (SetClass (translate !!event.target?value))
 
-    div [ Styles.row ] 
+    div [] 
         [
             div [ Style [ Height "50%" ] ] 
                 [

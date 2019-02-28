@@ -2,11 +2,11 @@ module Styles
 
 open Fable.Helpers.React.Props
 
-let row = 
-    Style [ 
-        Width 700
-        Height 70 
-    ] 
+let middle =
+    Style [
+        Width "50%"
+        Margin "auto"
+    ]
 
 let rowWide = 
     Style [ 
@@ -27,7 +27,7 @@ let thirdParent =
         Height "25px"
         VerticalAlign "top"
     ]
-    
+
 let center direction =
     Style [ 
         Display "flex"
@@ -40,7 +40,7 @@ let center direction =
 let greyLabel =
     Style [ 
         Width "32%"
-        Height "100%"
+        Height "70px"
         FontSize "25px"
         TextAlign "center"
         BorderRadius "10%"
@@ -59,7 +59,7 @@ let whiteLabel =
 let input =
     Style [ 
         Width "32%"
-        Height "100%"
+        Height "70px"
         FontSize "25px"
         TextAlign "center"
         MarginLeft "2%"
@@ -69,7 +69,7 @@ let input =
 let button color =
     Style [ 
         Width "49%"
-        Height "100%"
+        Height "70px"
         FontSize "25px"
         BorderRadius "33%"
         BackgroundColor color 

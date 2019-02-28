@@ -62,23 +62,26 @@ let view model dispatch =
     [ 
         Markup.words 60 "Write imperative for the verb"
 
-        Markup.emptyLines 2
-
-        div []
+        div [ Styles.middle ]
             [
-                div [ Styles.halfParent ]
+                Markup.emptyLines 2
+
+                div []
                     [
-                        Class.view (Class >> dispatch)
+                        div [ Styles.halfParent ]
+                            [
+                                Class.view (Class >> dispatch)
+                            ]
+
+                        div [ Styles.halfParent ]
+                            [
+                                Pattern.view model.Pattern (Pattern >> dispatch)
+                            ]
                     ]
 
-                div [ Styles.halfParent ]
-                    [
-                        Pattern.view model.Pattern (Pattern >> dispatch)
-                    ]
+
+                Markup.emptyLines 2
+
+                Task.view model.Task (Task >> dispatch)
             ]
-
-
-        Markup.emptyLines 2
-
-        Task.view model.Task (Task >> dispatch)
     ]

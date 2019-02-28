@@ -41,7 +41,7 @@ let view model dispatch =
     let handleChangePattern (event: FormEvent) =
         let translate = function | PatternUnset -> None | x -> Some x
         dispatch (SetPattern (translate !!event.target?value))
-
+        
     let options = 
         model.Class
         |> Option.map getClassPatterns
@@ -49,7 +49,7 @@ let view model dispatch =
         |> Seq.map Markup.simpleOption
         |> Seq.append [Markup.option PatternUnset "Any" ]
 
-    div [ Styles.row ] 
+    div [] 
         [
             div [ Style [ Height "50%" ] ] 
                 [
