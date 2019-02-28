@@ -21,10 +21,10 @@ This service is supposed to give exercises like *"practice all the [exceptions](
 
 ## Features
 
-- For plurals, the gender can be selected
-- For imperatives, the verb class can be selected
+- For plurals and accusatives, the gender can be selected
+- For imperatives, the verb class and the verb pattern can be selected
 - For comparatives and participles, the regularity can be selected
-- Semi automated deployment
+- Semi automated deployment via Azure Devops
 - Alerts about requests and exceptions
 
 ## Tech stack
