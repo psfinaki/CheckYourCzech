@@ -3,7 +3,7 @@ module Rule
 open Fable.Helpers.React
 
 let view rule =
-    div [ Styles.row ]
+    div []
         [
             Markup.toggleLink "rules" rule
         ]

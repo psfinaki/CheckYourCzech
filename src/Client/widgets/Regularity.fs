@@ -36,7 +36,7 @@ let view dispatch =
         let translate = function | RegularityUnset -> None | x -> Some (bool.FromString x)
         dispatch (SetRegularity (translate !!event.target?value))
 
-    div [ Styles.row ] 
+    div []
         [
             div [ Style [ Height "50%" ] ] 
                 [

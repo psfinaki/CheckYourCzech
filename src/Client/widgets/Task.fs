@@ -91,7 +91,7 @@ let view model dispatch =
 
     div []
         [
-            div [ Styles.row ] 
+            div [] 
                 [
                     label Styles.greyLabel task
                     input Styles.input model.Input handleChangeAnswer handleKeyDown
@@ -100,7 +100,7 @@ let view model dispatch =
 
             emptyLines 2
 
-            div [ Styles.row ]
+            div []
                 [
                     button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)" clickability
                     space()

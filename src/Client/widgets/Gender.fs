@@ -29,7 +29,7 @@ let view dispatch =
         let translate = function | GenderUnset -> None | x -> Some (Gender.FromString x)
         dispatch (SetGender (translate !!event.target?value))
 
-    div [ Styles.row ] 
+    div [] 
         [
             div [ Style [ Height "50%" ] ] 
                 [

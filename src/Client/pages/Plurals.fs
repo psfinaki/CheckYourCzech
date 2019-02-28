@@ -4,6 +4,7 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Genders
 open Thoth.Json
+open Fable.Helpers.React
 
 type Model = {
     Gender : Gender.Model
@@ -42,11 +43,14 @@ let view model dispatch =
     [ 
         Markup.words 60 "Write plural for the word"
 
-        Markup.emptyLines 3
+        div [ Styles.middle ] 
+            [
+                Markup.emptyLines 3
 
-        Gender.view (Gender >> dispatch)
+                Gender.view (Gender >> dispatch)
        
-        Markup.emptyLines 2
+                Markup.emptyLines 2
 
-        Task.view model.Task (Task >> dispatch)
+                Task.view model.Task (Task >> dispatch)
+            ]
     ]

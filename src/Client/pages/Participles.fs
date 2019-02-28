@@ -3,6 +3,7 @@
 open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
+open Fable.Helpers.React
 
 type Model = {
     Regularity : Regularity.Model
@@ -42,15 +43,18 @@ let view model dispatch =
     [ 
         Markup.words 60 "Write active participle for the verb"
 
-        Markup.emptyLines 2
+        div [ Styles.middle ]
+            [
+                Markup.emptyLines 2
 
-        Regularity.view (Regularity >> dispatch)
+                Regularity.view (Regularity >> dispatch)
 
-        Markup.emptyLines 2
+                Markup.emptyLines 2
 
-        Task.view model.Task (Task >> dispatch)
+                Task.view model.Task (Task >> dispatch)
 
-        Markup.emptyLines 1
+                Markup.emptyLines 1
 
-        Rule.view Rules.participles
+                Rule.view Rules.participles
+            ]
     ]
