@@ -41,4 +41,4 @@ let ``Invalidates improper verb - archaic``() =
 let ``Gets class`` verb ``class`` =
     verb
     |> getClass
-    |> equals ``class``
+    |> equals (Some ``class``)
