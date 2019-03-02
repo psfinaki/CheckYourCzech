@@ -52,7 +52,7 @@ let openBrowser url =
 Target.create "InstallClient" (fun _ ->
     printfn "Yarn version:"
     runTool yarnTool "--version" __SOURCE_DIRECTORY__
-    runTool yarnTool "install --frozen-lockfile" __SOURCE_DIRECTORY__
+    runTool yarnTool "install" __SOURCE_DIRECTORY__
     runDotNet "restore" clientPath
 )
 
