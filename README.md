@@ -42,4 +42,5 @@ For hosting and metrics, Microsoft [Azure](https://azure.microsoft.com/en-us/) i
 
 There are a lot of [issues](https://github.com/psfinaki/CheckYourCzech/issues) to address, starting from handling rear language [quirks](https://github.com/psfinaki/CheckYourCzech/issues/173) and ending with conceptual [tasks](https://github.com/psfinaki/CheckYourCzech/issues/153). 
 
-As for features, new exercises will be added. And maybe, at some point in the future, new languages.
+As for features, current exercises will be extended, new exercises will be added. 
+And maybe, at some point in the future, new languages.
