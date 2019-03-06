@@ -1,4 +1,4 @@
-﻿module Logger
+﻿module ApplicationInsightsLogger
 
 open System
 open Microsoft.ApplicationInsights
@@ -11,7 +11,7 @@ let getTelemetryClient() =
 
 let getLogger() = (lazy getTelemetryClient()).Value
 
-let logMessage (message: string) =
+let logTrace (message: string) =
     let logger = getLogger()
     logger.TrackTrace message
     logger.Flush()

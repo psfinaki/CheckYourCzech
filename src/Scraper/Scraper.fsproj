@@ -16,9 +16,12 @@
     <None Include="run.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Compile Include="Logger.fs" />
+    <Compile Include="ApplicationInsightsLogger.fs" />
+    <Compile Include="ConsoleLogger.fs" />
+    <Compile Include="Logging.fs" />
     <Compile Include="Word.fs" />
     <Compile Include="WordGenerator.fs" />
+    <Compile Include="App.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

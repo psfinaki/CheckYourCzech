@@ -1,18 +1,18 @@
-﻿[<EntryPoint>]
-let main argv =
-    let iterator _ = WordGenerator.getRandomWord()
+﻿open System
+open Logging
 
-    let recordWithLog word = 
-        try
-            Logger.logMessage ("Processing word: " + word)
-            Word.record word
-            Logger.logMessage ("Processed word: " + word)
-        with e ->
-            Logger.logError(e, ("word", word))
-            reraise()
+let getEnvironment = 
+    Environment.GetEnvironmentVariable "ASPNETCORE_ENVIRONMENT"
 
-    iterator
-    |> Seq.initInfinite
-    |> Seq.iter recordWithLog
+let getLogger = function
+    | "local" -> consoleLogger
+    | "azure" -> aiLogger
+    | env -> failwithf "Unknown environment: %s" env
+
+[<EntryPoint>]
+let main _ =
+    getEnvironment
+    |> getLogger
+    |> App.run
 
     0

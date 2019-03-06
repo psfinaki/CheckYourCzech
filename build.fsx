@@ -15,6 +15,7 @@ open Fake.IO
 
 let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
+let scraperPath = Path.getFullName "./src/Scraper"
 
 let yarnTool =
     let tool = if Environment.isUnix then "yarn" else "yarn.cmd"
@@ -49,6 +50,10 @@ let openBrowser url =
     |> Proc.run
     |> ignore
 
+Target.create "SetEnvironmentVariables" (fun _ ->
+    Environment.setEnvironVar "ASPNETCORE_ENVIRONMENT" "local"
+)
+
 Target.create "InstallClient" (fun _ ->
     printfn "Yarn version:"
     runTool yarnTool "--version" __SOURCE_DIRECTORY__
@@ -65,7 +70,7 @@ Target.create "Build" (fun _ ->
     runDotNet "fable webpack-cli -- --config src/Client/webpack.config.js -p" clientPath
 )
 
-Target.create "Run" (fun _ ->
+Target.create "RunWeb" (fun _ ->
     let server = async {
         runDotNet "watch run" serverPath
     }
@@ -83,11 +88,18 @@ Target.create "Run" (fun _ ->
     |> ignore
 )
 
+Target.create "RunScraper" (fun _ ->
+    runDotNet "run" scraperPath
+)
+
 "InstallClient"
     ==> "Build"
 
 "InstallClient"
     ==> "RestoreServer"
-    ==> "Run"
+    ==> "RunWeb"
+
+"SetEnvironmentVariables"
+    ==> "RunScraper"
 
 Target.runOrDefaultWithArguments "Build"
