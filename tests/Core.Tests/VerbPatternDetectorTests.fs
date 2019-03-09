@@ -1,6 +1,5 @@
 ﻿module VerbPatternDetectorTests
 
-open System
 open Xunit
 open VerbPatternDetector
 
@@ -80,12 +79,18 @@ let ``Detects pattern is not čistit`` word =
 let ``Gets pattern class 1`` verb pattern =
     verb
     |> getPatternClass1
-    |> equals pattern
+    |> equals (Some pattern)
 
-[<Fact>]
-let ``Throws for invalid verb class 1``() =
-    let action () = getPatternClass1 "kreslit" |> ignore
-    Assert.Throws<ArgumentException> action
+[<Theory>]
+[<InlineData "krást">]
+[<InlineData "vyjet">]
+[<InlineData "zaujmout">]
+[<InlineData "růst">]
+[<InlineData "vézt">]
+let ``Detects unknown pattern for class 1`` verb =
+    verb
+    |> getPatternClass1
+    |> equals None
 
 [<Theory>]
 [<InlineData("prasknout", "tisknout")>]
@@ -94,12 +99,15 @@ let ``Throws for invalid verb class 1``() =
 let ``Gets pattern class 2`` verb pattern =
     verb
     |> getPatternClass2
-    |> equals pattern
+    |> equals (Some pattern)
 
-[<Fact>]
-let ``Throws for invalid verb class 2``() =
-    let action () = getPatternClass2 "kreslit" |> ignore
-    Assert.Throws<ArgumentException> action
+[<Theory>]
+[<InlineData "dostat">]
+[<InlineData "sehnat">]
+let ``Detects unknown pattern for class 2`` verb =
+    verb
+    |> getPatternClass2
+    |> equals None
 
 [<Theory>]
 [<InlineData("pracovat", "kupovat")>]
@@ -107,12 +115,18 @@ let ``Throws for invalid verb class 2``() =
 let ``Gets pattern class 3`` verb pattern =
     verb
     |> getPatternClass3
-    |> equals pattern
+    |> equals (Some pattern)
 
-[<Fact>]
-let ``Throws for invalid verb class 3``() =
-    let action () = getPatternClass3 "kreslit" |> ignore
-    Assert.Throws<ArgumentException> action
+[<Theory>]
+[<InlineData "zabít">]
+[<InlineData "prohrát">]
+[<InlineData "říct">]
+[<InlineData "zout">]
+[<InlineData "přispět">]
+let ``Detects unknown pattern for class 3`` verb =
+    verb
+    |> getPatternClass3
+    |> equals None
 
 [<Theory>]
 [<InlineData("nosit", "prosit")>]
@@ -122,28 +136,32 @@ let ``Throws for invalid verb class 3``() =
 let ``Gets pattern class 4`` verb pattern =
     verb
     |> getPatternClass4
-    |> equals pattern
+    |> equals (Some pattern)
 
-[<Fact>]
-let ``Throws for invalid verb class 4``() =
-    let action () = getPatternClass4 "dělat" |> ignore
-    Assert.Throws<ArgumentException> action
+[<Theory>]
+[<InlineData "bdít">]
+[<InlineData "spát">]
+[<InlineData "jíst">]
+let ``Detects unknown pattern for class 4`` verb =
+    verb
+    |> getPatternClass4
+    |> equals None
 
 [<Fact>]
 let ``Gets pattern class 5``() =
     "létat"
     |> getPatternClass5
-    |> equals "dělat"
+    |> equals (Some "dělat")
 
 [<Fact>]
-let ``Throws for invalid verb class 5``() =
-    let action () = getPatternClass5 "kreslit" |> ignore
-    Assert.Throws<ArgumentException> action
+let ``Detects unknown pattern for class 5``() =
+    "znát"
+    |> getPatternClass5
+    |> equals None
 
 [<Theory>]
 [<InlineData("ohlásit", 4, "prosit")>]
 [<InlineData("ohlásit se", 4, "prosit")>]
 let ``Gets pattern by class`` verb verbClass pattern =
     getPatternByClass verb verbClass
-    |> equals pattern
-
+    |> equals (Some pattern)

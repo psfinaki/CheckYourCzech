@@ -37,35 +37,35 @@ let invalidVerb verb verbClass =
     |> invalidArg "verb"
 
 let getPatternClass1 = function
-    | verb when verb |> ends "ést" -> "nést"
-    | verb when verb |> ends "íst" -> "číst"
-    | verb when verb |> ends "ct" -> "péct"
-    | verb when verb |> ends "ít" -> "třít"
-    | verb when verb |> ends "át" -> "brát"
-    | verb when verb |> ends "at" -> "mazat"
-    | verb -> invalidVerb verb 1
+    | verb when verb |> ends "ést" -> Some "nést"
+    | verb when verb |> ends "íst" -> Some "číst"
+    | verb when verb |> ends "ct" -> Some "péct"
+    | verb when verb |> ends "ít" -> Some "třít"
+    | verb when verb |> ends "át" -> Some "brát"
+    | verb when verb |> ends "at" -> Some "mazat"
+    | _ -> None
 
 let getPatternClass2 = function
-    | verb when verb |> isPatternTisknout -> "tisknout"
-    | verb when verb |> isPatternMinout -> "minout"
-    | verb when verb |> ends "ít" -> "začít"
-    | verb -> invalidVerb verb 2
+    | verb when verb |> isPatternTisknout -> Some "tisknout"
+    | verb when verb |> isPatternMinout -> Some "minout"
+    | verb when verb |> ends "ít" -> Some "začít"
+    | _ -> None
 
 let getPatternClass3 = function
-    | verb when verb |> ends "ovat" -> "kupovat"
-    | verb when verb |> ends "ýt" -> "krýt"
-    | verb -> invalidVerb verb 3
+    | verb when verb |> ends "ovat" -> Some "kupovat"
+    | verb when verb |> ends "ýt" -> Some "krýt"
+    | _ -> None
 
 let getPatternClass4 = function
-    | verb when verb |> isPatternProsit -> "prosit"
-    | verb when verb |> isPatternČistit -> "čistit"
-    | verb when verb |> ends "ět" -> "trpět"
-    | verb when verb |> ends "et" -> "sázet"
-    | verb -> invalidVerb verb 4
+    | verb when verb |> isPatternProsit -> Some "prosit"
+    | verb when verb |> isPatternČistit -> Some "čistit"
+    | verb when verb |> ends "ět" -> Some "trpět"
+    | verb when verb |> ends "et" -> Some "sázet"
+    | _ -> None
 
 let getPatternClass5 = function
-    | verb when verb |> ends "at" -> "dělat"
-    | verb -> invalidVerb verb 5
+    | verb when verb |> ends "at" -> Some "dělat"
+    | _ -> None
 
 let patternClassMap =
     dict [ (1, getPatternClass1)
