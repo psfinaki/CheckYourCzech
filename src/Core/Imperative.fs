@@ -32,7 +32,7 @@ let getClass =
 let getPattern verb =
     verb
     |> getClass
-    |> Option.map (VerbPatternDetector.getPatternByClass verb)
+    |> Option.bind (VerbPatternDetector.getPatternByClass verb)
 
 let isVerbWithImperative =
     tryGetContent
