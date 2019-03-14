@@ -40,6 +40,24 @@ This app uses the [SAFE-stack](https://safe-stack.github.io/). Everything is F# 
 
 For hosting and metrics, Microsoft [Azure](https://azure.microsoft.com/en-us/) is used.
 
+## Local testing
+
+Thanks for your interest! Developing and testing locally should be possible both for Windows and Unix.
+
+### Installation for Windows
+1. Install [.NET Core SDK](https://dotnet.microsoft.com/download)
+2. Install [node.js](https://nodejs.org/)
+3. Install [yarn](https://yarnpkg.com/en/)
+4. Install [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-2016-express-localdb?view=sql-server-2017#try-it-out) either as a part of SQL Server or Visual Studio
+5. Install and run [Azure Storage Emulator](https://go.microsoft.com/fwlink/?linkid=717179&clcid=0x409)
+
+### Running the App
+1. Open PowerShell, go to the repo root
+2. Run Scraper: `fake build target runscraper`
+3. Let it run for a a few minutes to generate some local word database
+4. Stop Scraper
+5. Run web app: `fake build target runweb`
+
 ## Plan of development
 
 There are a lot of [issues](https://github.com/psfinaki/CheckYourCzech/issues) to address, starting from handling rear language [quirks](https://github.com/psfinaki/CheckYourCzech/issues/173) and ending with conceptual [tasks](https://github.com/psfinaki/CheckYourCzech/issues/153). 
