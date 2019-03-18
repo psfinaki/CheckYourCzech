@@ -6,8 +6,21 @@ open Genders
 open Microsoft.WindowsAzure.Storage.Table
 open WikiString
 
-type CommonArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
+type EditableArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
+
+type Case = 
+    | Nominative = 0
+    | Genitive = 1
+    | Dative = 2
+    | Accusative = 3
+    | Vocative = 4
+    | Locative = 5
+    | Instrumental = 6
+
+type Number =
+    | Singular
+    | Plural
 
 let getGender =
     getContent
@@ -24,45 +37,38 @@ let isIndeclinable =
     >> tryGetInfo "nesklonné"
     >> Option.isSome
 
-let getWikiSingular word = 
-    let url = "https://cs.wiktionary.org/wiki/" + word
+let getUrl = (+) "https://cs.wiktionary.org/wiki/"
+
+let getDeclensionEditable case number word =
+    let data = word |> getUrl |> EditableArticle.Load
+    match number with
+    | Singular ->
+        data.Tables.``Skloňování[editovat]``.Rows.[case].singulár
+    | Plural -> 
+        data.Tables.``Skloňování[editovat]``.Rows.[case].plurál
+
+let getDeclensionLocked case number word =
+    let data = word |> getUrl |> LockedArticle.Load
+    match number with
+    | Singular ->
+        data.Tables.Skloňování.Rows.[case].singulár
+    | Plural -> 
+        data.Tables.Skloňování.Rows.[case].plurál
+
+let getDeclension (case: Case) number word = 
     match word with
     | _ when word |> isIndeclinable ->
         word
+    | _ when word |> isEditable ->
+        getDeclensionEditable (int case) number word
     | _ when word |> isLocked ->
-        let data = LockedArticle.Load url
-        data.Tables.Skloňování.Rows.[0].singulár
-    | _ ->
-        let data = CommonArticle.Load url
-        data.Tables.``Skloňování[editovat]``.Rows.[0].singulár
+        getDeclensionLocked (int case) number word
+    | word -> 
+        invalidOp ("Odd word: " + word)
 
-let getWikiPlural word = 
-    let url = "https://cs.wiktionary.org/wiki/" + word
-    match word with
-    | _ when word |> isIndeclinable ->
-        word
-    | _ when word |> isLocked ->
-        let data = LockedArticle.Load url
-        data.Tables.Skloňování.Rows.[0].plurál
-    | _ ->
-        let data = CommonArticle.Load url
-        data.Tables.``Skloňování[editovat]``.Rows.[0].plurál
-
-let getWikiAccusative word = 
-    let url = "https://cs.wiktionary.org/wiki/" + word
-    match word with
-    | _ when word |> isIndeclinable ->
-        word
-    | _ when word |> isLocked ->
-        let data = LockedArticle.Load url
-        data.Tables.Skloňování.Rows.[3].singulár
-    | _ ->
-        let data = CommonArticle.Load url
-        data.Tables.``Skloňování[editovat]``.Rows.[3].singulár
-
-let getSingulars = getWikiSingular >> getForms
-let getPlurals = getWikiPlural >> getForms
-let getAccusatives = getWikiAccusative >> getForms
+let getSingulars = getDeclension Case.Nominative Number.Singular >> getForms
+let getPlurals = getDeclension Case.Nominative Number.Plural >> getForms
+let getAccusatives = getDeclension Case.Nominative Number.Singular >> getForms
 
 let isValid word = 
     let nounPart =
