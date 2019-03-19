@@ -31,40 +31,22 @@ let ``Gets gender neuter``() =
     |> equals Neuter
 
 [<Fact>]
-let ``Gets wiki plural - indeclinable``() = 
+let ``Gets declension - indeclinable``() = 
     "dada"
-    |> getWikiPlural
+    |> getDeclension Case.Nominative Number.Plural
     |> equals "dada"
 
 [<Fact>]
-let ``Gets wiki plural - common article``() = 
+let ``Gets declension - editable article``() = 
     "panda"
-    |> getWikiPlural
+    |> getDeclension Case.Nominative Number.Plural
     |> equals "pandy"
 
 [<Fact>]
 let ``Gets wiki plural - locked article``() = 
     "debil"
-    |> getWikiPlural
+    |> getDeclension Case.Nominative Number.Plural
     |> equals "debilové"
-
-[<Fact>]
-let ``Gets wiki accusative - indeclinable``() = 
-    "dada"
-    |> getWikiAccusative
-    |> equals "dada"
-
-[<Fact>]
-let ``Gets wiki accusative - common article``() = 
-    "panda"
-    |> getWikiAccusative
-    |> equals "pandu"
-
-[<Fact>]
-let ``Gets wiki accusative - locked article``() = 
-    "debil"
-    |> getWikiAccusative
-    |> equals "debila"
 
 [<Fact>]
 let ``Validates proper noun``() =

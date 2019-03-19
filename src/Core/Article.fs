@@ -113,6 +113,8 @@ let isLocked word =
     | s when s.Contains "Editovat tuto stránku" -> false
     | _ -> invalidArg word "odd article"
 
+let isEditable = not << isLocked
+
 let tryFunc1 func x   = try func x   |> Some with _ -> None
 let tryFunc2 func x y = try func x y |> Some with _ -> None
 
