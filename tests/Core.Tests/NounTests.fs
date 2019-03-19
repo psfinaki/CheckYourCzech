@@ -31,81 +31,45 @@ let ``Gets gender neuter``() =
     |> equals Neuter
 
 [<Fact>]
-let ``Gets declension - indeclinable``() = 
+let ``Gets declension wiki - indeclinable``() = 
     "dada"
-    |> getDeclension Case.Nominative Number.Plural
+    |> getDeclensionWiki Case.Nominative Number.Plural
     |> equals "dada"
 
 [<Fact>]
-let ``Gets declension - editable article``() = 
+let ``Gets declension wiki - editable article``() = 
     "panda"
-    |> getDeclension Case.Nominative Number.Plural
+    |> getDeclensionWiki Case.Nominative Number.Plural
     |> equals "pandy"
 
 [<Fact>]
-let ``Gets wiki plural - locked article``() = 
+let ``Gets wiki plural wiki - locked article``() = 
     "debil"
-    |> getDeclension Case.Nominative Number.Plural
+    |> getDeclensionWiki Case.Nominative Number.Plural
     |> equals "debilové"
 
 [<Fact>]
-let ``Validates proper noun``() =
-    "panda"
-    |> isValid 
-    |> Assert.True
-
-[<Fact>]
-let ``Invalidates improper noun - no Czech``() =
-    "good"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper noun - no noun``() =
-    "koukat"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper noun - no declension``() =
-    "antilopu"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper noun - no gender``() =
-    "trosečník"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper noun - incorrect gender``() =
-    "benediktin"
-    |> isValid
-    |> Assert.False
-    
-[<Fact>]
-let ``Gets singulars - indeclinable``() =
+let ``Gets declension - indeclinable``() =
     "dada"
-    |> getSingulars
+    |> getDeclension Case.Nominative Number.Singular
     |> equals [|"dada"|]
 
 [<Fact>]
-let ``Gets singulars - single option``() =
+let ``Gets declension - single option``() =
     "hrad"
-    |> getSingulars
+    |> getDeclension Case.Nominative Number.Singular
     |> equals [|"hrad"|]
 
 [<Fact>]
-let ``Gets singulars - no options``() =
+let ``Gets declension - no options``() =
     "záda"
-    |> getSingulars
+    |> getDeclension Case.Nominative Number.Singular
     |> equals [||]
 
 [<Fact>]
 let ``Gets singulars - multiple options``() =
     "temeno"
-    |> getSingulars
+    |> getDeclension Case.Nominative Number.Singular
     |> equals [|"temeno"; "témě"|]
     
 [<Fact>]

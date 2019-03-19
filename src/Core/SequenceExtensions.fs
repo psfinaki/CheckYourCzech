@@ -23,6 +23,16 @@ let random (seq: seq<'T>) =
     |> Seq.take 1
     |> Seq.exactlyOne
 
+let any (seq: seq<'T>) =
+    seq
+    |> Seq.isEmpty
+    |> not
+
+let hasOneElement (seq: seq<'T>) = 
+    seq
+    |> Seq.length 
+    |> (=) 1
+        
 let tryRandom = function
     | seq when seq |> Seq.isEmpty ->
         None
