@@ -26,13 +26,13 @@ let isValid word =
         |> Option.bind Gender.TryFromString
         |> Option.isSome
 
-    let hasOneSingular = 
+    let hasOneNominative = 
         getNominatives
         >> Seq.hasOneElement
 
     hasDeclension && 
     hasGender && 
-    hasOneSingular word
+    hasOneNominative word
 
 type Accusative(word) =
     inherit TableEntity(word, word)

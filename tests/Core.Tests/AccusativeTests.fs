@@ -42,13 +42,13 @@ let ``Invalidates improper noun - incorrect gender``() =
     |> Assert.False
 
 [<Fact>]
-let ``Invalidates improper noun - no singulars``() =
+let ``Invalidates improper noun - no nominatives``() =
     "záda"
     |> isValid
     |> Assert.False
 
 [<Fact>]
-let ``Invalidates improper noun - multiple singulars``() =
+let ``Invalidates improper noun - multiple nominatives``() =
     "temeno"
     |> isValid
     |> Assert.False

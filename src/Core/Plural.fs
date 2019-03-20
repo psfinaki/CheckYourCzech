@@ -27,7 +27,7 @@ let isValid word =
         |> Option.isSome
 
     let hasOneSingular = 
-        getPlurals 
+        getSingulars 
         >> Seq.hasOneElement
 
     let hasPlurals = 
