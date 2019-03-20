@@ -17,16 +17,13 @@ let getFilter columnName queryCondition = function
 
 let getPluralsTask next (ctx: HttpContext) =
     task {
-        let singularsFilter = ("Singulars", IsNot, box [])
-        let pluralsFilter = ("Plurals", IsNot, box [])
-        
         let genderFromQuery = ctx.GetQueryStringValue "gender"
         let genderFilter = getFilter "Gender" Is genderFromQuery
 
-        let filters = [ singularsFilter; pluralsFilter ] @ ([genderFilter] |> List.choose id)
-        let noun = tryGetRandom<Noun.Noun> "nouns" filters
-        let getTask (noun: Noun.Noun) = 
-            let singular = noun.Singulars |> getAs<string[]> |> Seq.random
+        let filters = [ genderFilter ] |> List.choose id
+        let noun = tryGetRandom<Plural.Plural> "plurals" filters
+        let getTask (noun: Plural.Plural) = 
+            let singular = getAs<string> noun.Singular
             let plurals = getAs<string []> noun.Plurals
             Task(singular, plurals)
         
@@ -36,16 +33,13 @@ let getPluralsTask next (ctx: HttpContext) =
 
 let getAccusativesTask next (ctx : HttpContext) =
     task {
-        let singularsFilter = ("Singulars", IsNot, box [])
-        let accusativesFilter = ("Accusatives", IsNot, box [])
-
         let genderFromQuery = ctx.GetQueryStringValue "gender"
         let genderFilter = getFilter "Gender" Is genderFromQuery
 
-        let filters = [ singularsFilter; accusativesFilter ] @ ([genderFilter] |> List.choose id)
-        let noun = tryGetRandom<Noun.Noun> "nouns" filters
-        let getTask (noun: Noun.Noun) = 
-            let singular = noun.Singulars |> getAs<string[]> |> Seq.random
+        let filters = [ genderFilter ] |> List.choose id
+        let noun = tryGetRandom<Accusative.Accusative> "accusatives" filters
+        let getTask (noun: Accusative.Accusative) = 
+            let singular = getAs<string> noun.Nominative 
             let accusatives = getAs<string []> noun.Accusatives
             Task(singular, accusatives)
 
