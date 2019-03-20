@@ -23,7 +23,7 @@ let getPluralsTask next (ctx: HttpContext) =
         let filters = [ genderFilter ] |> List.choose id
         let noun = tryGetRandom<Plural.Plural> "plurals" filters
         let getTask (noun: Plural.Plural) = 
-            let singular = noun.Singular |> getAs<string[]> |> Seq.random
+            let singular = getAs<string> noun.Singular
             let plurals = getAs<string []> noun.Plurals
             Task(singular, plurals)
         
@@ -39,7 +39,7 @@ let getAccusativesTask next (ctx : HttpContext) =
         let filters = [ genderFilter ] |> List.choose id
         let noun = tryGetRandom<Accusative.Accusative> "accusatives" filters
         let getTask (noun: Accusative.Accusative) = 
-            let singular = noun.Nominative |> getAs<string[]> |> Seq.random
+            let singular = getAs<string> noun.Nominative 
             let accusatives = getAs<string []> noun.Accusatives
             Task(singular, accusatives)
 
