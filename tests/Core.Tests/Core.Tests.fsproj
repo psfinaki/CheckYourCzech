@@ -14,6 +14,7 @@
   <ItemGroup>
     <Compile Include="AccusativeTests.fs" />
     <Compile Include="PluralTests.fs" />
+    <Compile Include="NounPatternDetectorTests.fs" />
     <Compile Include="WikiStringTests.fs" />
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="ArticleTests.fs" />
