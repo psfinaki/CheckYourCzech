@@ -46,6 +46,7 @@ type Plural(word) =
 
     member val Singular = word |> Storage.mapSafeString id                             with get, set
     member val Gender   = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
+    member val Pattern  = word |> Storage.mapSafeStringOption getPattern               with get, set
     member val Plurals  = word |> Storage.mapSafeString getPlurals                     with get, set
 
 let record word =
