@@ -14,7 +14,7 @@ let getPatternMasculineAnimate = function
 let getPatternMasculineInanimate = function
     | (nominative, genitive) when genitive |> ends "u" || genitive |> ends "a" -> Some "hrad"
     | (nominative, genitive) when genitive |> ends "e" -> Some "stroj"
-    | (nominative, genitive) -> invalidArg "noun" ("odd noun: " + nominative)
+    | _ -> None
 
 let getPatternFeminine = function
     | (nominative, genitive) when genitive |> ends "y" -> Some "žena"
