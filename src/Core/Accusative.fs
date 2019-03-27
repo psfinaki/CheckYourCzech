@@ -41,6 +41,7 @@ type Accusative(word) =
 
     member val Nominative  = word |> Storage.mapSafeString id                             with get, set
     member val Gender      = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
+    member val Pattern     = word |> Storage.mapSafeStringOption getPattern               with get, set
     member val Accusatives = word |> Storage.mapSafeString getAccusatives                 with get, set
 
 let record word =

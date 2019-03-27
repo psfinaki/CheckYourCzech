@@ -20,7 +20,13 @@ let getPluralsTask next (ctx: HttpContext) =
         let genderFromQuery = ctx.GetQueryStringValue "gender"
         let genderFilter = getFilter "Gender" Is genderFromQuery
 
-        let filters = [ genderFilter ] |> List.choose id
+        let patternFromQuery = ctx.GetQueryStringValue "pattern"
+        let patternFilter = getFilter "Pattern" String patternFromQuery
+
+        let filters = 
+            [ genderFilter; patternFilter ] 
+            |> Seq.choose id
+        
         let noun = tryGetRandom<Plural.Plural> "plurals" filters
         let getTask (noun: Plural.Plural) = 
             let singular = getAs<string> noun.Singular
@@ -36,7 +42,13 @@ let getAccusativesTask next (ctx : HttpContext) =
         let genderFromQuery = ctx.GetQueryStringValue "gender"
         let genderFilter = getFilter "Gender" Is genderFromQuery
 
-        let filters = [ genderFilter ] |> List.choose id
+        let patternFromQuery = ctx.GetQueryStringValue "pattern"
+        let patternFilter = getFilter "Pattern" String patternFromQuery
+
+        let filters = 
+            [ genderFilter; patternFilter ] 
+            |> Seq.choose id
+
         let noun = tryGetRandom<Accusative.Accusative> "accusatives" filters
         let getTask (noun: Accusative.Accusative) = 
             let singular = getAs<string> noun.Nominative 

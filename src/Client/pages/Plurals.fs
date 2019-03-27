@@ -8,25 +8,38 @@ open Fable.Helpers.React
 
 type Model = {
     Gender : Gender.Model
+    Pattern : NounPattern.Model
     Task : Task.Model
 }
 
 type Msg = 
     | Gender of Gender.Msg
+    | Pattern of NounPattern.Msg
     | Task of Task.Msg
 
-let getTask gender =
+let getTask gender pattern =
+    let genderQuery = gender |> Option.map Gender.ToString |> Option.map (sprintf "gender=%s")
+    let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
+
+    let queryString =
+        [ genderQuery; patternQuery ]
+        |> Seq.choose id
+        |> String.concat "&"
+    
     let url = 
-        match gender with
-        | Some g -> "/api/plurals?gender=" + Gender.ToString g
-        | None   -> "/api/plurals"
+        if queryString = "" 
+        then "/api/plurals" 
+        else sprintf "/api/plurals?%s" queryString
+
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init () =
     let gender = Gender.init()
-    let task, cmd = Task.init (getTask None)
+    let pattern = NounPattern.init()
+    let task, cmd = Task.init (getTask None None)
 
     { Gender = gender
+      Pattern = pattern
       Task = task },
     Cmd.map Task cmd
 
@@ -34,9 +47,16 @@ let update msg model =
     match msg with
     | Gender msg' ->
         let gender = Gender.update msg' model.Gender
-        { model with Gender = gender }, Cmd.none
+        let pattern = NounPattern.update (NounPattern.SetGender gender.Gender) model.Pattern
+        { model with 
+            Gender = gender 
+            Pattern = pattern
+        }, Cmd.none
+    | Pattern msg' ->
+        let pattern = NounPattern.update msg' model.Pattern
+        { model with Pattern = pattern }, Cmd.none
     | Task msg' ->
-        let task, cmd = Task.update msg' model.Task (getTask model.Gender.Gender)
+        let task, cmd = Task.update msg' model.Task (getTask model.Gender.Gender model.Pattern.Pattern)
         { model with Task = task }, Cmd.map Task cmd
 
 let view model dispatch =
@@ -45,10 +65,21 @@ let view model dispatch =
 
         div [ Styles.middle ] 
             [
-                Markup.emptyLines 3
+                Markup.emptyLines 2
 
-                Gender.view (Gender >> dispatch)
-       
+                div []
+                    [
+                        div [ Styles.halfParent ]
+                            [
+                                Gender.view (Gender >> dispatch)
+                            ]
+
+                        div [ Styles.halfParent ]
+                            [
+                                NounPattern.view model.Pattern (Pattern >> dispatch)
+                            ]
+                    ]
+
                 Markup.emptyLines 2
 
                 Task.view model.Task (Task >> dispatch)
