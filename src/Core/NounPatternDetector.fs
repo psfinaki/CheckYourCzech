@@ -13,7 +13,7 @@ let getPatternMasculineAnimate = function
 
 let getPatternMasculineInanimate = function
     | (nominative, genitive) when genitive |> ends "u" || genitive |> ends "a" -> Some "hrad"
-    | (nominative, genitive) when genitive |> ends "e" -> Some "stroj"
+    | (nominative, genitive) when genitive |> ends "e" || genitive |> ends "ě" -> Some "stroj"
     | _ -> None
 
 let getPatternFeminine = function
@@ -26,7 +26,7 @@ let getPatternFeminine = function
 let getPatternNeuter = function
     | (nominative, genitive) when genitive |> ends "a" -> Some "město"
     | (nominative, genitive) when genitive |> ends "ete" -> Some "kuře"
-    | (nominative, genitive) when genitive |> ends "e" -> Some "moře"
+    | (nominative, genitive) when genitive |> ends "e" || genitive |> ends "ě" -> Some "moře"
     | (nominative, genitive) when genitive |> ends "í" -> Some "stavení"
     | _ -> None
 

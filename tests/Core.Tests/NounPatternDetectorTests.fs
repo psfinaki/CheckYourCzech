@@ -23,6 +23,7 @@ let ``Detects unknown pattern for masculine animate``() =
 [<InlineData("strom", "stromu", "hrad")>]
 [<InlineData("leden", "ledna", "hrad")>]
 [<InlineData("konec", "konce", "stroj")>]
+[<InlineData("déšť", "deště", "stroj")>]
 let ``Gets pattern masculine inanimate`` nominative genitive pattern =
     getPatternMasculineInanimate (nominative, genitive)
     |> equals (Some pattern)
@@ -46,6 +47,7 @@ let ``Detects unknown pattern for feminine``() =
 [<InlineData("okno", "okna", "město")>]
 [<InlineData("děvče", "děvčete", "kuře")>]
 [<InlineData("pole", "pole", "moře")>]
+[<InlineData("cvičiště", "cvičiště", "moře")>]
 [<InlineData("náměstí", "náměstí", "stavení")>]
 let ``Gets pattern neuter`` nominative genitive pattern =
     getPatternNeuter (nominative, genitive)
