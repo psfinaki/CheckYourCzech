@@ -18,7 +18,7 @@ let getFilter columnName queryCondition = function
 let getPluralsTask next (ctx: HttpContext) =
     task {
         let genderFromQuery = ctx.GetQueryStringValue "gender"
-        let genderFilter = getFilter "Gender" Is genderFromQuery
+        let genderFilter = getFilter "Gender" String genderFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
         let patternFilter = getFilter "Pattern" String patternFromQuery
@@ -40,7 +40,7 @@ let getPluralsTask next (ctx: HttpContext) =
 let getAccusativesTask next (ctx : HttpContext) =
     task {
         let genderFromQuery = ctx.GetQueryStringValue "gender"
-        let genderFilter = getFilter "Gender" Is genderFromQuery
+        let genderFilter = getFilter "Gender" String genderFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
         let patternFilter = getFilter "Pattern" String patternFromQuery

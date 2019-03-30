@@ -26,7 +26,7 @@ let update msg model =
 
 let view dispatch =
     let handleChangeGender (event: FormEvent) =
-        let translate = function | GenderUnset -> None | x -> Some (Gender.FromString x)
+        let translate = function | GenderUnset -> None | x -> Some (Genders.fromString x)
         dispatch (SetGender (translate !!event.target?value))
 
     div [] 
@@ -40,10 +40,10 @@ let view dispatch =
                 [
                     Markup.select handleChangeGender [
                         Markup.option GenderUnset "Any"
-                        Markup.option (Gender.ToString MasculineAnimate) "Masculine Animate"
-                        Markup.option (Gender.ToString MasculineInanimate) "Masculine Inanimate"
-                        Markup.option (Gender.ToString Feminine) "Feminine"
-                        Markup.option (Gender.ToString Neuter) "Neuter"
+                        Markup.option (string MasculineAnimate) "Masculine Animate"
+                        Markup.option (string MasculineInanimate) "Masculine Inanimate"
+                        Markup.option (string Feminine) "Feminine"
+                        Markup.option (string Neuter) "Neuter"
                     ]
                 ]
         ]

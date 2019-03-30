@@ -23,7 +23,7 @@ let isValid word =
     let hasGender = 
         nounPart
         |> Option.bind (tryGetInfo "rod")
-        |> Option.bind Gender.TryFromString
+        |> Option.bind tryTranslateGender
         |> Option.isSome
 
     let hasOneSingular = 
@@ -44,10 +44,10 @@ type Plural(word) =
     
     new() = Plural null
 
-    member val Singular = word |> Storage.mapSafeString id                             with get, set
-    member val Gender   = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
-    member val Pattern  = word |> Storage.mapSafeStringOption getPattern               with get, set
-    member val Plurals  = word |> Storage.mapSafeString getPlurals                     with get, set
+    member val Singular = word |> Storage.mapSafeString id                 with get, set
+    member val Gender   = word |> Storage.mapSafeObject (getGender >> box) with get, set
+    member val Pattern  = word |> Storage.mapSafeStringOption getPattern   with get, set
+    member val Plurals  = word |> Storage.mapSafeString getPlurals         with get, set
 
 let record word =
     if 
