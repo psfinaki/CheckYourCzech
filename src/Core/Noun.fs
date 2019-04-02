@@ -26,7 +26,7 @@ let getGender =
     >> getPart "čeština"
     >> getPart "podstatné jméno"
     >> getInfo "rod "
-    >> Gender.FromString
+    >> translateGender
 
 let isIndeclinable = 
     getContent

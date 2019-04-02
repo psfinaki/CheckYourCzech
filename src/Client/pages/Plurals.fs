@@ -2,7 +2,6 @@
 
 open Elmish
 open Fable.PowerPack.Fetch
-open Genders
 open Thoth.Json
 open Fable.Helpers.React
 
@@ -18,7 +17,7 @@ type Msg =
     | Task of Task.Msg
 
 let getTask gender pattern =
-    let genderQuery = gender |> Option.map Gender.ToString |> Option.map (sprintf "gender=%s")
+    let genderQuery = gender |> Option.map string |> Option.map (sprintf "gender=%s")
     let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
 
     let queryString =

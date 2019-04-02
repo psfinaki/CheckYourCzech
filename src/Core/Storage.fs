@@ -33,6 +33,7 @@ type QueryCondition =
 
 let mapSafeIntOption    (mapping: 'a -> int option)    = Option.ofObj >> Option.map mapping >> Option.flatten >> Option.map string >> Option.defaultValue ""
 let mapSafeStringOption (mapping: 'a -> string option) = Option.ofObj >> Option.map mapping >> Option.flatten >> Option.map string >> Option.defaultValue ""
+let mapSafeObject        mapping                       = Option.ofObj >> Option.map mapping >> Option.map string >> Option.defaultValue ""
 let mapSafeString mapping = Option.ofObj >> Option.map mapping >> Option.toObj >> JsonConvert.SerializeObject
 let mapSafeBool mapping   = Option.ofObj >> Option.map mapping >> Option.defaultValue false
 let mapSafeInt mapping    = Option.ofObj >> Option.map mapping >> Option.defaultValue 0

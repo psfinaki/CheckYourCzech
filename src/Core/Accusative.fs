@@ -23,7 +23,7 @@ let isValid word =
     let hasGender = 
         nounPart
         |> Option.bind (tryGetInfo "rod")
-        |> Option.bind Gender.TryFromString
+        |> Option.bind tryTranslateGender
         |> Option.isSome
 
     let hasOneNominative = 
@@ -39,10 +39,10 @@ type Accusative(word) =
     
     new() = Accusative null
 
-    member val Nominative  = word |> Storage.mapSafeString id                             with get, set
-    member val Gender      = word |> Storage.mapSafeString (getGender >> Gender.ToString) with get, set
-    member val Pattern     = word |> Storage.mapSafeStringOption getPattern               with get, set
-    member val Accusatives = word |> Storage.mapSafeString getAccusatives                 with get, set
+    member val Nominative  = word |> Storage.mapSafeString id                 with get, set
+    member val Gender      = word |> Storage.mapSafeObject (getGender >> box) with get, set
+    member val Pattern     = word |> Storage.mapSafeStringOption getPattern   with get, set
+    member val Accusatives = word |> Storage.mapSafeString getAccusatives     with get, set
 
 let record word =
     if 
