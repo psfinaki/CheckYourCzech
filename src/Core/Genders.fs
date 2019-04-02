@@ -2,6 +2,7 @@
 
 open System
 open Microsoft.FSharp.Reflection
+open System.Collections.Generic
 
 type Gender =
     | MasculineAnimate
@@ -27,6 +28,6 @@ let tryTranslateGender gender =
     try
         gender |> translateGender |> Some
     with 
-        | :? InvalidOperationException -> None
+        | :? KeyNotFoundException -> None
 
 let fromString gender = duTranslations.[gender]
