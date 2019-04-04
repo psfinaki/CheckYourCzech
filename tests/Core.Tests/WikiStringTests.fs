@@ -66,11 +66,13 @@ let ``Detects unofficial form - poetic``() =
     |> isOfficial
     |> Assert.False
 
-[<Fact>]
-let ``Removes allowed labels - rearer``() =
-    "(řidč.) pohaněj"
+[<Theory>]
+[<InlineData ("(řidč.) pohaněj", "pohaněj")>]
+[<InlineData ("(zřídka) plazové", "plazové")>]
+let ``Removes allowed labels - rarer`` labeledForm form =
+    labeledForm
     |> removeLabels
-    |> equals "pohaněj"
+    |> equals form
     
 [<Fact>]
 let ``Removes allowed labels - bookish``() =
