@@ -6,6 +6,7 @@ let formSeparators = [|'/'; ','|]
 
 let allowedLabels  = [
     "(řidč.)"
+    "(zřídka)"
     "(knižně)"
     ]
 
