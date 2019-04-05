@@ -24,8 +24,14 @@ let ``Invalidates improper verb - no verb``() =
     |> Assert.False
 
 [<Fact>]
-let ``Invalidates improper verb - no imperative``() =
+let ``Invalidates improper verb - no conjugation``() =
     "chlastati"
+    |> isValid
+    |> Assert.False
+
+[<Fact>]
+let ``Invalidates improper verb - no imperative``() =
+    "moct"
     |> isValid
     |> Assert.False
 

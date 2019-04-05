@@ -42,7 +42,7 @@ let isVerbWithImperative =
     >> Option.map getTables
     >> Option.map (Seq.map fst)
     >> Option.map (Seq.contains "Rozkazovací způsob")
-    >> Option.isSome
+    >> Option.contains(true)
 
 let isValid word = 
     let isNotArchaicVerb = not << Verb.isArchaic
