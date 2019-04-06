@@ -83,21 +83,3 @@ let ``Detects declinable``() =
     "panda"
     |> isIndeclinable
     |> Assert.False
-
-[<Fact>]
-let ``Detects pattern detection is possible``() =
-    let nominatives = ["panda"]
-    let genitives = ["pandy"]
-
-    (nominatives, genitives)
-    |> isPatternDetectionPossible
-    |> Assert.True
-
-[<Fact>]
-let ``Detects pattern detection is not possible``() =
-    let nominatives = ["temeno"; "témě"]
-    let genitives = ["temena"; "temene"]
-
-    (nominatives, genitives)
-    |> isPatternDetectionPossible
-    |> Assert.False
