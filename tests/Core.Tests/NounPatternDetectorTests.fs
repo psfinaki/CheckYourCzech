@@ -28,6 +28,12 @@ let ``Gets pattern masculine inanimate`` nominative genitive pattern =
     getPatternMasculineInanimate (nominative, genitive)
     |> equals (Some pattern)
 
+// TODO: a more polite example here?
+[<Fact>]
+let ``Detects unknown pattern for masculine inanimate``() =
+    getPatternMasculineInanimate ("pinďa", "pindi")
+    |> equals None
+
 [<Theory>]
 [<InlineData("holka", "holky", "žena")>]
 [<InlineData("duše", "duše", "růže")>]
