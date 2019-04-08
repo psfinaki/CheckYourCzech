@@ -67,20 +67,21 @@ let getDeclensionWiki (case: Case) number word =
 
 let getDeclension case number = getDeclensionWiki case number >> getForms
 
-let isPatternDetectionPossible (nominatives, genitives) = 
-    nominatives |> Seq.hasOneElement && 
-    genitives |> Seq.hasOneElement
-
 let getPattern noun = 
     let nominatives = getDeclension Case.Nominative Number.Singular noun
-    let genitives = getDeclension Case.Genitive Number.Singular noun
+    let isPatternDetectionPossible = Seq.hasOneElement
 
     if 
-        isPatternDetectionPossible (nominatives, genitives)
+        isPatternDetectionPossible nominatives
     then
         let gender = getGender noun
         let nominative = nominatives |> Seq.exactlyOne
-        let genitive = genitives |> Seq.exactlyOne
-        NounPatternDetector.getPatternByGender gender (nominative, genitive)
+        let genitives = getDeclension Case.Genitive Number.Singular noun
+
+        genitives
+        |> Seq.map (NounPatternDetector.getPatternByGender gender nominative)
+        |> Seq.choose id
+        |> Seq.distinct
+        |> Seq.tryExactlyOne
     else 
         None

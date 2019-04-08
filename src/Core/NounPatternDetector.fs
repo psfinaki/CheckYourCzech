@@ -36,4 +36,4 @@ let patternGenderMap =
            (Feminine, getPatternFeminine)
            (Neuter, getPatternNeuter) ]
 
-let getPatternByGender gender = patternGenderMap.[gender]
+let getPatternByGender gender nominative genitive = patternGenderMap.[gender] (nominative, genitive)
