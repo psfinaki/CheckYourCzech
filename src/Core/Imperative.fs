@@ -56,8 +56,9 @@ type Imperative(word) =
 
     member val Indicative  = word |> Storage.mapSafeString id                with get, set
     member val Imperatives = word |> Storage.mapSafeString getImperatives    with get, set
+    // Class cannot be int as with int the value will be 0 for verbs without class
     member val Class       = word |> Storage.mapSafeIntOption getClass       with get, set
-    member val Pattern     = word |> Storage.mapSafeStringOption getPattern with get, set
+    member val Pattern     = word |> Storage.mapSafeStringOption getPattern  with get, set
 
 let record word =
     if 
