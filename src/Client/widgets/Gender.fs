@@ -24,10 +24,12 @@ let update msg model =
     | SetGender gender ->
         { model with Gender = gender }
 
-let view dispatch =
+let view model dispatch =
     let handleChangeGender (event: FormEvent) =
         let translate = function | GenderUnset -> None | x -> Some (Genders.fromString x)
         dispatch (SetGender (translate !!event.target?value))
+
+    let selectedValue = model.Gender |> Option.map string |> Option.defaultValue "Any"
 
     div [] 
         [
@@ -38,7 +40,7 @@ let view dispatch =
 
             div [ Styles.select ] 
                 [
-                    Markup.select handleChangeGender [
+                    Markup.select selectedValue handleChangeGender [
                         Markup.option GenderUnset "Any"
                         Markup.option (string MasculineAnimate) "Masculine Animate"
                         Markup.option (string MasculineInanimate) "Masculine Inanimate"

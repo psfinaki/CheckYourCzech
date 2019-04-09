@@ -1,17 +1,10 @@
 ﻿module Regularity
 
-open System
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
-
-// because Fable cannot compile bool.Parse
-type Boolean with
-    static member FromString = function
-        | "True" -> true
-        | "False" -> false
-        | _ -> invalidOp "Value cannot be converted to boolean."
+open BoolExtensioins
 
 [<Literal>]
 let RegularityUnset = ""
@@ -31,10 +24,12 @@ let update msg model =
     | SetRegularity regularity ->
         { model with Regularity = regularity }
 
-let view dispatch =
+let view model dispatch =
     let handleChangeRegularity (event: FormEvent) =
         let translate = function | RegularityUnset -> None | x -> Some (bool.FromString x)
         dispatch (SetRegularity (translate !!event.target?value))
+
+    let selectedValue = model.Regularity |> Option.map bool.AsString |> Option.defaultValue "Any"
 
     div []
         [
@@ -45,10 +40,10 @@ let view dispatch =
 
             div [ Styles.select ] 
                 [
-                    Markup.select handleChangeRegularity [
+                    Markup.select selectedValue handleChangeRegularity [
                         Markup.option RegularityUnset "Any"
-                        Markup.option "True" "Regular"     // true.ToString()  does not work
-                        Markup.option "False" "Exceptions" // false.ToString() does not work
+                        Markup.option (bool.AsString true) "Regular"
+                        Markup.option (bool.AsString false) "Exceptions"
                     ]
                 ]
         ]

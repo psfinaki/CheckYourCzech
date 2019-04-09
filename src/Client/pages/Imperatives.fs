@@ -70,7 +70,7 @@ let view model dispatch =
                     [
                         div [ Styles.halfParent ]
                             [
-                                Class.view (Class >> dispatch)
+                                Class.view model.Class (Class >> dispatch)
                             ]
 
                         div [ Styles.halfParent ]

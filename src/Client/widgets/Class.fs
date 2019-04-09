@@ -24,10 +24,12 @@ let update msg model =
     | SetClass ``class`` ->
         { model with Class = ``class`` }
 
-let view dispatch =
+let view model dispatch =
     let handleChangeClass (event: FormEvent) =
         let translate = function | ClassUnset -> None | x -> Some (Int32.Parse x)
         dispatch (SetClass (translate !!event.target?value))
+
+    let selectedValue = model.Class |> Option.map string |> Option.defaultValue "Any"
 
     div [] 
         [
@@ -38,7 +40,7 @@ let view dispatch =
 
             div [ Styles.select ] 
                 [
-                    Markup.select handleChangeClass [
+                    Markup.select selectedValue handleChangeClass [
                         Markup.option ClassUnset "Any"
                         Markup.option 1 "1"
                         Markup.option 2 "2"
