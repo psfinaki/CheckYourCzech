@@ -120,5 +120,5 @@ let simpleOption text =
 let option value text =
     option [ Value value] [ str text ]
 
-let select changeHandler choices =
-    select [ OnChange changeHandler; Style [ BorderRadius "10%"; FontSize "20px" ] ] choices
+let select selectedValue changeHandler choices =
+    select [ Value selectedValue; OnChange changeHandler; Style [ BorderRadius "10%"; FontSize "20px" ] ] choices

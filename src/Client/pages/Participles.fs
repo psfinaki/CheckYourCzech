@@ -47,7 +47,7 @@ let view model dispatch =
             [
                 Markup.emptyLines 2
 
-                Regularity.view (Regularity >> dispatch)
+                Regularity.view model.Regularity (Regularity >> dispatch)
 
                 Markup.emptyLines 2
 

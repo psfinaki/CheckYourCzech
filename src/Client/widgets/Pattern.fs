@@ -33,7 +33,7 @@ let init() =
 let update msg model =
     match msg with
     | SetClass ``class`` ->
-        { model with Class = ``class`` }
+        { model with Class = ``class``; Pattern = None }
     | SetPattern pattern ->
         { model with Pattern = pattern }
 
@@ -47,7 +47,9 @@ let view model dispatch =
         |> Option.map getClassPatterns
         |> Option.defaultValue []
         |> Seq.map Markup.simpleOption
-        |> Seq.append [Markup.option PatternUnset "Any" ]
+        |> Seq.append [ Markup.option PatternUnset "Any" ]
+
+    let selectedValue = model.Pattern |> Option.defaultValue "Any"
 
     div [] 
         [
@@ -58,6 +60,6 @@ let view model dispatch =
 
             div [ Styles.select ] 
                 [
-                    Markup.select handleChangePattern options
+                    Markup.select selectedValue handleChangePattern options
                 ]
         ]
