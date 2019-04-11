@@ -1,5 +1,3 @@
-version 5.201.1
-
 group Core
     source https://api.nuget.org/v3/index.json
 	
