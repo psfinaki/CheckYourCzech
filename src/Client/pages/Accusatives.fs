@@ -4,17 +4,26 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
+open Genders
 
 type Model = {
     Gender : Gender.Model
-    Pattern : NounPattern.Model
+    Pattern : Pattern.Model
     Task : Task.Model
 }
 
 type Msg = 
     | Gender of Gender.Msg
-    | Pattern of NounPattern.Msg
+    | Pattern of Pattern.Msg
     | Task of Task.Msg
+
+let patterns =
+    dict [ (MasculineAnimate, ["pan"; "muž"; "předseda"; "soudce"])
+           (MasculineInanimate, ["hrad"; "stroj"])
+           (Feminine, ["žena"; "růže"; "píseň"; "kost"])
+           (Neuter, ["město"; "kuře"; "moře"; "stavení"]) ]
+
+let getPatterns gender = patterns.[gender]
 
 let getTask gender pattern =
     let genderQuery = gender |> Option.map string |> Option.map (sprintf "gender=%s")
@@ -34,7 +43,7 @@ let getTask gender pattern =
 
 let init () =
     let gender = Gender.init()
-    let pattern = NounPattern.init()
+    let pattern = Pattern.init()
     let task, cmd = Task.init (getTask None None)
 
     { Gender = gender
@@ -46,16 +55,17 @@ let update msg model =
     match msg with
     | Gender msg' ->
         let gender = Gender.update msg' model.Gender
-        let pattern = NounPattern.update (NounPattern.SetGender gender.Gender) model.Pattern
+        let patterns = gender.Gender |> Option.map getPatterns
+        let pattern = Pattern.update (Pattern.SetPatterns patterns) model.Pattern
         { model with 
             Gender = gender 
             Pattern = pattern
         }, Cmd.none
     | Pattern msg' ->
-        let pattern = NounPattern.update msg' model.Pattern
+        let pattern = Pattern.update msg' model.Pattern
         { model with Pattern = pattern }, Cmd.none
     | Task msg' ->
-        let task, cmd = Task.update msg' model.Task (getTask model.Gender.Gender model.Pattern.Pattern)
+        let task, cmd = Task.update msg' model.Task (getTask model.Gender.Gender model.Pattern.SelectedPattern)
         { model with Task = task }, Cmd.map Task cmd
         
 let view model dispatch =    
@@ -75,7 +85,7 @@ let view model dispatch =
 
                         div [ Styles.halfParent ]
                             [
-                                NounPattern.view model.Pattern (Pattern >> dispatch)
+                                Pattern.view model.Pattern (Pattern >> dispatch)
                             ]
                     ]
 

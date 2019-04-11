@@ -8,48 +8,38 @@ open Fable.Import.React
 [<Literal>]
 let PatternUnset = ""
 
-let classPatterns =
-    dict [ (1, ["nést"; "číst"; "péct"; "třít"; "brát"; "mazat"])
-           (2, ["tisknout"; "minout"; "začít"])
-           (3, ["krýt"; "kupovat"])
-           (4, ["prosit"; "čistit"; "trpět"; "sázet"])
-           (5, ["dělat"]) ]
-
-let getClassPatterns ``class`` = classPatterns.[``class``]
-
 type Model = { 
-    Class : int option
-    Pattern : string option
+    Patterns : string list option
+    SelectedPattern : string option
 }
 
 type Msg =
-    | SetClass of int option
-    | SetPattern of string option
+    | SetPatterns of string list option
+    | SelectPattern of string option
 
 let init() =
-    { Class = None
-      Pattern = None }
+    { Patterns = None
+      SelectedPattern = None }
 
 let update msg model =
     match msg with
-    | SetClass ``class`` ->
-        { model with Class = ``class``; Pattern = None }
-    | SetPattern pattern ->
-        { model with Pattern = pattern }
+    | SetPatterns patterns ->
+        { model with Patterns = patterns; SelectedPattern = None }
+    | SelectPattern pattern ->
+        { model with SelectedPattern = pattern }
 
 let view model dispatch =
     let handleChangePattern (event: FormEvent) =
         let translate = function | PatternUnset -> None | x -> Some x
-        dispatch (SetPattern (translate !!event.target?value))
+        dispatch (SelectPattern (translate !!event.target?value))
         
     let options = 
-        model.Class
-        |> Option.map getClassPatterns
+        model.Patterns
         |> Option.defaultValue []
         |> Seq.map Markup.simpleOption
         |> Seq.append [ Markup.option PatternUnset "Any" ]
 
-    let selectedValue = model.Pattern |> Option.defaultValue "Any"
+    let selectedValue = model.SelectedPattern |> Option.defaultValue "Any"
 
     div [] 
         [
