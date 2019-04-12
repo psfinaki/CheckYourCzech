@@ -6,6 +6,7 @@ open Article
 open WikiString
 open StringHelper
 open Stem
+open VerbPatternDetector
 
 type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
 type WikiParticiplesTable3 = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
@@ -23,8 +24,8 @@ let getReflexive = function
 
 let buildTheoreticalParticiple verb =
     let buildTheoreticalParticipleNonReflexive = function
-        | verb when verb |> VerbPatternDetector.isPatternTisknout -> buildParticipleTisknout verb
-        | verb when verb |> VerbPatternDetector.isPatternMinout -> buildParticipleMinout verb
+        | verb when verb |> isPatternTisknout -> buildParticipleTisknout verb
+        | verb when verb |> isPatternMinout -> buildParticipleMinout verb
         | verb -> buildParticipleCommon verb
 
     let reflexive = getReflexive verb
@@ -72,6 +73,8 @@ let isRegular word =
     let practical = getParticiples word
     practical |> Array.contains theoretical
 
+let getPattern = ParticiplePatternDetector.getPattern
+
 let isVerbWithDeclension =
     tryGetContent
     >> Option.bind (tryGetPart "čeština")
@@ -89,9 +92,10 @@ type Participle(word) =
 
     new() =  Participle null
 
-    member val Infinitive  = word |> Storage.mapSafeString id             with get, set
-    member val Participles = word |> Storage.mapSafeString getParticiples with get, set
-    member val IsRegular   = word |> Storage.mapSafeBool   isRegular      with get, set
+    member val Infinitive  = word |> Storage.mapSafeString id                  with get, set
+    member val Participles = word |> Storage.mapSafeString getParticiples      with get, set
+    member val Pattern     = word |> Storage.mapSafeObject (getPattern >> box) with get, set
+    member val IsRegular   = word |> Storage.mapSafeBool   isRegular           with get, set
 
 let record word =
     if 
