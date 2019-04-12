@@ -1,7 +1,5 @@
 ﻿module Genders
 
-open System
-open Microsoft.FSharp.Reflection
 open System.Collections.Generic
 
 type Gender =

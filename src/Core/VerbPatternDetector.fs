@@ -4,7 +4,7 @@ open StringHelper
 open Letters
 open Stem
 
-let isPatternTisknout word = 
+let isPatternTisknoutNonReflexive word = 
     let getStem = removeLast 4
     
     let isPattern letter = 
@@ -14,7 +14,7 @@ let isPatternTisknout word =
     word |> ends "nout" && 
     word |> getStem |> endsIf isPattern
 
-let isPatternMinout word = 
+let isPatternMinoutNonReflexive word = 
     let getStem = removeLast 4
     
     let isPattern letter =
@@ -24,13 +24,18 @@ let isPatternMinout word =
     word |> ends "nout" &&
     word |> getStem |> endsIf isPattern
 
-let isPatternProsit word = 
+let isPatternPrositNonReflexive word = 
     word |> ends "it" &&
     word |> removeLast 2 |> takeLast 2 |> (not << isConsonantGroup)
 
-let isPatternČistit word =
+let isPatternČistitNonReflexive word =
     word |> ends "it" &&
     word |> removeLast 2 |> takeLast 2 |> isConsonantGroup
+
+let isPatternTisknout = Verb.removeReflexive >> isPatternTisknoutNonReflexive
+let isPatternMinout = Verb.removeReflexive >> isPatternMinoutNonReflexive
+let isPatternProsit = Verb.removeReflexive >> isPatternPrositNonReflexive
+let isPatternČistit = Verb.removeReflexive >> isPatternČistitNonReflexive
 
 let invalidVerb verb verbClass = 
     sprintf "The verb %s does not belong to the class %i." verb verbClass
@@ -74,7 +79,9 @@ let patternClassMap =
            (4, getPatternClass4)
            (5, getPatternClass5) ]
 
-let getPatternByClass verb verbClass = 
-    verb 
-    |> Verb.removeReflexive 
-    |> patternClassMap.[verbClass]
+let getPatternByClass verb verbClass = patternClassMap.[verbClass] verb
+
+let getPattern verb = 
+    verb
+    |> Verb.getClass
+    |> Option.bind (getPatternByClass verb)

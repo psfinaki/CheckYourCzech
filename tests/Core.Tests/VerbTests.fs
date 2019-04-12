@@ -44,3 +44,11 @@ let ``Gets class by third person singular`` ``third person singular`` ``class`` 
 let ``Throws for invalid third person singular``() =
     let action () = getClassByThirdPersonSingular "test" |> ignore
     Assert.Throws<ArgumentException> action
+
+[<Theory>]
+[<InlineData("řídit", 4)>]
+[<InlineData("řídit se", 4)>]
+let ``Gets class`` verb ``class`` =
+    verb
+    |> getClass
+    |> equals (Some ``class``)

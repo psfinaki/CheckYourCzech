@@ -1,38 +1,15 @@
 ﻿module Imperative
 
-open FSharp.Data
 open Microsoft.WindowsAzure.Storage.Table
 open Article
 open WikiString
-
-type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
-
-let wikiUrl = "https://cs.wiktionary.org/wiki/"
-
-let getWikiData =
-    (+) wikiUrl
-    >> WikiVerb.Load
+open Verb
+open VerbPatternDetector
 
 let getImperatives verb =
-    let data = getWikiData verb
+    let data = getVerbProvider verb
     let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
     getForms answer
-
-let getThirdPersonSingular verb = 
-    let data = getWikiData verb
-    let answer = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
-    getForms answer
-
-let getClass =
-    getThirdPersonSingular
-    >> Seq.tryExactlyOne
-    >> Option.map Verb.removeReflexive
-    >> Option.map Verb.getClassByThirdPersonSingular
-
-let getPattern verb =
-    verb
-    |> getClass
-    |> Option.bind (VerbPatternDetector.getPatternByClass verb)
 
 let isVerbWithImperative =
     tryGetContent
@@ -45,7 +22,7 @@ let isVerbWithImperative =
     >> Option.contains(true)
 
 let isValid word = 
-    let isNotArchaicVerb = not << Verb.isArchaic
+    let isNotArchaicVerb = not << isArchaic
     word |> isVerbWithImperative &&
     word |> isNotArchaicVerb
 

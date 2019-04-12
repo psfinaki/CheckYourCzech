@@ -25,7 +25,6 @@
     <Compile Include="Verb.fs" />
     <Compile Include="VerbPatternDetector.fs" />
     <Compile Include="NounPatternDetector.fs" />
-    <Compile Include="ParticiplePatternDetector.fs" />
     <Compile Include="Noun.fs" />
     <Compile Include="Plural.fs" />
     <Compile Include="Accusative.fs" />

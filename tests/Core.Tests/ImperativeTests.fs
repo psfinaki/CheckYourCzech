@@ -40,11 +40,3 @@ let ``Invalidates improper verb - archaic``() =
     "péci"
     |> isValid
     |> Assert.False
-
-[<Theory>]
-[<InlineData("řídit", 4)>]
-[<InlineData("řídit se", 4)>]
-let ``Gets class`` verb ``class`` =
-    verb
-    |> getClass
-    |> equals (Some ``class``)
