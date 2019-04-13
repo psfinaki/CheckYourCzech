@@ -101,10 +101,16 @@ let getImperativesTask next (ctx : HttpContext) =
 
 let getParticiplesTask next (ctx: HttpContext) =
     task {
+        let patternFromQuery = ctx.GetQueryStringValue "pattern"
+        let patternFilter = getFilter "Pattern" String patternFromQuery
+
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
         let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
 
-        let filters = [ regularityFilter ] |> Seq.choose id
+        let filters =
+            [ patternFilter; regularityFilter ] 
+            |> Seq.choose id
+        
         let verb = tryGetRandom<Participle.Participle> "participles" filters
 
         let getTask (verb: Participle.Participle) = 
