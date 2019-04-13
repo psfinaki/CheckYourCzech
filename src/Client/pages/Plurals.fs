@@ -43,7 +43,7 @@ let getTask gender pattern =
 
 let init () =
     let gender = Gender.init()
-    let pattern = Pattern.init()
+    let pattern = Pattern.init None
     let task, cmd = Task.init (getTask None None)
 
     { Gender = gender

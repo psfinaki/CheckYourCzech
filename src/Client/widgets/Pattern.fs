@@ -17,8 +17,8 @@ type Msg =
     | SetPatterns of string list option
     | SelectPattern of string option
 
-let init() =
-    { Patterns = None
+let init patterns =
+    { Patterns = patterns
       SelectedPattern = None }
 
 let update msg model =
