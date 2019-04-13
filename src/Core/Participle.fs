@@ -11,6 +11,11 @@ open VerbPatternDetector
 type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
 type WikiParticiplesTable3 = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 
+type Pattern = 
+    | Minout
+    | Tisknout
+    | Common
+
 let hasStemPattern getStem isPattern = getStem >> endsIf isPattern
 
 let buildParticipleTisknout = removeLast 4 >> append "l"
@@ -73,7 +78,10 @@ let isRegular word =
     let practical = getParticiples word
     practical |> Array.contains theoretical
 
-let getPattern = ParticiplePatternDetector.getPattern
+let getPattern = function
+    | verb when verb |> isPatternMinout -> Minout
+    | verb when verb |> isPatternTisknout -> Tisknout
+    | _ -> Common
 
 let isVerbWithDeclension =
     tryGetContent

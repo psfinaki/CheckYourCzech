@@ -8,7 +8,7 @@ let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 [<Fact>]
 let ``Detects pattern tisknout``() =
     "tisknout"
-    |> isPatternTisknout
+    |> isPatternTisknoutNonReflexive
     |> Assert.True
 
 [<Theory>]
@@ -17,7 +17,7 @@ let ``Detects pattern tisknout``() =
 [<InlineData "shrnout">]
 let ``Detects pattern is not tisknout`` word =
     word
-    |> isPatternTisknout
+    |> isPatternTisknoutNonReflexive
     |> Assert.False
 
 [<Theory>]
@@ -26,7 +26,7 @@ let ``Detects pattern is not tisknout`` word =
 [<InlineData "přilnout">]
 let ``Detects pattern minout`` word =
     word
-    |> isPatternMinout
+    |> isPatternMinoutNonReflexive
     |> Assert.True
 
 [<Theory>]
@@ -34,7 +34,7 @@ let ``Detects pattern minout`` word =
 [<InlineData "tisknout">]
 let ``Detects pattern is not minout`` word =
     word
-    |> isPatternMinout
+    |> isPatternMinoutNonReflexive
     |> Assert.False
 
 [<Theory>]
@@ -42,7 +42,7 @@ let ``Detects pattern is not minout`` word =
 [<InlineData "řídit">]
 let ``Detects pattern prosit`` word =
     word
-    |> isPatternProsit
+    |> isPatternPrositNonReflexive
     |> Assert.True
 
 [<Theory>]
@@ -50,7 +50,7 @@ let ``Detects pattern prosit`` word =
 [<InlineData "čistit">]
 let ``Detects pattern is not prosit`` word =
     word
-    |> isPatternProsit
+    |> isPatternPrositNonReflexive
     |> Assert.False
 
 [<Theory>]
@@ -58,7 +58,7 @@ let ``Detects pattern is not prosit`` word =
 [<InlineData "zvýraznit">]
 let ``Detects pattern čistit`` word =
     word
-    |> isPatternČistit
+    |> isPatternČistitNonReflexive
     |> Assert.True
 
 [<Theory>]
@@ -66,7 +66,7 @@ let ``Detects pattern čistit`` word =
 [<InlineData "dělat">]
 let ``Detects pattern is not čistit`` word =
     word
-    |> isPatternČistit
+    |> isPatternČistitNonReflexive
     |> Assert.False
 
 [<Theory>]
@@ -159,9 +159,7 @@ let ``Detects unknown pattern for class 5``() =
     |> getPatternClass5
     |> equals None
 
-[<Theory>]
-[<InlineData("ohlásit", 4, "prosit")>]
-[<InlineData("ohlásit se", 4, "prosit")>]
-let ``Gets pattern by class`` verb verbClass pattern =
-    getPatternByClass verb verbClass
-    |> equals (Some pattern)
+[<Fact>]
+let ``Gets pattern``() =
+    getPattern "ohlásit"
+    |> equals (Some "prosit")
