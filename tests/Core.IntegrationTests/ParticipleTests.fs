@@ -46,3 +46,21 @@ let ``Detects irregular participle``() =
     "jít"
     |> isRegular
     |> Assert.False
+
+[<Fact>]
+let ``Invalidates improper verb - no Czech``() =
+    "good"
+    |> isValid
+    |> Assert.False
+
+[<Fact>]
+let ``Invalidates improper verb - no verb``() =
+    "nazdar"
+    |> isValid
+    |> Assert.False
+
+[<Fact>]
+let ``Invalidates improper verb - archaic``() =
+    "péci"
+    |> isValid
+    |> Assert.False

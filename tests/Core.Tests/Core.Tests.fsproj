@@ -12,16 +12,12 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AccusativeTests.fs" />
-    <Compile Include="PluralTests.fs" />
     <Compile Include="NounPatternDetectorTests.fs" />
     <Compile Include="VerbPatternDetectorTests.fs" />
     <Compile Include="WikiStringTests.fs" />
     <Compile Include="AdjectiveTests.fs" />
-    <Compile Include="ArticleTests.fs" />
     <Compile Include="VerbTests.fs" />
     <Compile Include="ParticipleTests.fs" />
-    <Compile Include="ImperativeTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core\Core.fsproj" />

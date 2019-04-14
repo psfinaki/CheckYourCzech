@@ -17,42 +17,6 @@ let ``Detects morphological comparison``() =
     |> isSyntacticComparison
     |> Assert.False
 
-[<Fact>]
-let ``Invalidates improper adjective - no Czech``() =
-    "good"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper adjective - no adjective``() =
-    "nazdar"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper adjective - no comparison``() =
-    "občasný"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper adjective - not a positive form - comparative``() =
-    "horší"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper adjective - not a positive form - superlative``() =
-    "nejširší"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper adjective - no comparatives``() =
-    "optimální"
-    |> isValid
-    |> Assert.False
-
 [<Theory>]
 [<InlineData("rudý", "rudější")>]
 [<InlineData("důležitý", "důležitější")>]

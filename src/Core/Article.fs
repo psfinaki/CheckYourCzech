@@ -3,6 +3,7 @@
 open System
 open FSharp.Data
 open Html
+open System.Collections.Generic
 
 type Article = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
@@ -115,8 +116,8 @@ let isLocked word =
 
 let isEditable = not << isLocked
 
-let tryFunc1 func x   = try func x   |> Some with _ -> None
-let tryFunc2 func x y = try func x y |> Some with _ -> None
+let tryFunc1 func x   = try func x   |> Some with | :? KeyNotFoundException | :? ArgumentException -> None
+let tryFunc2 func x y = try func x y |> Some with | :? KeyNotFoundException | :? ArgumentException -> None
 
 let tryGetTableOfContents word = tryFunc1 getTableOfContents word
 let tryGetContent word         = tryFunc1 getContent word
