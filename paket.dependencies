@@ -36,6 +36,13 @@ group Core.Tests
 	nuget xunit
 	nuget xunit.runner.visualstudio	
 	
+group Core.IntegrationTests
+	source https://nuget.org/api/v2
+
+	nuget FSharp.Core
+	nuget xunit
+	nuget xunit.runner.visualstudio	
+	
 group Build
     source https://api.nuget.org/v3/index.json
 	

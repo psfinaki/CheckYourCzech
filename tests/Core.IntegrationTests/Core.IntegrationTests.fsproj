@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -13,15 +13,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AccusativeTests.fs" />
-    <Compile Include="PluralTests.fs" />
-    <Compile Include="NounPatternDetectorTests.fs" />
-    <Compile Include="VerbPatternDetectorTests.fs" />
-    <Compile Include="WikiStringTests.fs" />
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="ArticleTests.fs" />
-    <Compile Include="VerbTests.fs" />
-    <Compile Include="ParticipleTests.fs" />
     <Compile Include="ImperativeTests.fs" />
+    <Compile Include="NounTests.fs" />
+    <Compile Include="ParticipleTests.fs" />
+    <Compile Include="PluralTests.fs" />
+    <Compile Include="VerbPatternDetectorTests.fs" />
+    <Compile Include="VerbTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core\Core.fsproj" />

@@ -6,12 +6,6 @@ open Imperative
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
 [<Fact>]
-let ``Validates proper verb``() =
-    "spát"
-    |> isValid 
-    |> Assert.True
-
-[<Fact>]
 let ``Invalidates improper verb - no Czech``() =
     "good"
     |> isValid
