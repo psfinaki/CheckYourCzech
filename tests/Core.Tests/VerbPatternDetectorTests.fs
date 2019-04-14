@@ -158,8 +158,3 @@ let ``Detects unknown pattern for class 5``() =
     "znát"
     |> getPatternClass5
     |> equals None
-
-[<Fact>]
-let ``Gets pattern``() =
-    getPattern "ohlásit"
-    |> equals (Some "prosit")

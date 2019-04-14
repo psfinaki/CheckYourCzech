@@ -6,12 +6,6 @@ open Accusative
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
 [<Fact>]
-let ``Validates proper noun``() =
-    "panda"
-    |> isValid 
-    |> Assert.True
-
-[<Fact>]
 let ``Invalidates improper noun - no Czech``() =
     "good"
     |> isValid
