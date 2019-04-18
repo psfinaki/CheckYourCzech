@@ -84,9 +84,7 @@ let getPattern = function
     | _ -> Common
 
 let isVerbWithDeclension =
-    tryGetContent
-    >> Option.bind (tryGetPart "čeština")
-    >> Option.bind (tryGetPart "sloveso")
+    ArticleParser.tryGetVerb
     >> Option.bind (tryGetPart "časování")
     >> Option.isSome
 
