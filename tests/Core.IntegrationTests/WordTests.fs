@@ -10,7 +10,13 @@ let ``Detects noun``() =
     |> Assert.True
 
 [<Fact>]
-let ``Detects not a noun``() =
+let ``Detects not a noun - no Czech part``() =
+    "good"
+    |> isNoun
+    |> Assert.False
+
+[<Fact>]
+let ``Detects not a noun - no noun part``() =
     "spát"
     |> isNoun
     |> Assert.False

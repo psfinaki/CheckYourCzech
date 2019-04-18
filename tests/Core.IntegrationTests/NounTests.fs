@@ -49,27 +49,27 @@ let ``Gets wiki plural wiki - locked article``() =
     |> equals "debilové"
 
 [<Fact>]
-let ``Gets declension - indeclinable``() =
+let ``Gets declension for case - indeclinable``() =
     "dada"
-    |> getDeclension Case.Nominative Number.Singular
+    |> getDeclensionForCase Case.Nominative Number.Singular
     |> equals [|"dada"|]
 
 [<Fact>]
-let ``Gets declension - single option``() =
+let ``Gets declension for case - single option``() =
     "hrad"
-    |> getDeclension Case.Nominative Number.Singular
+    |> getDeclensionForCase Case.Nominative Number.Singular
     |> equals [|"hrad"|]
 
 [<Fact>]
-let ``Gets declension - no options``() =
+let ``Gets declension for case - no options``() =
     "záda"
-    |> getDeclension Case.Nominative Number.Singular
+    |> getDeclensionForCase Case.Nominative Number.Singular
     |> equals [||]
 
 [<Fact>]
 let ``Gets singulars - multiple options``() =
     "temeno"
-    |> getDeclension Case.Nominative Number.Singular
+    |> getDeclensionForCase Case.Nominative Number.Singular
     |> equals [|"temeno"; "témě"|]
     
 [<Fact>]
@@ -82,4 +82,58 @@ let ``Detects indeclinable``() =
 let ``Detects declinable``() =
     "panda"
     |> isIndeclinable
+    |> Assert.False
+
+[<Fact>]
+let ``Detects single declension for case``() =
+    "panda"
+    |> hasSingleDeclensionForCase Case.Nominative Number.Singular
+    |> Assert.True
+
+[<Fact>]
+let ``Detects multiple declensions for case``() =
+    "temeno"
+    |> hasSingleDeclensionForCase Case.Nominative Number.Singular
+    |> Assert.False
+
+[<Fact>]
+let ``Detects case declension is present``() =
+    "panda"
+    |> hasDeclensionForCase Case.Nominative Number.Singular
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no declension for case``() =
+    "záda"
+    |> hasDeclensionForCase Case.Nominative Number.Singular
+    |> Assert.False
+
+[<Fact>]
+let ``Detects declension``() =
+    "panda"
+    |> hasDeclension
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no declension``() =
+    "antilopu"
+    |> hasDeclension
+    |> Assert.False
+
+[<Fact>]
+let ``Detects gender``() =
+    "panda"
+    |> hasGender
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no gender - gender not specified``() =
+    "trosečník"
+    |> hasGender
+    |> Assert.False
+
+[<Fact>]
+let ``Detects no gender - incorrect gender``() =
+    "benediktin"
+    |> hasGender
     |> Assert.False

@@ -4,6 +4,7 @@ open FSharp.Data
 open Article
 open Genders
 open WikiString
+open ArticleParser
 
 type EditableArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
@@ -20,6 +21,17 @@ type Case =
 type Number =
     | Singular
     | Plural
+
+let hasDeclension = 
+    tryGetNoun
+    >> Option.bind (tryGetPart "skloňování")
+    >> Option.isSome
+
+let hasGender =
+    tryGetNoun
+    >> Option.bind (tryGetInfo "rod")
+    >> Option.bind tryTranslateGender
+    >> Option.isSome
 
 let getGender =
     getContent
@@ -65,10 +77,18 @@ let getDeclensionWiki (case: Case) number word =
     | word -> 
         invalidOp ("Odd word: " + word)
 
-let getDeclension case number = getDeclensionWiki case number >> getForms
+let getDeclensionForCase case number = getDeclensionWiki case number >> getForms
+
+let hasSingleDeclensionForCase case number = 
+    getDeclensionForCase case number
+    >> Seq.hasOneElement
+
+let hasDeclensionForCase case number = 
+    getDeclensionForCase case number
+    >> Seq.any
 
 let getPattern noun = 
-    let nominatives = getDeclension Case.Nominative Number.Singular noun
+    let nominatives = getDeclensionForCase Case.Nominative Number.Singular noun
     let isPatternDetectionPossible = Seq.hasOneElement
 
     if 
@@ -76,7 +96,7 @@ let getPattern noun =
     then
         let gender = getGender noun
         let nominative = nominatives |> Seq.exactlyOne
-        let genitives = getDeclension Case.Genitive Number.Singular noun
+        let genitives = getDeclensionForCase Case.Genitive Number.Singular noun
 
         genitives
         |> Seq.map (NounPatternDetector.getPatternByGender gender nominative)
