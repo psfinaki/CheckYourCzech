@@ -12,9 +12,7 @@ let getImperatives verb =
     getForms answer
 
 let isVerbWithImperative =
-    tryGetContent
-    >> Option.bind (tryGetPart "čeština")
-    >> Option.bind (tryGetPart "sloveso")
+    ArticleParser.tryGetVerb
     >> Option.bind (tryGetPart "časování")
     >> Option.map getTables
     >> Option.map (Seq.map fst)

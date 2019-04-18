@@ -21,6 +21,8 @@
     <Compile Include="Storage.fs" />
     <Compile Include="Genders.fs" />
     <Compile Include="Article.fs" />
+    <Compile Include="ArticleParser.fs" />
+    <Compile Include="Word.fs" />
     <Compile Include="Adjective.fs" />
     <Compile Include="Verb.fs" />
     <Compile Include="VerbPatternDetector.fs" />

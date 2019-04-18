@@ -9,11 +9,7 @@ let getNominatives = getDeclension Case.Nominative Number.Singular
 let getAccusatives = getDeclension Case.Accusative Number.Singular
 
 let isValid word = 
-    let nounPart =
-        word
-        |> tryGetContent
-        |> Option.bind (tryGetPart "čeština")
-        |> Option.bind (tryGetPart "podstatné jméno")
+    let nounPart = ArticleParser.tryGetNoun word
 
     let hasDeclension =
         nounPart

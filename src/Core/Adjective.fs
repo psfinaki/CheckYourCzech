@@ -56,9 +56,7 @@ let isRegular word =
     | None        -> practical |> Array.isEmpty
 
 let hasAdjectiveContent = 
-    tryGetContent
-    >> Option.bind (tryGetPart "čeština")
-    >> Option.bind (tryGetPart "přídavné jméno")
+    ArticleParser.tryGetAdjective
     >> Option.bind (tryGetPart "stupňování")
     >> Option.isSome
 

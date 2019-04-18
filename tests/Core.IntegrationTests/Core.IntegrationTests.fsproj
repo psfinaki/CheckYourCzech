@@ -20,6 +20,7 @@
     <Compile Include="ParticipleTests.fs" />
     <Compile Include="PluralTests.fs" />
     <Compile Include="VerbPatternDetectorTests.fs" />
+    <Compile Include="WordTests.fs" />
     <Compile Include="VerbTests.fs" />
   </ItemGroup>
   <ItemGroup>
