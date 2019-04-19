@@ -12,13 +12,11 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AccusativeTests.fs" />
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="ArticleTests.fs" />
     <Compile Include="ImperativeTests.fs" />
     <Compile Include="NounTests.fs" />
     <Compile Include="ParticipleTests.fs" />
-    <Compile Include="PluralTests.fs" />
     <Compile Include="VerbPatternDetectorTests.fs" />
     <Compile Include="WordTests.fs" />
     <Compile Include="VerbTests.fs" />
