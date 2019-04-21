@@ -3,6 +3,8 @@
 open FSharp.Data
 open StringHelper
 open WikiString
+open Article
+open ArticleParser
 
 type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 
@@ -14,11 +16,26 @@ let getVerbProvider =
 
 let removeReflexive = remove " se" >> remove " si"
 
+let hasImperative = 
+    tryGetVerb
+    >> Option.bind (tryGetPart "časování")
+    >> Option.map getTables
+    >> Option.map (Seq.map fst)
+    >> Option.map (Seq.contains "Rozkazovací způsob")
+    >> Option.contains true
+
+let getImperatives verb =
+    let data = getVerbProvider verb
+    let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
+    getForms answer
+
 let hasArchaicEnding verb = 
     verb |> ends "ti" || 
     verb |> ends "ci"
 
 let isArchaic = removeReflexive >> hasArchaicEnding
+
+let isModern = not << isArchaic
 
 let getThirdPersonSingular verb = 
     let data = getVerbProvider verb

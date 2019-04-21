@@ -1,6 +1,5 @@
 ﻿module VerbTests
 
-open System
 open Xunit
 open Verb
 
@@ -13,3 +12,33 @@ let ``Gets class`` verb ``class`` =
     verb
     |> getClass
     |> equals (Some ``class``)
+
+[<Fact>]
+let ``Detects imperative``() =
+    "milovat"
+    |> hasImperative
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no imperative - no conjugation``() =
+    "chlastati"
+    |> hasImperative
+    |> Assert.False
+
+[<Fact>]
+let ``Detects no imperative - imperative does not exist``() =
+    "moct"
+    |> hasImperative
+    |> Assert.False
+
+[<Fact>]
+let ``Gets imperatives - single option``() =
+    "milovat"
+    |> getImperatives
+    |> equals [|"miluj"|]
+
+[<Fact>]
+let ``Gets imperatives - multiple options``() =
+    "orat"
+    |> getImperatives
+    |> equals [|"oř"; "orej"|]
