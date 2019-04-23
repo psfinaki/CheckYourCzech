@@ -14,6 +14,18 @@ let ``Gets class`` verb ``class`` =
     |> equals (Some ``class``)
 
 [<Fact>]
+let ``Detects conjugation``() =
+    "milovat"
+    |> hasConjugation
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no conjugation``() =
+    "chlastati"
+    |> hasConjugation
+    |> Assert.False
+
+[<Fact>]
 let ``Detects imperative``() =
     "milovat"
     |> hasImperative
@@ -42,3 +54,15 @@ let ``Gets imperatives - multiple options``() =
     "orat"
     |> getImperatives
     |> equals [|"oř"; "orej"|]
+
+[<Fact>]
+let ``Gets participle from the second table``() = 
+    "uvidět"
+    |> getParticiplesTable2
+    |> equals "uviděl"
+
+[<Fact>]
+let ``Gets participle from the third table``() = 
+    "myslet"
+    |> getParticiplesTable3
+    |> equals "myslel"
