@@ -50,21 +50,3 @@ let ``Detects no reflexive``() =
     "spát"
     |> getReflexive
     |> equals None
-
-[<Fact>]
-let ``Detects pattern tisknout``() =
-    "lehnout"
-    |> getPattern
-    |> equals Tisknout
-
-[<Fact>]
-let ``Detects pattern minout``() =
-    "plynout"
-    |> getPattern
-    |> equals Minout
-
-[<Fact>]
-let ``Detects common pattern``() =
-    "prosit"
-    |> getPattern
-    |> equals Common
