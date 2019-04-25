@@ -5,11 +5,6 @@ open StringHelper
 open Stem
 open VerbPatternDetector
 
-type Pattern = 
-    | Minout
-    | Tisknout
-    | Common
-
 let hasStemPattern getStem isPattern = getStem >> endsIf isPattern
 
 let buildParticipleTisknout = removeLast 4 >> append "l"
@@ -43,25 +38,25 @@ let isRegular word =
     let practical = Verb.getParticiples word
     practical |> Array.contains theoretical
 
-let getPattern = function
-    | verb when verb |> isPatternMinout -> Minout
-    | verb when verb |> isPatternTisknout -> Tisknout
-    | _ -> Common
-
 let isValid word = 
     word |> Word.isVerb &&
     word |> Verb.hasConjugation &&
     word |> Verb.isModern
+
+let getInfinitive = Storage.mapSafeString id 
+let getParticiples = Storage.mapSafeString Verb.getParticiples
+let getPattern = Storage.mapSafeObject (ParticiplePatternDetector.getPattern >> box)
+let getRegularity = Storage.mapSafeBool isRegular 
 
 type Participle(word) =
     inherit TableEntity(word, word)
 
     new() =  Participle null
 
-    member val Infinitive  = word |> Storage.mapSafeString id                  with get, set
-    member val Participles = word |> Storage.mapSafeString Verb.getParticiples      with get, set
-    member val Pattern     = word |> Storage.mapSafeObject (getPattern >> box) with get, set
-    member val IsRegular   = word |> Storage.mapSafeBool   isRegular           with get, set
+    member val Infinitive = getInfinitive word with get, set
+    member val Participles = getParticiples word with get, set
+    member val Pattern = getPattern word with get, set
+    member val IsRegular = getRegularity word with get, set
 
 let record word =
     if 
