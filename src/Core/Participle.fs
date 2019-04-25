@@ -1,15 +1,9 @@
 ﻿module Participle
 
-open FSharp.Data
 open Microsoft.WindowsAzure.Storage.Table
-open Article
-open WikiString
 open StringHelper
 open Stem
 open VerbPatternDetector
-
-type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
-type WikiParticiplesTable3 = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 
 type Pattern = 
     | Minout
@@ -43,39 +37,10 @@ let buildTheoreticalParticiple verb =
     | None ->
         verb
         |> buildTheoreticalParticipleNonReflexive
-
-let getParticiplesTable2 = 
-    (+) "https://cs.wiktionary.org/wiki/"
-    >> WikiParticiplesTable2.Load
-    >> fun data -> data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
-
-let getParticiplesTable3 =
-    (+) "https://cs.wiktionary.org/wiki/"
-    >> WikiParticiplesTable3.Load
-    >> fun data -> data.Tables.``Časování[editovat]3``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
-
-let getParticipleByTableIndex word n = 
-    let participleExtraction = dict[ 
-        1, getParticiplesTable2
-        2, getParticiplesTable3 ]
-
-    participleExtraction.Item n word
-
-let getWikiParticiples word =
-    word
-    |> getContent
-    |> getPart "čeština"
-    |> getPart "sloveso"
-    |> getTables
-    |> Seq.map fst
-    |> Seq.findIndex ((=) "Příčestí")
-    |> getParticipleByTableIndex word
         
-let getParticiples = getWikiParticiples >> getForms
-
 let isRegular word = 
     let theoretical = buildTheoreticalParticiple word
-    let practical = getParticiples word
+    let practical = Verb.getParticiples word
     practical |> Array.contains theoretical
 
 let getPattern = function
@@ -83,15 +48,10 @@ let getPattern = function
     | verb when verb |> isPatternTisknout -> Tisknout
     | _ -> Common
 
-let isVerbWithDeclension =
-    ArticleParser.tryGetVerb
-    >> Option.bind (tryGetPart "časování")
-    >> Option.isSome
-
 let isValid word = 
-    let isNotArchaicVerb = not << Verb.isArchaic
-    word |> isVerbWithDeclension &&
-    word |> isNotArchaicVerb
+    word |> Word.isVerb &&
+    word |> Verb.hasConjugation &&
+    word |> Verb.isModern
 
 type Participle(word) =
     inherit TableEntity(word, word)
@@ -99,7 +59,7 @@ type Participle(word) =
     new() =  Participle null
 
     member val Infinitive  = word |> Storage.mapSafeString id                  with get, set
-    member val Participles = word |> Storage.mapSafeString getParticiples      with get, set
+    member val Participles = word |> Storage.mapSafeString Verb.getParticiples      with get, set
     member val Pattern     = word |> Storage.mapSafeObject (getPattern >> box) with get, set
     member val IsRegular   = word |> Storage.mapSafeBool   isRegular           with get, set
 
