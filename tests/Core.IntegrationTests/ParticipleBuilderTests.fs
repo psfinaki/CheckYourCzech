@@ -1,7 +1,8 @@
-﻿module ParticipleTests
+﻿module ParticipleBuilderTests
 
 open Xunit
-open Participle
+open ParticipleBuilder
+open System
 
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
@@ -9,11 +10,23 @@ let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 [<InlineData("dělat", "dělal")>]
 [<InlineData("tisknout", "tiskl")>]
 [<InlineData("minout", "minul")>]
-[<InlineData("starat se", "staral se")>]
-let ``Builds theoretical participle`` infinitive participle =
+let ``Builds participle for non-reflexive`` infinitive participle =
     infinitive
-    |> buildTheoreticalParticiple
+    |> buildParticipleNonReflexive
     |> equals participle
+
+[<Theory>]
+[<InlineData("starat se", "staral se")>]
+[<InlineData("vážit si", "vážil si")>]
+let ``Builds participle for reflexive`` infinitive participle =
+    infinitive
+    |> buildParticipleReflexive
+    |> equals participle
+
+[<Fact>]
+let ``Throws for invalid reflexive``() =
+    let action () = buildParticipleReflexive "test" |> ignore
+    Assert.Throws<ArgumentException> action
 
 [<Fact>]
 let ``Builds participle for pattern tisknout``() =
@@ -32,21 +45,3 @@ let ``Builds participle for common pattern``() =
     "dělat"
     |> buildParticipleCommon
     |> equals "dělal"
-
-[<Fact>]
-let ``Gets reflexive - se``() = 
-    "starat se"
-    |> getReflexive
-    |> equals (Some "se")
-
-[<Fact>]
-let ``Gets reflexive - si``() = 
-    "vážit si"
-    |> getReflexive
-    |> equals (Some "si")
-
-[<Fact>]
-let ``Detects no reflexive``() = 
-    "spát"
-    |> getReflexive
-    |> equals None

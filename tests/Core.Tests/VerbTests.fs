@@ -7,6 +7,20 @@ open Verb
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
 [<Theory>]
+[<InlineData "starat se">]
+[<InlineData "vážit si">]
+let ``Detects reflexive verb`` verb =
+    verb
+    |> isReflexive
+    |> Assert.True
+
+[<Fact>]
+let ``Detects non-reflexive verb``() =
+    "milovat"
+    |> isReflexive
+    |> Assert.False
+
+[<Theory>]
 [<InlineData "housti">]
 [<InlineData "péci">]
 let ``Detects archaic ending`` verb =
@@ -44,3 +58,21 @@ let ``Gets class by third person singular`` ``third person singular`` ``class`` 
 let ``Throws for invalid third person singular``() =
     let action () = getClassByThirdPersonSingular "test" |> ignore
     Assert.Throws<ArgumentException> action
+
+[<Fact>]
+let ``Gets reflexive - se``() = 
+    "starat se"
+    |> tryGetReflexive
+    |> equals (Some "se")
+
+[<Fact>]
+let ``Gets reflexive - si``() = 
+    "vážit si"
+    |> tryGetReflexive
+    |> equals (Some "si")
+
+[<Fact>]
+let ``Detects no reflexive``() = 
+    "spát"
+    |> tryGetReflexive
+    |> equals None

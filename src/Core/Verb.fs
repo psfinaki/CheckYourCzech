@@ -43,12 +43,21 @@ let getWikiParticiples word =
     |> Seq.findIndex ((=) "Příčestí")
     |> getParticipleByTableIndex word
 
+let isReflexive verb = 
+    verb |> ends " se" ||
+    verb |> ends " si"
+
 let removeReflexive = remove " se" >> remove " si"
 
 let hasConjugation =
     tryGetVerb
     >> Option.bind (tryGetPart "časování")
     >> Option.isSome
+
+let tryGetReflexive = function
+    | word when word |> ends " se" -> Some "se"
+    | word when word |> ends " si" -> Some "si"
+    | _ -> None
 
 let hasImperative = 
     tryGetVerb

@@ -26,6 +26,7 @@
     <Compile Include="Adjective.fs" />
     <Compile Include="Verb.fs" />
     <Compile Include="VerbPatternDetector.fs" />
+    <Compile Include="ParticipleBuilder.fs" />
     <Compile Include="ParticiplePatternDetector.fs" />
     <Compile Include="NounPatternDetector.fs" />
     <Compile Include="Noun.fs" />

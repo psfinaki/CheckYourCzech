@@ -1,41 +1,10 @@
 ﻿module Participle
 
 open Microsoft.WindowsAzure.Storage.Table
-open StringHelper
-open Stem
-open VerbPatternDetector
-
-let hasStemPattern getStem isPattern = getStem >> endsIf isPattern
-
-let buildParticipleTisknout = removeLast 4 >> append "l"
-let buildParticipleMinout   = removeLast 4 >> append "nul"
-let buildParticipleCommon   = removeLast 1 >> append "l"
-
-let getReflexive = function
-    | word when word |> ends " se" -> Some "se"
-    | word when word |> ends " si" -> Some "si"
-    | _ -> None
-
-let buildTheoreticalParticiple verb =
-    let buildTheoreticalParticipleNonReflexive = function
-        | verb when verb |> isPatternTisknout -> buildParticipleTisknout verb
-        | verb when verb |> isPatternMinout -> buildParticipleMinout verb
-        | verb -> buildParticipleCommon verb
-
-    let reflexive = getReflexive verb
-    match reflexive with 
-    | Some pronoun ->
-        verb
-        |> Verb.removeReflexive
-        |> buildTheoreticalParticipleNonReflexive
-        |> append (" " + pronoun)
-    | None ->
-        verb
-        |> buildTheoreticalParticipleNonReflexive
         
-let isRegular word = 
-    let theoretical = buildTheoreticalParticiple word
-    let practical = Verb.getParticiples word
+let isRegular verb = 
+    let theoretical = ParticipleBuilder.buildParticiple verb
+    let practical = Verb.getParticiples verb
     practical |> Array.contains theoretical
 
 let isValid word = 

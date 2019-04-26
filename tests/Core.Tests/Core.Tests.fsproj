@@ -18,7 +18,6 @@
     <Compile Include="WikiStringTests.fs" />
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="VerbTests.fs" />
-    <Compile Include="ParticipleTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core\Core.fsproj" />
