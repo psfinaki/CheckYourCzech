@@ -65,9 +65,9 @@ let getComparativesTask next (ctx : HttpContext) =
         let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
 
         let filters = [ regularityFilter ] |> Seq.choose id
-        let adjective = tryGetRandom<Adjective.Adjective> "adjectives" filters
+        let adjective = tryGetRandom<Comparative.Comparative> "comparatives" filters
         
-        let getTask (adjective: Adjective.Adjective) = 
+        let getTask (adjective: Comparative.Comparative) = 
             let positive = getAs<string> adjective.Positive
             let comparatives = getAs<string []> adjective.Comparatives
             Task(positive, comparatives)

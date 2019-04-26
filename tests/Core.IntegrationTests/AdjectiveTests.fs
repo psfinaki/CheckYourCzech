@@ -24,73 +24,51 @@ let ``Gets positive - when superlative``() =
     |> equals "dobrý"
 
 [<Fact>]
-let ``Validates proper adjective``() =
+let ``Gets comparatives``() = 
     "dobrý"
-    |> isValid 
-    |> Assert.True
+    |> getComparatives
+    |> equals [| "lepší" |]
 
 [<Fact>]
-let ``Detects regular adjective - stem ends hard``() = 
-    "žlutý"
-    |> isRegular
-    |> Assert.True
-    
-[<Fact>]
-let ``Detects regular adjective - stem ends soft``() = 
-    "milý"
-    |> isRegular
-    |> Assert.True
-
-[<Fact>]
-let ``Detects regular adjective - stem alternates``() = 
-    "dogmatický"
-    |> isRegular
-    |> Assert.True
-
-[<Fact>]
-let ``Detects regular adjective - no comparative``() = 
-    "vroucí"
-    |> isRegular
-    |> Assert.True
-
-[<Fact>]
-let ``Detects irregular adjective``() = 
+let ``Detects comparison``() =
     "dobrý"
-    |> isRegular
+    |> hasComparison
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no comparison``() =
+    "první"
+    |> hasComparison
     |> Assert.False
 
 [<Fact>]
-let ``Invalidates improper adjective - no Czech``() =
-    "good"
-    |> isValid
+let ``Detects positive adjective``() =
+    "dobrý"
+    |> isPositive
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "lepší">]
+[<InlineData "nejširší">]
+let ``Detects not positive adjective`` adjective =
+    adjective
+    |> isPositive
     |> Assert.False
 
 [<Fact>]
-let ``Invalidates improper adjective - no adjective``() =
-    "nazdar"
-    |> isValid
-    |> Assert.False
+let ``Detects morphological comparatives``() =
+    "dobrý"
+    |> hasMorphologicalComparatives
+    |> Assert.True
 
 [<Fact>]
-let ``Invalidates improper adjective - no comparison``() =
-    "občasný"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper adjective - not a positive form - comparative``() =
-    "horší"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper adjective - not a positive form - superlative``() =
-    "nejširší"
-    |> isValid
-    |> Assert.False
-
-[<Fact>]
-let ``Invalidates improper adjective - no comparatives``() =
+let ``Detects no morphological comparatives - no comparatives``() =
     "optimální"
-    |> isValid
+    |> hasMorphologicalComparatives
+    |> Assert.False
+
+[<Fact>]
+let ``Detects no morphological comparatives - no morphologicals``() =
+    "vroucí"
+    |> hasMorphologicalComparatives
     |> Assert.False
