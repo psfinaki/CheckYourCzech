@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AdjectiveTests.fs" />
+    <Compile Include="ComparativeTests.fs" />
     <Compile Include="ArticleTests.fs" />
     <Compile Include="NounTests.fs" />
     <Compile Include="ParticipleBuilderTests.fs" />

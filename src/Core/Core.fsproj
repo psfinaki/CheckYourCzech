@@ -32,6 +32,7 @@
     <Compile Include="Noun.fs" />
     <Compile Include="Plural.fs" />
     <Compile Include="Accusative.fs" />
+    <Compile Include="Comparative.fs" />
     <Compile Include="Participle.fs" />
     <Compile Include="Imperative.fs" />
   </ItemGroup>
