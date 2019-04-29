@@ -1,7 +1,8 @@
-﻿module ComparativeTests
+﻿module ComparativeBuilderTests
 
 open Xunit
-open Comparative
+open System
+open ComparativeBuilder
 
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
@@ -15,8 +16,8 @@ let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 [<InlineData("hloupý", "hloupější")>]
 let ``Builds theoretical comparative - ější`` positive comparative =
     positive
-    |> buildTheoreticalComparative
-    |> equals (Some comparative)
+    |> buildComparative
+    |> equals comparative
 
 [<Theory>]
 [<InlineData("pomalý", "pomalejší")>]
@@ -24,8 +25,8 @@ let ``Builds theoretical comparative - ější`` positive comparative =
 [<InlineData("lysý", "lysejší")>]
 let ``Builds theoretical comparative - ejší`` positive comparative =
     positive
-    |> buildTheoreticalComparative
-    |> equals (Some comparative)
+    |> buildComparative
+    |> equals comparative
 
 [<Theory>]
 // TODO: regular adjective ending with "ch"
@@ -37,11 +38,30 @@ let ``Builds theoretical comparative - ejší`` positive comparative =
 [<InlineData("divoký", "divočejší")>]
 let ``Builds theoretical comparative - stem alternation`` positive comparative =
     positive
-    |> buildTheoreticalComparative
-    |> equals (Some comparative)
+    |> buildComparative
+    |> equals comparative
+
+[<Fact>]
+let ``Detects when can build theoretical comparative``() =
+    "dobrý"
+    |> canBuildComparative
+    |> Assert.True
 
 [<Fact>]
 let ``Detects when cannot build theoretical comparative``() =
     "vroucí"
-    |> buildTheoreticalComparative
-    |> equals None
+    |> canBuildComparative
+    |> Assert.False
+
+[<Theory>]
+[<InlineData("divoč", "divočejší")>]
+[<InlineData("hrub", "hrubější")>]
+let ``Adds comparative suffix`` stem adjective =
+    stem
+    |> addComparativeSuffix
+    |> equals adjective
+
+[<Fact>]
+let ``Throws for invalid stem``() =
+    let action () = addComparativeSuffix "bla" |> ignore
+    Assert.Throws<ArgumentException> action
