@@ -16,7 +16,7 @@
     <Compile Include="ParticiplePatternDetectorTests.fs" />
     <Compile Include="VerbPatternDetectorTests.fs" />
     <Compile Include="WikiStringTests.fs" />
-    <Compile Include="ComparativeTests.fs" />
+    <Compile Include="ComparativeBuilderTests.fs" />
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="VerbTests.fs" />
   </ItemGroup>
