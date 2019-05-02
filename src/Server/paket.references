@@ -1,4 +1,0 @@
-group Server
-	Thoth.Json.Giraffe
-	Saturn
-	Microsoft.ApplicationInsights.AspNetCore

@@ -1,8 +1,0 @@
-group Client
-	Fable.React
-	Fable.Elmish.Browser
-	Fable.Elmish.Debugger
-	Fable.Elmish.React
-	Fable.Elmish.HMR
-	Fable.Core
-	dotnet-fable
