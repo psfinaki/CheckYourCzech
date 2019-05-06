@@ -17,8 +17,8 @@ type Msg =
 let getTask regularity =
     let url = 
         match regularity with
-        | Some r -> "/api/comparatives?isRegular=" + r.ToString()
-        | None   -> "/api/comparatives"
+        | Some r -> "/api/adjectives/comparatives?isRegular=" + r.ToString()
+        | None   -> "/api/adjectives/comparatives"
 
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
