@@ -36,8 +36,8 @@ let getTask ``class`` pattern =
     
     let url = 
         if queryString = "" 
-        then "/api/imperatives" 
-        else sprintf "/api/imperatives?%s" queryString
+        then "/api/verbs/imperatives" 
+        else sprintf "/api/verbs/imperatives?%s" queryString
 
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 

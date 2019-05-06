@@ -123,9 +123,9 @@ let getParticiplesTask next (ctx: HttpContext) =
     }
 
 let webApp = router {
-    get "/api/plurals"      getPluralsTask
-    get "/api/accusatives"  getAccusativesTask
-    get "/api/comparatives" getComparativesTask
-    get "/api/imperatives"  getImperativesTask
-    get "/api/participles"  getParticiplesTask
+    get "/api/nouns/plurals"      getPluralsTask
+    get "/api/nouns/accusatives"  getAccusativesTask
+    get "/api/adjectives/comparatives" getComparativesTask
+    get "/api/verbs/imperatives"  getImperativesTask
+    get "/api/verbs/participles"  getParticiplesTask
 }
