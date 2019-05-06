@@ -91,7 +91,7 @@ let view model dispatch =
 
 
                 Markup.emptyLines 2
-
+ 
                 Task.view model.Task (Task >> dispatch)
             ]
     ]
