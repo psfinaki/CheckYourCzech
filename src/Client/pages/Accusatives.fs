@@ -36,8 +36,8 @@ let getTask gender pattern =
     
     let url = 
         if queryString = "" 
-        then "/api/accusatives" 
-        else sprintf "/api/accusatives?%s" queryString
+        then "/api/nouns/accusatives" 
+        else sprintf "/api/nouns/accusatives?%s" queryString
 
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 

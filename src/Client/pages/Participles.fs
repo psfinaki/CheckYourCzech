@@ -29,8 +29,8 @@ let getTask pattern regularity =
     
     let url = 
         if queryString = "" 
-        then "/api/participles" 
-        else sprintf "/api/participles?%s" queryString
+        then "/api/verbs/participles" 
+        else sprintf "/api/verbs/participles?%s" queryString
 
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
