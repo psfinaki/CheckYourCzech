@@ -1,4 +1,4 @@
-﻿module Comparatives
+﻿module AdjectiveComparatives
 
 open Elmish
 open Fable.PowerPack.Fetch

@@ -1,76 +1,76 @@
-﻿module Imperatives
+﻿module NounAccusatives
 
 open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
+open Genders
 
-type Model = { 
-    Class: Class.Model
-    Pattern: Pattern.Model
+type Model = {
+    Gender : Gender.Model
+    Pattern : Pattern.Model
     Task : Task.Model
 }
 
 type Msg = 
-    | Class of Class.Msg
+    | Gender of Gender.Msg
     | Pattern of Pattern.Msg
     | Task of Task.Msg
-    
+
 let patterns =
-    dict [ (1, ["nést"; "číst"; "péct"; "třít"; "brát"; "mazat"])
-           (2, ["tisknout"; "minout"; "začít"])
-           (3, ["krýt"; "kupovat"])
-           (4, ["prosit"; "čistit"; "trpět"; "sázet"])
-           (5, ["dělat"]) ]
+    dict [ (MasculineAnimate, ["pan"; "muž"; "předseda"; "soudce"])
+           (MasculineInanimate, ["hrad"; "stroj"])
+           (Feminine, ["žena"; "růže"; "píseň"; "kost"])
+           (Neuter, ["město"; "kuře"; "moře"; "stavení"]) ]
 
-let getPatterns ``class`` = patterns.[``class``]
+let getPatterns gender = patterns.[gender]
 
-let getTask ``class`` pattern =
-    let classQuery = ``class`` |> Option.map (sprintf "class=%i")
+let getTask gender pattern =
+    let genderQuery = gender |> Option.map string |> Option.map (sprintf "gender=%s")
     let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
 
     let queryString =
-        [ classQuery; patternQuery ]
+        [ genderQuery; patternQuery ]
         |> Seq.choose id
         |> String.concat "&"
     
     let url = 
         if queryString = "" 
-        then "/api/verbs/imperatives" 
-        else sprintf "/api/verbs/imperatives?%s" queryString
+        then "/api/nouns/accusatives" 
+        else sprintf "/api/nouns/accusatives?%s" queryString
 
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
-let init() =
-    let ``class`` = Class.init()
+let init () =
+    let gender = Gender.init()
     let pattern = Pattern.init None
     let task, cmd = Task.init (getTask None None)
 
-    { Class = ``class``
+    { Gender = gender
       Pattern = pattern
-      Task = task }, 
+      Task = task },
     Cmd.map Task cmd
 
 let update msg model =
     match msg with
-    | Class msg' ->
-        let ``class`` = Class.update msg' model.Class
-        let patterns = ``class``.Class |> Option.map getPatterns
+    | Gender msg' ->
+        let gender = Gender.update msg' model.Gender
+        let patterns = gender.Gender |> Option.map getPatterns
         let pattern = Pattern.update (Pattern.SetPatterns patterns) model.Pattern
         { model with 
-            Class = ``class`` 
+            Gender = gender 
             Pattern = pattern
         }, Cmd.none
     | Pattern msg' ->
         let pattern = Pattern.update msg' model.Pattern
         { model with Pattern = pattern }, Cmd.none
     | Task msg' ->
-        let task, cmd = Task.update msg' model.Task (getTask model.Class.Class model.Pattern.SelectedPattern)
+        let task, cmd = Task.update msg' model.Task (getTask model.Gender.Gender model.Pattern.SelectedPattern)
         { model with Task = task }, Cmd.map Task cmd
-
-let view model dispatch = 
+        
+let view model dispatch =    
     [ 
-        Markup.words 60 "Write imperative for the verb"
+        Markup.words 60 "Write accusative for the word"
 
         div [ Styles.middle ]
             [
@@ -80,7 +80,7 @@ let view model dispatch =
                     [
                         div [ Styles.halfParent ]
                             [
-                                Class.view model.Class (Class >> dispatch)
+                                Gender.view model.Gender (Gender >> dispatch)
                             ]
 
                         div [ Styles.halfParent ]
@@ -88,7 +88,6 @@ let view model dispatch =
                                 Pattern.view model.Pattern (Pattern >> dispatch)
                             ]
                     ]
-
 
                 Markup.emptyLines 2
 
