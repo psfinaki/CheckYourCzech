@@ -24,12 +24,12 @@
 		<Compile Include="widgets\Class.fs" />
 		<Compile Include="widgets\Regularity.fs" />
 		<Compile Include="widgets\Task.fs" />
-		<Compile Include="pages\Accusatives.fs" />
-		<Compile Include="pages\Participles.fs" />
+		<Compile Include="pages\NounAccusatives.fs" />
+		<Compile Include="pages\VerbParticiples.fs" />
 		<Compile Include="pages\Home.fs" />
-		<Compile Include="pages\Plurals.fs" />
-		<Compile Include="pages\Comparatives.fs" />
-		<Compile Include="pages\Imperatives.fs" />
+		<Compile Include="pages\NounPlurals.fs" />
+		<Compile Include="pages\AdjectiveComparatives.fs" />
+		<Compile Include="pages\VerbImperatives.fs" />
 		<Compile Include="App.fs" />
     </ItemGroup>
     <ItemGroup>

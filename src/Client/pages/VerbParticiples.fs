@@ -1,4 +1,4 @@
-﻿module Participles
+﻿module VerbParticiples
 
 open Elmish
 open Fable.PowerPack.Fetch

@@ -1,4 +1,4 @@
-﻿module Plurals
+﻿module NounPlurals
 
 open Elmish
 open Fable.PowerPack.Fetch
