@@ -1,4 +1,4 @@
-﻿module Accusative
+﻿module NounAccusative
 
 open Microsoft.WindowsAzure.Storage.Table
 

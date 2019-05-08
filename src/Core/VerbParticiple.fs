@@ -1,4 +1,4 @@
-﻿module Participle
+﻿module VerbParticiple
 
 open Microsoft.WindowsAzure.Storage.Table
         

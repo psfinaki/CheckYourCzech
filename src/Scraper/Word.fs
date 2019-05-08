@@ -4,12 +4,12 @@ open Article
 
 let recordCzechPartOfSpeech word = function
     | "podstatné jméno" ->
-        Plural.record word
-        Accusative.record word
-    | "přídavné jméno"  -> Comparative.record word
+        NounPlural.record word
+        NounAccusative.record word
+    | "přídavné jméno"  -> AdjectiveComparative.record word
     | "sloveso"         -> 
-        Imperative.record word
-        Participle.record word
+        VerbImperative.record word
+        VerbParticiple.record word
     | _ -> ()
     
 let recordCzechPart word = 

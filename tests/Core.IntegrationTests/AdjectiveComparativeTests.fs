@@ -1,7 +1,7 @@
-﻿module ComparativeTests
+﻿module AdjectiveComparativeTests
 
 open Xunit
-open Comparative
+open AdjectiveComparative
 
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
