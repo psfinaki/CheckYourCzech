@@ -1,4 +1,4 @@
-﻿module Imperative
+﻿module VerbImperative
 
 open Microsoft.WindowsAzure.Storage.Table
 

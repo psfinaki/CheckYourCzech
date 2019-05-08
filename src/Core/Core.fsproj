@@ -31,11 +31,11 @@
     <Compile Include="ParticiplePatternDetector.fs" />
     <Compile Include="NounPatternDetector.fs" />
     <Compile Include="Noun.fs" />
-    <Compile Include="Plural.fs" />
-    <Compile Include="Accusative.fs" />
-    <Compile Include="Comparative.fs" />
-    <Compile Include="Participle.fs" />
-    <Compile Include="Imperative.fs" />
+    <Compile Include="NounPlural.fs" />
+    <Compile Include="NounAccusative.fs" />
+    <Compile Include="AdjectiveComparative.fs" />
+    <Compile Include="VerbParticiple.fs" />
+    <Compile Include="VerbImperative.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

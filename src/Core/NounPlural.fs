@@ -1,4 +1,4 @@
-﻿module Plural
+﻿module NounPlural
 
 open Microsoft.WindowsAzure.Storage.Table
 

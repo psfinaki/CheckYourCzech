@@ -1,7 +1,7 @@
-﻿module ParticipleTests
+﻿module VerbParticipleTests
 
 open Xunit
-open Participle
+open VerbParticiple
 
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 

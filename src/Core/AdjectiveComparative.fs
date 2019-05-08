@@ -1,4 +1,4 @@
-﻿module Comparative
+﻿module AdjectiveComparative
 
 open Microsoft.WindowsAzure.Storage.Table
 
