@@ -13,10 +13,10 @@ let getImperatives = Storage.mapSafeString Verb.getImperatives
 let getClass = Storage.mapSafeIntOption Verb.getClass
 let getPattern = Storage.mapSafeStringOption VerbPatternDetector.getPattern
 
-type Imperative(word) =
+type VerbImperative(word) =
     inherit TableEntity(word, word)
 
-    new() = Imperative null
+    new() = VerbImperative null
 
     member val Indicative = getIndicative word with get, set
     member val Imperatives = getImperatives word with get, set
@@ -27,4 +27,4 @@ let record word =
     if 
         isValid word
     then 
-        word |> Imperative |> Storage.upsert "imperatives"
+        word |> VerbImperative |> Storage.upsert "imperatives"

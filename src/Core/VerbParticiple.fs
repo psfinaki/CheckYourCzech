@@ -17,10 +17,10 @@ let getParticiples = Storage.mapSafeString Verb.getParticiples
 let getPattern = Storage.mapSafeObject (ParticiplePatternDetector.getPattern >> box)
 let getRegularity = Storage.mapSafeBool isRegular 
 
-type Participle(word) =
+type VerbParticiple(word) =
     inherit TableEntity(word, word)
 
-    new() =  Participle null
+    new() =  VerbParticiple null
 
     member val Infinitive = getInfinitive word with get, set
     member val Participles = getParticiples word with get, set
@@ -31,4 +31,4 @@ let record word =
     if 
         isValid word
     then 
-        word |> Participle |> Storage.upsert "participles"
+        word |> VerbParticiple |> Storage.upsert "participles"

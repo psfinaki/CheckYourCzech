@@ -13,10 +13,10 @@ let getAccusatives = Storage.mapSafeString (Noun.getDeclensionForCase Noun.Case.
 let getGender = Storage.mapSafeObject (Noun.getGender >> box)
 let getPattern = Storage.mapSafeStringOption Noun.getPattern 
 
-type Accusative(word) =
+type NounAccusative(word) =
     inherit TableEntity(word, word)
     
-    new() = Accusative null
+    new() = NounAccusative null
 
     member val Nominative = getNominative word with get, set
     member val Gender = getGender word with get, set
@@ -27,4 +27,4 @@ let record word =
     if 
         isValid word
     then
-        word |> Accusative |> Storage.upsert "accusatives"
+        word |> NounAccusative |> Storage.upsert "accusatives"
