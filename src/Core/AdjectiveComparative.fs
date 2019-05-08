@@ -18,10 +18,10 @@ let getPositive = Storage.mapSafeString id
 let getComparatives = Storage.mapSafeString Adjective.getComparatives
 let getRegularity = Storage.mapSafeBool isRegular
 
-type Comparative(word) =
+type AdjectiveComparative(word) =
     inherit TableEntity(word, word)
     
-    new() = Comparative null
+    new() = AdjectiveComparative null
 
     member val Positive = getPositive word with get, set
     member val Comparatives = getComparatives word with get, set
@@ -31,4 +31,4 @@ let record word =
     if 
         isValid word
     then 
-        word |> Comparative |> Storage.upsert "comparatives"
+        word |> AdjectiveComparative |> Storage.upsert "comparatives"

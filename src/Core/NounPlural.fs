@@ -14,10 +14,10 @@ let getPlurals = Storage.mapSafeString (Noun.getDeclensionForCase Noun.Case.Nomi
 let getGender = Storage.mapSafeObject (Noun.getGender >> box)
 let getPattern = Storage.mapSafeStringOption Noun.getPattern   
 
-type Plural(word) =
+type NounPlural(word) =
     inherit TableEntity(word, word)
     
-    new() = Plural null
+    new() = NounPlural null
 
     member val Singular = getSingular word with get, set
     member val Plurals = getPlurals word with get, set
@@ -28,4 +28,4 @@ let record word =
     if 
         isValid word
     then
-        word |> Plural |> Storage.upsert "plurals"
+        word |> NounPlural |> Storage.upsert "plurals"

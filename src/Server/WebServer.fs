@@ -27,8 +27,8 @@ let getPluralsTask next (ctx: HttpContext) =
             [ genderFilter; patternFilter ] 
             |> Seq.choose id
         
-        let noun = tryGetRandom<NounPlural.Plural> "plurals" filters
-        let getTask (noun: NounPlural.Plural) = 
+        let noun = tryGetRandom<NounPlural.NounPlural> "plurals" filters
+        let getTask (noun: NounPlural.NounPlural) = 
             let singular = getAs<string> noun.Singular
             let plurals = getAs<string []> noun.Plurals
             Task(singular, plurals)
@@ -49,8 +49,8 @@ let getAccusativesTask next (ctx : HttpContext) =
             [ genderFilter; patternFilter ] 
             |> Seq.choose id
 
-        let noun = tryGetRandom<NounAccusative.Accusative> "accusatives" filters
-        let getTask (noun: NounAccusative.Accusative) = 
+        let noun = tryGetRandom<NounAccusative.NounAccusative> "accusatives" filters
+        let getTask (noun: NounAccusative.NounAccusative) = 
             let singular = getAs<string> noun.Nominative 
             let accusatives = getAs<string []> noun.Accusatives
             Task(singular, accusatives)
@@ -65,9 +65,9 @@ let getComparativesTask next (ctx : HttpContext) =
         let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
 
         let filters = [ regularityFilter ] |> Seq.choose id
-        let adjective = tryGetRandom<AdjectiveComparative.Comparative> "comparatives" filters
+        let adjective = tryGetRandom<AdjectiveComparative.AdjectiveComparative> "comparatives" filters
         
-        let getTask (adjective: AdjectiveComparative.Comparative) = 
+        let getTask (adjective: AdjectiveComparative.AdjectiveComparative) = 
             let positive = getAs<string> adjective.Positive
             let comparatives = getAs<string []> adjective.Comparatives
             Task(positive, comparatives)
@@ -88,9 +88,9 @@ let getImperativesTask next (ctx : HttpContext) =
             [ classFilter; patternFilter ]
             |> Seq.choose id
             
-        let verb = tryGetRandom<VerbImperative.Imperative> "imperatives" filters
+        let verb = tryGetRandom<VerbImperative.VerbImperative> "imperatives" filters
 
-        let getTask (verb: VerbImperative.Imperative) = 
+        let getTask (verb: VerbImperative.VerbImperative) = 
             let indicative = getAs<string> verb.Indicative
             let imperatives = getAs<string []> verb.Imperatives
             Task(indicative, imperatives)
@@ -111,9 +111,9 @@ let getParticiplesTask next (ctx: HttpContext) =
             [ patternFilter; regularityFilter ] 
             |> Seq.choose id
         
-        let verb = tryGetRandom<VerbParticiple.Participle> "participles" filters
+        let verb = tryGetRandom<VerbParticiple.VerbParticiple> "participles" filters
 
-        let getTask (verb: VerbParticiple.Participle) = 
+        let getTask (verb: VerbParticiple.VerbParticiple) = 
             let infinitive = getAs<string> verb.Infinitive
             let participles = getAs<string []> verb.Participles
             Task(infinitive, participles)
