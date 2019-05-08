@@ -31,4 +31,4 @@ let record word =
     if 
         isValid word
     then 
-        word |> VerbParticiple |> Storage.upsert "participles"
+        word |> VerbParticiple |> Storage.upsert "verbparticiples"
