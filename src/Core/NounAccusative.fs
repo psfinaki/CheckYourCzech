@@ -27,4 +27,4 @@ let record word =
     if 
         isValid word
     then
-        word |> NounAccusative |> Storage.upsert "accusatives"
+        word |> NounAccusative |> Storage.upsert "nounaccusatives"

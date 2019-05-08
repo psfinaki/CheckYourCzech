@@ -27,4 +27,4 @@ let record word =
     if 
         isValid word
     then 
-        word |> VerbImperative |> Storage.upsert "imperatives"
+        word |> VerbImperative |> Storage.upsert "verbimperatives"

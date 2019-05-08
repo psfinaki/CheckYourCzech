@@ -31,4 +31,4 @@ let record word =
     if 
         isValid word
     then 
-        word |> AdjectiveComparative |> Storage.upsert "comparatives"
+        word |> AdjectiveComparative |> Storage.upsert "adjectivecomparatives"

@@ -28,4 +28,4 @@ let record word =
     if 
         isValid word
     then
-        word |> NounPlural |> Storage.upsert "plurals"
+        word |> NounPlural |> Storage.upsert "nounplurals"
