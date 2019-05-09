@@ -15,7 +15,7 @@ let getFilter columnName queryCondition = function
     | Ok parameterValue -> Some (columnName, queryCondition, box parameterValue)
     | Error _ -> None
 
-let getPluralsTask next (ctx: HttpContext) =
+let getNounPluralsTask next (ctx: HttpContext) =
     task {
         let genderFromQuery = ctx.GetQueryStringValue "gender"
         let genderFilter = getFilter "Gender" String genderFromQuery
@@ -37,7 +37,7 @@ let getPluralsTask next (ctx: HttpContext) =
         return! Successful.OK task next ctx
     }
 
-let getAccusativesTask next (ctx : HttpContext) =
+let getNounAccusativesTask next (ctx : HttpContext) =
     task {
         let genderFromQuery = ctx.GetQueryStringValue "gender"
         let genderFilter = getFilter "Gender" String genderFromQuery
@@ -59,7 +59,7 @@ let getAccusativesTask next (ctx : HttpContext) =
         return! Successful.OK task next ctx
     }
 
-let getComparativesTask next (ctx : HttpContext) =
+let getAdjectiveComparativesTask next (ctx : HttpContext) =
     task { 
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
         let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
@@ -76,7 +76,7 @@ let getComparativesTask next (ctx : HttpContext) =
         return! Successful.OK task next ctx
     }
 
-let getImperativesTask next (ctx : HttpContext) =
+let getVerbImperativesTask next (ctx : HttpContext) =
     task {
         let classFromQuery = ctx.GetQueryStringValue "class"
         let classFilter = getFilter "Class" Int classFromQuery
@@ -99,7 +99,7 @@ let getImperativesTask next (ctx : HttpContext) =
         return! Successful.OK task next ctx
     }
 
-let getParticiplesTask next (ctx: HttpContext) =
+let getVerbParticiplesTask next (ctx: HttpContext) =
     task {
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
         let patternFilter = getFilter "Pattern" String patternFromQuery
@@ -123,9 +123,9 @@ let getParticiplesTask next (ctx: HttpContext) =
     }
 
 let webApp = router {
-    get "/api/nouns/plurals"      getPluralsTask
-    get "/api/nouns/accusatives"  getAccusativesTask
-    get "/api/adjectives/comparatives" getComparativesTask
-    get "/api/verbs/imperatives"  getImperativesTask
-    get "/api/verbs/participles"  getParticiplesTask
+    get "/api/nouns/plurals"      getNounPluralsTask
+    get "/api/nouns/accusatives"  getNounAccusativesTask
+    get "/api/adjectives/comparatives" getAdjectiveComparativesTask
+    get "/api/verbs/imperatives"  getVerbImperativesTask
+    get "/api/verbs/participles"  getVerbParticiplesTask
 }
