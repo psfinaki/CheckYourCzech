@@ -14,21 +14,21 @@ let view () =
                 div [ Styles.thirdParent ]
                     [
                         Markup.wordsCentered "Nouns"
-                        Markup.viewLinkCentered Page.Plurals "Make plural"
-                        Markup.viewLinkCentered Page.Accusatives "Make accusative"
+                        Markup.viewLinkCentered Page.NounPlurals "Make plural"
+                        Markup.viewLinkCentered Page.NounAccusatives "Make accusative"
                     ]
                 
                 div [ Styles.thirdParent ]
                     [
                         Markup.wordsCentered "Adjectives"
-                        Markup.viewLinkCentered Page.Comparatives "Make comparative"
+                        Markup.viewLinkCentered Page.AdjectiveComparatives "Make comparative"
                     ]
 
                 div [ Styles.thirdParent ]
                     [
                         Markup.wordsCentered "Verbs"
-                        Markup.viewLinkCentered Page.Imperatives "Make imperative"
-                        Markup.viewLinkCentered Page.Participles "Make participle"
+                        Markup.viewLinkCentered Page.VerbImperatives "Make imperative"
+                        Markup.viewLinkCentered Page.VerbParticiples "Make participle"
                     ]
             ]
     ]

@@ -7,9 +7,9 @@ let view() =
     div [ Styles.center "row" ] 
         [
             Markup.viewLink Page.Home "Home"
-            Markup.viewLink Page.Plurals "Plurals"
-            Markup.viewLink Page.Accusatives "Accusatives"
-            Markup.viewLink Page.Comparatives "Comparatives"
-            Markup.viewLink Page.Imperatives "Imperatives"
-            Markup.viewLink Page.Participles "Participles"
+            Markup.viewLink Page.NounPlurals "Noun plurals"
+            Markup.viewLink Page.NounAccusatives "Noun accusatives"
+            Markup.viewLink Page.AdjectiveComparatives "Adjective comparatives"
+            Markup.viewLink Page.VerbImperatives "Verb imperatives"
+            Markup.viewLink Page.VerbParticiples "Verb participles"
         ]

@@ -50,19 +50,19 @@ let urlUpdate (result:Page option) model =
         ( model, Navigation.modifyUrl (Pages.toHash Page.Home) )
     | Some Page.Home ->
         Home, Cmd.none
-    | Some Page.Plurals ->
+    | Some Page.NounPlurals ->
         let m, cmd = NounPlurals.init()
         Plurals m, Cmd.map PluralsMsg cmd
-    | Some Page.Accusatives ->
+    | Some Page.NounAccusatives ->
         let m, cmd = NounAccusatives.init()
         Accusatives m, Cmd.map AccusativesMsg cmd
-    | Some Page.Comparatives ->
+    | Some Page.AdjectiveComparatives ->
         let m, cmd = AdjectiveComparatives.init()
         Comparatives m, Cmd.map ComparativesMsg cmd
-    | Some Page.Imperatives ->
+    | Some Page.VerbImperatives ->
         let m, cmd = VerbImperatives.init()
         Imperatives m, Cmd.map ImperativesMsg cmd
-    | Some Page.Participles ->
+    | Some Page.VerbParticiples ->
         let m, cmd = VerbParticiples.init()
         Participles m, Cmd.map ParticiplesMsg cmd
 
