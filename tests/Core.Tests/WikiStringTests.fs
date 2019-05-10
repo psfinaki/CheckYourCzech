@@ -23,6 +23,7 @@ let ``Gets forms - multiple forms`` s =
 [<Theory>]
 [<InlineData("")>]
 [<InlineData("—")>]
+[<InlineData("-")>]
 let ``Detects blank string`` s = 
     s
     |> isBlank
@@ -95,7 +96,6 @@ let ``Removes references - numbers`` s =
     s
     |> removeReferences
     |> equals "rci"
-
 
 [<Fact>]
 let ``Removes references - letter 'p'``() =

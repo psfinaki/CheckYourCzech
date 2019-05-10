@@ -23,7 +23,8 @@ let referencePattern = "\[(p )?\d*\]"
 
 let isBlank s = 
     s = "" ||
-    s = "—"  
+    s = "—" || 
+    s = "-"
 
 let isWord = not << isBlank
 let isOfficial = not << containsAny rejectedLabels
