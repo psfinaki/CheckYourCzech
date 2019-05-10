@@ -16,6 +16,7 @@ let rejectedLabels = [
     "(v obecném jazyce)"
     "(archaicky)"
     "(básnicky)"
+    "*"
     ]
 
 let referencePattern = "\[(p )?\d*\]"
