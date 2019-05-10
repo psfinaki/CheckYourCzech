@@ -66,6 +66,12 @@ let ``Detects unofficial form - poetic``() =
     |> isOfficial
     |> Assert.False
 
+[<Fact>]
+let ``Detects unofficial form - not used``() = 
+    "znalečná*"
+    |> isOfficial
+    |> Assert.False
+
 [<Theory>]
 [<InlineData ("(řidč.) pohaněj", "pohaněj")>]
 [<InlineData ("(zřídka) plazové", "plazové")>]
