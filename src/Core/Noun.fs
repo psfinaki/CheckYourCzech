@@ -48,6 +48,13 @@ let isIndeclinable =
     >> tryGetInfo "nesklonné"
     >> Option.isSome
 
+let isNominalization (noun: string) =
+    let adjectiveEndings = ['ý'; 'á'; 'é'; 'í']
+    let nounEnding = Seq.last noun
+    adjectiveEndings |> Seq.contains nounEnding
+
+let isNotNominalization = not << isNominalization
+
 let getUrl = (+) "https://cs.wiktionary.org/wiki/"
 
 let getDeclensionWikiEditable case number word =
