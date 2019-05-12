@@ -66,7 +66,9 @@ let urlUpdate (result:Page option) model =
         let m, cmd = VerbParticiples.init()
         Participles m, Cmd.map ParticiplesMsg cmd
 
-let init result = urlUpdate result Home
+let init result = 
+    Logger.setup()
+    urlUpdate result Home
 
 let update msg model =
     match msg, model with

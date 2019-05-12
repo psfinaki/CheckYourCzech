@@ -9,6 +9,7 @@ function resolve(filePath) {
 var CONFIG = {
     fsharpEntry: {
         "app": [
+			"applicationinsights-js",
             "whatwg-fetch",
             "@babel/polyfill",
             resolve("./Client.fsproj")

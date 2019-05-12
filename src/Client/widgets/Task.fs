@@ -26,6 +26,10 @@ type Msg =
     | FetchedTask of Task option
     | FetchError of exn
 
+let log task answer result = 
+    let message = sprintf "Task:%s; Answer:%s; Result:%b" task answer result
+    Logger.log message
+
 let loadTaskCmd getTask =
     Cmd.ofPromise getTask [] FetchedTask FetchError
 
@@ -42,6 +46,10 @@ let update msg model getTask =
         { model with Input = input }, Cmd.none
     | SubmitAnswer -> 
         let result = model.Answers |> Option.map (Array.contains model.Input)
+   
+        if model.Word.IsSome && result.IsSome
+        then log model.Word.Value model.Input result.Value
+        
         { model with Result = result }, Cmd.none
     | UpdateTask ->
         { model with Word = None; Input = ""; Result = None }, loadTaskCmd getTask
