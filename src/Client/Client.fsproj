@@ -12,6 +12,7 @@
 		<WarningsAsErrors />
 	</PropertyGroup>
     <ItemGroup>
+		<Compile Include="Logger.fs" />
 		<Compile Include="BoolExtensions.fs" />
 		<Compile Include="Rules.fs" />
 		<Compile Include="Pages.fs" />
