@@ -6,6 +6,12 @@ open Adjective
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
 [<Fact>]
+let ``Gets plural``() = 
+    "dobrý"
+    |> getPlural
+    |> equals "dobří"
+
+[<Fact>]
 let ``Gets positive - when positive``() = 
     "dobrý"
     |> getPositive

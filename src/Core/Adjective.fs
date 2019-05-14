@@ -17,6 +17,10 @@ let hasComparison =
 
 let isSyntacticComparison (comparison: string) = comparison.StartsWith "více "
 
+let getPlural = 
+    getAdjectiveProvider
+    >> fun data -> data.Tables.``Skloňování[editovat]``.Rows.[0].``plurál - mužský životný``
+
 let getPositive =
     getAdjectiveProvider
     >> fun data -> data.Tables.``Stupňování[editovat]``.Rows.[0].tvar
