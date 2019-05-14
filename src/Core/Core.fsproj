@@ -33,6 +33,7 @@
     <Compile Include="Noun.fs" />
     <Compile Include="NounPlural.fs" />
     <Compile Include="NounAccusative.fs" />
+    <Compile Include="AdjectivePlural.fs" />
     <Compile Include="AdjectiveComparative.fs" />
     <Compile Include="VerbParticiple.fs" />
     <Compile Include="VerbImperative.fs" />

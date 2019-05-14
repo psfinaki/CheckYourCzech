@@ -6,7 +6,9 @@ let recordCzechPartOfSpeech word = function
     | "podstatné jméno" ->
         NounPlural.record word
         NounAccusative.record word
-    | "přídavné jméno"  -> AdjectiveComparative.record word
+    | "přídavné jméno"  ->
+        AdjectivePlural.record word
+        AdjectiveComparative.record word
     | "sloveso"         -> 
         VerbImperative.record word
         VerbParticiple.record word
