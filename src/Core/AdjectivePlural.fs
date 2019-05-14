@@ -8,10 +8,10 @@ let isValid word =
 let getSingular = Storage.mapSafeString id
 let getPlural = Storage.mapSafeString Adjective.getPlural
 
-type AdjectiveComparative(word) =
+type AdjectivePlural(word) =
     inherit TableEntity(word, word)
     
-    new() = AdjectiveComparative null
+    new() = AdjectivePlural null
 
     member val Singular = getSingular word with get, set
     member val Plural = getPlural word with get, set
@@ -20,4 +20,4 @@ let record word =
     if 
         isValid word
     then 
-        word |> AdjectiveComparative |> Storage.upsert "adjectiveplurals"
+        word |> AdjectivePlural |> Storage.upsert "adjectiveplurals"
