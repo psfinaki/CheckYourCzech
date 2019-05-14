@@ -36,6 +36,18 @@ let ``Gets comparatives``() =
     |> equals [| "lepší" |]
 
 [<Fact>]
+let ``Detects declension``() =
+    "dobrý"
+    |> hasDeclension
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no declension``() =
+    "úterního"
+    |> hasDeclension
+    |> Assert.False
+
+[<Fact>]
 let ``Detects comparison``() =
     "dobrý"
     |> hasComparison
