@@ -10,6 +10,11 @@ let getAdjectiveProvider =
     (+) wikiUrl
     >> WikiAdjective.Load
 
+let hasDeclension = 
+    ArticleParser.tryGetAdjective
+    >> Option.bind (tryGetPart "skloňování")
+    >> Option.isSome
+
 let hasComparison = 
     ArticleParser.tryGetAdjective
     >> Option.bind (tryGetPart "stupňování")
