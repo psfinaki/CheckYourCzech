@@ -6,10 +6,16 @@ open Adjective
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
 [<Fact>]
-let ``Gets plural``() = 
+let ``Gets plural - when not nominalized``() = 
     "dobrý"
     |> getPlural
     |> equals "dobří"
+
+[<Fact>]
+let ``Gets plural - when nominalized``() = 
+    "starý"
+    |> getPlural
+    |> equals "staří"
 
 [<Fact>]
 let ``Gets positive - when positive``() = 
@@ -90,3 +96,17 @@ let ``Detects no morphological comparatives - no morphologicals``() =
     "vroucí"
     |> hasMorphologicalComparatives
     |> Assert.False
+
+[<Fact>]
+let ``Detects nominalization``() =
+    "starý"
+    |> isNominalized
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no nominalization``() =
+    "nový"
+    |> isNominalized
+    |> Assert.False
+
+

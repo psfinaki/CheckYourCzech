@@ -5,6 +5,8 @@ open Article
 open WikiString
 
 type WikiAdjective = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
+type WikiAdjectiveNominalized = HtmlProvider<"https://cs.wiktionary.org/wiki/starý">
+type WikiAdjectiveNotNominalized = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
 
 let getAdjectiveProvider =
     (+) wikiUrl
@@ -22,9 +24,24 @@ let hasComparison =
 
 let isSyntacticComparison (comparison: string) = comparison.StartsWith "více "
 
-let getPlural = 
-    getAdjectiveProvider
-    >> fun data -> data.Tables.``Skloňování[editovat]``.Rows.[0].``plurál - mužský životný``
+let isNominalized = 
+    ArticleParser.tryGetNoun
+    >> Option.bind (tryGetPart "skloňování")
+    >> Option.isSome
+
+let getPlural = function
+    | adjective when adjective |> isNominalized ->
+        adjective
+        |> (+) wikiUrl
+        |> WikiAdjectiveNominalized.Load
+        |> fun data -> data.Tables.``Skloňování[editovat]2``.Rows.[0].``plurál - mužský životný``
+    | adjective when adjective |> (not << isNominalized) ->
+        adjective
+        |> (+) wikiUrl
+        |> WikiAdjectiveNotNominalized.Load
+        |> fun data -> data.Tables.``Skloňování[editovat]``.Rows.[0].``plurál - mužský životný``
+    | adjective ->
+        invalidOp ("Odd word: " + adjective)
 
 let getPositive =
     getAdjectiveProvider
