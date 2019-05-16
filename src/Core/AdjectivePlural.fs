@@ -4,7 +4,8 @@ open Microsoft.WindowsAzure.Storage.Table
 
 let isValid word = 
     word |> Word.isAdjective &&
-    word |> Adjective.hasDeclension
+    word |> Adjective.hasDeclension &&
+    word |> (not << Adjective.isPossessive)
 
 let getSingular = Storage.mapSafeString id
 let getPlural = Storage.mapSafeString Adjective.getPlural

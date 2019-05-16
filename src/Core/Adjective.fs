@@ -3,6 +3,7 @@
 open FSharp.Data
 open Article
 open WikiString
+open StringHelper
 
 type WikiAdjective = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
 type WikiAdjectiveNominalized = HtmlProvider<"https://cs.wiktionary.org/wiki/starý">
@@ -23,6 +24,10 @@ let hasComparison =
     >> Option.isSome
 
 let isSyntacticComparison (comparison: string) = comparison.StartsWith "více "
+
+let isPossessive adjective = 
+    adjective |> ends "ův" ||
+    adjective |> ends "in"
 
 let isNominalized = 
     ArticleParser.tryGetNoun

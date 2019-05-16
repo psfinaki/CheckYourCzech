@@ -16,3 +16,17 @@ let ``Detects morphological comparison``() =
     "novější"
     |> isSyntacticComparison
     |> Assert.False
+
+[<Theory>]
+[<InlineData "bratrův">]
+[<InlineData "sestřin">]
+let ``Detects possessive`` adjective = 
+    adjective
+    |> isPossessive
+    |> Assert.True
+
+[<Fact>]
+let ``Detects non possessive``() = 
+    "nový"
+    |> isPossessive
+    |> Assert.False
