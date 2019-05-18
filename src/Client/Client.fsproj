@@ -29,6 +29,7 @@
 		<Compile Include="pages\VerbParticiples.fs" />
 		<Compile Include="pages\Home.fs" />
 		<Compile Include="pages\NounPlurals.fs" />
+		<Compile Include="pages\AdjectivePlurals.fs" />
 		<Compile Include="pages\AdjectiveComparatives.fs" />
 		<Compile Include="pages\VerbImperatives.fs" />
 		<Compile Include="App.fs" />

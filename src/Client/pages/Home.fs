@@ -21,6 +21,7 @@ let view () =
                 div [ Styles.thirdParent ]
                     [
                         Markup.wordsCentered "Adjectives"
+                        Markup.viewLinkCentered Page.AdjectivePlurals "Make plural"
                         Markup.viewLinkCentered Page.AdjectiveComparatives "Make comparative"
                     ]
 
