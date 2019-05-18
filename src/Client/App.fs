@@ -16,33 +16,33 @@ let urlParser location = parseHash pageParser location
 
 type Model =
     | Home
-    | Plurals of NounPlurals.Model
-    | Accusatives of NounAccusatives.Model
-    | Comparatives of AdjectiveComparatives.Model
-    | Imperatives of VerbImperatives.Model
-    | Participles of VerbParticiples.Model
+    | NounPlurals of NounPlurals.Model
+    | NounAccusatives of NounAccusatives.Model
+    | AdjectiveComparatives of AdjectiveComparatives.Model
+    | VerbImperatives of VerbImperatives.Model
+    | VerbParticiples of VerbParticiples.Model
 
 type Msg = 
-    | PluralsMsg of NounPlurals.Msg
-    | AccusativesMsg of NounAccusatives.Msg
-    | ComparativesMsg of AdjectiveComparatives.Msg
-    | ImperativesMsg of VerbImperatives.Msg
-    | ParticiplesMsg of VerbParticiples.Msg
+    | NounPluralsMsg of NounPlurals.Msg
+    | NounAccusativesMsg of NounAccusatives.Msg
+    | AdjectiveComparativesMsg of AdjectiveComparatives.Msg
+    | VerbImperativesMsg of VerbImperatives.Msg
+    | VerbParticiplesMsg of VerbParticiples.Msg
 
 let viewPage model dispatch =
     match model with
     | Home ->
         Home.view ()
-    | Plurals m ->
-        NounPlurals.view m (PluralsMsg >> dispatch)
-    | Accusatives m ->
-        NounAccusatives.view m (AccusativesMsg >> dispatch)
-    | Comparatives m ->
-        AdjectiveComparatives.view m (ComparativesMsg >> dispatch)
-    | Imperatives m ->
-        VerbImperatives.view m (ImperativesMsg >> dispatch)
-    | Participles m ->
-        VerbParticiples.view m (ParticiplesMsg >> dispatch)
+    | NounPlurals m ->
+        NounPlurals.view m (NounPluralsMsg >> dispatch)
+    | NounAccusatives m ->
+        NounAccusatives.view m (NounAccusativesMsg >> dispatch)
+    | AdjectiveComparatives m ->
+        AdjectiveComparatives.view m (AdjectiveComparativesMsg >> dispatch)
+    | VerbImperatives m ->
+        VerbImperatives.view m (VerbImperativesMsg >> dispatch)
+    | VerbParticiples m ->
+        VerbParticiples.view m (VerbParticiplesMsg >> dispatch)
 
 let urlUpdate (result:Page option) model =
     match result with
@@ -52,19 +52,19 @@ let urlUpdate (result:Page option) model =
         Home, Cmd.none
     | Some Page.NounPlurals ->
         let m, cmd = NounPlurals.init()
-        Plurals m, Cmd.map PluralsMsg cmd
+        NounPlurals m, Cmd.map NounPluralsMsg cmd
     | Some Page.NounAccusatives ->
         let m, cmd = NounAccusatives.init()
-        Accusatives m, Cmd.map AccusativesMsg cmd
+        NounAccusatives m, Cmd.map NounAccusativesMsg cmd
     | Some Page.AdjectiveComparatives ->
         let m, cmd = AdjectiveComparatives.init()
-        Comparatives m, Cmd.map ComparativesMsg cmd
+        AdjectiveComparatives m, Cmd.map AdjectiveComparativesMsg cmd
     | Some Page.VerbImperatives ->
         let m, cmd = VerbImperatives.init()
-        Imperatives m, Cmd.map ImperativesMsg cmd
+        VerbImperatives m, Cmd.map VerbImperativesMsg cmd
     | Some Page.VerbParticiples ->
         let m, cmd = VerbParticiples.init()
-        Participles m, Cmd.map ParticiplesMsg cmd
+        VerbParticiples m, Cmd.map VerbParticiplesMsg cmd
 
 let init result = 
     Logger.setup()
@@ -72,21 +72,21 @@ let init result =
 
 let update msg model =
     match msg, model with
-    | PluralsMsg msg, Plurals m ->
+    | NounPluralsMsg msg, NounPlurals m ->
         let m, cmd = NounPlurals.update msg m
-        Plurals m, Cmd.map PluralsMsg cmd
-    | AccusativesMsg msg, Accusatives m ->
+        NounPlurals m, Cmd.map NounPluralsMsg cmd
+    | NounAccusativesMsg msg, NounAccusatives m ->
         let m, cmd = NounAccusatives.update msg m
-        Accusatives m, Cmd.map AccusativesMsg cmd
-    | ComparativesMsg msg, Comparatives m ->
+        NounAccusatives m, Cmd.map NounAccusativesMsg cmd
+    | AdjectiveComparativesMsg msg, AdjectiveComparatives m ->
         let m, cmd = AdjectiveComparatives.update msg m
-        Comparatives m, Cmd.map ComparativesMsg cmd
-    | ImperativesMsg msg, Imperatives m ->
+        AdjectiveComparatives m, Cmd.map AdjectiveComparativesMsg cmd
+    | VerbImperativesMsg msg, VerbImperatives m ->
         let m, cmd = VerbImperatives.update msg m
-        Imperatives m, Cmd.map ImperativesMsg cmd
-    | ParticiplesMsg msg, Participles m ->
+        VerbImperatives m, Cmd.map VerbImperativesMsg cmd
+    | VerbParticiplesMsg msg, VerbParticiples m ->
         let m, cmd = VerbParticiples.update msg m
-        Participles m, Cmd.map ParticiplesMsg cmd
+        VerbParticiples m, Cmd.map VerbParticiplesMsg cmd
     | _, _ ->
         model, Cmd.none
 
