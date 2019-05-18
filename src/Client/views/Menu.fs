@@ -9,6 +9,7 @@ let view() =
             Markup.viewLink Page.Home "Home"
             Markup.viewLink Page.NounPlurals "Noun plurals"
             Markup.viewLink Page.NounAccusatives "Noun accusatives"
+            Markup.viewLink Page.AdjectivePlurals "Adjective plurals"
             Markup.viewLink Page.AdjectiveComparatives "Adjective comparatives"
             Markup.viewLink Page.VerbImperatives "Verb imperatives"
             Markup.viewLink Page.VerbParticiples "Verb participles"

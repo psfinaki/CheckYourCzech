@@ -18,6 +18,7 @@ type Model =
     | Home
     | NounPlurals of NounPlurals.Model
     | NounAccusatives of NounAccusatives.Model
+    | AdjectivePlurals of AdjectivePlurals.Model
     | AdjectiveComparatives of AdjectiveComparatives.Model
     | VerbImperatives of VerbImperatives.Model
     | VerbParticiples of VerbParticiples.Model
@@ -25,6 +26,7 @@ type Model =
 type Msg = 
     | NounPluralsMsg of NounPlurals.Msg
     | NounAccusativesMsg of NounAccusatives.Msg
+    | AdjectivePluralsMsg of AdjectivePlurals.Msg
     | AdjectiveComparativesMsg of AdjectiveComparatives.Msg
     | VerbImperativesMsg of VerbImperatives.Msg
     | VerbParticiplesMsg of VerbParticiples.Msg
@@ -37,6 +39,8 @@ let viewPage model dispatch =
         NounPlurals.view m (NounPluralsMsg >> dispatch)
     | NounAccusatives m ->
         NounAccusatives.view m (NounAccusativesMsg >> dispatch)
+    | AdjectivePlurals m ->
+        AdjectivePlurals.view m (AdjectivePluralsMsg >> dispatch)
     | AdjectiveComparatives m ->
         AdjectiveComparatives.view m (AdjectiveComparativesMsg >> dispatch)
     | VerbImperatives m ->
@@ -56,6 +60,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.NounAccusatives ->
         let m, cmd = NounAccusatives.init()
         NounAccusatives m, Cmd.map NounAccusativesMsg cmd
+    | Some Page.AdjectivePlurals ->
+        let m, cmd = AdjectivePlurals.init()
+        AdjectivePlurals m, Cmd.map AdjectivePluralsMsg cmd
     | Some Page.AdjectiveComparatives ->
         let m, cmd = AdjectiveComparatives.init()
         AdjectiveComparatives m, Cmd.map AdjectiveComparativesMsg cmd
@@ -78,6 +85,9 @@ let update msg model =
     | NounAccusativesMsg msg, NounAccusatives m ->
         let m, cmd = NounAccusatives.update msg m
         NounAccusatives m, Cmd.map NounAccusativesMsg cmd
+    | AdjectivePluralsMsg msg, AdjectivePlurals m ->
+        let m, cmd = AdjectivePlurals.update msg m
+        AdjectivePlurals m, Cmd.map AdjectivePluralsMsg cmd
     | AdjectiveComparativesMsg msg, AdjectiveComparatives m ->
         let m, cmd = AdjectiveComparatives.update msg m
         AdjectiveComparatives m, Cmd.map AdjectiveComparativesMsg cmd
