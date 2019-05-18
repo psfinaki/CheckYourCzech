@@ -59,19 +59,32 @@ let getNounAccusativesTask next (ctx : HttpContext) =
         return! Successful.OK task next ctx
     }
 
+let getAdjectivePluralsTask next (ctx : HttpContext) =
+    task { 
+        let adjective = tryGetRandom<AdjectivePlural.AdjectivePlural> "adjectiveplurals" []
+    
+        let getTask (adjective: AdjectivePlural.AdjectivePlural) = 
+            let singular = getAs<string> adjective.Singular
+            let plural = getAs<string> adjective.Plural
+            Task(singular, [| plural |])
+
+        let task = adjective |> Option.map getTask |> Option.toObj 
+        return! Successful.OK task next ctx
+    }
+
 let getAdjectiveComparativesTask next (ctx : HttpContext) =
     task { 
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
         let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
-
+    
         let filters = [ regularityFilter ] |> Seq.choose id
         let adjective = tryGetRandom<AdjectiveComparative.AdjectiveComparative> "adjectivecomparatives" filters
-        
+    
         let getTask (adjective: AdjectiveComparative.AdjectiveComparative) = 
             let positive = getAs<string> adjective.Positive
             let comparatives = getAs<string []> adjective.Comparatives
             Task(positive, comparatives)
-
+    
         let task = adjective |> Option.map getTask |> Option.toObj 
         return! Successful.OK task next ctx
     }
@@ -123,9 +136,10 @@ let getVerbParticiplesTask next (ctx: HttpContext) =
     }
 
 let webApp = router {
-    get "/api/nouns/plurals"      getNounPluralsTask
-    get "/api/nouns/accusatives"  getNounAccusativesTask
+    get "/api/nouns/plurals" getNounPluralsTask
+    get "/api/nouns/accusatives" getNounAccusativesTask
+    get "/api/adjectives/plurals" getAdjectivePluralsTask
     get "/api/adjectives/comparatives" getAdjectiveComparativesTask
-    get "/api/verbs/imperatives"  getVerbImperativesTask
-    get "/api/verbs/participles"  getVerbParticiplesTask
+    get "/api/verbs/imperatives" getVerbImperativesTask
+    get "/api/verbs/participles" getVerbParticiplesTask
 }
