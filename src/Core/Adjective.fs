@@ -57,7 +57,15 @@ let getComparatives =
     >> fun data -> data.Tables.``Stupňování[editovat]``.Rows.[1].tvar
     >> getForms
 
-let isPositive adjective = (adjective = getPositive adjective)
+let isHardPositive = endsOneOf ["ý"; "á"; "é"]
+
+let isSoftPositive adjective = 
+    adjective |> ends "í" && 
+    adjective |> (not << ends "ší")
+
+let isPositive adjective = 
+    adjective |> isHardPositive || 
+    adjective |> isSoftPositive
 
 let hasMorphologicalComparatives = 
     let isMorphological = not << isSyntacticComparison
