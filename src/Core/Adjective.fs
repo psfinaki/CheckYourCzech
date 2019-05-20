@@ -15,12 +15,12 @@ let getAdjectiveProvider =
 
 let hasDeclension = 
     ArticleParser.tryGetAdjective
-    >> Option.bind (tryGetPart "skloňování")
+    >> Option.bind (tryGetChildPart "skloňování")
     >> Option.isSome
 
 let hasComparison = 
     ArticleParser.tryGetAdjective
-    >> Option.bind (tryGetPart "stupňování")
+    >> Option.bind (tryGetChildPart "stupňování")
     >> Option.isSome
 
 let isSyntacticComparison (comparison: string) = comparison.StartsWith "více "
@@ -31,7 +31,7 @@ let isPossessive adjective =
 
 let isNominalized = 
     ArticleParser.tryGetNoun
-    >> Option.bind (tryGetPart "skloňování")
+    >> Option.bind (tryGetChildPart "skloňování")
     >> Option.isSome
 
 let getPlural = function
