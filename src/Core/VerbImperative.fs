@@ -20,7 +20,7 @@ type VerbImperative(word) =
 
     member val Indicative = getIndicative word with get, set
     member val Imperatives = getImperatives word with get, set
-    member val Class = getClass with get, set
+    member val Class = getClass word with get, set
     member val Pattern = getPattern word with get, set
 
 let record word =
