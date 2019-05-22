@@ -7,15 +7,21 @@ let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
 [<Fact>]
 let ``Gets plural - when not nominalized``() = 
-    "dobrý"
+    "laskavý"
     |> getPlural
-    |> equals "dobří"
+    |> equals "laskaví"
 
 [<Fact>]
-let ``Gets plural - when nominalized``() = 
-    "starý"
+let ``Gets plural - when nominalized once``() = 
+    "vrátný"
     |> getPlural
-    |> equals "staří"
+    |> equals "vrátní"
+
+[<Fact>]
+let ``Gets plural - when nominalized twice``() = 
+    "duchovní"
+    |> getPlural
+    |> equals "duchovní"
 
 [<Fact>]
 let ``Gets positive - when positive``() = 
