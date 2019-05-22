@@ -6,8 +6,9 @@ open WikiString
 open StringHelper
 
 type WikiAdjective = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
-type WikiAdjectiveNominalized = HtmlProvider<"https://cs.wiktionary.org/wiki/starý">
-type WikiAdjectiveNotNominalized = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
+type WikiAdjectiveNový = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
+type WikiAdjectiveStarý = HtmlProvider<"https://cs.wiktionary.org/wiki/starý">
+type WikiAdjectiveVrchní = HtmlProvider<"https://cs.wiktionary.org/wiki/vrchní">
 
 let getAdjectiveProvider =
     (+) wikiUrl
@@ -34,19 +35,36 @@ let isNominalized =
     >> Option.bind (tryGetChildPart "skloňování")
     >> Option.isSome
 
-let getPlural = function
-    | adjective when adjective |> isNominalized ->
-        adjective
-        |> (+) wikiUrl
-        |> WikiAdjectiveNominalized.Load
-        |> fun data -> data.Tables.``Skloňování[editovat]2``.Rows.[0].``plurál - mužský životný``
-    | adjective when adjective |> (not << isNominalized) ->
-        adjective
-        |> (+) wikiUrl
-        |> WikiAdjectiveNotNominalized.Load
-        |> fun data -> data.Tables.``Skloňování[editovat]``.Rows.[0].``plurál - mužský životný``
-    | adjective ->
-        invalidOp ("Odd word: " + adjective)
+let getPluralDobrý = 
+    (+) wikiUrl
+    >> WikiAdjectiveNový.Load
+    >> fun data -> data.Tables.``Skloňování[editovat]``.Rows.[0].``plurál - mužský životný``
+
+let getPluralStarý = 
+    (+) wikiUrl
+    >> WikiAdjectiveStarý.Load
+    >> fun data -> data.Tables.``Skloňování[editovat]2``.Rows.[0].``plurál - mužský životný``
+
+let getPluralVrchní = 
+    (+) wikiUrl
+    >> WikiAdjectiveVrchní.Load
+    >> fun data -> data.Tables.``Skloňování[editovat]3``.Rows.[0].``plurál - mužský životný``
+
+let pluralDeclensionsMap =
+    dict [ (1, getPluralDobrý)
+           (2, getPluralStarý)
+           (3, getPluralVrchní) ]
+
+let countDeclensions = 
+    Article.getContent
+    >> Article.getChildPart "čeština"
+    >> Article.getParts "skloňování"
+    >> Seq.length
+
+let getPlural adjective = 
+    adjective
+    |> countDeclensions
+    |> fun n -> pluralDeclensionsMap.[n] adjective
 
 let getPositive =
     getAdjectiveProvider
