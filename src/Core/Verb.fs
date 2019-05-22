@@ -36,8 +36,8 @@ let getParticipleByTableIndex word n =
 let getWikiParticiples word =
     word
     |> getContent
-    |> getPart "čeština"
-    |> getPart "sloveso"
+    |> getChildPart "čeština"
+    |> getChildPart "sloveso"
     |> getTables
     |> Seq.map fst
     |> Seq.findIndex ((=) "Příčestí")
@@ -51,7 +51,7 @@ let removeReflexive = remove " se" >> remove " si"
 
 let hasConjugation =
     tryGetVerb
-    >> Option.bind (tryGetPart "časování")
+    >> Option.bind (tryGetChildPart "časování")
     >> Option.isSome
 
 let tryGetReflexive = function
@@ -61,7 +61,7 @@ let tryGetReflexive = function
 
 let hasImperative = 
     tryGetVerb
-    >> Option.bind (tryGetPart "časování")
+    >> Option.bind (tryGetChildPart "časování")
     >> Option.map getTables
     >> Option.map (Seq.map fst)
     >> Option.map (Seq.contains "Rozkazovací způsob")

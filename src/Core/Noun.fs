@@ -24,7 +24,7 @@ type Number =
 
 let hasDeclension = 
     tryGetNoun
-    >> Option.bind (tryGetPart "skloňování")
+    >> Option.bind (tryGetChildPart "skloňování")
     >> Option.isSome
 
 let hasGender =
@@ -35,16 +35,16 @@ let hasGender =
 
 let getGender =
     getContent
-    >> getPart "čeština"
-    >> getPart "podstatné jméno"
+    >> getChildPart "čeština"
+    >> getChildPart "podstatné jméno"
     >> getInfo "rod "
     >> translateGender
 
 let isIndeclinable = 
     getContent
-    >> getPart "čeština"
-    >> getPart "podstatné jméno"
-    >> getPart "skloňování"
+    >> getChildPart "čeština"
+    >> getChildPart "podstatné jméno"
+    >> getChildPart "skloňování"
     >> tryGetInfo "nesklonné"
     >> Option.isSome
 

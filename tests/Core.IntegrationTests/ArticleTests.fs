@@ -39,18 +39,26 @@ let ``Detects content``() =
     |> Assert.True
 
 [<Fact>]
-let ``Gets part``() =
+let ``Gets parts``() =
     "panda"
     |> getContent
-    |> tryGetPart "čeština"
+    |> getParts "výslovnost"
+    |> Seq.length
+    |> equals 4
+
+[<Fact>]
+let ``Gets child part``() =
+    "panda"
+    |> getContent
+    |> tryGetChildPart "čeština"
     |> Option.isSome
     |> Assert.True
 
 [<Fact>]
-let ``Detects no part``() =
+let ``Detects no child part``() =
     "panda"
     |> getContent
-    |> tryGetPart "ruština"
+    |> tryGetChildPart "ruština"
     |> Option.isNone
     |> Assert.True
 
@@ -58,7 +66,7 @@ let ``Detects no part``() =
 let ``Detects info``() = 
     "panda"
     |> getContent
-    |> getPart "čeština"
+    |> getChildPart "čeština"
     |> getInfo "rod"
     |> equals "rod ženský"
 
@@ -71,19 +79,27 @@ let ``Detects no info``() =
     |> Assert.True
 
 [<Fact>]
-let ``Gets parts``() =
-    "drak"
+let ``Gets all parts``() =
+    "spinkat"
     |> getContent
-    |> getParts
+    |> getAllParts
     |> Seq.map fst
-    |> equalsMany [ "čeština"; "slovenština"; "poznámky"; "externí odkazy" ]
+    |> equalsMany [ "čeština"; "výslovnost"; "dělení"; "sloveso"; "časování"; "význam"; "synonyma" ]
 
 [<Fact>]
-let ``Gets parts - inner``() =
+let ``Gets children parts``() =
+    "spinkat"
+    |> getContent
+    |> getChildrenParts
+    |> Seq.map fst
+    |> equalsMany [ "čeština" ]
+
+[<Fact>]
+let ``Gets children parts - inner``() =
     "ananas"
     |> getContent
-    |> getPart "čeština"
-    |> getParts
+    |> getChildPart "čeština"
+    |> getChildrenParts
     |> Seq.map fst
     |> equalsMany [ "výslovnost"; "dělení"; "podstatné jméno" ]
 
@@ -91,7 +107,7 @@ let ``Gets parts - inner``() =
 let ``Detects no parts``() =
     "provozovat"
     |> getContent
-    |> getParts
+    |> getChildrenParts
     |> Seq.map fst
     |> equalsMany []
 
@@ -99,9 +115,9 @@ let ``Detects no parts``() =
 let ``Gets tables``() =
     "musit"
     |> getContent
-    |> getPart "čeština"
-    |> getPart "sloveso"
-    |> getPart "časování"
+    |> getChildPart "čeština"
+    |> getChildPart "sloveso"
+    |> getChildPart "časování"
     |> getTables
     |> Seq.map fst
     |> equalsMany [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
@@ -110,9 +126,9 @@ let ``Gets tables``() =
 let ``Detects no tables``() =
     "musit"
     |> getContent
-    |> getPart "čeština"
-    |> getPart "sloveso"
-    |> getPart "význam"
+    |> getChildPart "čeština"
+    |> getChildPart "sloveso"
+    |> getChildPart "význam"
     |> getTables
     |> Seq.map fst
     |> equalsMany []
@@ -121,9 +137,9 @@ let ``Detects no tables``() =
 let ``Detects no parts - inner``() =
     "ananas"
     |> getContent
-    |> getPart "čeština"
-    |> getPart "výslovnost"
-    |> getParts
+    |> getChildPart "čeština"
+    |> getChildPart "výslovnost"
+    |> getChildrenParts
     |> Seq.map fst
     |> equalsMany []
 

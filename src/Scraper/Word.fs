@@ -15,7 +15,7 @@ let recordCzechPartOfSpeech word = function
     | _ -> ()
     
 let recordCzechPart word = 
-    getParts 
+    getChildrenParts 
     >> Seq.map fst
     >> Seq.iter (recordCzechPartOfSpeech word)
 
@@ -26,5 +26,5 @@ let recordLanguagePart word = function
 let record word =
     word
     |> getContent 
-    |> getParts
+    |> getChildrenParts
     |> Seq.iter (recordLanguagePart word)

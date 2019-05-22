@@ -81,7 +81,14 @@ let getTables nodes =
     |> Seq.filter isTable
     |> Seq.map getTable
 
-let getParts elements =
+let getAllParts elements =
+    elements
+    |> Seq.skipWhile (not << isHeader)
+    |> Seq.splitBy isHeader
+    |> Seq.map Seq.behead
+    |> Seq.map (fun (header, nodes) -> (getHeaderName header, nodes))
+
+let getChildrenParts elements =
     let biggestHeader = 
         elements
         |> Seq.filter isHeader
@@ -102,8 +109,12 @@ let getParts elements =
     | None -> 
         Seq.empty
 
-let getPart name =
-    getParts
+let getParts name =
+    getAllParts
+    >> Seq.where (fun (header, _) -> header = name)
+
+let getChildPart name =
+    getChildrenParts
     >> Seq.where (fun (header, _) -> header = name)
     >> Seq.exactlyOne
     >> snd
@@ -120,6 +131,6 @@ let tryFunc1 func x   = try func x   |> Some with | :? KeyNotFoundException | :?
 let tryFunc2 func x y = try func x y |> Some with | :? KeyNotFoundException | :? ArgumentException -> None
 
 let tryGetTableOfContents word = tryFunc1 getTableOfContents word
-let tryGetContent word         = tryFunc1 getContent word
-let tryGetPart name elements   = tryFunc2 getPart name elements
-let tryGetInfo name elements   = tryFunc2 getInfo name elements
+let tryGetContent word = tryFunc1 getContent word
+let tryGetChildPart name elements = tryFunc2 getChildPart name elements
+let tryGetInfo name elements = tryFunc2 getInfo name elements
