@@ -17,7 +17,7 @@ let getTask() =
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init() =
-    let task, cmd = Task.init (getTask())
+    let task, cmd = Task.init "Adjective Plurals" (getTask())
 
     { Task = task },
     Cmd.map Task cmd

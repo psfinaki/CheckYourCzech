@@ -13,6 +13,7 @@ type Task = {
 }
 
 type Model = {
+    TaskName: string
     Word : string option
     Answers : string[] option
     Input : string
@@ -26,15 +27,16 @@ type Msg =
     | FetchedTask of Task option
     | FetchError of exn
 
-let log task answer result = 
-    let message = sprintf "Task:%s; Answer:%s; Result:%b" task answer result
+let log taskName task answer result = 
+    let message = sprintf "Task name:%s; Task:%s; Answer:%s; Result:%b" taskName task answer result
     Logger.log message
 
 let loadTaskCmd getTask =
     Cmd.ofPromise getTask [] FetchedTask FetchError
 
-let init getTask =
-    { Word = None
+let init taskName getTask =
+    { TaskName = taskName
+      Word = None
       Answers = None
       Input = ""
       Result = None },
@@ -48,7 +50,7 @@ let update msg model getTask =
         let result = model.Answers |> Option.map (Array.contains model.Input)
    
         if model.Word.IsSome && result.IsSome
-        then log model.Word.Value model.Input result.Value
+        then log model.TaskName model.Word.Value model.Input result.Value
         
         { model with Result = result }, Cmd.none
     | UpdateTask ->

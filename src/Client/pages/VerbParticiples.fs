@@ -37,7 +37,7 @@ let getTask pattern regularity =
 let init() =
     let pattern = Pattern.init (Some patterns)
     let regularity = Regularity.init()
-    let task, cmd = Task.init (getTask None None)
+    let task, cmd = Task.init "Verb Participles" (getTask None None)
 
     { Pattern = pattern
       Regularity = regularity
