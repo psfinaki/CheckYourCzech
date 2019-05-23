@@ -44,7 +44,7 @@ let getTask ``class`` pattern =
 let init() =
     let ``class`` = Class.init()
     let pattern = Pattern.init None
-    let task, cmd = Task.init (getTask None None)
+    let task, cmd = Task.init "Verb Imperatives" (getTask None None)
 
     { Class = ``class``
       Pattern = pattern

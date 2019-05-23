@@ -24,7 +24,7 @@ let getTask regularity =
 
 let init() =
     let regularity = Regularity.init()
-    let task, cmd = Task.init (getTask None)
+    let task, cmd = Task.init "Adjective Comparatives" (getTask None)
 
     { Regularity = regularity
       Task = task },
