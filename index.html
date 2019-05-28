@@ -63,13 +63,12 @@
 <div class="tip" id="fs15">module Seq<br /><br />from Microsoft.FSharp.Collections</div>
 <div class="tip" id="fs16">val forall : predicate:(&#39;T -&gt; bool) -&gt; source:seq&lt;&#39;T&gt; -&gt; bool<br /><br />Full name: Microsoft.FSharp.Collections.Seq.forall</div>
 <div class="tip" id="fs17">val set : elements:seq&lt;&#39;T&gt; -&gt; Set&lt;&#39;T&gt; (requires comparison)<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.set</div>
-<div class="tip" id="fs18">val exactlyOne : source:seq&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.Seq.exactlyOne</div>
-<div class="tip" id="fs19">val initInfinite : initializer:(int -&gt; &#39;T) -&gt; seq&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.initInfinite</div>
-<div class="tip" id="fs20">val find : predicate:(&#39;T -&gt; bool) -&gt; source:seq&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.Seq.find</div>
-<div class="tip" id="fs21">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
-<div class="tip" id="fs22">union case Option.None: Option&lt;&#39;T&gt;</div>
-<div class="tip" id="fs23">type exn = System.Exception<br /><br />Full name: Microsoft.FSharp.Core.exn</div>
-<div class="tip" id="fs24">val log : value:&#39;T -&gt; &#39;T (requires member Log)<br /><br />Full name: Microsoft.FSharp.Core.Operators.log</div>
+<div class="tip" id="fs18">val initInfinite : initializer:(int -&gt; &#39;T) -&gt; seq&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.initInfinite</div>
+<div class="tip" id="fs19">val find : predicate:(&#39;T -&gt; bool) -&gt; source:seq&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.Seq.find</div>
+<div class="tip" id="fs20">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs21">union case Option.None: Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs22">type exn = System.Exception<br /><br />Full name: Microsoft.FSharp.Core.exn</div>
+<div class="tip" id="fs23">val log : value:&#39;T -&gt; &#39;T (requires member Log)<br /><br />Full name: Microsoft.FSharp.Core.Operators.log</div>
 
         <!-- Any section element inside of this container is displayed as a slide -->
         <div class="slides">
@@ -89,7 +88,9 @@
 </section>
 <section >
 <h3>Duolingo is not enough</h3>
+<br/>
 <p><img src="images/concept1.png" alt="concept1" /></p>
+<br/>
 </section>
 <section >
 <h3>Textbooks are boring and <a href="http://utkl.ff.cuni.cz/~rosen/public/GGG/Czech_essent_grammar.pdf">scaring</a></h3>
@@ -100,12 +101,12 @@
 <p><img src="images/concept3.jpg" alt="concept3" /></p>
 </section>
 <section >
-<h3><a href="https://check-your-czech.azurewebsites.net">Demo</a></h3>
-<p><img src="images/concept4.png" alt="concept4" /></p>
-</section>
-<section >
 <h3>How a normal language looks like</h3>
 <p><img src="images/concept5.png" alt="concept5" /></p>
+</section>
+<section >
+<h3><a href="https://check-your-czech.azurewebsites.net">Demo</a></h3>
+<p><img src="images/concept4.png" alt="concept4" /></p>
 </section>
 </section>
 <section >
@@ -114,22 +115,28 @@
 </section>
 <section >
 <h3><a href="https://safe-stack.github.io/">SAFE stack</a></h3>
+<br/>
+<br/>
 <p><img src="images/architecture1.png" alt="architecture1" /></p>
+<br/>
+<br/>
 </section>
 <section >
-<h3>False start - <a href="https://github.com/SAFE-Stack/SAFE-BookStore">BookStore</a> clone</h3>
+<h3>False <a href="https://github.com/SAFE-Stack">start</a> - BookStore clone</h3>
 <p><img src="images/architecture2.png" alt="architecture2" /></p>
 </section>
 <section >
-<h3>Marketing exists even on GitHub</h3>
+<h3>Marketing <a href="https://github.com/SAFE-Stack/SAFE-BookStore/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+author%3Apsfinaki+">exists</a> even on GitHub</h3>
 <p><img src="images/architecture3.png" alt="architecture3" /></p>
 </section>
 <section >
-<h3>Start again - <a href="https://github.com/SAFE-Stack/SAFE-template">Basic client-server app</a></h3>
+<h3>Start again - basic client-server <a href="https://check-your-czech.azurewebsites.net/#nouns-plurals">app</a></h3>
+<br/>
 <p><img src="images/architecture4.png" alt="architecture4" /></p>
+<br/>
 </section>
 <section >
-<h3>Problem - Too much junk in <a href="https://cs.wiktionary.org/wiki/Wikislovn%C3%ADk:Hlavn%C3%AD_strana">wiktionary</a></h3>
+<h3>Problem - too much junk in <a href="https://cs.wiktionary.org/wiki/Wikislovn%C3%ADk:Hlavn%C3%AD_strana">wiktionary</a></h3>
 <p><img src="images/architecture5.png" alt="architecture5" /></p>
 </section>
 <section >
@@ -137,7 +144,7 @@
 <p><img src="images/architecture6.png" alt="architecture6" /></p>
 </section>
 <section >
-<h3>Problem - Too fat Core</h3>
+<h3>Problem - too fat Core</h3>
 <p><img src="images/architecture7.png" alt="architecture7" /></p>
 </section>
 <section >
@@ -168,7 +175,9 @@
 </section>
 <section >
 <h3>Initial components</h3>
+<br/>
 <p><img src="images/meat1.png" alt="meat1" /></p>
+<br/>
 </section>
 <section >
 <h3>Part of speech</h3>
@@ -195,22 +204,22 @@
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="o">..</span><span class="o">.</span>
 
 <span class="k">let</span> <span class="i">isValid</span> <span class="i">word</span> <span class="o">=</span>
-	<span class="o">..</span><span class="o">.</span>
+    <span class="o">..</span><span class="o">.</span>
 
 <span class="k">let</span> <span class="i">getImperatives</span> <span class="i">verb</span> <span class="o">=</span>
-	<span class="o">..</span><span class="o">.</span>
+    <span class="o">..</span><span class="o">.</span>
 
 <span class="k">type</span> <span class="i">Verb</span>(<span class="i">word</span>) <span class="o">=</span>
-	<span class="o">..</span><span class="o">.</span>
+    <span class="o">..</span><span class="o">.</span>
 	
-	<span class="k">member</span> <span class="k">val</span> <span class="i">Indicative</span>  <span class="o">=</span> <span class="i">word</span> <span class="o">|&gt;</span> <span class="o">..</span><span class="o">.</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">id</span> <span class="o">..</span><span class="o">.</span>
-	<span class="k">member</span> <span class="k">val</span> <span class="i">Imperatives</span> <span class="o">=</span> <span class="i">word</span> <span class="o">|&gt;</span> <span class="o">..</span><span class="o">.</span> <span class="i">getImperatives</span> <span class="o">..</span><span class="o">.</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Indicative</span>  <span class="o">=</span> <span class="i">word</span> <span class="o">|&gt;</span> <span class="o">..</span><span class="o">.</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">id</span> <span class="o">..</span><span class="o">.</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Imperatives</span> <span class="o">=</span> <span class="i">word</span> <span class="o">|&gt;</span> <span class="o">..</span><span class="o">.</span> <span class="i">getImperatives</span> <span class="o">..</span><span class="o">.</span>
 
 <span class="k">let</span> <span class="i">record</span> <span class="i">word</span> <span class="o">=</span>
-	<span class="k">if</span> 
-		<span class="i">word</span> <span class="o">|&gt;</span> <span class="i">isValid</span>
-	<span class="k">then</span> 
-		<span class="i">word</span> <span class="o">|&gt;</span> <span class="i">Verb</span> <span class="o">|&gt;</span> <span class="i">Storage</span><span class="o">.</span><span class="i">upsert</span> <span class="s">&quot;verbs&quot;</span>
+    <span class="k">if</span> 
+        <span class="i">word</span> <span class="o">|&gt;</span> <span class="i">isValid</span>
+    <span class="k">then</span> 
+        <span class="i">word</span> <span class="o">|&gt;</span> <span class="i">Verb</span> <span class="o">|&gt;</span> <span class="i">Storage</span><span class="o">.</span><span class="i">upsert</span> <span class="s">&quot;verbs&quot;</span>
 </code></pre></td>
 </tr>
 </table>
@@ -230,11 +239,11 @@
 <span class="l">6: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">isValid</span> <span class="o">=</span>
-	<span class="i">Article</span><span class="o">.</span><span class="i">tryGetContent</span>
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="i">bind</span> (<span class="i">Article</span><span class="o">.</span><span class="i">tryGetPart</span> <span class="s">&quot;čeština&quot;</span>)
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 5)" onmouseover="showTip(event, 'fs3', 5)" class="i">bind</span> (<span class="i">Article</span><span class="o">.</span><span class="i">tryGetPart</span> <span class="s">&quot;sloveso&quot;</span>)
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs2', 6)" onmouseover="showTip(event, 'fs2', 6)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 7)" onmouseover="showTip(event, 'fs3', 7)" class="i">bind</span> (<span class="i">Article</span><span class="o">.</span><span class="i">tryGetPart</span> <span class="s">&quot;časov&#225;n&#237;&quot;</span>)
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs2', 8)" onmouseover="showTip(event, 'fs2', 8)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs4', 9)" onmouseover="showTip(event, 'fs4', 9)" class="i">isSome</span>
+    <span class="i">Article</span><span class="o">.</span><span class="i">tryGetContent</span>
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="i">bind</span> (<span class="i">Article</span><span class="o">.</span><span class="i">tryGetPart</span> <span class="s">&quot;čeština&quot;</span>)
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 5)" onmouseover="showTip(event, 'fs3', 5)" class="i">bind</span> (<span class="i">Article</span><span class="o">.</span><span class="i">tryGetPart</span> <span class="s">&quot;sloveso&quot;</span>)
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs2', 6)" onmouseover="showTip(event, 'fs2', 6)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 7)" onmouseover="showTip(event, 'fs3', 7)" class="i">bind</span> (<span class="i">Article</span><span class="o">.</span><span class="i">tryGetPart</span> <span class="s">&quot;časov&#225;n&#237;&quot;</span>)
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs2', 8)" onmouseover="showTip(event, 'fs2', 8)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs4', 9)" onmouseover="showTip(event, 'fs4', 9)" class="i">isSome</span>
 </code></pre></td>
 </tr>
 </table>
@@ -262,10 +271,10 @@
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="i">Wiki</span> <span class="o">=</span> <span class="i">HtmlProvider</span><span class="o">&lt;</span><span class="s">&quot;https://cs.wiktionary.org/wiki/myslet&quot;</span><span class="o">&gt;</span>
 
 <span class="k">let</span> <span class="i">getImperatives</span> <span class="i">word</span> <span class="o">=</span>
-	<span class="k">let</span> <span class="i">url</span> <span class="o">=</span> <span class="s">&quot;https://cs.wiktionary.org/wiki/&quot;</span> <span class="o">+</span> <span class="i">word</span>
-	<span class="k">let</span> <span class="i">data</span> <span class="o">=</span> <span class="i">Wiki</span><span class="o">.</span><span class="i">Load</span> <span class="i">url</span>
-	<span class="k">let</span> <span class="i">answer</span> <span class="o">=</span> <span class="i">data</span><span class="o">.</span><span class="i">Tables</span><span class="o">.</span><span class="i">``Časov&#225;n&#237;[editovat]2``</span><span class="o">.</span><span class="i">Rows</span><span class="o">.</span>[<span class="n">0</span>]<span class="o">.</span><span class="i">``Č&#237;slo jednotn&#233; - 2.``</span>
-	<span class="i">answer</span>
+    <span class="k">let</span> <span class="i">url</span> <span class="o">=</span> <span class="s">&quot;https://cs.wiktionary.org/wiki/&quot;</span> <span class="o">+</span> <span class="i">word</span>
+    <span class="k">let</span> <span class="i">data</span> <span class="o">=</span> <span class="i">Wiki</span><span class="o">.</span><span class="i">Load</span> <span class="i">url</span>
+    <span class="k">let</span> <span class="i">answer</span> <span class="o">=</span> <span class="i">data</span><span class="o">.</span><span class="i">Tables</span><span class="o">.</span><span class="i">``Časov&#225;n&#237;[editovat]2``</span><span class="o">.</span><span class="i">Rows</span><span class="o">.</span>[<span class="n">0</span>]<span class="o">.</span><span class="i">``Č&#237;slo jednotn&#233; - 2.``</span>
+    <span class="i">answer</span>
 </code></pre></td>
 </tr>
 </table>
@@ -277,6 +286,7 @@
 </section>
 <section >
 <h3><a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Core/Article.fs">Article framework</a></h3>
+<br/>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -300,7 +310,7 @@
 <span class="k">let</span> <span class="i">contentClass</span> <span class="o">=</span> <span class="s">&quot;mw-parser-output&quot;</span>
 <span class="o">..</span><span class="o">.</span>
 <span class="k">let</span> <span class="i">lockInfoIndicator</span> <span class="o">=</span> <span class="s">&quot;[e]&quot;</span>
-<span class="k">let</span> <span class="i">tableElementName</span>     <span class="o">=</span> <span class="s">&quot;table&quot;</span>
+<span class="k">let</span> <span class="i">tableElementName</span> <span class="o">=</span> <span class="s">&quot;table&quot;</span>
 <span class="k">let</span> <span class="i">tableNameElementName</span> <span class="o">=</span> <span class="s">&quot;caption&quot;</span>
 
 <span class="k">let</span> <span class="i">loadArticle</span> <span class="o">=</span> <span class="o">..</span><span class="o">.</span>
@@ -313,6 +323,7 @@
 </code></pre></td>
 </tr>
 </table>
+<br/>
 </section>
 <section >
 <h3>Feature - <a href="https://check-your-czech.azurewebsites.net/#adjectives-comparatives">regularity</a></h3>
@@ -336,16 +347,16 @@
 <span class="l">11: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">isRegular</span> <span class="i">word</span> <span class="o">=</span>
-	<span class="k">let</span> <span class="i">theoretical</span> <span class="o">=</span> <span class="i">buildTheoreticalComparative</span> <span class="i">word</span>
-	<span class="k">let</span> <span class="i">practical</span> <span class="o">=</span> <span class="i">getComparatives</span> <span class="i">word</span>
-	<span class="i">practical</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs5', 10)" onmouseover="showTip(event, 'fs5', 10)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs6', 11)" onmouseover="showTip(event, 'fs6', 11)" class="i">contains</span> <span class="i">theoretical</span>
+    <span class="k">let</span> <span class="i">theoretical</span> <span class="o">=</span> <span class="i">buildTheoreticalComparative</span> <span class="i">word</span>
+    <span class="k">let</span> <span class="i">practical</span> <span class="o">=</span> <span class="i">getComparatives</span> <span class="i">word</span>
+    <span class="i">practical</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs5', 10)" onmouseover="showTip(event, 'fs5', 10)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs6', 11)" onmouseover="showTip(event, 'fs6', 11)" class="i">contains</span> <span class="i">theoretical</span>
 
 <span class="k">type</span> <span class="i">Adjective</span>(<span class="i">word</span>) <span class="o">=</span>
-	<span class="o">..</span><span class="o">.</span>
-	
-	<span class="k">member</span> <span class="k">val</span> <span class="i">Positive</span>     <span class="o">=</span> <span class="o">..</span><span class="o">.</span> <span onmouseout="hideTip(event, 'fs1', 12)" onmouseover="showTip(event, 'fs1', 12)" class="i">id</span> <span class="o">..</span><span class="o">.</span>
-	<span class="k">member</span> <span class="k">val</span> <span class="i">Comparatives</span> <span class="o">=</span> <span class="o">..</span><span class="o">.</span> <span class="i">getComparatives</span> <span class="o">..</span><span class="o">.</span>
-	<span class="k">member</span> <span class="k">val</span> <span class="i">IsRegular</span>    <span class="o">=</span> <span class="o">..</span><span class="o">.</span> <span class="i">isRegular</span> <span class="o">..</span><span class="o">.</span>
+     <span class="o">..</span><span class="o">.</span>
+     
+     <span class="k">member</span> <span class="k">val</span> <span class="i">Positive</span>     <span class="o">=</span> <span class="o">..</span><span class="o">.</span> <span onmouseout="hideTip(event, 'fs1', 12)" onmouseover="showTip(event, 'fs1', 12)" class="i">id</span> <span class="o">..</span><span class="o">.</span>
+     <span class="k">member</span> <span class="k">val</span> <span class="i">Comparatives</span> <span class="o">=</span> <span class="o">..</span><span class="o">.</span> <span class="i">getComparatives</span> <span class="o">..</span><span class="o">.</span>
+     <span class="k">member</span> <span class="k">val</span> <span class="i">IsRegular</span>    <span class="o">=</span> <span class="o">..</span><span class="o">.</span> <span class="i">isRegular</span> <span class="o">..</span><span class="o">.</span>
 </code></pre></td>
 </tr>
 </table>
@@ -354,7 +365,7 @@
 <br/>
 </section>
 <section >
-<h3>Theoretical form building</h3>
+<h3>Theoretical form <a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Core/ParticipleBuilder.fs">building</a></h3>
 <br/>
 <br/>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
@@ -371,17 +382,17 @@
 <span class="l">12: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">buildTheoreticalComparative</span> <span class="i">word</span> <span class="o">=</span> 
-	<span class="k">let</span> <span class="i">getStem</span> (<span class="i">word</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs7', 13)" onmouseover="showTip(event, 'fs7', 13)" class="i">string</span>) <span class="o">=</span> <span class="i">word</span><span class="o">.</span><span class="i">TrimEnd</span>(<span class="s">&#39;&#237;&#39;</span>, <span class="s">&#39;&#253;&#39;</span>)
-	
-	<span class="k">let</span> <span class="i">addSuffix</span> <span class="o">=</span> <span class="k">function</span>
-		| <span class="i">stem</span> <span class="k">when</span> <span class="i">stem</span> <span class="o">|&gt;</span> <span class="i">endsHard</span> <span class="k">-&gt;</span> <span class="i">stem</span> <span class="o">+</span> <span class="s">&quot;ějš&#237;&quot;</span>
-		| <span class="i">stem</span> <span class="k">when</span> <span class="i">stem</span> <span class="o">|&gt;</span> <span class="i">endsSoft</span> <span class="k">-&gt;</span> <span class="i">stem</span> <span class="o">+</span> <span class="s">&quot;ejš&#237;&quot;</span>
-		| _ <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs8', 14)" onmouseover="showTip(event, 'fs8', 14)" class="i">invalidArg</span> <span class="i">word</span> <span class="s">&quot;odd adjective&quot;</span>
-
-	<span class="i">word</span>
-	<span class="o">|&gt;</span> <span class="i">getStem</span>
-	<span class="o">|&gt;</span> <span class="i">alternate</span>
-	<span class="o">|&gt;</span> <span class="i">addSuffix</span>		
+    <span class="k">let</span> <span class="i">getStem</span> (<span class="i">word</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs7', 13)" onmouseover="showTip(event, 'fs7', 13)" class="i">string</span>) <span class="o">=</span> <span class="i">word</span><span class="o">.</span><span class="i">TrimEnd</span>(<span class="s">&#39;&#237;&#39;</span>, <span class="s">&#39;&#253;&#39;</span>)
+    
+    <span class="k">let</span> <span class="i">addSuffix</span> <span class="o">=</span> <span class="k">function</span>
+    	| <span class="i">stem</span> <span class="k">when</span> <span class="i">stem</span> <span class="o">|&gt;</span> <span class="i">endsHard</span> <span class="k">-&gt;</span> <span class="i">stem</span> <span class="o">+</span> <span class="s">&quot;ějš&#237;&quot;</span>
+    	| <span class="i">stem</span> <span class="k">when</span> <span class="i">stem</span> <span class="o">|&gt;</span> <span class="i">endsSoft</span> <span class="k">-&gt;</span> <span class="i">stem</span> <span class="o">+</span> <span class="s">&quot;ejš&#237;&quot;</span>
+    	| _ <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs8', 14)" onmouseover="showTip(event, 'fs8', 14)" class="i">invalidArg</span> <span class="i">word</span> <span class="s">&quot;odd adjective&quot;</span>
+    
+    <span class="i">word</span>
+    <span class="o">|&gt;</span> <span class="i">getStem</span>
+    <span class="o">|&gt;</span> <span class="i">alternate</span>
+    <span class="o">|&gt;</span> <span class="i">addSuffix</span>		
 </code></pre></td>
 </tr>
 </table>
@@ -393,11 +404,14 @@
 <p><img src="images/meat3.png" alt="meat3" /></p>
 </section>
 <section >
-<h3>Feature - advanced filtering</h3>
+<h3>Feature - <a href="https://check-your-czech.azurewebsites.net/#verbs-imperatives">advanced filtering</a></h3>
+<br/>
 <p><img src="images/meat4.png" alt="meat4" /></p>
+<br/>
 </section>
 <section >
-<h3>Detection example - <a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Core/VerbPatternDetector.fs">verbs</a></h3>
+<h3><a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Core/VerbPatternDetector.fs">Pattern detection</a></h3>
+<br/>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -418,22 +432,23 @@
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="o">..</span><span class="o">.</span>
 
 <span class="k">let</span> <span class="i">patternClassMap</span> <span class="o">=</span>
-	<span onmouseout="hideTip(event, 'fs9', 15)" onmouseover="showTip(event, 'fs9', 15)" class="i">dict</span> [ 
-		   (<span class="n">1</span>, <span class="i">getPatternClass1</span>)
-		   (<span class="n">2</span>, <span class="i">getPatternClass2</span>)
-		   (<span class="n">3</span>, <span class="i">getPatternClass3</span>)
-		   (<span class="n">4</span>, <span class="i">getPatternClass4</span>)
-		   (<span class="n">5</span>, <span class="i">getPatternClass5</span>) ]
+    <span onmouseout="hideTip(event, 'fs9', 15)" onmouseover="showTip(event, 'fs9', 15)" class="i">dict</span> [ 
+           (<span class="n">1</span>, <span class="i">getPatternClass1</span>)
+           (<span class="n">2</span>, <span class="i">getPatternClass2</span>)
+           (<span class="n">3</span>, <span class="i">getPatternClass3</span>)
+           (<span class="n">4</span>, <span class="i">getPatternClass4</span>)
+           (<span class="n">5</span>, <span class="i">getPatternClass5</span>) ]
 
 <span class="k">let</span> <span class="i">getPatternByClass</span> <span class="i">verb</span> <span class="i">verbClass</span> <span class="o">=</span> <span class="i">patternClassMap</span><span class="o">.</span>[<span class="i">verbClass</span>] <span class="i">verb</span>
 
 <span class="k">let</span> <span class="i">getPattern</span> <span class="i">verb</span> <span class="o">=</span> 
-	<span class="i">verb</span>
-	<span class="o">|&gt;</span> <span class="i">Verb</span><span class="o">.</span><span class="i">getClass</span>
-	<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 16)" onmouseover="showTip(event, 'fs2', 16)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 17)" onmouseover="showTip(event, 'fs3', 17)" class="i">bind</span> (<span class="i">getPatternByClass</span> <span class="i">verb</span>)
+    <span class="i">verb</span>
+    <span class="o">|&gt;</span> <span class="i">Verb</span><span class="o">.</span><span class="i">getClass</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 16)" onmouseover="showTip(event, 'fs2', 16)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 17)" onmouseover="showTip(event, 'fs3', 17)" class="i">bind</span> (<span class="i">getPatternByClass</span> <span class="i">verb</span>)
 </code></pre></td>
 </tr>
 </table>
+<br/>
 </section>
 <section >
 <h3>New Core layers</h3>
@@ -444,7 +459,8 @@
 <br/>
 </section>
 <section >
-<h3><a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Core/WikiString.fs">WikiString framework</a></h3>
+<h3><a href="https://cs.wiktionary.org/wiki/b%C3%BDt">WikiString</a> <a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Core/WikiString.fs">framework</a></h3>
+<br/>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -474,15 +490,16 @@
 <span class="o">..</span><span class="o">.</span>
 
 <span class="k">let</span> <span class="i">getForms</span> <span class="o">=</span>
-	<span class="i">split</span> <span class="i">formSeparators</span>
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 18)" onmouseover="showTip(event, 'fs5', 18)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 19)" onmouseover="showTip(event, 'fs10', 19)" class="i">map</span> <span class="i">trim</span>
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 20)" onmouseover="showTip(event, 'fs5', 20)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 21)" onmouseover="showTip(event, 'fs11', 21)" class="i">filter</span> <span class="i">isWord</span>
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 22)" onmouseover="showTip(event, 'fs5', 22)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 23)" onmouseover="showTip(event, 'fs11', 23)" class="i">filter</span> <span class="i">isOfficial</span>
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 24)" onmouseover="showTip(event, 'fs5', 24)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 25)" onmouseover="showTip(event, 'fs10', 25)" class="i">map</span> <span class="i">removeLabels</span>
-	<span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 26)" onmouseover="showTip(event, 'fs5', 26)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 27)" onmouseover="showTip(event, 'fs10', 27)" class="i">map</span> <span class="i">removeReferences</span>
+    <span class="i">split</span> <span class="i">formSeparators</span>
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 18)" onmouseover="showTip(event, 'fs5', 18)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 19)" onmouseover="showTip(event, 'fs10', 19)" class="i">map</span> <span class="i">trim</span>
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 20)" onmouseover="showTip(event, 'fs5', 20)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 21)" onmouseover="showTip(event, 'fs11', 21)" class="i">filter</span> <span class="i">isWord</span>
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 22)" onmouseover="showTip(event, 'fs5', 22)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 23)" onmouseover="showTip(event, 'fs11', 23)" class="i">filter</span> <span class="i">isOfficial</span>
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 24)" onmouseover="showTip(event, 'fs5', 24)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 25)" onmouseover="showTip(event, 'fs10', 25)" class="i">map</span> <span class="i">removeLabels</span>
+    <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs5', 26)" onmouseover="showTip(event, 'fs5', 26)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 27)" onmouseover="showTip(event, 'fs10', 27)" class="i">map</span> <span class="i">removeReferences</span>
 </code></pre></td>
 </tr>
 </table>
+<br/>
 </section>
 <section >
 <h3><a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Core/Letters.fs">Letters module</a></h3>
@@ -500,7 +517,6 @@
 <span class="l"> 9: </span>
 <span class="l">10: </span>
 <span class="l">11: </span>
-<span class="l">12: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">syllabicConsonants</span> <span class="o">=</span> [<span class="s">&#39;l&#39;</span>;<span class="s">&#39;r&#39;</span>]
 <span class="k">let</span> <span class="i">longVowels</span> <span class="o">=</span> [<span class="s">&#39;&#225;&#39;</span>;<span class="s">&#39;&#233;&#39;</span>;<span class="s">&#39;&#237;&#39;</span>;<span class="s">&#39;&#243;&#39;</span>;<span class="s">&#39;&#250;&#39;</span>;<span class="s">&#39;ů&#39;</span>]
@@ -511,9 +527,8 @@
 <span class="k">let</span> <span class="i">isConsonant</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs14', 30)" onmouseover="showTip(event, 'fs14', 30)" class="i">not</span> <span class="o">&lt;&lt;</span> <span class="i">isVowel</span>
 
 <span class="k">let</span> <span class="i">isSyllabicConsonant</span> <span class="i">letter</span> <span class="o">=</span> <span class="i">syllabicConsonants</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs12', 31)" onmouseover="showTip(event, 'fs12', 31)" class="i">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs13', 32)" onmouseover="showTip(event, 'fs13', 32)" class="i">contains</span> <span class="i">letter</span>
-<span class="k">let</span> <span class="i">isNotSyllabicConsonant</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs14', 33)" onmouseover="showTip(event, 'fs14', 33)" class="i">not</span> <span class="o">&lt;&lt;</span> <span class="i">isSyllabicConsonant</span>
 
-<span class="k">let</span> <span class="i">isConsonantGroup</span> <span class="i">letters</span> <span class="o">=</span> <span class="i">letters</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 34)" onmouseover="showTip(event, 'fs15', 34)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 35)" onmouseover="showTip(event, 'fs16', 35)" class="i">forall</span> <span class="i">isConsonant</span>
+<span class="k">let</span> <span class="i">isConsonantGroup</span> <span class="i">letters</span> <span class="o">=</span> <span class="i">letters</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 33)" onmouseover="showTip(event, 'fs15', 33)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 34)" onmouseover="showTip(event, 'fs16', 34)" class="i">forall</span> <span class="i">isConsonant</span>
 </code></pre></td>
 </tr>
 </table>
@@ -535,12 +550,15 @@
 <br/>
 <br/>
 <br/>
+<br/>
 <ul>
 <li>Remove validation from data models (<a href="https://github.com/psfinaki/CheckYourCzech/issues/465">#465</a>)</li>
 <li>Simplify article scanning (<a href="https://github.com/psfinaki/CheckYourCzech/issues/266">#266</a>)</li>
 <li>Multiple language quirks (<a href="https://github.com/psfinaki/CheckYourCzech/issues/165">#165</a>, <a href="https://github.com/psfinaki/CheckYourCzech/issues/173">#173</a>, <a href="https://github.com/psfinaki/CheckYourCzech/issues/183">#183</a>, ...)</li>
 <li>New exercise features (<a href="https://github.com/psfinaki/CheckYourCzech/issues/336">#336</a>, <a href="https://github.com/psfinaki/CheckYourCzech/issues/515">#515</a>, ...)</li>
 </ul>
+<br/>
+<br/>
 <br/>
 <br/>
 <br/>
@@ -562,8 +580,8 @@
 <li>Schemaless</li>
 <li>Cheap</li>
 <li>Good API</li>
-<li>Storage Explorer + Storage Emulator</li>
 <li>Azure</li>
+<li>Storage Emulator + Storage Explorer</li>
 </ul>
 <br/>
 <br/>
@@ -573,10 +591,12 @@
 </section>
 <section >
 <h3>Data exploring</h3>
+<br/>
 <p><img src="images/storage1.png" alt="storage1" /></p>
+<br/>
 </section>
 <section >
-<h3>TableEntity</h3>
+<h3>Table Entity</h3>
 <br/>
 <br/>
 <br/>
@@ -591,14 +611,14 @@
 <span class="l">9: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="i">NounPlural</span>(<span class="i">word</span>) <span class="o">=</span>
-	<span class="k">inherit</span> <span class="i">TableEntity</span>(<span class="i">word</span>, <span class="i">word</span>)
-	
-	<span class="k">new</span>() <span class="o">=</span> <span class="i">NounPlural</span> <span class="k">null</span>
-
-	<span class="k">member</span> <span class="k">val</span> <span class="i">Singular</span> <span class="o">=</span> <span class="i">getSingular</span> <span class="i">word</span> <span class="k">with</span> <span class="i">get</span>, <span onmouseout="hideTip(event, 'fs17', 36)" onmouseover="showTip(event, 'fs17', 36)" class="i">set</span>
-	<span class="k">member</span> <span class="k">val</span> <span class="i">Plurals</span> <span class="o">=</span> <span class="i">getPlurals</span> <span class="i">word</span> <span class="k">with</span> <span class="i">get</span>, <span onmouseout="hideTip(event, 'fs17', 37)" onmouseover="showTip(event, 'fs17', 37)" class="i">set</span>
-	<span class="k">member</span> <span class="k">val</span> <span class="i">Gender</span> <span class="o">=</span> <span class="i">getGender</span> <span class="i">word</span> <span class="k">with</span> <span class="i">get</span>, <span onmouseout="hideTip(event, 'fs17', 38)" onmouseover="showTip(event, 'fs17', 38)" class="i">set</span>
-	<span class="k">member</span> <span class="k">val</span> <span class="i">Pattern</span> <span class="o">=</span> <span class="i">getPattern</span> <span class="i">word</span> <span class="k">with</span> <span class="i">get</span>, <span onmouseout="hideTip(event, 'fs17', 39)" onmouseover="showTip(event, 'fs17', 39)" class="i">set</span>
+    <span class="k">inherit</span> <span class="i">TableEntity</span>(<span class="i">word</span>, <span class="i">word</span>)
+    
+    <span class="k">new</span>() <span class="o">=</span> <span class="i">NounPlural</span> <span class="k">null</span>
+    
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Singular</span> <span class="o">=</span> <span class="i">getSingular</span> <span class="i">word</span> <span class="k">with</span> <span class="i">get</span>, <span onmouseout="hideTip(event, 'fs17', 35)" onmouseover="showTip(event, 'fs17', 35)" class="i">set</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Plurals</span> <span class="o">=</span> <span class="i">getPlurals</span> <span class="i">word</span> <span class="k">with</span> <span class="i">get</span>, <span onmouseout="hideTip(event, 'fs17', 36)" onmouseover="showTip(event, 'fs17', 36)" class="i">set</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Gender</span> <span class="o">=</span> <span class="i">getGender</span> <span class="i">word</span> <span class="k">with</span> <span class="i">get</span>, <span onmouseout="hideTip(event, 'fs17', 37)" onmouseover="showTip(event, 'fs17', 37)" class="i">set</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Pattern</span> <span class="o">=</span> <span class="i">getPattern</span> <span class="i">word</span> <span class="k">with</span> <span class="i">get</span>, <span onmouseout="hideTip(event, 'fs17', 38)" onmouseover="showTip(event, 'fs17', 38)" class="i">set</span>
 </code></pre></td>
 </tr>
 </table>
@@ -607,7 +627,10 @@
 <br/>
 </section>
 <section >
-<h3>Working with data</h3>
+<h3><a href="https://docs.microsoft.com/en-us/dotnet/fsharp/using-fsharp-on-azure/table-storage">Working with data</a></h3>
+<br/>
+<br/>
+<br/>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -620,38 +643,45 @@
 <span class="l">10: </span>
 <span class="l">11: </span>
 <span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
-<span class="l">18: </span>
-<span class="l">19: </span>
-<span class="l">20: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">tryGetRandom</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">T</span> <span class="k">when</span> <span class="o">.</span><span class="o">..&gt;</span> <span class="i">tableName</span> <span class="i">filters</span> <span class="o">=</span>
-	<span class="k">let</span> <span class="i">table</span> <span class="o">=</span> <span class="i">getTable</span> <span class="i">tableName</span>
-
-	<span class="i">filters</span>
-	<span class="o">|&gt;</span> <span class="i">buildQuery</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">T</span><span class="o">&gt;</span>
-	<span class="o">|&gt;</span> <span class="i">table</span><span class="o">.</span><span class="i">ExecuteQuery</span>
-	<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 40)" onmouseover="showTip(event, 'fs15', 40)" class="i">Seq</span><span class="o">.</span><span class="i">tryRandom</span>
-
-<span class="k">let</span> <span class="i">getSingle</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">T</span> <span class="k">when</span> <span class="o">.</span><span class="o">..&gt;</span> <span class="i">tableName</span> <span class="i">filters</span> <span class="o">=</span> 
-	<span class="k">let</span> <span class="i">table</span> <span class="o">=</span> <span class="i">getTable</span> <span class="i">tableName</span>
-
-	<span class="i">filters</span>
-	<span class="o">|&gt;</span> <span class="i">buildQuery</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">T</span><span class="o">&gt;</span>
-	<span class="o">|&gt;</span> <span class="i">table</span><span class="o">.</span><span class="i">ExecuteQuery</span>
-	<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 41)" onmouseover="showTip(event, 'fs15', 41)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs18', 42)" onmouseover="showTip(event, 'fs18', 42)" class="i">exactlyOne</span>
+    <span class="k">let</span> <span class="i">table</span> <span class="o">=</span> <span class="i">getTable</span> <span class="i">tableName</span>
+    
+    <span class="i">filters</span>
+    <span class="o">|&gt;</span> <span class="i">buildQuery</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">T</span><span class="o">&gt;</span>
+    <span class="o">|&gt;</span> <span class="i">table</span><span class="o">.</span><span class="i">ExecuteQuery</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 39)" onmouseover="showTip(event, 'fs15', 39)" class="i">Seq</span><span class="o">.</span><span class="i">tryRandom</span>
 
 <span class="k">let</span> <span class="i">upsert</span> <span class="i">tableName</span> <span class="i">entity</span> <span class="o">=</span>
-	<span class="k">let</span> <span class="i">table</span> <span class="o">=</span> <span class="i">getTable</span> <span class="i">tableName</span>
-	<span class="k">let</span> <span class="i">operation</span> <span class="o">=</span> <span class="i">TableOperation</span><span class="o">.</span><span class="i">InsertOrReplace</span> <span class="i">entity</span>
-	<span class="i">table</span><span class="o">.</span><span class="i">Execute</span> <span class="i">operation</span>
+    <span class="k">let</span> <span class="i">table</span> <span class="o">=</span> <span class="i">getTable</span> <span class="i">tableName</span>
+    <span class="k">let</span> <span class="i">operation</span> <span class="o">=</span> <span class="i">TableOperation</span><span class="o">.</span><span class="i">InsertOrReplace</span> <span class="i">entity</span>
+    <span class="i">table</span><span class="o">.</span><span class="i">Execute</span> <span class="i">operation</span>
 </code></pre></td>
 </tr>
 </table>
+<br/>
+<br/>
+<br/>	
+</section>
+<section >
+<h3>Caveats</h3>
+<br/>
+<br/>
+<br/>	
+<br/>
+<br/>
+<br/>		
+<ul>
+<li><a href="https://github.com/fsprojects/AzureStorageTypeProvider/issues/111">No type providers</a> for .NET Core</li>
+<li><a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Core/Storage.fs">Messy serialization</a> of F# types</li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>	
+<br/>
+<br/>
+<br/>
 </section>
 <section >
 <h3>What's next?</h3>
@@ -660,11 +690,10 @@
 <br/>
 <br/>
 <br/>
-<br/>		
-<br/>		
+<br/>			
 <ul>
-<li>Proper async work (<a href="https://github.com/psfinaki/CheckYourCzech/issues/299">#299</a>)</li>
 <li>Partitioning (<a href="https://github.com/psfinaki/CheckYourCzech/issues/240">#240</a>)</li>
+<li>Proper async work (<a href="https://github.com/psfinaki/CheckYourCzech/issues/299">#299</a>)</li>
 </ul>
 <br/>
 <br/>
@@ -677,7 +706,7 @@
 </section>
 <section >
 <section >
-<h3>Logging</h3>
+<h3>LOGGING</h3>
 </section>
 <section >
 <h3>SAFE default - Application Insights</h3>
@@ -685,6 +714,7 @@
 </section>
 <section >
 <h3><a href="https://stackoverflow.com/questions/51255168/how-to-customize-logging-in-f-saturn-framework">Leveraging AI in Saturn</a></h3>
+<br/>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -700,27 +730,26 @@
 <span class="l">13: </span>
 <span class="l">14: </span>
 <span class="l">15: </span>
-<span class="l">16: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">getWordExn</span> <span class="i">ctx</span> <span class="i">matchRule</span> <span class="o">=</span>	
-	<span class="k">let</span> <span class="i">iterator</span> _ <span class="o">=</span> <span class="i">WordGenerator</span><span class="o">.</span><span class="i">getRandomWord</span>()
-		
-	<span class="i">iterator</span>
-	<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 43)" onmouseover="showTip(event, 'fs15', 43)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs19', 44)" onmouseover="showTip(event, 'fs19', 44)" class="i">initInfinite</span>
-	<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 45)" onmouseover="showTip(event, 'fs15', 45)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs20', 46)" onmouseover="showTip(event, 'fs20', 46)" class="i">find</span> <span class="i">matchRule</span>
+    <span class="k">let</span> <span class="i">iterator</span> _ <span class="o">=</span> <span class="i">WordGenerator</span><span class="o">.</span><span class="i">getRandomWord</span>()
+    	
+    <span class="i">iterator</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 40)" onmouseover="showTip(event, 'fs15', 40)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs18', 41)" onmouseover="showTip(event, 'fs18', 41)" class="i">initInfinite</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 42)" onmouseover="showTip(event, 'fs15', 42)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs19', 43)" onmouseover="showTip(event, 'fs19', 43)" class="i">find</span> <span class="i">matchRule</span>
 	
 <span class="k">let</span> <span class="i">tryGetWord</span> (<span class="i">ctx</span><span class="o">:</span> <span class="i">HttpContext</span>) <span class="i">matchRule</span> <span class="o">=</span>
-	<span class="k">try</span>
-		<span class="i">getWordExn</span> <span class="i">ctx</span> <span class="i">matchRule</span>
-		<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs21', 47)" onmouseover="showTip(event, 'fs21', 47)" class="i">Some</span>
-	<span class="k">with</span>
-	| <span class="i">e</span> <span class="k">-&gt;</span>
-		<span class="k">let</span> <span class="i">msg</span> <span class="o">=</span> <span class="s">&quot;Exception when searching a word&quot;</span>
-		<span class="i">ctx</span><span class="o">.</span><span class="i">GetLogger</span>()<span class="o">.</span><span class="i">LogError</span>(<span class="i">e</span>, <span class="i">msg</span>)
-		<span onmouseout="hideTip(event, 'fs22', 48)" onmouseover="showTip(event, 'fs22', 48)" class="i">None</span>
+    <span class="k">try</span>
+    	<span class="i">getWordExn</span> <span class="i">ctx</span> <span class="i">matchRule</span>
+    	<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs20', 44)" onmouseover="showTip(event, 'fs20', 44)" class="i">Some</span>
+    <span class="k">with</span> <span class="i">e</span> <span class="k">-&gt;</span>
+    	<span class="k">let</span> <span class="i">msg</span> <span class="o">=</span> <span class="s">&quot;Exception when searching a word&quot;</span>
+    	<span class="i">ctx</span><span class="o">.</span><span class="i">GetLogger</span>()<span class="o">.</span><span class="i">LogError</span>(<span class="i">e</span>, <span class="i">msg</span>)
+    	<span onmouseout="hideTip(event, 'fs21', 45)" onmouseover="showTip(event, 'fs21', 45)" class="i">None</span>
 </code></pre></td>
 </tr>
 </table>
+<br/>
 </section>
 <section >
 <h3>Exceptions in AI</h3>
@@ -736,6 +765,7 @@
 </section>
 <section >
 <h3><a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Scraper/ApplicationInsightsLogger.fs">AI logging in Scraper</a></h3>
+<br/>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -755,37 +785,44 @@
 <span class="l">17: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">getTelemetryClient</span>() <span class="o">=</span>
-	<span class="k">let</span> <span class="i">keyVariableName</span> <span class="o">=</span> <span class="s">&quot;APPINSIGHTS_INSTRUMENTATIONKEY&quot;</span>
-	<span class="k">let</span> <span class="i">key</span> <span class="o">=</span> <span class="i">Environment</span><span class="o">.</span><span class="i">GetEnvironmentVariable</span> <span class="i">keyVariableName</span>
-	<span class="i">TelemetryConfiguration</span><span class="o">.</span><span class="i">Active</span><span class="o">.</span><span class="i">InstrumentationKey</span> <span class="o">&lt;-</span> <span class="i">key</span>
-	<span class="i">TelemetryClient</span>()
+    <span class="k">let</span> <span class="i">keyVariableName</span> <span class="o">=</span> <span class="s">&quot;APPINSIGHTS_INSTRUMENTATIONKEY&quot;</span>
+    <span class="k">let</span> <span class="i">key</span> <span class="o">=</span> <span class="i">Environment</span><span class="o">.</span><span class="i">GetEnvironmentVariable</span> <span class="i">keyVariableName</span>
+    <span class="i">TelemetryConfiguration</span><span class="o">.</span><span class="i">Active</span><span class="o">.</span><span class="i">InstrumentationKey</span> <span class="o">&lt;-</span> <span class="i">key</span>
+    <span class="i">TelemetryClient</span>()
 
 <span class="k">let</span> <span class="i">getLogger</span>() <span class="o">=</span> (<span class="k">lazy</span> <span class="i">getTelemetryClient</span>())<span class="o">.</span><span class="i">Value</span>
 
-<span class="k">let</span> <span class="i">logMessage</span> (<span class="i">message</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs7', 49)" onmouseover="showTip(event, 'fs7', 49)" class="i">string</span>) <span class="o">=</span>
-	<span class="k">let</span> <span class="i">logger</span> <span class="o">=</span> <span class="i">getLogger</span>()
-	<span class="i">logger</span><span class="o">.</span><span class="i">TrackTrace</span> <span class="i">message</span>
-	<span class="i">logger</span><span class="o">.</span><span class="i">Flush</span>()
+<span class="k">let</span> <span class="i">logMessage</span> (<span class="i">message</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs7', 46)" onmouseover="showTip(event, 'fs7', 46)" class="i">string</span>) <span class="o">=</span>
+    <span class="k">let</span> <span class="i">logger</span> <span class="o">=</span> <span class="i">getLogger</span>()
+    <span class="i">logger</span><span class="o">.</span><span class="i">TrackTrace</span> <span class="i">message</span>
+    <span class="i">logger</span><span class="o">.</span><span class="i">Flush</span>()
 
-<span class="k">let</span> <span class="i">logError</span> (<span class="i">error</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs23', 50)" onmouseover="showTip(event, 'fs23', 50)" class="i">exn</span>) <span class="o">=</span>
-	<span class="k">let</span> <span class="i">logger</span> <span class="o">=</span> <span class="i">getLogger</span>()
-	<span class="i">logger</span><span class="o">.</span><span class="i">TrackException</span> <span class="i">error</span>
-	<span class="i">logger</span><span class="o">.</span><span class="i">Flush</span>()
+<span class="k">let</span> <span class="i">logError</span> (<span class="i">error</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs22', 47)" onmouseover="showTip(event, 'fs22', 47)" class="i">exn</span>) <span class="o">=</span>
+    <span class="k">let</span> <span class="i">logger</span> <span class="o">=</span> <span class="i">getLogger</span>()
+    <span class="i">logger</span><span class="o">.</span><span class="i">TrackException</span> <span class="i">error</span>
+    <span class="i">logger</span><span class="o">.</span><span class="i">Flush</span>()
 </code></pre></td>
 </tr>
 </table>
 </section>
 <section >
-<h3>Feature - Exceptions notifications</h3>
+<h3>Feature - exceptions notifications</h3>
+<br/>		
 <p><img src="images/logging5.png" alt="logging5" /></p>
+<br/>
 </section>
 <section >
 <h3><a href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-log">Azure Alerts</a></h3>
+<br/>
 <p><img src="images/logging6.png" alt="logging6" /></p>
+<br/>
 </section>
 <section >
-<h3>Feature - Request notifications</h3>
+<h3>Feature - request notifications</h3>
+<br/>
 <p><img src="images/logging7.png" alt="logging7" /></p>
+<br/>
+<br/>
 </section>
 <section >
 <h3><a href="https://azure.microsoft.com/en-us/blog/azure-log-analytics-meet-our-new-query-language-2/">Azure Log Analytics</a></h3>
@@ -804,24 +841,24 @@
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="js">requests <span class="o">|</span> 
     where 
-      (operation_SyntheticSource <span class="o">!</span><span class="o">=</span> 'Application Insights Availability Monitoring') 
+        (operation_SyntheticSource <span class="o">!</span><span class="o">=</span> 'Application Insights Availability Monitoring') 
     and 
-      (operation_Name <span class="o">!</span><span class="o">=</span> 'GET /favicon.ico' and 
-       operation_Name <span class="o">!</span><span class="o">=</span> 'GET /index.html' and 
-       operation_Name <span class="o">!</span><span class="o">=</span> 'GET /robots.txt' and 
-       operation_Name <span class="o">!</span><span class="o">=</span> 'GET /js/vendors.js' and 
-       operation_Name <span class="o">!</span><span class="o">=</span> 'GET /js/app.js')
+        (operation_Name <span class="o">!</span><span class="o">=</span> 'GET /favicon.ico' and 
+         operation_Name <span class="o">!</span><span class="o">=</span> 'GET /index.html' and 
+         operation_Name <span class="o">!</span><span class="o">=</span> 'GET /robots.txt' and 
+         operation_Name <span class="o">!</span><span class="o">=</span> 'GET /js/vendors.js' and 
+         operation_Name <span class="o">!</span><span class="o">=</span> 'GET /js/app.js')
 </code></pre></td></tr></table>
 <br/>
 <br/>
 <br/>		
 </section>
 <section >
-<h3>Feature - <a href="https://stackoverflow.com/questions/56145536/how-to-log-to-application-insights-in-f-fable/">Client logging</a></h3>
+<h3>Feature - Client logging</h3>
 <p><img src="images/logging8.png" alt="logging8" /></p>
 </section>
 <section >
-<h3><a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Client/Logger.fs">AI logging in Fable</a></h3>
+<h3><a href="https://stackoverflow.com/questions/56145536/how-to-log-to-application-insights-in-f-fable/">AI logging</a> in <a href="https://github.com/psfinaki/CheckYourCzech/blob/master/src/Client/Logger.fs">Fable</a></h3>
 <br/>
 <br/>
 <br/>
@@ -834,11 +871,11 @@
 <span class="l">6: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">setup</span>() <span class="o">=</span> 
-	<span class="k">let</span> <span class="i">key</span> <span class="o">=</span> <span class="s">&quot;aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee&quot;</span>
-	<span class="k">let</span> <span class="i">config</span> <span class="o">=</span> <span class="i">createObj</span> [ <span class="s">&quot;instrumentationKey&quot;</span> <span class="o">==&gt;</span> <span class="i">key</span> ]
-	<span class="i">window</span><span class="o">?</span><span class="i">appInsights</span><span class="o">?</span><span class="i">downloadAndSetup</span> <span class="i">config</span>
+    <span class="k">let</span> <span class="i">key</span> <span class="o">=</span> <span class="s">&quot;aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee&quot;</span>
+    <span class="k">let</span> <span class="i">config</span> <span class="o">=</span> <span class="i">createObj</span> [ <span class="s">&quot;instrumentationKey&quot;</span> <span class="o">==&gt;</span> <span class="i">key</span> ]
+    <span class="i">window</span><span class="o">?</span><span class="i">appInsights</span><span class="o">?</span><span class="i">downloadAndSetup</span> <span class="i">config</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs24', 51)" onmouseover="showTip(event, 'fs24', 51)" class="i">log</span> <span class="i">message</span> <span class="o">=</span> <span class="i">window</span><span class="o">?</span><span class="i">appInsights</span><span class="o">?</span><span class="i">trackTrace</span> <span class="i">message</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 48)" onmouseover="showTip(event, 'fs23', 48)" class="i">log</span> <span class="i">message</span> <span class="o">=</span> <span class="i">window</span><span class="o">?</span><span class="i">appInsights</span><span class="o">?</span><span class="i">trackTrace</span> <span class="i">message</span>
 </code></pre></td>
 </tr>
 </table>
@@ -853,6 +890,7 @@
 <br/>
 <br/>	
 <br/>	
+<br/>
 <br/>	
 <ul>
 <li>Track page views (<a href="https://github.com/psfinaki/CheckYourCzech/issues/211">#211</a>)</li>
@@ -863,25 +901,17 @@
 <br/>
 <br/>
 <br/>	
-<br/>	
-</section>
-</section>
-<section >
-<section >
-<h3>Ops</h3>
-</section>
-<section >
-<h3>Azure resources</h3>
 <br/>
 <br/>	
-<p><img src="images/ops1.png" alt="ops1" /></p>
-<br/>	
-<br/>	
+</section>
+</section>
+<section >
+<section >
+<h3>OPS</h3>
 </section>
 <section >
 <h3>SAFE Default - <a href="https://github.com/psfinaki/CheckYourCzech/blob/master/build.fsx">FAKE</a></h3>
 <br/>
-<br/>	
 <br/>	
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
@@ -898,16 +928,16 @@
 <span class="l">13: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="s">&quot;Clean&quot;</span>
-	<span class="o">==&gt;</span> <span class="s">&quot;InstallClient&quot;</span>
-	<span class="o">==&gt;</span> <span class="s">&quot;Build&quot;</span>
-	<span class="o">==&gt;</span> <span class="s">&quot;Bundle&quot;</span>
-	<span class="o">==&gt;</span> <span class="s">&quot;ArmTemplate&quot;</span>
-	<span class="o">==&gt;</span> <span class="s">&quot;AppService&quot;</span>
+    <span class="o">==&gt;</span> <span class="s">&quot;InstallClient&quot;</span>
+    <span class="o">==&gt;</span> <span class="s">&quot;Build&quot;</span>
+    <span class="o">==&gt;</span> <span class="s">&quot;Bundle&quot;</span>
+    <span class="o">==&gt;</span> <span class="s">&quot;ArmTemplate&quot;</span>
+    <span class="o">==&gt;</span> <span class="s">&quot;AppService&quot;</span>
 
 <span class="s">&quot;Clean&quot;</span>
-	<span class="o">==&gt;</span> <span class="s">&quot;InstallClient&quot;</span>
-	<span class="o">==&gt;</span> <span class="s">&quot;RestoreServer&quot;</span>
-	<span class="o">==&gt;</span> <span class="s">&quot;Run&quot;</span>
+    <span class="o">==&gt;</span> <span class="s">&quot;InstallClient&quot;</span>
+    <span class="o">==&gt;</span> <span class="s">&quot;RestoreServer&quot;</span>
+    <span class="o">==&gt;</span> <span class="s">&quot;Run&quot;</span>
 
 <span class="i">Target</span><span class="o">.</span><span class="i">runOrDefaultWithArguments</span> <span class="s">&quot;Build&quot;</span>
 </code></pre></td>
@@ -967,10 +997,20 @@
 </code></pre></td></tr></table>
 </section>
 <section >
-<h3>Feature - Web jobs</h3>
+<h3>Azure resources</h3>
+<br/>
+<br/>	
+<p><img src="images/ops1.png" alt="ops1" /></p>
+<br/>	
 <br/>	
 <br/>
+</section>
+<section >
+<h3>Feature - Web Jobs</h3>
+<br/>
+<br/>
 <p><img src="images/ops2.png" alt="ops2" /></p>
+<br/>
 <br/>	
 <br/>
 </section>
@@ -987,13 +1027,12 @@
 <p><img src="images/ops5.png" alt="ops5" /></p>
 </section>
 <section >
-<h3>Feature - <a href="https://azure.microsoft.com/en-us/pricing/details/app-service/windows/">Deployment slots</a></h3>
+<h3>Feature - <a href="https://azure.microsoft.com/en-us/pricing/details/app-service/windows/">deployment slots</a></h3>
 <p><img src="images/ops6.png" alt="ops6" /></p>
 </section>
 <section >
 <h3>Duplication is for free</h3>
 <br/>
-<br/>	
 <br/>	
 <p><img src="images/ops7.png" alt="ops7" /></p>
 <br/>
@@ -1005,7 +1044,7 @@
 <p><img src="images/ops8.png" alt="ops8" /></p>
 </section>
 <section >
-<h3>Azure Devops Pipelines</h3>
+<h3>Azure DevOps Build Pipelines</h3>
 <p><img src="images/ops9.png" alt="ops9" /></p>
 </section>
 <section >
@@ -1019,13 +1058,18 @@
 <p><img src="images/ops11.png" alt="ops11" /></p>
 <br/>	
 <br/>	
+<br/>	
 </section>
 <section >
 <h3>Feature - Continuous Deployment</h3>
+<br/>	
 <p><img src="images/ops12.png" alt="ops12" /></p>
+<br/>	
+<br/>	
+<br/>	
 </section>
 <section >
-<h3>Azure Release Pipelines</h3>
+<h3>Azure DevOps Release Pipelines</h3>
 <p><img src="images/ops13.jpg" alt="ops13" /></p>
 </section>
 <section >
@@ -1034,10 +1078,13 @@
 </section>
 <section >
 <h3>FAKE -&gt; Azure Devops</h3>
+<br/>	
 <p><img src="images/ops15.png" alt="ops15" /></p>
+<br/>	
 </section>
 <section >
 <h3>What's next?</h3>
+<br/>	
 <br/>	
 <br/>	
 <br/>	
@@ -1051,15 +1098,19 @@
 <br/>	
 <br/>	
 <br/>	
+<br/>	
+<br/>	
 </section>
 </section>
 <section >
 <section >
-<h3>Join!</h3>
+<h3>JOIN!</h3>
 </section>
 <section >
 <h3>Check Your Czech on <a href="https://github.com/psfinaki/CheckYourCzech">GitHub</a></h3>
+<br/>	
 <p><img src="images/join1.png" alt="join1" /></p>
+<br/>	
 <ul>
 <li><a href="https://github.com/psfinaki/CheckYourCzech/issues/183">Descriptive issues</a></li>
 <li>Small &amp; discrete <a href="https://github.com/psfinaki/CheckYourCzech/commit/3917f06e78fa7fe3908f9f39952c5bbacf6639d1">commits</a></li>
@@ -1070,11 +1121,13 @@
 <section >
 <h3>Local testing <a href="https://github.com/psfinaki/CheckYourCzech/blob/master/build.fsx">possible</a></h3>
 <p><img src="images/join2.png" alt="join2" /></p>
+<br/>	
 </section>
 <section >
 <h3>Help needed!</h3>
 <br/>
 <br/>
+<br/>	
 <br/>	
 <br/>	
 <ul>
@@ -1084,6 +1137,8 @@
 <li>Linguistics (<a href="https://github.com/psfinaki/CheckYourCzech/issues/155">#155</a>, <a href="https://github.com/psfinaki/CheckYourCzech/issues/407">#407</a>, ...)</li>
 <li>F# code review</li>
 </ul>
+<br/>	
+<br/>	
 <br/>
 <br/>
 <br/>	
@@ -1092,10 +1147,11 @@
 </section>
 <section >
 <section >
-<h3>Thanks!</h3>
+<h3>THANKS</h3>
 </section>
 <section >
 <h3>Peter Semkin (@psfinaki)</h3>
+<br/>
 <ul>
 <li>
 where
