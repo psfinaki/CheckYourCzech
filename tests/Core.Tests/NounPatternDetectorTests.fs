@@ -61,5 +61,5 @@ let ``Gets pattern neuter`` nominative genitive pattern =
 
 [<Fact>]
 let ``Detects unknown pattern for neuter``() =
-    getPatternFeminine ("karé", "karé")
+    getPatternNeuter ("karé", "karé")
     |> equals None
