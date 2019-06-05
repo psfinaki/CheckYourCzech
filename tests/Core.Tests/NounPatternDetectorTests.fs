@@ -63,3 +63,22 @@ let ``Gets pattern neuter`` nominative genitive pattern =
 let ``Detects unknown pattern for neuter``() =
     getPatternFeminine ("karé", "karé")
     |> equals None
+
+[<Fact>]
+let ``Detects pattern město``() =
+    "auto"
+    |> isPatternMěsto
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "pole">]
+[<InlineData "kakao">]
+[<InlineData "rodeo">]
+[<InlineData "video">]
+[<InlineData "rádio">]
+[<InlineData "embryo">]
+[<InlineData "duo">]
+let ``Detects pattern is not město`` nominative =
+    nominative
+    |> isPatternMěsto
+    |> Assert.False
