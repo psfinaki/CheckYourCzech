@@ -6,9 +6,8 @@ open Stem
 open Letters
 
 let isPatternMěsto nominative = 
-    let last = nominative |> Seq.last
-    let lastButOne = nominative |> Seq.lastButOne
-    last = 'o' && lastButOne |> isConsonant
+    let lastButOneSymbol = nominative |> Seq.lastButOne
+    nominative |> ends "o" && lastButOneSymbol |> isConsonant
 
 let getPatternMasculineAnimate = function
     | (nominative, genitive) when genitive |> ends "a" -> Some "pan"
