@@ -3,6 +3,11 @@
 open Genders
 open StringHelper
 open Stem
+open Letters
+
+let isPatternMěsto nominative = 
+    let lastButOneSymbol = nominative |> Seq.lastButOne
+    nominative |> ends "o" && lastButOneSymbol |> isConsonant
 
 let getPatternMasculineAnimate = function
     | (nominative, genitive) when genitive |> ends "a" -> Some "pan"
@@ -24,7 +29,7 @@ let getPatternFeminine = function
     | _ -> None
 
 let getPatternNeuter = function
-    | (nominative, genitive) when genitive |> ends "a" -> Some "město"
+    | (nominative, genitive) when nominative |> isPatternMěsto -> Some "město"
     | (nominative, genitive) when genitive |> ends "ete" -> Some "kuře"
     | (nominative, genitive) when genitive |> ends "e" || genitive |> ends "ě" -> Some "moře"
     | (nominative, genitive) when genitive |> ends "í" -> Some "stavení"

@@ -46,3 +46,9 @@ let tryExactlyOne = function
         None
     | seq ->
         seq |> Seq.exactlyOne |> Some
+
+let lastButOne seq =
+    seq
+    |> Seq.rev
+    |> Seq.skip 1
+    |> Seq.head
