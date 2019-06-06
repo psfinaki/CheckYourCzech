@@ -112,6 +112,13 @@ let view model dispatch =
 
             div []
                 [
+                    button (Styles.button "Blue") handleCheckClick "Show answer" clickability
+                ]
+
+            emptyLines 2
+
+            div []
+                [
                     button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)" clickability
                     space()
                     button (Styles.button "Lime") handleCheckClick "Check (⏎)" clickability
