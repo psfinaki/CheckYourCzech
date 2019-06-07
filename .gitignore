@@ -13,3 +13,4 @@ deploy.zip
 .paket/load/
 deploy/
 *.user
+yarn-error.log

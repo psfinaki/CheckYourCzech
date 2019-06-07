@@ -1154,6 +1154,11 @@ builtin-status-codes@^3.0.0:
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
   integrity sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=
 
+bulma@^0.7.5:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/bulma/-/bulma-0.7.5.tgz#35066c37f82c088b68f94450be758fc00a967208"
+  integrity sha512-cX98TIn0I6sKba/DhW0FBjtaDpxTelU166pf7ICXpCCuplHWyu6C9LYZmL5PEsnePIeJaiorsTEzzNk3Tsm1hw==
+
 bytes@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
@@ -1959,17 +1964,17 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-fable-loader@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/fable-loader/-/fable-loader-2.0.0.tgz#f37f085487ab61a3069de6bb036fd28459441de9"
-  integrity sha512-H6QIT8e+BYv1KhQmvV7Jb87uVWCtNxZIq2kd/ceWs4h0tfqzLRHwiV4Ti7baSi93130JuRkjtivPIxm6SeCY6g==
-  dependencies:
-    fable-utils "^1.1.0"
+fable-babel-plugins@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/fable-babel-plugins/-/fable-babel-plugins-2.2.0.tgz#2c61be1bd1afb1f03da4e66ccaa1bfecf92063a3"
+  integrity sha512-4g8CIyXCILk5LLiwNPtvtrPy3YuV5eJV18SYJCZxu3A1BSKNvPGHLSg5YcFJ2zt4qmBvSkBewlQ2bVQYG+TnrQ==
 
-fable-utils@^1.1.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/fable-utils/-/fable-utils-1.2.0.tgz#49e81735f57af4d67af997da3df220c547469215"
-  integrity sha512-xne8Cc2QK2BNZ0RElBZaz+j6pSHgi3i+cEhOzweKmTldvZGt5xqW7LvWWty553HknQKNRJBuyDYUKiiL1CTYlw==
+fable-loader@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/fable-loader/-/fable-loader-2.1.7.tgz#64dc9125af41a709cd2a3f614352c4daeaefaa16"
+  integrity sha512-1z8EoNWpNDRrGycygO0j63URniv0FjX5EZHjfnnDYbC9+bj2aOY2xGBGK1Mxohk3D4SfK63b5t5vXKOGqUPRzQ==
+  dependencies:
+    fable-babel-plugins "^2.2.0"
 
 fast-deep-equal@^2.0.1:
   version "2.0.1"
