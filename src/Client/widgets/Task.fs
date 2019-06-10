@@ -5,6 +5,7 @@ open Fable.Helpers.React
 open Fable.PowerPack
 open Fable.Import.React
 open Fable.Core.JsInterop
+open Fulma
 open Markup
 
 type Task = { 
@@ -112,7 +113,12 @@ let view model dispatch =
 
             div []
                 [
-                    button (Styles.button "Blue") handleCheckClick "Show answer" clickability
+                    Button.button [
+                        Button.Size IsLarge
+                        Button.Color IsPrimary
+                        Button.CustomClass "myclass"
+                        ] 
+                        [ str "A button" ]
                 ]
 
             emptyLines 2
