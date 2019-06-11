@@ -1,10 +1,7 @@
 @import '~bulma/bulma.sass';
 
-html,
-body {
-    font-size: 14px;
-}
-
-.myclass {
-    border: 1px;
+.task-button {
+    width: 49%;
+    height: 70px;
+    font-size: 25px;
 }

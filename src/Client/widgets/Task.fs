@@ -2,6 +2,7 @@
 
 open Elmish
 open Fable.Helpers.React
+open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Fable.Import.React
 open Fable.Core.JsInterop
@@ -19,12 +20,14 @@ type Model = {
     Answers : string[] option
     Input : string
     Result : bool option
+    AnswerShown: bool
 }
 
 type Msg = 
     | SetInput of string
     | SubmitAnswer
     | UpdateTask
+    | ShowAnswer
     | FetchedTask of Task option
     | FetchError of exn
 
@@ -40,7 +43,8 @@ let init taskName getTask =
       Word = None
       Answers = None
       Input = ""
-      Result = None },
+      Result = None
+      AnswerShown = false },
       loadTaskCmd getTask
 
 let update msg model getTask =
@@ -56,10 +60,17 @@ let update msg model getTask =
         { model with Result = result }, Cmd.none
     | UpdateTask ->
         { model with Word = None; Input = ""; Result = None }, loadTaskCmd getTask
+    | ShowAnswer ->
+        let answer = model.Answers
+                    |> Option.map Array.tryHead
+                    |> Option.flatten
+                    |> Option.defaultValue ""
+        { model with Input = answer; Result = Some false; AnswerShown = true}, Cmd.none
     | FetchedTask task -> 
         { model with 
             Word = task |> Option.map (fun t -> t.Word)
             Answers = task |> Option.map (fun t -> t.Answers)
+            AnswerShown = false
         }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
@@ -92,13 +103,19 @@ let view model dispatch =
             match event.shiftKey with
             | false -> dispatch SubmitAnswer
             | true  -> dispatch UpdateTask
+        | Keyboard.Codes.ctrl ->
+            match event.shiftKey with
+            | false -> ()
+            | true  -> dispatch ShowAnswer
         | _ -> 
             ()
 
+    let handleShowAnswerClick _ = dispatch ShowAnswer
     let handleUpdateClick _ = dispatch UpdateTask
     let handleCheckClick _ = dispatch SubmitAnswer
     
-    let clickability = if model.Word.IsSome then Clickable else Unclickable
+    let nextButtonDisabled = not model.Word.IsSome
+    let checkButtonDisabled = model.Word.IsNone || model.AnswerShown
 
     div []
         [
@@ -109,24 +126,46 @@ let view model dispatch =
                     label Styles.greyLabel result
                 ]
 
-            emptyLines 2
 
             div []
                 [
                     Button.button [
-                        Button.Size IsLarge
+                        Button.Modifiers [ Modifier.IsPulledRight ]
+                        Button.Size IsSmall
                         Button.Color IsPrimary
-                        Button.CustomClass "myclass"
-                        ] 
-                        [ str "A button" ]
+                        Button.IsOutlined
+                        Button.Disabled true
+                        ]  
+                        [ Icon.icon [ Icon.Size IsSmall ]
+                            [ i [ ClassName "fas fa-home" ] [ ] ]
+                          str "Show answer (⇧ + Ctrl)" 
+                        ]
                 ]
 
-            emptyLines 2
-
-            div []
+            Columns.columns [ Columns.IsGap (Screen.All, Columns.Is2) ]
                 [
-                    button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)" clickability
-                    space()
-                    button (Styles.button "Lime") handleCheckClick "Check (⏎)" clickability
+                    Column.column [ ]
+                        [ Button.button [
+                            Button.Props [ OnClick handleUpdateClick ]
+                            Button.Size IsMedium
+                            Button.Disabled nextButtonDisabled
+                            Button.IsFullWidth
+                            Button.CustomClass "task-button"
+                            ]  
+                            [ str "Next (⇧ + ⏎)" ] 
+                        ]
+                    
+                    Column.column [ ]
+                        [ Button.button [
+                            Button.Props [ OnClick handleCheckClick ]
+                            Button.Size IsMedium
+                            Button.Color IsSuccess
+                            Button.Disabled checkButtonDisabled
+                            Button.IsFullWidth
+                            Button.CustomClass "task-button"
+                            ]  
+                            [ str "Check (⏎)" ] 
+                        ]
+                    
                 ]
         ]
