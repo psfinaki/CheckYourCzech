@@ -119,25 +119,25 @@ let view model dispatch =
 
     div []
         [
-            div [] 
+            Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
                 [
-                    label Styles.greyLabel task
-                    input Styles.input model.Input handleChangeAnswer handleKeyDown
-                    label Styles.greyLabel result
+                    Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [task] ]
+                    Column.column [ ] [
+                                        Input.text
+                                            [
+                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown] 
+                                                Input.Value model.Input
+                                                Input.Size Size.IsLarge
+                                            ]
+                                      ]
+                    Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [result] ]
                 ]
 
 
             div []
                 [
-                    Button.button [
-                        Button.Modifiers [ Modifier.IsPulledRight ]
-                        Button.Size IsSmall
-                        Button.Color IsPrimary
-                        Button.IsOutlined
-                        Button.Disabled true
-                        ]  
-                        [ Icon.icon [ Icon.Size IsSmall ]
-                            [ i [ ClassName "fas fa-home" ] [ ] ]
+                    Tag.tag [ Tag.Modifiers [ Modifier.IsPulledRight ]]   
+                        [ 
                           str "Show answer (⇧ + Ctrl)" 
                         ]
                 ]
