@@ -110,6 +110,15 @@ let view model dispatch =
         | _ -> 
             ()
 
+    let button size color onclick text otherOptions =
+        let options = otherOptions @ 
+                        [
+                            Button.Props [ OnClick onclick ]
+                            Button.Size size
+                            Button.Color color
+                        ]
+        Button.button options [ str text ]
+
     let handleShowAnswerClick _ = dispatch ShowAnswer
     let handleUpdateClick _ = dispatch UpdateTask
     let handleCheckClick _ = dispatch SubmitAnswer
@@ -134,37 +143,35 @@ let view model dispatch =
                 ]
 
 
-            div []
+            Columns.columns []
                 [
-                    Tag.tag [ Tag.Modifiers [ Modifier.IsPulledRight ]]   
-                        [ 
-                          str "Show answer (⇧ + Ctrl)" 
+                    Column.column [ ] 
+                        [
+                            button IsSmall IsLight handleShowAnswerClick "Show answer (⇧ + Ctrl)"  
+                                [Button.Modifiers [ Modifier.IsPulledRight ]]
                         ]
                 ]
 
             Columns.columns [ Columns.IsGap (Screen.All, Columns.Is2) ]
                 [
                     Column.column [ ]
-                        [ Button.button [
-                            Button.Props [ OnClick handleUpdateClick ]
-                            Button.Size IsMedium
-                            Button.Disabled nextButtonDisabled
-                            Button.IsFullWidth
-                            Button.CustomClass "task-button"
-                            ]  
-                            [ str "Next (⇧ + ⏎)" ] 
+                        [ 
+                            button IsMedium NoColor handleUpdateClick "Next (⇧ + ⏎)"   
+                                [
+                                    Button.Disabled nextButtonDisabled
+                                    Button.IsFullWidth
+                                    Button.CustomClass "task-button"
+                                ]
                         ]
                     
                     Column.column [ ]
-                        [ Button.button [
-                            Button.Props [ OnClick handleCheckClick ]
-                            Button.Size IsMedium
-                            Button.Color IsSuccess
-                            Button.Disabled checkButtonDisabled
-                            Button.IsFullWidth
-                            Button.CustomClass "task-button"
-                            ]  
-                            [ str "Check (⏎)" ] 
+                        [ 
+                            button IsMedium IsSuccess handleCheckClick "Check (⏎)"   
+                                [
+                                    Button.Disabled checkButtonDisabled
+                                    Button.IsFullWidth
+                                    Button.CustomClass "task-button"
+                                ]
                         ]
                     
                 ]
