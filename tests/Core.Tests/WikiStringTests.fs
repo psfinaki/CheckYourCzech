@@ -75,7 +75,7 @@ let ``Detects unofficial form - not used``() =
 
 [<Fact>]
 let ``Detects unofficial form - dialect``() = 
-    "znalečná*"
+    "(nářečně) noce"
     |> isOfficial
     |> Assert.False
 
