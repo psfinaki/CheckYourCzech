@@ -16,7 +16,7 @@ type String with
         this.Remove(this.Length - oldValue.Length) + newValue
 
 let hardConsonants = ['d';'t';'n']
-let softConsonants = ['ř';'č';'ž';'š']
+let softConsonants = ['ř';'č';'ž';'š';'ť';'ď';'ň']
 let neutralHardConsonants = ['v';'m';'b';'p']
 let neutralSoftConsonants = ['l';'z';'s';'c';'j']
 
