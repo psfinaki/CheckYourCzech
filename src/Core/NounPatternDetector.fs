@@ -25,7 +25,7 @@ let getPatternFeminine = function
     | (nominative, genitive) when genitive |> ends "y" -> Some "žena"
     | (nominative, genitive) when nominative |> ends "e" -> Some "růže"
     | (nominative, genitive) when genitive |> ends "e" || genitive |> ends "ě" -> Some "píseň"
-    | (nominative, genitive) when genitive |> ends "i" -> Some "kost"
+    | (nominative, genitive) when nominative |> endsConsonant && genitive |> ends "i" -> Some "kost"
     | _ -> None
 
 let getPatternNeuter = function
