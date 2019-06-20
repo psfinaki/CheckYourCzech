@@ -15,6 +15,7 @@
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="AdjectiveComparativeTests.fs" />
     <Compile Include="ArticleTests.fs" />
+    <Compile Include="DeclensionsTests.fs" />
     <Compile Include="NounTests.fs" />
     <Compile Include="ComparativeBuilderTests.fs" />
     <Compile Include="ParticipleBuilderTests.fs" />

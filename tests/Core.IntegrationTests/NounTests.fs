@@ -29,48 +29,6 @@ let ``Gets gender neuter``() =
     "okno"
     |> getGender
     |> equals Neuter
-
-[<Fact>]
-let ``Gets declension wiki - indeclinable``() = 
-    "dada"
-    |> getDeclensionWiki Case.Nominative Number.Plural
-    |> equals "dada"
-
-[<Fact>]
-let ``Gets declension wiki - editable article``() = 
-    "panda"
-    |> getDeclensionWiki Case.Nominative Number.Plural
-    |> equals "pandy"
-
-[<Fact>]
-let ``Gets wiki plural wiki - locked article``() = 
-    "debil"
-    |> getDeclensionWiki Case.Nominative Number.Plural
-    |> equals "debilové"
-
-[<Fact>]
-let ``Gets declension for case - indeclinable``() =
-    "dada"
-    |> getDeclensionForCase Case.Nominative Number.Singular
-    |> equals [|"dada"|]
-
-[<Fact>]
-let ``Gets declension for case - single option``() =
-    "hrad"
-    |> getDeclensionForCase Case.Nominative Number.Singular
-    |> equals [|"hrad"|]
-
-[<Fact>]
-let ``Gets declension for case - no options``() =
-    "záda"
-    |> getDeclensionForCase Case.Nominative Number.Singular
-    |> equals [||]
-
-[<Fact>]
-let ``Gets singulars - multiple options``() =
-    "temeno"
-    |> getDeclensionForCase Case.Nominative Number.Singular
-    |> equals [|"temeno"; "témě"|]
     
 [<Fact>]
 let ``Detects indeclinable``() =
@@ -82,30 +40,6 @@ let ``Detects indeclinable``() =
 let ``Detects declinable``() =
     "panda"
     |> isIndeclinable
-    |> Assert.False
-
-[<Fact>]
-let ``Detects single declension for case``() =
-    "panda"
-    |> hasSingleDeclensionForCase Case.Nominative Number.Singular
-    |> Assert.True
-
-[<Fact>]
-let ``Detects multiple declensions for case``() =
-    "temeno"
-    |> hasSingleDeclensionForCase Case.Nominative Number.Singular
-    |> Assert.False
-
-[<Fact>]
-let ``Detects case declension is present``() =
-    "panda"
-    |> hasDeclensionForCase Case.Nominative Number.Singular
-    |> Assert.True
-
-[<Fact>]
-let ``Detects no declension for case``() =
-    "záda"
-    |> hasDeclensionForCase Case.Nominative Number.Singular
     |> Assert.False
 
 [<Fact>]
