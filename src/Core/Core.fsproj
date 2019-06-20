@@ -29,6 +29,7 @@
     <Compile Include="ComparativeBuilder.fs" />
     <Compile Include="ParticipleBuilder.fs" />
     <Compile Include="ParticiplePatternDetector.fs" />
+    <Compile Include="Declensions.fs" />
     <Compile Include="NounPatternDetector.fs" />
     <Compile Include="Noun.fs" />
     <Compile Include="NounPlural.fs" />
