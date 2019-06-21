@@ -4,8 +4,12 @@ open Elmish
 open Elmish.React
 open Elmish.Browser.UrlParser
 open Elmish.Browser.Navigation
-open Fable.Helpers.React
 open Pages
+open Fulma
+open Fable.FontAwesome
+open Fable.FontAwesome.Free
+open Fable.Helpers.React
+open Fable.Helpers.React.Props
 
 #if DEBUG
 open Elmish.Debug
@@ -99,6 +103,8 @@ let update msg model =
         VerbParticiples m, Cmd.map VerbParticiplesMsg cmd
     | _, _ ->
         model, Cmd.none
+
+
 
 let view model dispatch =
     div [] [ 

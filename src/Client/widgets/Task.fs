@@ -110,15 +110,6 @@ let view model dispatch =
         | _ -> 
             ()
 
-    let button size color onclick text otherOptions =
-        let options = otherOptions @ 
-                        [
-                            Button.Props [ OnClick onclick ]
-                            Button.Size size
-                            Button.Color color
-                        ]
-        Button.button options [ str text ]
-
     let handleShowAnswerClick _ = dispatch ShowAnswer
     let handleUpdateClick _ = dispatch UpdateTask
     let handleCheckClick _ = dispatch SubmitAnswer

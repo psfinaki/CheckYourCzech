@@ -7,3 +7,4 @@ group Client
 	Fable.Core
 	dotnet-fable
 	Fulma
+	Fable.FontAwesome.Free

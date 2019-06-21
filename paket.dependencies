@@ -27,6 +27,7 @@ group Client
 	nuget Fable.Elmish.Debugger
 	nuget Fable.Elmish.HMR ~> 2.0
 	nuget Fulma
+	nuget Fable.FontAwesome.Free
 
     clitool dotnet-fable 
 
