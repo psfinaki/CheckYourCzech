@@ -71,13 +71,16 @@ let buildQuery<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> filters =
         |> Seq.reduce combineFilters
         |> TableQuery<'T>().Where
 
-let tryGetRandom<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName azureFilters postFilters =
+let tryGetRandomWithFilters<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName azureFilters postFilters =
     let table = getTable tableName
-
+    
     azureFilters
     |> buildQuery<'T>
     |> table.ExecuteQuery
     |> Seq.tryRandomIf postFilters
+
+let tryGetRandom<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName azureFilters = 
+    tryGetRandomWithFilters<'T> tableName azureFilters []
 
 let getSingle<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName filters = 
     let table = getTable tableName
