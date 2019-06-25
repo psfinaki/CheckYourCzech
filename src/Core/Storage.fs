@@ -43,7 +43,7 @@ let getAs<'T> = JsonConvert.DeserializeObject<'T>
 let getTable name =
     let connectionString = Environment.GetEnvironmentVariable "STORAGE_CONNECTIONSTRING"
     let account = CloudStorageAccount.Parse connectionString
-    let client = account.CreateCloudTableClient()
+    let client = account.CreateCloudTableClient() 
     let table = client.GetTableReference name
     table.CreateIfNotExists()
     table
@@ -71,13 +71,16 @@ let buildQuery<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> filters =
         |> Seq.reduce combineFilters
         |> TableQuery<'T>().Where
 
-let tryGetRandom<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName filters =
+let tryGetRandomWithFilters<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName azureFilters postFilters =
     let table = getTable tableName
-
-    filters
+    
+    azureFilters
     |> buildQuery<'T>
     |> table.ExecuteQuery
-    |> Seq.tryRandom
+    |> Seq.tryRandomIf postFilters
+
+let tryGetRandom<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName azureFilters = 
+    tryGetRandomWithFilters<'T> tableName azureFilters []
 
 let getSingle<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName filters = 
     let table = getTable tableName

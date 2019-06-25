@@ -41,6 +41,15 @@ let tryRandom = function
         |> random
         |> Some
 
+let tryRandomIf filters =
+    let combinedFilter x = 
+        filters 
+        |> Seq.map (fun f -> f x) 
+        |> Seq.fold (&&) true
+    
+    Seq.where combinedFilter 
+    >> tryRandom
+
 let tryExactlyOne = function
     | seq when not (seq |> Seq.length = 1) ->
         None
