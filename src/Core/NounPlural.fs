@@ -13,7 +13,7 @@ let isValid word =
 let getSingular = Storage.mapSafeString id
 let getPlurals = Storage.mapSafeString (Declensions.getDeclension Declensions.Case.Nominative Declensions.Number.Plural)
 let getGender = Storage.mapSafeObject (Noun.getGender >> box)
-let getPattern = Storage.mapSafeStringOption Noun.getPattern   
+let getPatterns = Storage.mapSafeString Noun.getPatterns
 
 type NounPlural(word) =
     inherit TableEntity(word, word)
@@ -23,7 +23,7 @@ type NounPlural(word) =
     member val Singular = getSingular word with get, set
     member val Plurals = getPlurals word with get, set
     member val Gender = getGender word with get, set
-    member val Pattern = getPattern word with get, set
+    member val Patterns = getPatterns word with get, set
 
 let record word =
     if 

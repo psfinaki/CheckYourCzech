@@ -61,3 +61,8 @@ let lastButOne seq =
     |> Seq.rev
     |> Seq.skip 1
     |> Seq.head
+
+let containsMultiple seq =
+    seq 
+    |> Seq.length 
+    |> (<) 1

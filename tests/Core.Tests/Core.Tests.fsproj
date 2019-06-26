@@ -12,7 +12,6 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="NounPatternDetectorTests.fs" />
     <Compile Include="ParticiplePatternDetectorTests.fs" />
     <Compile Include="VerbPatternDetectorTests.fs" />
     <Compile Include="NounTests.fs" />

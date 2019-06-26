@@ -4,7 +4,6 @@ open FSharp.Data
 open Article
 open Genders
 open ArticleParser
-open Declensions
 
 type EditableArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
@@ -44,21 +43,15 @@ let isNotNominalization = not << isNominalization
 
 let getUrl = (+) "https://cs.wiktionary.org/wiki/"
 
-let getPattern noun = 
-    let nominatives = getDeclension Case.Nominative Number.Singular noun
-    let isPatternDetectionPossible = Seq.hasOneElement
+let patternsGenderMap =
+    dict [ (MasculineAnimate, MasculineAnimateNounPatternDetector.getPatterns)
+           (MasculineInanimate, MasculineInanimateNounPatternDetector.getPatterns)
+           (Feminine, FeminineNounPatternDetector.getPatterns)
+           (Neuter, NeuterNounPatternDetector.getPatterns) ]
 
-    if 
-        isPatternDetectionPossible nominatives
-    then
-        let gender = getGender noun
-        let nominative = nominatives |> Seq.exactlyOne
-        let genitives = getDeclension Case.Genitive Number.Singular noun
+let getPatternsByGender word gender = patternsGenderMap.[gender] word
 
-        genitives
-        |> Seq.map (NounPatternDetector.getPatternByGender gender nominative)
-        |> Seq.choose id
-        |> Seq.distinct
-        |> Seq.tryExactlyOne
-    else 
-        None
+let getPatterns noun =
+    noun
+    |> getGender
+    |> getPatternsByGender noun
