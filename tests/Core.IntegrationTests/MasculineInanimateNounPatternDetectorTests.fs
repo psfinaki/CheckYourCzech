@@ -55,5 +55,5 @@ let ``Detects not pattern stroj`` word =
 let ``Detects multiple patterns`` word =
     word
     |> getPatterns
-    |> Seq.isMultiple
+    |> Seq.containsMultiple
     |> Assert.True

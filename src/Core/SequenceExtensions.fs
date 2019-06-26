@@ -62,7 +62,7 @@ let lastButOne seq =
     |> Seq.skip 1
     |> Seq.head
 
-let isMultiple seq =
+let containsMultiple seq =
     seq 
     |> Seq.length 
     |> (<) 1

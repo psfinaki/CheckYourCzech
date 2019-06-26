@@ -93,7 +93,7 @@ let ``Detects not pattern soudce`` word =
 let ``Detects multiple patterns`` word =
     word
     |> getPatterns
-    |> Seq.isMultiple
+    |> Seq.containsMultiple
     |> Assert.True
 
 [<Theory>]
