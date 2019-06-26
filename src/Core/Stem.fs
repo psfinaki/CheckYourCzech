@@ -16,7 +16,7 @@ type String with
         this.Remove(this.Length - oldValue.Length) + newValue
 
 let hardConsonants = ['d';'t';'n']
-let softConsonants = ['ř';'č';'ž';'š']
+let softConsonants = ['ř';'č';'ž';'š';'ť';'ď';'ň']
 let neutralHardConsonants = ['v';'m';'b';'p']
 let neutralSoftConsonants = ['l';'z';'s';'c';'j';'x']
 
@@ -40,4 +40,8 @@ let alternate (stem: string) =
 
 let endsHard (s: string) = s.EndsWith (hardConsonants @ neutralHardConsonants)
 let endsSoft (s: string) = s.EndsWith (softConsonants @ neutralSoftConsonants)
+
 let endsIf isPattern = Seq.last >> isPattern
+
+let endsVowel<'string> = endsIf (Letters.isVowel)
+let endsConsonant<'string> = endsIf (Letters.isConsonant)
