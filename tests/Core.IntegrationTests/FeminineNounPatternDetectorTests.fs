@@ -62,6 +62,7 @@ let ``Detects pattern píseň`` word =
 [<Theory>]
 [<InlineData "noc">]
 [<InlineData "duše">]
+[<InlineData "hyždě">]
 [<InlineData "rtuť">]
 [<InlineData "žena">]
 [<InlineData "směs">]
