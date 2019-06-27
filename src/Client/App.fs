@@ -39,6 +39,7 @@ type Msg =
     | AdjectiveComparativesMsg of AdjectiveComparatives.Msg
     | VerbImperativesMsg of VerbImperatives.Msg
     | VerbParticiplesMsg of VerbParticiples.Msg
+    | NavbarMsg of Navbar.Types.Msg
 
 let viewPage model dispatch =
     match model.currentPage with
@@ -114,6 +115,9 @@ let update msg model =
     | VerbParticiplesMsg msg, VerbParticiples m ->
         let m, cmd = VerbParticiples.update msg m
         updateModelPage model (VerbParticiples m), Cmd.map VerbParticiplesMsg cmd
+    | NavbarMsg msg, _ ->
+        let m, cmd = Navbar.State.update msg model.navbar
+        updateModelNavbar model m, Cmd.map NavbarMsg cmd
     | _, _ ->
         model, Cmd.none
 
@@ -122,6 +126,7 @@ let update msg model =
 let view model dispatch =
     div [] [ 
         Menu.view()
+        Navbar.View.root model.navbar (NavbarMsg >> dispatch)
         hr []
         div [ Styles.center "column" ] (viewPage model dispatch)
     ]

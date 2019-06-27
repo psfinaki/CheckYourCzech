@@ -57,4 +57,4 @@ let private navbarView isBurgerOpen dispatch =
                       navbarEnd ] ] ] ]
 
 let root model dispatch =
-    navbarView model.IsBurgerOpen dispatch
+    navbarView model.isBurgerOpen dispatch

@@ -5,6 +5,6 @@ open Types
 let init () =
     { isBurgerOpen = false }, []
 
-let update msg model getTask =
+let update msg model =
     match msg with
     | ToggleBurger -> { isBurgerOpen = not model.isBurgerOpen }, []
