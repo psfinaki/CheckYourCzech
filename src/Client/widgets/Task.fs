@@ -52,7 +52,9 @@ let update msg model getTask =
     | SetInput input ->
         { model with Input = input }, Cmd.none
     | SubmitAnswer -> 
-        let result = model.Answers |> Option.map (Array.contains model.Input)
+        let result = if not model.AnswerShown then 
+                        model.Answers |> Option.map (Array.contains model.Input)
+                     else model.Result
    
         if model.Word.IsSome && result.IsSome
         then log model.TaskName model.Word.Value model.Input result.Value
