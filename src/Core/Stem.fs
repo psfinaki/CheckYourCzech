@@ -18,7 +18,7 @@ type String with
 let hardConsonants = ['d';'t';'n']
 let softConsonants = ['ř';'č';'ž';'š';'ť';'ď';'ň']
 let neutralHardConsonants = ['v';'m';'b';'p']
-let neutralSoftConsonants = ['l';'z';'s';'c';'j']
+let neutralSoftConsonants = ['l';'z';'s';'c';'j';'x']
 
 let alternations = 
     dict [ ("ch", "š")

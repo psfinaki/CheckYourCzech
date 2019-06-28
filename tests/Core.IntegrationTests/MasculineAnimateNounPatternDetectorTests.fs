@@ -33,6 +33,7 @@ let ``Detects not pattern pan`` word =
 [<InlineData "tloušť">]
 [<InlineData "Alois">]
 [<InlineData "Andrej">]
+[<InlineData "Felix">]
 let ``Detects pattern muž`` word =
     word
     |> isPatternMuž
