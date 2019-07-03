@@ -125,9 +125,7 @@ let update msg model =
 
 let view model dispatch =
     div [] [ 
-        Menu.view()
         Navbar.View.root model.navbar (NavbarMsg >> dispatch)
-        hr []
         div [ Styles.center "column" ] (viewPage model dispatch)
     ]
 

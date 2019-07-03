@@ -6,6 +6,7 @@ open Fulma
 open Fable.FontAwesome
 
 open Types
+open Pages
 
 let private navbarEnd =
     Navbar.End.div [ ]
@@ -20,31 +21,50 @@ let private navbarEnd =
 let private navbarStart dispatch =
     Navbar.Start.div [ ]
         [ Navbar.Item.a [ ]
-            [ str "Home" ]
+            [ Markup.viewLink Page.Home "Home" ]
           Navbar.Item.div [ Navbar.Item.HasDropdown
                             Navbar.Item.IsHoverable ]
             [ Navbar.Link.div [ ]
-                [ str "Options" ]
+                [ str "Noun" ]
               Navbar.Dropdown.div [ ]
                 [ Navbar.Item.a [ ]
-                    [ str "Reset demo" ] ] ] ]
+                    [ Markup.viewLink Page.NounPlurals "Plurals" ]
+                  Navbar.Item.a [ ]
+                    [ Markup.viewLink Page.NounAccusatives "Accusatives" ] 
+                ] 
+            ] 
+          Navbar.Item.div [ Navbar.Item.HasDropdown
+                            Navbar.Item.IsHoverable ]
+            [ Navbar.Link.div [ ]
+                [ str "Adjective" ]
+              Navbar.Dropdown.div [ ]
+                [ Navbar.Item.a [ ]
+                    [ Markup.viewLink Page.AdjectivePlurals "Plurals" ]
+                  Navbar.Item.a [ ]
+                    [ Markup.viewLink Page.AdjectiveComparatives "Comparatives" ] 
+                ] 
+            ] 
+
+          Navbar.Item.div [ Navbar.Item.HasDropdown
+                            Navbar.Item.IsHoverable ]
+            [ Navbar.Link.div [ ]
+                [ str "Verb" ]
+              Navbar.Dropdown.div [ ]
+                [ Navbar.Item.a [ ]
+                    [ Markup.viewLink Page.VerbImperatives "Imperatives" ]
+                  Navbar.Item.a [ ]
+                    [ Markup.viewLink Page.VerbParticiples "Participles" ] 
+                ] 
+            ] 
+        ]
 
 let private navbarView isBurgerOpen dispatch =
     div [ ClassName "navbar-bg" ]
-        [ Container.container [ ]
-            [ Navbar.navbar [ Navbar.CustomClass "is-primary" ]
+        [ Navbar.navbar [ ]
                 [ Navbar.Brand.div [ ]
                     [ Navbar.Item.a [ Navbar.Item.Props [ Href "#" ] ]
-                        [ Image.image [ Image.Is32x32 ]
-                            [ img [ Src "assets/mini_logo.svg" ] ]
-                          Heading.p [ Heading.Is4 ]
-                            [ str "Fulma-demo" ] ]
-                      // Icon display only on mobile
-                      Navbar.Item.a [ Navbar.Item.Props [ Href "https://github.com/MangelMaxime/fulma-demo" ]
-                                      Navbar.Item.CustomClass "is-hidden-desktop" ]
-                                    [ Icon.icon [ ]
-                                        [ Fa.i [ Fa.Brand.Github
-                                                 Fa.Size Fa.FaLarge ] [ ] ] ]
+                        [ Heading.p [ Heading.Is4 ]
+                            [ str "Check Your Czech" ] ]
                       // Make sure to have the navbar burger as the last child of the brand
                       Navbar.burger [ Fulma.Common.CustomClass (if isBurgerOpen then "is-active" else "")
                                       Fulma.Common.Props [
@@ -54,7 +74,7 @@ let private navbarView isBurgerOpen dispatch =
                           span [ ] [ ] ] ]
                   Navbar.menu [ Navbar.Menu.IsActive isBurgerOpen ]
                     [ navbarStart dispatch
-                      navbarEnd ] ] ] ]
+                      (* navbarEnd *) ] ] ] 
 
 let root model dispatch =
     navbarView model.isBurgerOpen dispatch
