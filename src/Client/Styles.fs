@@ -4,7 +4,7 @@ open Fable.Helpers.React.Props
 
 let middle =
     Style [
-        Width "50%"
+        Width "70%"
         Margin "auto"
     ]
 

@@ -85,7 +85,7 @@ let view model dispatch =
             let altText = if result then "Correct" else "Incorrect"
             icon imageSource 25 altText
         | None ->
-            str ""
+            icon "images/question_mark.png" 25 ""
 
     let task = 
         match model.Word with
