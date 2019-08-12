@@ -60,7 +60,8 @@ let viewPage model dispatch =
 
 // TODO refactor this part using converter functions
 let updateModelPage model newPage = 
-    {model with currentPage = newPage}
+    let resetNavbar = {model.navbar with isBurgerOpen = false}
+    {model with currentPage = newPage; navbar = resetNavbar}
 
 let updateModelNavbar model newNavbar = 
     {model with navbar = newNavbar}
