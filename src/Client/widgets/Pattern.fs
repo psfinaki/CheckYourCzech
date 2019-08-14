@@ -41,9 +41,9 @@ let view model dispatch =
 
     let selectedValue = model.SelectedPattern |> Option.defaultValue "Any"
 
-    div [] 
+    div [ ClassName "pattern-filter" ] 
         [
-            div [ Style [ Height "50%" ] ] 
+            div [ ClassName "pattern-filter-label" ] 
                 [
                     Markup.label Styles.whiteLabel (str "Pattern") 
                 ]

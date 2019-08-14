@@ -4,6 +4,7 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
+open Fable.Helpers.React.Props
 open Genders
 
 type Model = {
@@ -75,7 +76,7 @@ let view model dispatch =
         div [ Styles.middle ]
             [
 
-                div []
+                div [ClassName "is-hidden-mobile"]
                     [
                         div [ Styles.halfParent ]
                             [

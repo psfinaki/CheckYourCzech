@@ -2,8 +2,9 @@
 
 open Elmish
 open Fable.PowerPack.Fetch
-open Thoth.Json
 open Fable.Helpers.React
+open Fable.Helpers.React.Props
+open Thoth.Json
 
 type Model = {
     Regularity : Regularity.Model
@@ -45,7 +46,10 @@ let view model dispatch =
 
         div [ Styles.middle ]
             [
-                Regularity.view model.Regularity (Regularity >> dispatch)
+                div [ClassName "is-hidden-mobile"] 
+                    [
+                        Regularity.view model.Regularity (Regularity >> dispatch)
+                    ]
 
                 Task.view model.Task (Task >> dispatch)
 

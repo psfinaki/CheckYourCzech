@@ -8,7 +8,7 @@ open Pages
 
 let view () =
     [
-        Markup.words "home-heading" "Check Your Czech"
+        Markup.words "home-heading is-hidden-mobile" "Check Your Czech 🇨🇿"
         Markup.words "home-subheading" "A service to practice Czech grammar"
 
         div [ ClassName "home-columns" ]

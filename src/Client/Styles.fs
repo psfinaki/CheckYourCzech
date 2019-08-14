@@ -4,7 +4,7 @@ open Fable.Helpers.React.Props
 
 let middle =
     Style [
-        Width "70%"
+        Width "90%"
         Margin "auto"
     ]
 
@@ -34,7 +34,6 @@ let center direction =
         FlexDirection direction
         AlignItems "center"
         JustifyContent "center"
-        Padding "20px 0"
     ]
 
 let greyLabel =
