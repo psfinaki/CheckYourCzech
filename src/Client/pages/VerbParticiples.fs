@@ -62,12 +62,10 @@ let update msg model =
 
 let view model dispatch =          
     [ 
-        Markup.words 60 "Write active participle for the verb"
+        Markup.words "task-heading" "Write active participle for the verb"
 
         div [ Styles.middle ]
             [
-                Markup.emptyLines 2
-                
                 div []
                     [
                         div [ Styles.halfParent ]
@@ -81,11 +79,7 @@ let view model dispatch =
                             ]
                     ]
 
-                Markup.emptyLines 2
-
                 Task.view model.Task (Task >> dispatch)
-
-                Markup.emptyLines 1
 
                 Rule.view Rules.participles
             ]

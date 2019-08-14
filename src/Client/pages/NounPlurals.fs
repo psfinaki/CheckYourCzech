@@ -70,12 +70,10 @@ let update msg model =
 
 let view model dispatch =
     [ 
-        Markup.words 60 "Write plural for the word"
+        Markup.words "task-heading" "Write plural for the word"
 
         div [ Styles.middle ] 
             [
-                Markup.emptyLines 2
-
                 div []
                     [
                         div [ Styles.halfParent ]
@@ -88,8 +86,6 @@ let view model dispatch =
                                 Pattern.view model.Pattern (Pattern >> dispatch)
                             ]
                     ]
-
-                Markup.emptyLines 2
 
                 Task.view model.Task (Task >> dispatch)
             ]

@@ -30,12 +30,10 @@ let update msg model =
 
 let view model dispatch =
     [
-        Markup.words 60 "Write plural for the adjective"
+        Markup.words "task-heading" "Write plural for the adjective"
 
         div [ Styles.middle ]
             [
-                Markup.emptyLines 7
-
                 Task.view model.Task (Task >> dispatch)
             ]
     ]

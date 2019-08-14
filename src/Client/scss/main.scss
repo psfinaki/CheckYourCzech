@@ -1,5 +1,64 @@
 @import '~bulma/bulma.sass';
 
+@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
+    span.task-heading {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    span.home-heading {
+        display: none;
+    }
+
+    span.home-subheading {
+        font-size: 20px;
+    }
+
+    div.home-columns {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .home-columns .column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    div.home-column-heading {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    a.home-column-links {
+        text-align: center;
+        font-size: 20px;
+    }
+}
+@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
+@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+    span.task-heading {
+        font-size: 60px;
+        font-weight: normal;
+    } 
+
+    span.home-heading {
+        display: block;
+        font-size: 100px;
+    }
+
+    div.home-column-heading {
+        font-size: 30px;
+    }
+
+    a.home-column-links {
+        font-size: 30px;
+    }
+}
+@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
+@media (min-width:1281px) { /* hi-res laptops and desktops */ }
+
 .task-button {
     width: 49%;
     height: 70px;

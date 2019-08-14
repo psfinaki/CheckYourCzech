@@ -41,19 +41,13 @@ let update msg model =
 
 let view model dispatch =
     [ 
-        Markup.words 60 "Write comparative for the adjective"
+        Markup.words "task-heading" "Write comparative for the adjective"
 
         div [ Styles.middle ]
             [
-                Markup.emptyLines 2
-
                 Regularity.view model.Regularity (Regularity >> dispatch)
 
-                Markup.emptyLines 2
-
                 Task.view model.Task (Task >> dispatch)
-
-                Markup.emptyLines 1
 
                 Rule.view Rules.comparatives
             ]
