@@ -73,3 +73,4 @@ There are a lot of [issues](https://github.com/psfinaki/CheckYourCzech/issues) t
 
 As for features, current exercises will be extended, new exercises will be added. 
 And maybe, at some point in the future, new languages.
+ 
