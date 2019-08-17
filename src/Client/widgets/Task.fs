@@ -127,7 +127,7 @@ let view model dispatch =
                     Column.column [ ] [
                                         Input.text
                                             [
-                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown] 
+                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
                                                 Input.Value model.Input
                                                 Input.Size Size.IsLarge
                                             ]
