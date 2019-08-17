@@ -7,8 +7,10 @@ group Core
 group Server
     source https://api.nuget.org/v3/index.json
 
-    nuget Saturn
-    nuget Thoth.Json.Giraffe
+    nuget Saturn 0.7.6
+    nuget Thoth.Json.Giraffe 1.1
+	nuget Thoth.Json.Net 2.5
+	nuget Giraffe 3.4
     nuget Microsoft.ApplicationInsights.AspNetCore ~> 2.2
 
 group Scraper
