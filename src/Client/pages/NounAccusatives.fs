@@ -76,7 +76,7 @@ let view model dispatch =
         div [ Styles.middle ]
             [
 
-                div [ClassName "is-hidden-mobile"]
+                div [ClassName "task-filter-container is-hidden-mobile"]
                     [
                         div [ Styles.halfParent ]
                             [

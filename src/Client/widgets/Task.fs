@@ -78,14 +78,12 @@ let update msg model getTask =
         model, Cmd.none
 
 let view model dispatch =
-    let result = 
+    let inputClass =
         match model.Result with 
         | Some result -> 
-            let imageSource = if result then "images/correct.png" else "images/incorrect.png"
-            let altText = if result then "Correct" else "Incorrect"
-            icon imageSource 25 altText
+            if result then "task-input-correct" else "task-input-incorrect"
         | None ->
-            icon "images/question_mark.png" 25 ""
+            "task-input-none"
 
     let task = 
         match model.Word with
@@ -130,9 +128,9 @@ let view model dispatch =
                                                 Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
                                                 Input.Value model.Input
                                                 Input.Size Size.IsLarge
+                                                Input.CustomClass inputClass
                                             ]
                                       ]
-                    Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [result] ]
                 ]
 
 
@@ -145,26 +143,17 @@ let view model dispatch =
                         ]
                 ]
 
-            Columns.columns [ Columns.IsGap (Screen.All, Columns.Is2) ]
+            div [ ClassName "task-buttons-container" ]
                 [
-                    Column.column [ ]
-                        [ 
-                            button IsMedium NoColor handleUpdateClick "Next (⇧ + ⏎)"   
-                                [
-                                    Button.Disabled nextButtonDisabled
-                                    Button.IsFullWidth
-                                    Button.CustomClass "task-button"
-                                ]
+                    button IsMedium NoColor handleUpdateClick "Next (⇧ + ⏎)"   
+                        [
+                            Button.Disabled nextButtonDisabled
+                            Button.CustomClass "task-button"
                         ]
-                    
-                    Column.column [ ]
-                        [ 
-                            button IsMedium IsSuccess handleCheckClick "Check (⏎)"   
-                                [
-                                    Button.Disabled checkButtonDisabled
-                                    Button.IsFullWidth
-                                    Button.CustomClass "task-button"
-                                ]
+                    button IsMedium IsSuccess handleCheckClick "Check (⏎)"   
+                        [
+                            Button.Disabled checkButtonDisabled
+                            Button.CustomClass "task-button"
                         ]
                     
                 ]
