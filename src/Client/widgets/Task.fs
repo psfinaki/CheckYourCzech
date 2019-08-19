@@ -6,6 +6,8 @@ open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Fable.Import.React
 open Fable.Core.JsInterop
+open Fable.FontAwesome
+open Fable.FontAwesome.Free
 open Fulma
 open Markup
 
@@ -78,12 +80,12 @@ let update msg model getTask =
         model, Cmd.none
 
 let view model dispatch =
-    let inputClass =
+    let inputClass, inputIcon =
         match model.Result with 
         | Some result -> 
-            if result then "task-input-correct" else "task-input-incorrect"
+            if result then "task-input-correct", Fa.Solid.CheckCircle  else "task-input-incorrect", Fa.Solid.TimesCircle
         | None ->
-            "task-input-none"
+            "task-input-none", Fa.Solid.QuestionCircle
 
     let task = 
         match model.Word with
@@ -123,13 +125,17 @@ let view model dispatch =
                 [
                     Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [task] ]
                     Column.column [ ] [
-                                        Input.text
+                                        div [ClassName ("control has-icons-right " + inputClass)]
                                             [
-                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
-                                                Input.Value model.Input
-                                                Input.Size Size.IsLarge
-                                                Input.CustomClass inputClass
-                                            ]
+                                                Input.text
+                                                    [
+                                                        Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
+                                                        Input.Value model.Input
+                                                        Input.Size Size.IsLarge
+                                                    ]
+                                                Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
+                                                    [ Fa.i [ inputIcon ] [] ]
+                                            ]                     
                                       ]
                 ]
 

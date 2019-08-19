@@ -1,8 +1,10 @@
 @import '~bulma/bulma.sass';
 
-$main-color: #3273dc;
-$incorrect-color: red;
-$correct-color: green;
+$primary-color: #3273dc;
+$incorrect-color: $danger;
+$incorrect-color-lightened: lighten($incorrect-color, 35%);
+$correct-color: $success;
+$correct-color-lightened: lighten($correct-color, 45%);
 
 body { width: 100%; }
 
@@ -15,11 +17,11 @@ body { width: 100%; }
     .navbar-item {
         .title {
             text-decoration: underline;
-            text-decoration-color: $main-color;
+            text-decoration-color: $primary-color;
         }
 
         .title::first-letter { 
-            color: $main-color;
+            color: $primary-color;
         }
     }
 
@@ -87,12 +89,26 @@ body { width: 100%; }
         border-width: 3px;
     }
 
-    .input.task-input-correct {
-        border-color: $correct-color; 
+    .task-input-correct {
+        input{
+            border-color: $correct-color !important;
+            background: $correct-color-lightened; 
+        }
+
+        i {
+            color: $correct-color;     
+        }
     }
 
-    .input.task-input-incorrect {
-        border-color: $incorrect-color;
+    .task-input-incorrect {
+        input {
+            border-color: $incorrect-color !important; 
+            background: $incorrect-color-lightened;
+        }
+
+        i {
+            color: $incorrect-color;     
+        }
     }
     
 }
