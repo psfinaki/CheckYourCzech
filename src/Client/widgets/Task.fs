@@ -49,6 +49,7 @@ let init taskName getTask =
       AnswerShown = false },
       loadTaskCmd getTask
 
+// TODO try merging next and show answer buttons into one
 let update msg model getTask =
     match msg with
     | SetInput input ->
@@ -79,13 +80,22 @@ let update msg model getTask =
     | FetchError _ ->
         model, Cmd.none
 
+let getTaskIcon c = 
+    match c with 
+    | "task-input-correct"   -> Fa.Solid.CheckCircle
+    | "task-input-incorrect" -> Fa.Solid.TimesCircle
+    | "task-input-none"      -> Fa.Solid.QuestionCircle
+    | _                      -> invalidArg "c" "Only certain type of icons could be mapped"
+
+
 let view model dispatch =
-    let inputClass, inputIcon =
+    let inputClass =
         match model.Result with 
         | Some result -> 
-            if result then "task-input-correct", Fa.Solid.CheckCircle  else "task-input-incorrect", Fa.Solid.TimesCircle
+            if result then "task-input-correct"  else "task-input-incorrect"
         | None ->
-            "task-input-none", Fa.Solid.QuestionCircle
+            "task-input-none"
+    let inputIcon = getTaskIcon inputClass
 
     let task = 
         match model.Word with
