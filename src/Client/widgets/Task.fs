@@ -87,8 +87,13 @@ let getTaskIcon c =
     | "task-input-none"      -> Fa.Solid.QuestionCircle
     | _                      -> invalidArg "c" "Only certain type of icons could be mapped"
 
+let boolOptionToBool opt = 
+    match opt with 
+    | Some x -> x
+    | None   -> false
 
 let view model dispatch =
+    let nextEnabled = model.AnswerShown || boolOptionToBool model.Result
     let inputClass =
         match model.Result with 
         | Some result -> 
