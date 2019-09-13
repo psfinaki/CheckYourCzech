@@ -109,9 +109,10 @@ module.exports = {
             {
                 test: /\.(sass|scss|css)$/,
                 use: [
-                    isProduction
-                        ? MiniCssExtractPlugin.loader
-                        : 'style-loader',
+                    'style-loader',
+                    // isProduction
+                    //     ? MiniCssExtractPlugin.loader
+                    //     : 'style-loader',
                     'css-loader',
                     'sass-loader',
                 ],

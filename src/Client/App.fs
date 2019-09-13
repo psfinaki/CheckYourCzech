@@ -28,8 +28,8 @@ type PageModel =
     | VerbParticiples of VerbParticiples.Model
 
 type Model = {
-    currentPage: PageModel
-    navbar: Navbar.Types.Model
+    CurrentPage: PageModel
+    Navbar: Navbar.Types.Model
 }
 
 type Msg = 
@@ -42,7 +42,7 @@ type Msg =
     | NavbarMsg of Navbar.Types.Msg
 
 let viewPage model dispatch =
-    match model.currentPage with
+    match model.CurrentPage with
     | Home ->
         Home.view ()
     | NounPlurals m ->
@@ -58,13 +58,12 @@ let viewPage model dispatch =
     | VerbParticiples m ->
         VerbParticiples.view m (VerbParticiplesMsg >> dispatch)
 
-// TODO refactor this part using converter functions
 let updateModelPage model newPage = 
-    let resetNavbar = {model.navbar with isBurgerOpen = false}
-    {model with currentPage = newPage; navbar = resetNavbar}
+    let resetNavbar = {model.Navbar with isBurgerOpen = false}
+    {model with CurrentPage = newPage; Navbar = resetNavbar}
 
 let updateModelNavbar model newNavbar = 
-    {model with navbar = newNavbar}
+    {model with Navbar = newNavbar}
 
 let urlUpdate (result:Page option) model =
     match result with
@@ -94,10 +93,10 @@ let urlUpdate (result:Page option) model =
 let init result = 
     Logger.setup()
     let m, _ = Navbar.State.init()
-    urlUpdate result {currentPage = Home; navbar = m}
+    urlUpdate result {CurrentPage = Home; Navbar = m}
 
 let update msg model =
-    match msg, model.currentPage with
+    match msg, model.CurrentPage with
     | NounPluralsMsg msg, NounPlurals m ->
         let m, cmd = NounPlurals.update msg m
         updateModelPage model (NounPlurals m), Cmd.map NounPluralsMsg cmd
@@ -117,7 +116,7 @@ let update msg model =
         let m, cmd = VerbParticiples.update msg m
         updateModelPage model (VerbParticiples m), Cmd.map VerbParticiplesMsg cmd
     | NavbarMsg msg, _ ->
-        let m, cmd = Navbar.State.update msg model.navbar
+        let m, cmd = Navbar.State.update msg model.Navbar
         updateModelNavbar model m, Cmd.map NavbarMsg cmd
     | _, _ ->
         model, Cmd.none
@@ -126,7 +125,7 @@ let update msg model =
 
 let view model dispatch =
     div [] [ 
-        Navbar.View.root model.navbar (NavbarMsg >> dispatch)
+        Navbar.View.root model.Navbar (NavbarMsg >> dispatch)
         div [ Styles.center "column" ] (viewPage model dispatch)
     ]
 
