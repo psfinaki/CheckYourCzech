@@ -31,9 +31,9 @@ let view model dispatch =
 
     let selectedValue = model.Gender |> Option.map string |> Option.defaultValue "Any"
 
-    div [] 
+    div [ClassName "gender-filter"] 
         [
-            div [ Style [ Height "50%" ] ] 
+            div [ ClassName "gender-filter-label" ] 
                 [
                     Markup.label Styles.whiteLabel (str "Gender") 
                 ]

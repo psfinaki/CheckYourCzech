@@ -2,8 +2,9 @@
 
 open Elmish
 open Fable.PowerPack.Fetch
-open Thoth.Json
 open Fable.Helpers.React
+open Fable.Helpers.React.Props
+open Thoth.Json
 
 type Model = {
     Regularity : Regularity.Model
@@ -41,19 +42,16 @@ let update msg model =
 
 let view model dispatch =
     [ 
-        Markup.words 60 "Write comparative for the adjective"
+        Markup.words "task-heading" "Write comparative for the adjective"
 
         div [ Styles.middle ]
             [
-                Markup.emptyLines 2
-
-                Regularity.view model.Regularity (Regularity >> dispatch)
-
-                Markup.emptyLines 2
+                div [ClassName "is-hidden-mobile"] 
+                    [
+                        Regularity.view model.Regularity (Regularity >> dispatch)
+                    ]
 
                 Task.view model.Task (Task >> dispatch)
-
-                Markup.emptyLines 1
 
                 Rule.view Rules.comparatives
             ]

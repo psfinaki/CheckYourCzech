@@ -31,9 +31,9 @@ let view model dispatch =
 
     let selectedValue = model.Regularity |> Option.map bool.AsString |> Option.defaultValue "Any"
 
-    div []
+    div [ ClassName "regularity-filter" ]
         [
-            div [ Style [ Height "50%" ] ] 
+            div [ ClassName "regularity-filter-label" ] 
                 [
                     Markup.label Styles.whiteLabel (str "Regularity") 
                 ]

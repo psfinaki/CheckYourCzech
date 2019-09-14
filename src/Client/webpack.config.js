@@ -1,6 +1,7 @@
 var path = require("path");
 var webpack = require("webpack");
 var MinifyPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 function resolve(filePath) {
     return path.join(__dirname, filePath)
@@ -13,7 +14,8 @@ var CONFIG = {
             "whatwg-fetch",
             "@babel/polyfill",
             resolve("./Client.fsproj")
-        ]
+        ],
+        "style": [resolve('./scss/main.scss')]
     },
     devServerProxy: {
         '/api/*': {
@@ -38,14 +40,14 @@ var CONFIG = {
             }]
         ],
         plugins: ["@babel/plugin-transform-runtime"]
-    }
+    },
 }
 
 var isProduction = process.argv.indexOf("-p") >= 0;
 console.log("Bundling for " + (isProduction ? "production" : "development") + "...");
 
 module.exports = {
-    entry : CONFIG.fsharpEntry,
+    entry: CONFIG.fsharpEntry,
     output: {
         path: resolve('./public/js'),
         publicPath: "/js",
@@ -72,7 +74,11 @@ module.exports = {
     },
     // DEVELOPMENT
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
-    plugins: isProduction ? [] : [
+    plugins: isProduction ? [
+        new MiniCssExtractPlugin({
+            filename: 'style.css'
+    })] : 
+    [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin()
     ],
@@ -99,7 +105,22 @@ module.exports = {
                     loader: 'babel-loader',
                     options: CONFIG.babel
                 },
-            }
+            },
+            {
+                test: /\.(sass|scss|css)$/,
+                use: [
+                    'style-loader',
+                    // isProduction
+                    //     ? MiniCssExtractPlugin.loader
+                    //     : 'style-loader',
+                    'css-loader',
+                    'sass-loader',
+                ],
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
         ]
     }
 };

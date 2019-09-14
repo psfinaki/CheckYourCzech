@@ -4,8 +4,12 @@ open Elmish
 open Elmish.React
 open Elmish.Browser.UrlParser
 open Elmish.Browser.Navigation
-open Fable.Helpers.React
 open Pages
+open Fulma
+open Fable.FontAwesome
+open Fable.FontAwesome.Free
+open Fable.Helpers.React
+open Fable.Helpers.React.Props
 
 #if DEBUG
 open Elmish.Debug
@@ -14,7 +18,7 @@ open Elmish.HMR
 
 let urlParser location = parseHash pageParser location
 
-type Model =
+type PageModel =
     | Home
     | NounPlurals of NounPlurals.Model
     | NounAccusatives of NounAccusatives.Model
@@ -23,6 +27,11 @@ type Model =
     | VerbImperatives of VerbImperatives.Model
     | VerbParticiples of VerbParticiples.Model
 
+type Model = {
+    CurrentPage: PageModel
+    Navbar: Navbar.Types.Model
+}
+
 type Msg = 
     | NounPluralsMsg of NounPlurals.Msg
     | NounAccusativesMsg of NounAccusatives.Msg
@@ -30,9 +39,10 @@ type Msg =
     | AdjectiveComparativesMsg of AdjectiveComparatives.Msg
     | VerbImperativesMsg of VerbImperatives.Msg
     | VerbParticiplesMsg of VerbParticiples.Msg
+    | NavbarMsg of Navbar.Types.Msg
 
 let viewPage model dispatch =
-    match model with
+    match model.CurrentPage with
     | Home ->
         Home.view ()
     | NounPlurals m ->
@@ -48,62 +58,74 @@ let viewPage model dispatch =
     | VerbParticiples m ->
         VerbParticiples.view m (VerbParticiplesMsg >> dispatch)
 
+let updateModelPage model newPage = 
+    let resetNavbar = {model.Navbar with isBurgerOpen = false}
+    {model with CurrentPage = newPage; Navbar = resetNavbar}
+
+let updateModelNavbar model newNavbar = 
+    {model with Navbar = newNavbar}
+
 let urlUpdate (result:Page option) model =
     match result with
     | None ->
         ( model, Navigation.modifyUrl (Pages.toHash Page.Home) )
     | Some Page.Home ->
-        Home, Cmd.none
+        updateModelPage model Home, Cmd.none
     | Some Page.NounPlurals ->
         let m, cmd = NounPlurals.init()
-        NounPlurals m, Cmd.map NounPluralsMsg cmd
+        updateModelPage model (NounPlurals m), Cmd.map NounPluralsMsg cmd
     | Some Page.NounAccusatives ->
         let m, cmd = NounAccusatives.init()
-        NounAccusatives m, Cmd.map NounAccusativesMsg cmd
+        updateModelPage model (NounAccusatives m), Cmd.map NounAccusativesMsg cmd
     | Some Page.AdjectivePlurals ->
         let m, cmd = AdjectivePlurals.init()
-        AdjectivePlurals m, Cmd.map AdjectivePluralsMsg cmd
+        updateModelPage model (AdjectivePlurals m), Cmd.map AdjectivePluralsMsg cmd
     | Some Page.AdjectiveComparatives ->
         let m, cmd = AdjectiveComparatives.init()
-        AdjectiveComparatives m, Cmd.map AdjectiveComparativesMsg cmd
+        updateModelPage model (AdjectiveComparatives m), Cmd.map AdjectiveComparativesMsg cmd
     | Some Page.VerbImperatives ->
         let m, cmd = VerbImperatives.init()
-        VerbImperatives m, Cmd.map VerbImperativesMsg cmd
+        updateModelPage model (VerbImperatives m), Cmd.map VerbImperativesMsg cmd
     | Some Page.VerbParticiples ->
         let m, cmd = VerbParticiples.init()
-        VerbParticiples m, Cmd.map VerbParticiplesMsg cmd
+        updateModelPage model (VerbParticiples m), Cmd.map VerbParticiplesMsg cmd
 
 let init result = 
     Logger.setup()
-    urlUpdate result Home
+    let m, _ = Navbar.State.init()
+    urlUpdate result {CurrentPage = Home; Navbar = m}
 
 let update msg model =
-    match msg, model with
+    match msg, model.CurrentPage with
     | NounPluralsMsg msg, NounPlurals m ->
         let m, cmd = NounPlurals.update msg m
-        NounPlurals m, Cmd.map NounPluralsMsg cmd
+        updateModelPage model (NounPlurals m), Cmd.map NounPluralsMsg cmd
     | NounAccusativesMsg msg, NounAccusatives m ->
         let m, cmd = NounAccusatives.update msg m
-        NounAccusatives m, Cmd.map NounAccusativesMsg cmd
+        updateModelPage model (NounAccusatives m), Cmd.map NounAccusativesMsg cmd
     | AdjectivePluralsMsg msg, AdjectivePlurals m ->
         let m, cmd = AdjectivePlurals.update msg m
-        AdjectivePlurals m, Cmd.map AdjectivePluralsMsg cmd
+        updateModelPage model (AdjectivePlurals m), Cmd.map AdjectivePluralsMsg cmd
     | AdjectiveComparativesMsg msg, AdjectiveComparatives m ->
         let m, cmd = AdjectiveComparatives.update msg m
-        AdjectiveComparatives m, Cmd.map AdjectiveComparativesMsg cmd
+        updateModelPage model (AdjectiveComparatives m), Cmd.map AdjectiveComparativesMsg cmd
     | VerbImperativesMsg msg, VerbImperatives m ->
         let m, cmd = VerbImperatives.update msg m
-        VerbImperatives m, Cmd.map VerbImperativesMsg cmd
+        updateModelPage model (VerbImperatives m), Cmd.map VerbImperativesMsg cmd
     | VerbParticiplesMsg msg, VerbParticiples m ->
         let m, cmd = VerbParticiples.update msg m
-        VerbParticiples m, Cmd.map VerbParticiplesMsg cmd
+        updateModelPage model (VerbParticiples m), Cmd.map VerbParticiplesMsg cmd
+    | NavbarMsg msg, _ ->
+        let m, cmd = Navbar.State.update msg model.Navbar
+        updateModelNavbar model m, Cmd.map NavbarMsg cmd
     | _, _ ->
         model, Cmd.none
 
+
+
 let view model dispatch =
     div [] [ 
-        Menu.view()
-        hr []
+        Navbar.View.root model.Navbar (NavbarMsg >> dispatch)
         div [ Styles.center "column" ] (viewPage model dispatch)
     ]
 

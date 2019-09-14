@@ -51,6 +51,15 @@ Thanks for your interest! Developing and testing locally should be possible both
 4. Install [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-2016-express-localdb?view=sql-server-2017#try-it-out) either as a part of SQL Server or Visual Studio
 5. Install and run [Azure Storage Emulator](https://go.microsoft.com/fwlink/?linkid=717179&clcid=0x409)
 
+### Installation for MacOS/Linux
+First three steps are same as for Windows.
+
+For Azure storage emulator use [azurite](https://github.com/azure/azurite). Use V2 because the latest version supports Blobs only.
+
+To install azurite use: `npm install -g azurite@2.7.0`
+
+To run Azure storage emulator use: `azurite`
+
 ### Running the App
 1. Open PowerShell, go to the repo root
 2. Run Scraper: `fake build target runscraper`
@@ -64,3 +73,4 @@ There are a lot of [issues](https://github.com/psfinaki/CheckYourCzech/issues) t
 
 As for features, current exercises will be extended, new exercises will be added. 
 And maybe, at some point in the future, new languages.
+ 

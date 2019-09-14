@@ -1,35 +1,35 @@
 module Home
 
 open Fable.Helpers.React
+open Fable.Helpers.React
+open Fable.Helpers.React.Props
+open Fulma
 open Pages
 
 let view () =
     [
-        Markup.words 100 "Check Your Czech"
-        Markup.words 20 "A service to practice Czech grammar"
-        Markup.emptyLines 4
+        Markup.words "home-heading is-hidden-mobile" "Check Your Czech 🇨🇿"
+        Markup.words "home-subheading" "A service to practice Czech grammar"
 
-        div [ Styles.rowWide ]
+        div [ ClassName "home-columns" ]
             [
-                div [ Styles.thirdParent ]
+                Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
                     [
-                        Markup.wordsCentered "Nouns"
-                        Markup.viewLinkCentered Page.NounPlurals "Make plural"
-                        Markup.viewLinkCentered Page.NounAccusatives "Make accusative"
-                    ]
-                
-                div [ Styles.thirdParent ]
-                    [
-                        Markup.wordsCentered "Adjectives"
-                        Markup.viewLinkCentered Page.AdjectivePlurals "Make plural"
-                        Markup.viewLinkCentered Page.AdjectiveComparatives "Make comparative"
-                    ]
-
-                div [ Styles.thirdParent ]
-                    [
-                        Markup.wordsCentered "Verbs"
-                        Markup.viewLinkCentered Page.VerbImperatives "Make imperative"
-                        Markup.viewLinkCentered Page.VerbParticiples "Make participle"
-                    ]
+                        Column.column [ ] [
+                            Markup.wordsCentered "home-column-heading" "Nouns"
+                            Markup.viewLinkCentered "home-column-links" Page.NounPlurals "Make plural"
+                            Markup.viewLinkCentered "home-column-links" Page.NounAccusatives "Make accusative"
+                        ]
+                        Column.column [ ] [
+                            Markup.wordsCentered "home-column-heading" "Adjectives"
+                            Markup.viewLinkCentered "home-column-links" Page.AdjectivePlurals "Make plural"
+                            Markup.viewLinkCentered "home-column-links" Page.AdjectiveComparatives "Make comparative"
+                        ]
+                        Column.column [ ] [
+                            Markup.wordsCentered "home-column-heading" "Verbs"
+                            Markup.viewLinkCentered "home-column-links" Page.VerbImperatives "Make imperative"
+                            Markup.viewLinkCentered "home-column-links" Page.VerbParticiples "Make participle"
+                        ]
+                    ]      
             ]
     ]

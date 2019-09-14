@@ -7,8 +7,10 @@ group Core
 group Server
     source https://api.nuget.org/v3/index.json
 
-    nuget Saturn
-    nuget Thoth.Json.Giraffe
+    nuget Saturn 0.7.6
+    nuget Thoth.Json.Giraffe 1.1
+	nuget Thoth.Json.Net 2.5
+	nuget Giraffe 3.4
     nuget Microsoft.ApplicationInsights.AspNetCore ~> 2.2
 
 group Scraper
@@ -20,14 +22,16 @@ group Scraper
 group Client
     source https://api.nuget.org/v3/index.json
 
-	nuget Fable.Core
+	nuget Fable.Core ~> 2.0.2
 	nuget Fable.React
-	nuget Fable.Elmish.React
-	nuget Fable.Elmish.Browser
+	nuget Fable.Elmish.React ~> 2.1
+	nuget Fable.Elmish.Browser ~> 2.1
 	nuget Fable.Elmish.Debugger
-	nuget Fable.Elmish.HMR
+	nuget Fable.Elmish.HMR ~> 2.0
+	nuget Fulma
+	nuget Fable.FontAwesome.Free
 
-    clitool dotnet-fable
+    clitool dotnet-fable 
 
 group Core.Tests
 	source https://nuget.org/api/v2

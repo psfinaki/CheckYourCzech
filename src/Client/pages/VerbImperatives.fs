@@ -4,6 +4,7 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
+open Fable.Helpers.React.Props
 
 type Model = { 
     Class: Class.Model
@@ -70,13 +71,12 @@ let update msg model =
 
 let view model dispatch = 
     [ 
-        Markup.words 60 "Write imperative for the verb"
+        Markup.words "task-heading" "Write imperative for the verb"
 
         div [ Styles.middle ]
             [
-                Markup.emptyLines 2
 
-                div []
+                div [ClassName "task-filter-container is-hidden-mobile"]
                     [
                         div [ Styles.halfParent ]
                             [
@@ -88,9 +88,6 @@ let view model dispatch =
                                 Pattern.view model.Pattern (Pattern >> dispatch)
                             ]
                     ]
-
-
-                Markup.emptyLines 2
 
                 Task.view model.Task (Task >> dispatch)
             ]

@@ -4,7 +4,7 @@ open Fable.Helpers.React.Props
 
 let middle =
     Style [
-        Width "50%"
+        Width "90%"
         Margin "auto"
     ]
 
@@ -17,7 +17,6 @@ let halfParent =
     Style [
         Width "50%"
         Display "inline-block"
-        Height "25px"
     ]
 
 let thirdParent =
@@ -34,7 +33,6 @@ let center direction =
         FlexDirection direction
         AlignItems "center"
         JustifyContent "center"
-        Padding "20px 0"
     ]
 
 let greyLabel =

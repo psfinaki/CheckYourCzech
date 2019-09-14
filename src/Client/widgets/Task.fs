@@ -2,9 +2,13 @@
 
 open Elmish
 open Fable.Helpers.React
+open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Fable.Import.React
 open Fable.Core.JsInterop
+open Fable.FontAwesome
+open Fable.FontAwesome.Free
+open Fulma
 open Markup
 
 type Task = { 
@@ -18,12 +22,14 @@ type Model = {
     Answers : string[] option
     Input : string
     Result : bool option
+    AnswerShown: bool
 }
 
 type Msg = 
     | SetInput of string
     | SubmitAnswer
     | UpdateTask
+    | ShowAnswer
     | FetchedTask of Task option
     | FetchError of exn
 
@@ -39,7 +45,8 @@ let init taskName getTask =
       Word = None
       Answers = None
       Input = ""
-      Result = None },
+      Result = None
+      AnswerShown = false },
       loadTaskCmd getTask
 
 let update msg model getTask =
@@ -47,7 +54,9 @@ let update msg model getTask =
     | SetInput input ->
         { model with Input = input }, Cmd.none
     | SubmitAnswer -> 
-        let result = model.Answers |> Option.map (Array.contains model.Input)
+        let result = if not model.AnswerShown then 
+                        model.Answers |> Option.map (Array.contains model.Input)
+                     else model.Result
    
         if model.Word.IsSome && result.IsSome
         then log model.TaskName model.Word.Value model.Input result.Value
@@ -55,23 +64,28 @@ let update msg model getTask =
         { model with Result = result }, Cmd.none
     | UpdateTask ->
         { model with Word = None; Input = ""; Result = None }, loadTaskCmd getTask
+    | ShowAnswer ->
+        let answer = model.Answers
+                    |> Option.map Array.tryHead
+                    |> Option.flatten
+                    |> Option.defaultValue ""
+        { model with Input = answer; Result = Some false; AnswerShown = true}, Cmd.none
     | FetchedTask task -> 
         { model with 
             Word = task |> Option.map (fun t -> t.Word)
             Answers = task |> Option.map (fun t -> t.Answers)
+            AnswerShown = false
         }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
 
 let view model dispatch =
-    let result = 
+    let inputClass, inputIcon =
         match model.Result with 
         | Some result -> 
-            let imageSource = if result then "images/correct.png" else "images/incorrect.png"
-            let altText = if result then "Correct" else "Incorrect"
-            icon imageSource 25 altText
+            if result then "task-input-correct", Fa.Solid.CheckCircle  else "task-input-incorrect", Fa.Solid.TimesCircle
         | None ->
-            str ""
+            "task-input-none", Fa.Solid.QuestionCircle
 
     let task = 
         match model.Word with
@@ -91,29 +105,62 @@ let view model dispatch =
             match event.shiftKey with
             | false -> dispatch SubmitAnswer
             | true  -> dispatch UpdateTask
+        | Keyboard.Codes.ctrl ->
+            match event.shiftKey with
+            | false -> ()
+            | true  -> dispatch ShowAnswer
         | _ -> 
             ()
 
+    let handleShowAnswerClick _ = dispatch ShowAnswer
     let handleUpdateClick _ = dispatch UpdateTask
     let handleCheckClick _ = dispatch SubmitAnswer
     
-    let clickability = if model.Word.IsSome then Clickable else Unclickable
+    let nextButtonDisabled = not model.Word.IsSome
+    let checkButtonDisabled = model.Word.IsNone || model.AnswerShown
 
     div []
         [
-            div [] 
+            Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
                 [
-                    label Styles.greyLabel task
-                    input Styles.input model.Input handleChangeAnswer handleKeyDown
-                    label Styles.greyLabel result
+                    Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [task] ]
+                    Column.column [ ] [
+                                        div [ClassName ("control has-icons-right " + inputClass)]
+                                            [
+                                                Input.text
+                                                    [
+                                                        Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
+                                                        Input.Value model.Input
+                                                        Input.Size Size.IsLarge
+                                                    ]
+                                                Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
+                                                    [ Fa.i [ inputIcon ] [] ]
+                                            ]                     
+                                      ]
                 ]
 
-            emptyLines 2
 
-            div []
+            Columns.columns []
                 [
-                    button (Styles.button "White") handleUpdateClick "Next (⇧ + ⏎)" clickability
-                    space()
-                    button (Styles.button "Lime") handleCheckClick "Check (⏎)" clickability
+                    Column.column [ ] 
+                        [
+                            button IsSmall IsLight handleShowAnswerClick "Show answer (⇧ + Ctrl)"  
+                                [Button.Modifiers [ Modifier.IsPulledRight ]]
+                        ]
+                ]
+
+            div [ ClassName "task-buttons-container" ]
+                [
+                    button IsMedium NoColor handleUpdateClick "Next (⇧ + ⏎)"   
+                        [
+                            Button.Disabled nextButtonDisabled
+                            Button.CustomClass "task-button"
+                        ]
+                    button IsMedium IsSuccess handleCheckClick "Check (⏎)"   
+                        [
+                            Button.Disabled checkButtonDisabled
+                            Button.CustomClass "task-button"
+                        ]
+                    
                 ]
         ]

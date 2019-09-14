@@ -5,6 +5,7 @@ open Fable.Helpers.React.Props
 open Fable.Core.JsInterop
 open Fable.Import
 open Elmish.Browser.Navigation
+open Fulma
 
 type Clickability =
     | Clickable
@@ -15,9 +16,9 @@ let goToUrl (e: React.MouseEvent) =
     let href = !!e.target?href
     Navigation.newUrl href |> List.map (fun f -> f ignore) |> ignore
 
-let viewLinkCentered page description =
+let viewLinkCentered className page description =
     a [ 
-        Style [ FontSize "30px"; TextAlign "center"; Float "right"; Width "100%" ]
+        ClassName className
         Href (Pages.toHash page)
         OnClick goToUrl 
     ] [ 
@@ -33,11 +34,11 @@ let viewLink page description =
         str description
     ]
 
-let words size message =
-    span [ Style [ FontSize (size |> sprintf "%dpx") ] ] [ str message ]
+let words className message =
+    span [ ClassName className ] [ str message ]
 
-let wordsCentered message =
-    div [ Style [ TextAlign "center"; FontSize "30px" ] ] [ str message ] 
+let wordsCentered className message =
+    div [ ClassName className ] [ str message ] 
 
 let emptyLines count =
     br []
@@ -87,16 +88,15 @@ let toggleLink text content =
                 ]
         ]
 
-let button style handler text clickability =
-    let isDisabled = clickability = Unclickable
-    button [ 
-        OnClick handler
-        Type "button"
-        Disabled isDisabled
-        style
-    ] [
-        str text
-    ]
+let button size color onclick text otherOptions =
+        let options = otherOptions @ 
+                        [
+                            Button.Props [ OnClick onclick ]
+                            Button.Size size
+                            Button.Color color
+                        ]
+        Button.button options [ str text ]
+
 
 let space() =
     div [ Style [ Width "2%"; Display "inline-block" ] ] []
@@ -121,4 +121,4 @@ let option value text =
     option [ Value value] [ str text ]
 
 let select selectedValue changeHandler choices =
-    select [ Value selectedValue; OnChange changeHandler; Style [ BorderRadius "10%"; FontSize "20px" ] ] choices
+    select [ Value selectedValue; OnChange changeHandler; Style [ FontSize "20px" ] ] choices

@@ -31,9 +31,9 @@ let view model dispatch =
 
     let selectedValue = model.Class |> Option.map string |> Option.defaultValue "Any"
 
-    div [] 
+    div [ ClassName "class-filter" ] 
         [
-            div [ Style [ Height "50%" ] ] 
+            div [ ClassName "class-filter-label" ] 
                 [
                     Markup.label Styles.whiteLabel (str "Class") 
                 ]
