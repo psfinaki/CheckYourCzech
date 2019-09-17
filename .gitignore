@@ -6,7 +6,11 @@ bin/
 packages/
 paket-files/
 node_modules/
-src/Client/public/js/
+src/Client/public/app.js
+src/Client/public/vendors.js
+src/Client/public/style.js
+src/Client/public/style.css
+src/Client/public/index.html
 src/Server/Properties/launchSettings.json
 release.cmd
 release.sh
