@@ -1,10 +1,11 @@
-var path = require("path");
-var webpack = require("webpack");
-var MinifyPlugin = require("terser-webpack-plugin");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require("path");
+const webpack = require("webpack");
+const MinifyPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 function resolve(filePath) {
-    return path.join(__dirname, filePath)
+    return path.join(__dirname, filePath);
 }
 
 var CONFIG = {
@@ -24,9 +25,8 @@ var CONFIG = {
         }
     },
     historyApiFallback: {
-        index: resolve("./index.html")
+        index: resolve("./public/index.html")
     },
-    contentBase: resolve("./public"),
     // Use babel-preset-env to generate JS compatible with most-used browsers.
     // More info at https://github.com/babel/babel/blob/master/packages/babel-preset-env/README.md
     babel: {
@@ -36,7 +36,7 @@ var CONFIG = {
                     "browsers": ["last 2 versions"]
                 },
                 "modules": false,
-                "useBuiltIns": "usage",
+                "useBuiltIns": "usage"
             }]
         ],
         plugins: ["@babel/plugin-transform-runtime"]
@@ -49,8 +49,7 @@ console.log("Bundling for " + (isProduction ? "production" : "development") + ".
 module.exports = {
     entry: CONFIG.fsharpEntry,
     output: {
-        path: resolve('./public/js'),
-        publicPath: "/js",
+        path: resolve("public"),
         filename: "[name].js"
     },
     mode: isProduction ? "production" : "development",
@@ -75,10 +74,12 @@ module.exports = {
     // DEVELOPMENT
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
     plugins: isProduction ? [
+        new HtmlWebpackPlugin({ template: "./src/Client/template.html" }),
         new MiniCssExtractPlugin({
             filename: 'style.css'
     })] : 
     [
+        new HtmlWebpackPlugin({ template: "./src/Client/template.html" }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin()
     ],
@@ -88,7 +89,7 @@ module.exports = {
         hot: true,
         inline: true,
         historyApiFallback: CONFIG.historyApiFallback,
-        contentBase: CONFIG.contentBase
+        contentBase: resolve("public")
     },
     // - fable-loader: transforms F# into JS
     // - babel-loader: transforms JS to old syntax (compatible with old browsers)
@@ -104,23 +105,18 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: CONFIG.babel
-                },
+                }
             },
             {
-                test: /\.(sass|scss|css)$/,
+                test: /\.scss$/,
                 use: [
-                    'style-loader',
-                    // isProduction
-                    //     ? MiniCssExtractPlugin.loader
-                    //     : 'style-loader',
+                    isProduction
+                        ? MiniCssExtractPlugin.loader
+                        : 'style-loader',
                     'css-loader',
-                    'sass-loader',
-                ],
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            },
+                    'sass-loader'
+                ]
+            }
         ]
     }
 };
