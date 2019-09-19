@@ -1,3 +1,4 @@
+const path = require("path");
 const MinifyPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -9,8 +10,12 @@ module.exports = merge(commonConfiguration, {
     optimization: {
         minimizer: [ new MinifyPlugin() ]
     },
+    output: {
+        path: path.join(__dirname, "public"),
+        filename: "[name].[contenthash].js"
+    },
     plugins: [
-        new MiniCssExtractPlugin({ filename: 'style.css' })
+        new MiniCssExtractPlugin({ filename: 'style.[contenthash].css' })
     ],
     module: {
         rules: [
