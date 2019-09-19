@@ -6,6 +6,10 @@ const commonConfiguration = require("./webpack.common");
 
 module.exports = merge(commonConfiguration, {
     mode: "development",
+    output: {
+        path: path.join(__dirname, "public"),
+        filename: "[name].js"
+    },
     devtool: "source-map",
     plugins:     [
         new webpack.HotModuleReplacementPlugin(),

@@ -11,10 +11,6 @@ module.exports = {
         ],
         "style": [ path.join(__dirname, './scss/main.scss') ]
     },
-    output: {
-        path: path.join(__dirname, "public"),
-        filename: "[name].js"
-    },
     resolve: {
         symlinks: false
     },
