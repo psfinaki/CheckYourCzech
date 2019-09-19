@@ -2373,6 +2373,11 @@ fable-babel-plugins@^2.2.0:
   resolved "https://registry.yarnpkg.com/fable-babel-plugins/-/fable-babel-plugins-2.2.0.tgz#2c61be1bd1afb1f03da4e66ccaa1bfecf92063a3"
   integrity sha512-4g8CIyXCILk5LLiwNPtvtrPy3YuV5eJV18SYJCZxu3A1BSKNvPGHLSg5YcFJ2zt4qmBvSkBewlQ2bVQYG+TnrQ==
 
+fable-compiler@^2.3.25:
+  version "2.3.25"
+  resolved "https://registry.yarnpkg.com/fable-compiler/-/fable-compiler-2.3.25.tgz#21cd07169d45efc95946dc9b91d191996f8b087d"
+  integrity sha512-ofpQ60wR4529RFzYspEzT02WmQdNVAK6BEPlb7+gmlOwMclMBkVl1lUKepWM6wFR1TJWVRyjsKaus9be7Z5eNQ==
+
 fable-loader@^2.1.7:
   version "2.1.7"
   resolved "https://registry.yarnpkg.com/fable-loader/-/fable-loader-2.1.7.tgz#64dc9125af41a709cd2a3f614352c4daeaefaa16"
@@ -3572,7 +3577,7 @@ lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.11, lodash@~4.17.10:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
-lodash@^4.17.3:
+lodash@^4.17.15, lodash@^4.17.3:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -6204,6 +6209,13 @@ webpack-log@^2.0.0:
   dependencies:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
+
+webpack-merge@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/webpack-merge/-/webpack-merge-4.2.2.tgz#a27c52ea783d1398afd2087f547d7b9d2f43634d"
+  integrity sha512-TUE1UGoTX2Cd42j3krGYqObZbOD+xF7u28WB7tfUordytSjbWTIjK/8V0amkBfTYN4/pB/GIDlJZZ657BGG19g==
+  dependencies:
+    lodash "^4.17.15"
 
 webpack-sources@^1.1.0, webpack-sources@^1.3.0:
   version "1.3.0"

@@ -68,7 +68,7 @@ Target.create "RestoreServer" (fun _ ->
 
 Target.create "Build" (fun _ ->
     runDotNet "build" serverPath
-    runDotNet "fable webpack-cli -- --config src/Client/webpack.config.js -p" clientPath
+    runTool yarnTool "webpack --config src/Client/webpack.production.js" clientPath
 )
 
 Target.create "RunWeb" (fun _ ->
@@ -76,7 +76,7 @@ Target.create "RunWeb" (fun _ ->
         runDotNet "watch run" serverPath
     }
     let client = async {
-        runDotNet "fable webpack-dev-server -- --config src/Client/webpack.config.js" clientPath
+        runTool yarnTool "webpack-dev-server --config src/Client/webpack.development.js" clientPath
     }
     let browser = async {
         do! Async.Sleep 5000
