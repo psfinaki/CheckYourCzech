@@ -28,11 +28,10 @@ let yarnTool =
             "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
         failwith errorMsg
 
-let runTool cmd args workingDir =
-    let arguments = args |> String.split ' ' |> Arguments.OfArgs
-    Command.RawCommand (cmd, arguments)
+let yarn yarnCmd = 
+    let arguments = yarmCmd |> String.split ' ' |> Arguments.OfArgs
+    Command.RawCommand (yarnTool, arguments)
     |> CreateProcess.fromCommand
-    |> CreateProcess.withWorkingDirectory workingDir
     |> CreateProcess.ensureExitCode
     |> Proc.run
     |> ignore
@@ -57,8 +56,8 @@ Target.create "SetEnvironmentVariables" (fun _ ->
 
 Target.create "InstallClient" (fun _ ->
     printfn "Yarn version:"
-    runTool yarnTool "--version" __SOURCE_DIRECTORY__
-    runTool yarnTool "install" __SOURCE_DIRECTORY__
+    yarn "--version"
+    yarn "install"
     runDotNet "restore" clientPath
 )
 
@@ -68,7 +67,10 @@ Target.create "RestoreServer" (fun _ ->
 
 Target.create "Build" (fun _ ->
     runDotNet "build" serverPath
-    runTool yarnTool "webpack --config src/Client/webpack.production.js" clientPath
+
+    let webpackConfig = Path.combine clientPath "webpack.production.js"
+    let webpackCommand =  "webpack --config " + webpackConfig
+    yarn webpackCommand
 )
 
 Target.create "RunWeb" (fun _ ->
@@ -76,7 +78,9 @@ Target.create "RunWeb" (fun _ ->
         runDotNet "watch run" serverPath
     }
     let client = async {
-        runTool yarnTool "webpack-dev-server --config src/Client/webpack.development.js" clientPath
+        let webpackConfig = Path.combine clientPath "webpack.development.js"
+        let webpackCommand =  "webpack-dev-server --config " + webpackConfig
+        yarn webpackCommand
     }
     let browser = async {
         do! Async.Sleep 5000
