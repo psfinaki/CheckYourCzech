@@ -29,7 +29,7 @@ let yarnTool =
         failwith errorMsg
 
 let yarn yarnCmd = 
-    let arguments = yarmCmd |> String.split ' ' |> Arguments.OfArgs
+    let arguments = yarnCmd |> String.split ' ' |> Arguments.OfArgs
     Command.RawCommand (yarnTool, arguments)
     |> CreateProcess.fromCommand
     |> CreateProcess.ensureExitCode
