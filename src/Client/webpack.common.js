@@ -9,6 +9,7 @@ module.exports = {
             "@babel/polyfill",
             path.join(__dirname, "./Client.fsproj")
         ],
+        "recources": path.join(__dirname, './recources.js'),
         "style": [ path.join(__dirname, './scss/main.scss') ]
     },
     resolve: {
@@ -50,6 +51,25 @@ module.exports = {
                             }]
                         ],
                         plugins: [ "@babel/plugin-transform-runtime" ]
+                    }
+                }
+            },
+            {
+                test: /\.(png|gif)$/,
+                use: {
+                    loader: "file-loader",
+                    options: {
+                        name: "[name].[ext]",
+                        outputPath: "images"
+                    }
+                }
+            },
+            {
+                test: /\.(ico|txt)$/,
+                use: {
+                    loader: "file-loader",
+                    options: {
+                        name: "[name].[ext]"
                     }
                 }
             }
