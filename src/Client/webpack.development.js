@@ -18,15 +18,10 @@ module.exports = merge(commonConfiguration, {
     devServer: {
         proxy: {
             '/api/*': {
-                target: 'http://localhost:8085',
-                changeOrigin: true
+                target: 'http://localhost:8085'
             }
         },
         hot: true,
-        inline: true,
-        historyApiFallback: {
-            index: path.join(__dirname, "./public/index.html")
-        },
         contentBase: path.join(__dirname, "public")
     },
     module: {

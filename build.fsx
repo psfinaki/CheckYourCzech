@@ -41,14 +41,6 @@ let runDotNet cmd workingDir =
         DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
     if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s" cmd workingDir
 
-let openBrowser url =
-    //https://github.com/dotnet/corefx/issues/10361
-    Command.ShellCommand url
-    |> CreateProcess.fromCommand
-    |> CreateProcess.ensureExitCodeWithMessage "opening browser failed"
-    |> Proc.run
-    |> ignore
-
 Target.create "SetEnvironmentVariables" (fun _ ->
     Environment.setEnvironVar "ASPNETCORE_ENVIRONMENT" "local"
     Environment.setEnvironVar "STORAGE_CONNECTIONSTRING" "UseDevelopmentStorage=true"
@@ -79,15 +71,11 @@ Target.create "RunWeb" (fun _ ->
     }
     let client = async {
         let webpackConfig = Path.combine clientPath "webpack.development.js"
-        let webpackCommand =  "webpack-dev-server --config " + webpackConfig
+        let webpackCommand = sprintf "webpack-dev-server --config %s --open" webpackConfig
         yarn webpackCommand
     }
-    let browser = async {
-        do! Async.Sleep 5000
-        openBrowser "http://localhost:8080"
-    }
 
-    [ server; client; browser ]
+    [ server; client ]
     |> Async.Parallel
     |> Async.RunSynchronously
     |> ignore
