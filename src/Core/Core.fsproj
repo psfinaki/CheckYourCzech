@@ -12,6 +12,7 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Utils.fs" />
     <Compile Include="Letters.fs" />
     <Compile Include="StringHelper.fs" />
     <Compile Include="SequenceExtensions.fs" />

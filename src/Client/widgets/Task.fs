@@ -10,26 +10,41 @@ open Fable.FontAwesome
 open Fable.FontAwesome.Free
 open Fulma
 open Markup
+open Utils
+
+[<Literal>] 
+let DefaultWord = ""
+let DefaultAnswers = [||]
 
 type Task = { 
     Word : string 
     Answers : string[]
 }
 
+type InputState = 
+    | Unknown
+    | Wrong
+    | Right
+    | Shown
+
+type Input = string
+type TaskWithInput = Task * Input * InputState
+
+type State = 
+    | Fetching
+    | TaskProvided of Task
+    | InputProvided of TaskWithInput
+
 type Model = {
     TaskName: string
-    Word : string option
-    Answers : string[] option
-    Input : string
-    Result : bool option
-    AnswerShown: bool
+    State: State
 }
 
 type Msg = 
-    | SetInput of string
-    | SubmitAnswer
-    | UpdateTask
+    | SetAnswer of string
     | ShowAnswer
+    | CheckAnswer
+    | NextQuestion
     | FetchedTask of Task option
     | FetchError of exn
 
@@ -42,43 +57,52 @@ let loadTaskCmd getTask =
 
 let init taskName getTask =
     { TaskName = taskName
-      Word = None
-      Answers = None
-      Input = ""
-      Result = None
-      AnswerShown = false },
+      State = Fetching },
       loadTaskCmd getTask
 
-// TODO try merging next and show answer buttons into one
+let getStateTask s = 
+    match s with 
+    | Fetching -> { Word = DefaultWord; Answers = DefaultAnswers}
+    | TaskProvided t -> t
+    | InputProvided (t, _, _) -> t
+
+let checkAnswer model = 
+    match model.State with 
+        | Fetching -> model
+        | TaskProvided _ -> model
+        | InputProvided (t, inp, inpState) -> 
+            let checkAnswer' () = 
+                let result = t.Answers |> Array.contains inp
+                log model.TaskName t.Word inp result
+                let nextState = if result then Right else Wrong
+                { model with State = InputProvided (t, inp, nextState) }
+
+            match inpState with
+            | Shown -> model
+            | _ -> checkAnswer' ()
+        
+
 let update msg model getTask =
     match msg with
-    | SetInput input ->
-        { model with Input = input }, Cmd.none
-    | SubmitAnswer -> 
-        let result = if not model.AnswerShown then 
-                        model.Answers |> Option.map (Array.contains model.Input)
-                     else model.Result
-   
-        if model.Word.IsSome && result.IsSome
-        then log model.TaskName model.Word.Value model.Input result.Value
-        
-        { model with Result = result }, Cmd.none
-    | UpdateTask ->
-        { model with Word = None; Input = ""; Result = None }, loadTaskCmd getTask
-    | ShowAnswer ->
-        let answer = model.Answers
-                    |> Option.map Array.tryHead
-                    |> Option.flatten
-                    |> Option.defaultValue ""
-        { model with Input = answer; Result = Some false; AnswerShown = true}, Cmd.none
     | FetchedTask task -> 
         { model with 
-            Word = task |> Option.map (fun t -> t.Word)
-            Answers = task |> Option.map (fun t -> t.Answers)
-            AnswerShown = false
+            State = TaskProvided { 
+                        Word = task |> Option.map (fun t -> t.Word) |> Option.defaultValue DefaultWord; 
+                        Answers = task |> Option.map (fun t -> t.Answers) |> Option.defaultValue DefaultAnswers
+                    }
         }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
+    | SetAnswer input ->
+        { model with State = InputProvided (getStateTask model.State, input, Unknown) }, Cmd.none
+    | ShowAnswer ->
+        let task = getStateTask model.State
+        let answer = task.Answers |> Array.tryHead |> Option.defaultValue DefaultWord
+        { model with State = InputProvided (task, answer, Shown) }, Cmd.none
+    | CheckAnswer -> 
+        checkAnswer model, Cmd.none
+    | NextQuestion ->
+        { model with State = Fetching }, loadTaskCmd getTask
 
 let getTaskIcon c = 
     match c with 
@@ -87,52 +111,76 @@ let getTaskIcon c =
     | "task-input-none"      -> Fa.Solid.QuestionCircle
     | _                      -> invalidArg "c" "Only certain type of icons could be mapped"
 
-let boolOptionToBool opt = 
-    match opt with 
-    | Some x -> x
-    | None   -> false
+let ifTaskProvided state f d =
+    match state with
+    | InputProvided (task, _, _) -> f task
+    | TaskProvided task -> f task
+    | _ -> d
+
+let ifInputProvided state f d =
+    match state with
+    | InputProvided i -> f i
+    | _ -> d
 
 let view model dispatch =
-    let nextEnabled = model.AnswerShown || boolOptionToBool model.Result
     let inputClass =
-        match model.Result with 
-        | Some result -> 
-            if result then "task-input-correct"  else "task-input-incorrect"
-        | None ->
-            "task-input-none"
+        match model.State with
+        | InputProvided (_, _, inpState) ->
+            match inpState with
+            | Right -> "task-input-correct"
+            | Wrong -> "task-input-incorrect"
+            | _ -> "task-input-none"
+        | _ -> "task-input-none"
     let inputIcon = getTaskIcon inputClass
 
     let task = 
-        match model.Word with
-        | Some t -> 
-            str t
-        | None ->
+        match model.State with
+        | Fetching -> 
             let imageSource = "images/loading.gif"
             let altText = "Loading..."
             icon imageSource 25 altText
+        | t -> getStateTask t |>  (fun t -> t.Word) |> str
 
     let handleChangeAnswer (event: FormEvent) =
-        dispatch (SetInput !!event.target?value)
+        dispatch (SetAnswer !!event.target?value)
            
     let handleKeyDown (event: KeyboardEvent) =
-        match event.keyCode with
-        | Keyboard.Codes.enter when model.Word.IsSome ->
-            match event.shiftKey with
-            | false -> dispatch SubmitAnswer
-            | true  -> dispatch UpdateTask
-        | Keyboard.Codes.ctrl ->
-            match event.shiftKey with
-            | false -> ()
-            | true  -> dispatch ShowAnswer
-        | _ -> 
-            ()
+        match model.State with
+        | Fetching -> ()
+        | _ ->
+            match event.keyCode with
+            | Keyboard.Codes.enter ->
+                match event.shiftKey with
+                | false -> dispatch CheckAnswer
+                | true  -> dispatch NextQuestion
+            | Keyboard.Codes.ctrl ->
+                match event.shiftKey with
+                | false -> ()
+                | true  -> dispatch ShowAnswer
+            | _ -> 
+                ()
 
     let handleShowAnswerClick _ = dispatch ShowAnswer
-    let handleUpdateClick _ = dispatch UpdateTask
-    let handleCheckClick _ = dispatch SubmitAnswer
-    
-    let nextButtonDisabled = not model.Word.IsSome
-    let checkButtonDisabled = model.Word.IsNone || model.AnswerShown
+    let handleUpdateClick _ = dispatch NextQuestion
+    let handleCheckClick _ = dispatch CheckAnswer
+
+    let nextButtonDisabled = 
+        match model.State with
+        | Fetching -> true
+        | _ -> false
+    let checkButtonDisabled = 
+        match model.State with
+        | Fetching -> true
+        | InputProvided (_, _, inpState) ->
+            match inpState with
+            | Shown -> true
+            | _ -> false
+        | _ -> false
+
+    let inputText = 
+        match model.State with
+        | InputProvided (_, i, _) -> i
+        | _ -> ""
 
     div []
         [
@@ -145,7 +193,7 @@ let view model dispatch =
                                                 Input.text
                                                     [
                                                         Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
-                                                        Input.Value model.Input
+                                                        Input.Value inputText
                                                         Input.Size Size.IsLarge
                                                     ]
                                                 Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
