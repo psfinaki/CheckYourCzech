@@ -48,6 +48,8 @@ type Msg =
     | FetchedTask of Task option
     | FetchError of exn
 
+type LeftButtonState = Show | Next
+
 let log taskName task answer result = 
     let message = sprintf "Task name:%s; Task:%s; Answer:%s; Result:%b" taskName task answer result
     Logger.log message
@@ -55,16 +57,18 @@ let log taskName task answer result =
 let loadTaskCmd getTask =
     Cmd.ofPromise getTask [] FetchedTask FetchError
 
-let init taskName getTask =
-    { TaskName = taskName
-      State = Fetching },
-      loadTaskCmd getTask
-
 let getStateTask s = 
     match s with 
     | Fetching -> { Word = DefaultWord; Answers = DefaultAnswers}
     | TaskProvided t -> t
     | InputProvided (t, _, _) -> t
+
+let getTaskIcon c = 
+    match c with 
+    | "task-input-correct"   -> Fa.Solid.CheckCircle
+    | "task-input-incorrect" -> Fa.Solid.TimesCircle
+    | "task-input-none"      -> Fa.Solid.QuestionCircle
+    | _                      -> invalidArg "c" "Only certain type of icons could be mapped"
 
 let checkAnswer model = 
     match model.State with 
@@ -80,7 +84,11 @@ let checkAnswer model =
             match inpState with
             | Shown -> model
             | _ -> checkAnswer' ()
-        
+
+let init taskName getTask =
+    { TaskName = taskName
+      State = Fetching },
+      loadTaskCmd getTask
 
 let update msg model getTask =
     match msg with
@@ -104,24 +112,6 @@ let update msg model getTask =
     | NextQuestion ->
         { model with State = Fetching }, loadTaskCmd getTask
 
-let getTaskIcon c = 
-    match c with 
-    | "task-input-correct"   -> Fa.Solid.CheckCircle
-    | "task-input-incorrect" -> Fa.Solid.TimesCircle
-    | "task-input-none"      -> Fa.Solid.QuestionCircle
-    | _                      -> invalidArg "c" "Only certain type of icons could be mapped"
-
-let ifTaskProvided state f d =
-    match state with
-    | InputProvided (task, _, _) -> f task
-    | TaskProvided task -> f task
-    | _ -> d
-
-let ifInputProvided state f d =
-    match state with
-    | InputProvided i -> f i
-    | _ -> d
-
 let view model dispatch =
     let inputClass =
         match model.State with
@@ -133,13 +123,20 @@ let view model dispatch =
         | _ -> "task-input-none"
     let inputIcon = getTaskIcon inputClass
 
-    let task = 
+    let word = 
         match model.State with
         | Fetching -> 
             let imageSource = "images/loading.gif"
             let altText = "Loading..."
             icon imageSource 25 altText
         | t -> getStateTask t |>  (fun t -> t.Word) |> str
+    
+    let leftButtonState = 
+        match model.State with
+        | InputProvided (_, _, inpState) when inpState = Shown || inpState = Right ->
+            Next
+        | _ ->
+            Show
 
     let handleChangeAnswer (event: FormEvent) =
         dispatch (SetAnswer !!event.target?value)
@@ -152,11 +149,10 @@ let view model dispatch =
             | Keyboard.Codes.enter ->
                 match event.shiftKey with
                 | false -> dispatch CheckAnswer
-                | true  -> dispatch NextQuestion
-            | Keyboard.Codes.ctrl ->
-                match event.shiftKey with
-                | false -> ()
-                | true  -> dispatch ShowAnswer
+                | true  -> 
+                    match leftButtonState with
+                    | Next -> dispatch NextQuestion
+                    | Show -> dispatch ShowAnswer
             | _ -> 
                 ()
 
@@ -168,13 +164,11 @@ let view model dispatch =
         match model.State with
         | Fetching -> true
         | _ -> false
+
     let checkButtonDisabled = 
         match model.State with
         | Fetching -> true
-        | InputProvided (_, _, inpState) ->
-            match inpState with
-            | Shown -> true
-            | _ -> false
+        | InputProvided (_, _, inpState) when inpState = Shown -> true
         | _ -> false
 
     let inputText = 
@@ -182,11 +176,25 @@ let view model dispatch =
         | InputProvided (_, i, _) -> i
         | _ -> ""
 
+    let leftButton = 
+        match leftButtonState with
+        | Next ->
+            button IsMedium NoColor handleUpdateClick "Next (⇧ + ⏎)"   
+                [
+                    Button.Disabled nextButtonDisabled
+                    Button.CustomClass "task-button"
+                ]
+        | Show ->
+            button IsMedium NoColor handleShowAnswerClick "Show (⇧ + ⏎)"   
+                [
+                    Button.CustomClass "task-button"
+                ]
+
     div []
         [
             Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
                 [
-                    Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [task] ]
+                    Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [word] ]
                     Column.column [ ] [
                                         div [ClassName ("control has-icons-right " + inputClass)]
                                             [
@@ -202,23 +210,9 @@ let view model dispatch =
                                       ]
                 ]
 
-
-            Columns.columns []
-                [
-                    Column.column [ ] 
-                        [
-                            button IsSmall IsLight handleShowAnswerClick "Show answer (⇧ + Ctrl)"  
-                                [Button.Modifiers [ Modifier.IsPulledRight ]]
-                        ]
-                ]
-
             div [ ClassName "task-buttons-container" ]
                 [
-                    button IsMedium NoColor handleUpdateClick "Next (⇧ + ⏎)"   
-                        [
-                            Button.Disabled nextButtonDisabled
-                            Button.CustomClass "task-button"
-                        ]
+                    leftButton
                     button IsMedium IsSuccess handleCheckClick "Check (⏎)"   
                         [
                             Button.Disabled checkButtonDisabled
