@@ -9,8 +9,7 @@ module.exports = {
             "@babel/polyfill",
             path.join(__dirname, "./Client.fsproj")
         ],
-        "recources": path.join(__dirname, './recources.js'),
-        "style": [ path.join(__dirname, './scss/main.scss') ]
+        "resources": path.join(__dirname, './resources.js')
     },
     resolve: {
         symlinks: false
