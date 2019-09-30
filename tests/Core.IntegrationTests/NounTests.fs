@@ -62,7 +62,7 @@ let ``Detects gender``() =
 
 [<Fact>]
 let ``Detects no gender - gender not specified``() =
-    "trosečník"
+    "vltavín"
     |> hasGender
     |> Assert.False
 
