@@ -112,35 +112,101 @@ let update msg model getTask =
     | NextQuestion ->
         { model with State = Fetching }, loadTaskCmd getTask
 
-let view model dispatch =
-    let inputClass =
-        match model.State with
-        | InputProvided (_, _, inpState) ->
-            match inpState with
-            | Right -> "task-input-correct"
-            | Wrong -> "task-input-incorrect"
-            | _ -> "task-input-none"
-        | _ -> "task-input-none"
-    let inputIcon = getTaskIcon inputClass
+type InputViewState = {
+    Word : ReactElement
+    InputClass : string
+    InputText : string
+}
 
-    let word = 
+let inputView model dispatch handleKeyDown =
+    let defaultInputClass = "task-input-none"
+    let defaultInputText = ""
+
+    let inputViewState = 
         match model.State with
         | Fetching -> 
             let imageSource = "images/loading.gif"
             let altText = "Loading..."
-            icon imageSource 25 altText
-        | t -> getStateTask t |>  (fun t -> t.Word) |> str
+            let wordDisplay = icon imageSource 25 altText
+            { Word = wordDisplay; InputClass = defaultInputClass; InputText = defaultInputText }
+        | InputProvided (task, inputText, inputState) ->
+            let inputClass =  
+                match inputState with
+                | Right -> "task-input-correct"
+                | Wrong -> "task-input-incorrect"
+                | _ -> defaultInputClass
+            { Word = str task.Word; InputClass = inputClass; InputText = inputText }
+        | TaskProvided task ->
+            { Word = str task.Word; InputClass = defaultInputClass; InputText = defaultInputText }
     
-    let leftButtonState = 
-        match model.State with
-        | InputProvided (_, _, inpState) when inpState = Shown || inpState = Right ->
-            Next
-        | _ ->
-            Show
+    let inputIcon = getTaskIcon inputViewState.InputClass
 
     let handleChangeAnswer (event: FormEvent) =
         dispatch (SetAnswer !!event.target?value)
-           
+               
+    Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
+        [
+            Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [inputViewState.Word] ]
+            Column.column [ ] [
+                                div [ClassName ("control has-icons-right " + inputViewState.InputClass)]
+                                    [
+                                        Input.text
+                                            [
+                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
+                                                Input.Value inputViewState.InputText
+                                                Input.Size Size.IsLarge
+                                            ]
+                                        Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
+                                            [ Fa.i [ inputIcon ] [] ]
+                                    ]                     
+                              ]
+        ]
+
+type ButtonViewState = {
+    NextBtnDisabled : bool
+    CheckBtnDisabled : bool
+}
+
+let buttonView model dispatch nextButtonDisplayed =
+    let handleShowAnswerClick _ = dispatch ShowAnswer
+    let handleUpdateClick _ = dispatch NextQuestion
+    let handleCheckClick _ = dispatch CheckAnswer
+
+    let buttonViewState =
+        match model.State with
+        | Fetching -> 
+            { NextBtnDisabled = true; CheckBtnDisabled = true }
+        | _ -> 
+            { NextBtnDisabled = false; CheckBtnDisabled = not nextButtonDisplayed }
+
+    let taskButton color handler text disabled = 
+        button IsMedium color handler text  
+            [
+                Button.Disabled disabled
+                Button.CustomClass "task-button"
+            ]
+    let noColorButton = taskButton NoColor
+
+    let leftButton = 
+        match nextButtonDisplayed with
+        | true -> noColorButton handleUpdateClick "Next (⇧ + ⏎)" buttonViewState.NextBtnDisabled
+        | false -> noColorButton handleShowAnswerClick "Show (⇧ + ⏎)" false
+
+    div [ ClassName "task-buttons-container" ]
+        [
+            leftButton
+            taskButton IsSuccess handleCheckClick "Check (⏎)" buttonViewState.CheckBtnDisabled
+        ]
+
+let view model dispatch =
+    let nextButtonDisplayed = 
+        match model.State with
+        | InputProvided (_, _, inpState) 
+            when inpState = Shown || inpState = Right ->
+            true
+        | _ ->
+            false
+
     let handleKeyDown (event: KeyboardEvent) =
         match model.State with
         | Fetching -> ()
@@ -150,74 +216,13 @@ let view model dispatch =
                 match event.shiftKey with
                 | false -> dispatch CheckAnswer
                 | true  -> 
-                    match leftButtonState with
-                    | Next -> dispatch NextQuestion
-                    | Show -> dispatch ShowAnswer
+                    match nextButtonDisplayed with
+                    | true -> dispatch NextQuestion
+                    | false -> dispatch ShowAnswer
             | _ -> 
                 ()
-
-    let handleShowAnswerClick _ = dispatch ShowAnswer
-    let handleUpdateClick _ = dispatch NextQuestion
-    let handleCheckClick _ = dispatch CheckAnswer
-
-    let nextButtonDisabled = 
-        match model.State with
-        | Fetching -> true
-        | _ -> false
-
-    let checkButtonDisabled = 
-        match model.State with
-        | Fetching -> true
-        | InputProvided (_, _, inpState) when inpState = Shown -> true
-        | _ -> false
-
-    let inputText = 
-        match model.State with
-        | InputProvided (_, i, _) -> i
-        | _ -> ""
-
-    let leftButton = 
-        match leftButtonState with
-        | Next ->
-            button IsMedium NoColor handleUpdateClick "Next (⇧ + ⏎)"   
-                [
-                    Button.Disabled nextButtonDisabled
-                    Button.CustomClass "task-button"
-                ]
-        | Show ->
-            button IsMedium NoColor handleShowAnswerClick "Show (⇧ + ⏎)"   
-                [
-                    Button.CustomClass "task-button"
-                ]
-
     div []
         [
-            Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
-                [
-                    Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [word] ]
-                    Column.column [ ] [
-                                        div [ClassName ("control has-icons-right " + inputClass)]
-                                            [
-                                                Input.text
-                                                    [
-                                                        Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
-                                                        Input.Value inputText
-                                                        Input.Size Size.IsLarge
-                                                    ]
-                                                Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
-                                                    [ Fa.i [ inputIcon ] [] ]
-                                            ]                     
-                                      ]
-                ]
-
-            div [ ClassName "task-buttons-container" ]
-                [
-                    leftButton
-                    button IsMedium IsSuccess handleCheckClick "Check (⏎)"   
-                        [
-                            Button.Disabled checkButtonDisabled
-                            Button.CustomClass "task-button"
-                        ]
-                    
-                ]
+            inputView model dispatch handleKeyDown
+            buttonView model dispatch nextButtonDisplayed
         ]
