@@ -102,7 +102,12 @@ let update msg model getTask =
     | FetchError _ ->
         model, Cmd.none
     | SetAnswer input ->
-        { model with State = InputProvided (getStateTask model.State, input, Unknown) }, Cmd.none
+        let newState = 
+            if input <> "" then
+                InputProvided (getStateTask model.State, input, Unknown)
+            else
+                TaskProvided (getStateTask model.State)
+        { model with State = newState }, Cmd.none
     | ShowAnswer ->
         let task = getStateTask model.State
         let answer = task.Answers |> Array.tryHead |> Option.defaultValue DefaultWord
@@ -165,6 +170,7 @@ let inputView model dispatch handleKeyDown =
 type ButtonViewState = {
     NextBtnDisabled : bool
     CheckBtnDisabled : bool
+    ShowBtnDisabled : bool
 }
 
 let buttonView model dispatch nextButtonDisplayed =
@@ -175,9 +181,15 @@ let buttonView model dispatch nextButtonDisplayed =
     let buttonViewState =
         match model.State with
         | Fetching -> 
-            { NextBtnDisabled = true; CheckBtnDisabled = true }
+            { NextBtnDisabled = true; CheckBtnDisabled = true; ShowBtnDisabled = true; }
+        | InputProvided (_, _, inputState) ->
+            match inputState with
+            | Shown ->
+                { NextBtnDisabled = false; CheckBtnDisabled = true; ShowBtnDisabled = false; }
+            | _ ->
+                { NextBtnDisabled = false; CheckBtnDisabled = false; ShowBtnDisabled = false; }
         | _ -> 
-            { NextBtnDisabled = false; CheckBtnDisabled = not nextButtonDisplayed }
+            { NextBtnDisabled = false; CheckBtnDisabled = true; ShowBtnDisabled = false; }
 
     let taskButton color handler text disabled = 
         button IsMedium color handler text  
@@ -185,12 +197,11 @@ let buttonView model dispatch nextButtonDisplayed =
                 Button.Disabled disabled
                 Button.CustomClass "task-button"
             ]
-    let noColorButton = taskButton NoColor
 
     let leftButton = 
         match nextButtonDisplayed with
-        | true -> noColorButton handleUpdateClick "Next (⇧ + ⏎)" buttonViewState.NextBtnDisabled
-        | false -> noColorButton handleShowAnswerClick "Show (⇧ + ⏎)" false
+        | true -> taskButton NoColor handleUpdateClick "Next (⇧ + ⏎)" buttonViewState.NextBtnDisabled
+        | false -> taskButton IsLight handleShowAnswerClick "Show (⇧ + ⏎)" buttonViewState.ShowBtnDisabled
 
     div [ ClassName "task-buttons-container" ]
         [
