@@ -182,12 +182,8 @@ let buttonView model dispatch nextButtonDisplayed =
         match model.State with
         | Fetching -> 
             { NextBtnDisabled = true; CheckBtnDisabled = true; ShowBtnDisabled = true; }
-        | InputProvided (_, _, inputState) ->
-            match inputState with
-            | Shown ->
-                { NextBtnDisabled = false; CheckBtnDisabled = true; ShowBtnDisabled = false; }
-            | _ ->
-                { NextBtnDisabled = false; CheckBtnDisabled = false; ShowBtnDisabled = false; }
+        | InputProvided _ ->
+            { NextBtnDisabled = false; CheckBtnDisabled = false; ShowBtnDisabled = false; }
         | _ -> 
             { NextBtnDisabled = false; CheckBtnDisabled = true; ShowBtnDisabled = false; }
 
@@ -198,15 +194,15 @@ let buttonView model dispatch nextButtonDisplayed =
                 Button.CustomClass "task-button"
             ]
 
-    let leftButton = 
+    let rightButton = 
         match nextButtonDisplayed with
-        | true -> taskButton NoColor handleUpdateClick "Next (⇧ + ⏎)" buttonViewState.NextBtnDisabled
-        | false -> taskButton IsLight handleShowAnswerClick "Show (⇧ + ⏎)" buttonViewState.ShowBtnDisabled
+        | true -> taskButton NoColor handleUpdateClick "Next (⏎)" buttonViewState.NextBtnDisabled
+        | false -> taskButton IsSuccess handleCheckClick "Check (⏎)" buttonViewState.CheckBtnDisabled
 
     div [ ClassName "task-buttons-container" ]
         [
-            leftButton
-            taskButton IsSuccess handleCheckClick "Check (⏎)" buttonViewState.CheckBtnDisabled
+            taskButton IsLight handleShowAnswerClick "Show (⇧ + ⏎)" buttonViewState.ShowBtnDisabled
+            rightButton
         ]
 
 let view model dispatch =
@@ -225,11 +221,11 @@ let view model dispatch =
             match event.keyCode with
             | Keyboard.Codes.enter ->
                 match event.shiftKey with
-                | false -> dispatch CheckAnswer
-                | true  -> 
+                | false -> 
                     match nextButtonDisplayed with
                     | true -> dispatch NextQuestion
-                    | false -> dispatch ShowAnswer
+                    | false -> dispatch CheckAnswer
+                | true  -> dispatch ShowAnswer
             | _ -> 
                 ()
     div []
