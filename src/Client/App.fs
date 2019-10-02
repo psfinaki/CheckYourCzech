@@ -92,7 +92,7 @@ let urlUpdate (result:Page option) model =
 
 let init result = 
     Logger.setup()
-    let m, _ = Navbar.State.init()
+    let m = Navbar.State.init()
     urlUpdate result {CurrentPage = Home; Navbar = m}
 
 let update msg model =

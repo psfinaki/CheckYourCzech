@@ -7,11 +7,13 @@ open Fable.Helpers.React.Props
 open Thoth.Json
 
 type Model = {
+    FilterBlock : FilterBlock.Types.Model
     Regularity : Regularity.Model
     Task : Task.Model
 }
 
 type Msg = 
+    | FilterBlock of FilterBlock.Types.Msg
     | Regularity of Regularity.Msg
     | Task of Task.Msg
 
@@ -24,15 +26,20 @@ let getTask regularity =
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init() =
+    let filterBlock = FilterBlock.State.init()
     let regularity = Regularity.init()
     let task, cmd = Task.init "Adjective Comparatives" (getTask None)
 
-    { Regularity = regularity
+    { FilterBlock = filterBlock
+      Regularity = regularity
       Task = task },
     Cmd.map Task cmd
 
 let update msg model =
     match msg with
+    | FilterBlock msg' ->
+        let filterBlock, cmd = FilterBlock.State.update msg' model.FilterBlock
+        { model with FilterBlock = filterBlock }, cmd
     | Regularity msg' ->
         let regularity = Regularity.update msg' model.Regularity
         { model with Regularity = regularity }, Cmd.none
@@ -46,7 +53,7 @@ let view model dispatch =
 
         div [ Styles.middle ]
             [
-                div [ClassName "is-hidden-mobile"] 
+                FilterBlock.View.root model.FilterBlock (FilterBlock >> dispatch) 
                     [
                         Regularity.view model.Regularity (Regularity >> dispatch)
                     ]

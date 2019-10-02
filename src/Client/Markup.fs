@@ -101,9 +101,6 @@ let button size color onclick text otherOptions =
 let space() =
     div [ Style [ Width "2%"; Display "inline-block" ] ] []
 
-let label style content =
-    label [ style ] [ content ]
-
 let input style value changeHandler keyDownHandler = 
     input [ 
         Type "text"
@@ -121,4 +118,4 @@ let option value text =
     option [ Value value] [ str text ]
 
 let select selectedValue changeHandler choices =
-    select [ Value selectedValue; OnChange changeHandler; Style [ FontSize "20px" ] ] choices
+    select [ Value selectedValue; OnChange changeHandler; ] choices

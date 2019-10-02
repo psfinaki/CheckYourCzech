@@ -35,10 +35,10 @@ let view model dispatch =
         [
             div [ ClassName "class-filter-label" ] 
                 [
-                    Markup.label Styles.whiteLabel (str "Class") 
+                    label [] [ str "Class" ]
                 ]
 
-            div [ Styles.select ] 
+            div [ ] 
                 [
                     Markup.select selectedValue handleChangeClass [
                         Markup.option ClassUnset "Any"

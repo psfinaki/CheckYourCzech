@@ -8,12 +8,14 @@ open Fable.Helpers.React.Props
 open Genders
 
 type Model = {
+    FilterBlock : FilterBlock.Types.Model
     Gender : Gender.Model
     Pattern : Pattern.Model
     Task : Task.Model
 }
 
 type Msg = 
+    | FilterBlock of FilterBlock.Types.Msg
     | Gender of Gender.Msg
     | Pattern of Pattern.Msg
     | Task of Task.Msg
@@ -43,17 +45,22 @@ let getTask gender pattern =
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init () =
+    let filterBlock = FilterBlock.State.init()
     let gender = Gender.init()
     let pattern = Pattern.init None
     let task, cmd = Task.init "Noun Accusatives" (getTask None None)
 
-    { Gender = gender
+    { FilterBlock = filterBlock
+      Gender = gender
       Pattern = pattern
       Task = task },
     Cmd.map Task cmd
 
 let update msg model =
     match msg with
+    | FilterBlock msg' ->
+        let filterBlock, cmd = FilterBlock.State.update msg' model.FilterBlock
+        { model with FilterBlock = filterBlock }, cmd
     | Gender msg' ->
         let gender = Gender.update msg' model.Gender
         let patterns = gender.Gender |> Option.map getPatterns
@@ -75,15 +82,14 @@ let view model dispatch =
 
         div [ Styles.middle ]
             [
-
-                div [ClassName "task-filter-container is-hidden-mobile"]
+                FilterBlock.View.root model.FilterBlock (FilterBlock >> dispatch) 
                     [
-                        div [ Styles.halfParent ]
+                        div [  ]
                             [
                                 Gender.view model.Gender (Gender >> dispatch)
                             ]
 
-                        div [ Styles.halfParent ]
+                        div [ ]
                             [
                                 Pattern.view model.Pattern (Pattern >> dispatch)
                             ]
