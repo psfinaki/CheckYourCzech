@@ -73,6 +73,12 @@ let ``Detects unofficial form - not used``() =
     |> isOfficial
     |> Assert.False
 
+[<Fact>]
+let ``Detects unofficial form - dialect``() = 
+    "(nářečně) noce"
+    |> isOfficial
+    |> Assert.False
+
 [<Theory>]
 [<InlineData ("(řidč.) pohaněj", "pohaněj")>]
 [<InlineData ("(zřídka) plazové", "plazové")>]

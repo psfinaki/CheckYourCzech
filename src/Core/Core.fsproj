@@ -30,7 +30,11 @@
     <Compile Include="ComparativeBuilder.fs" />
     <Compile Include="ParticipleBuilder.fs" />
     <Compile Include="ParticiplePatternDetector.fs" />
-    <Compile Include="NounPatternDetector.fs" />
+    <Compile Include="Declensions.fs" />
+    <Compile Include="FeminineNounPatternDetector.fs.fs" />
+    <Compile Include="NeuterNounPatternDetector.fs" />
+    <Compile Include="MasculineInanimateNounPatternDetector.fs" />
+    <Compile Include="MasculineAnimateNounPatternDetector.fs" />
     <Compile Include="Noun.fs" />
     <Compile Include="NounPlural.fs" />
     <Compile Include="NounAccusative.fs" />

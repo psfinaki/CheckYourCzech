@@ -8,16 +8,6 @@ open Fable.FontAwesome
 open Types
 open Pages
 
-let private navbarEnd =
-    Navbar.End.div [ ]
-        [ Navbar.Item.div [ ]
-            [ Field.div [ Field.IsGrouped ]
-                [ Control.p [ ]
-                    [ Button.a [ Button.Props [ Href "https://github.com/MangelMaxime/fulma-demo" ] ]
-                        [ Icon.icon [ ]
-                            [ Fa.i [ Fa.Brand.Github ] [ ] ]
-                          span [ ] [ str "Source" ] ] ] ] ] ]
-
 let private navbarStart dispatch =
     Navbar.Start.div [ ]
         [ Navbar.Item.a [ ]
@@ -73,8 +63,7 @@ let private navbarView isBurgerOpen dispatch =
                           span [ ] [ ]
                           span [ ] [ ] ] ]
                   Navbar.menu [ Navbar.Menu.IsActive isBurgerOpen ]
-                    [ navbarStart dispatch
-                      (* navbarEnd *) ] ] ] 
+                    [ navbarStart dispatch ] ] ] 
 
 let root model dispatch =
     navbarView model.isBurgerOpen dispatch

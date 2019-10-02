@@ -2,7 +2,7 @@
 
 let syllabicConsonants = ['l';'r']
 let longVowels = ['á';'é';'í';'ó';'ú';'ů']
-let shortVowels = ['a';'e';'i';'o';'u';'y']
+let shortVowels = ['a';'e';'ě';'i';'o';'u';'y']
 let vowels = longVowels @ shortVowels
 
 let isVowel letter = vowels |> List.contains letter
