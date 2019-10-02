@@ -85,8 +85,25 @@ let ``Detects not pattern kuře`` word =
     |> Assert.False
 
 [<Theory>]
-[<InlineData "faktum">]
 [<InlineData "téma">]
+[<InlineData "dilema">]
+let ``Detects pattern drama`` word =
+    word
+    |> isPatternDrama
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "pole">]
+[<InlineData "stavení">]
+[<InlineData "okno">]
+[<InlineData "kuře">]
+let ``Detects not pattern drama`` word =
+    word
+    |> isPatternDrama
+    |> Assert.False
+
+[<Theory>]
+[<InlineData "faktum">]
 [<InlineData "buly">]
 [<InlineData "břímě">]
 let ``Detects no patterns`` word =
