@@ -36,7 +36,7 @@ let getPattern = function
     | _ -> None
 
 let patternDetectors = [
-    (isPatternMěsto, "okno")
+    (isPatternMěsto, "město")
     (isPatternMoře, "moře")
     (isPatternStavení, "stavení")
     (isPatternKuře, "kuře")
