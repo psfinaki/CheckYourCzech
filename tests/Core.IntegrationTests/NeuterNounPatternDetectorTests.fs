@@ -97,6 +97,7 @@ let ``Detects pattern drama`` word =
 [<InlineData "stavení">]
 [<InlineData "okno">]
 [<InlineData "kuře">]
+[<InlineData "pyžama">]
 let ``Detects not pattern drama`` word =
     word
     |> isPatternDrama
