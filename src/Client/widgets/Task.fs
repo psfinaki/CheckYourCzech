@@ -10,7 +10,6 @@ open Fable.FontAwesome
 open Fable.FontAwesome.Free
 open Fulma
 open Markup
-open Utils
 
 [<Literal>] 
 let DefaultWord = ""
@@ -44,7 +43,7 @@ type Msg =
     | SetAnswer of string
     | ShowAnswer
     | CheckAnswer
-    | NextQuestion
+    | NextTask
     | FetchedTask of Task option
     | FetchError of exn
 
@@ -114,7 +113,7 @@ let update msg model getTask =
         { model with State = InputProvided (task, answer, Shown) }, Cmd.none
     | CheckAnswer -> 
         checkAnswer model, Cmd.none
-    | NextQuestion ->
+    | NextTask ->
         { model with State = Fetching }, loadTaskCmd getTask
 
 type InputViewState = {
@@ -168,24 +167,24 @@ let inputView model dispatch handleKeyDown =
         ]
 
 type ButtonViewState = {
-    NextBtnDisabled : bool
-    CheckBtnDisabled : bool
-    ShowBtnDisabled : bool
+    NextButtonDisabled : bool
+    CheckButtonDisabled : bool
+    ShowButtonDisabled : bool
 }
 
 let buttonView model dispatch nextButtonDisplayed =
     let handleShowAnswerClick _ = dispatch ShowAnswer
-    let handleUpdateClick _ = dispatch NextQuestion
+    let handleUpdateClick _ = dispatch NextTask
     let handleCheckClick _ = dispatch CheckAnswer
 
     let buttonViewState =
         match model.State with
         | Fetching -> 
-            { NextBtnDisabled = true; CheckBtnDisabled = true; ShowBtnDisabled = true; }
+            { NextButtonDisabled = true; CheckButtonDisabled = true; ShowButtonDisabled = true; }
         | InputProvided _ ->
-            { NextBtnDisabled = false; CheckBtnDisabled = false; ShowBtnDisabled = false; }
+            { NextButtonDisabled = false; CheckButtonDisabled = false; ShowButtonDisabled = false; }
         | _ -> 
-            { NextBtnDisabled = false; CheckBtnDisabled = true; ShowBtnDisabled = false; }
+            { NextButtonDisabled = false; CheckButtonDisabled = true; ShowButtonDisabled = false; }
 
     let taskButton color handler text disabled = 
         button IsMedium color handler text  
@@ -196,12 +195,12 @@ let buttonView model dispatch nextButtonDisplayed =
 
     let rightButton = 
         match nextButtonDisplayed with
-        | true -> taskButton NoColor handleUpdateClick "Next (⏎)" buttonViewState.NextBtnDisabled
-        | false -> taskButton IsSuccess handleCheckClick "Check (⏎)" buttonViewState.CheckBtnDisabled
+        | true -> taskButton NoColor handleUpdateClick "Next (⏎)" buttonViewState.NextButtonDisabled
+        | false -> taskButton IsSuccess handleCheckClick "Check (⏎)" buttonViewState.CheckButtonDisabled
 
     div [ ClassName "task-buttons-container" ]
         [
-            taskButton IsLight handleShowAnswerClick "Show (⇧ + ⏎)" buttonViewState.ShowBtnDisabled
+            taskButton IsLight handleShowAnswerClick "Show (⇧ + ⏎)" buttonViewState.ShowButtonDisabled
             rightButton
         ]
 
@@ -223,7 +222,7 @@ let view model dispatch =
                 match event.shiftKey with
                 | false -> 
                     match nextButtonDisplayed with
-                    | true -> dispatch NextQuestion
+                    | true -> dispatch NextTask
                     | false -> dispatch CheckAnswer
                 | true  -> dispatch ShowAnswer
             | _ -> 
