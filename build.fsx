@@ -28,11 +28,10 @@ let yarnTool =
             "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
         failwith errorMsg
 
-let runTool cmd args workingDir =
-    let arguments = args |> String.split ' ' |> Arguments.OfArgs
-    Command.RawCommand (cmd, arguments)
+let yarn yarnCmd = 
+    let arguments = yarnCmd |> String.split ' ' |> Arguments.OfArgs
+    Command.RawCommand (yarnTool, arguments)
     |> CreateProcess.fromCommand
-    |> CreateProcess.withWorkingDirectory workingDir
     |> CreateProcess.ensureExitCode
     |> Proc.run
     |> ignore
@@ -42,14 +41,6 @@ let runDotNet cmd workingDir =
         DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
     if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s" cmd workingDir
 
-let openBrowser url =
-    //https://github.com/dotnet/corefx/issues/10361
-    Command.ShellCommand url
-    |> CreateProcess.fromCommand
-    |> CreateProcess.ensureExitCodeWithMessage "opening browser failed"
-    |> Proc.run
-    |> ignore
-
 Target.create "SetEnvironmentVariables" (fun _ ->
     Environment.setEnvironVar "ASPNETCORE_ENVIRONMENT" "local"
     Environment.setEnvironVar "STORAGE_CONNECTIONSTRING" "UseDevelopmentStorage=true"
@@ -57,8 +48,8 @@ Target.create "SetEnvironmentVariables" (fun _ ->
 
 Target.create "InstallClient" (fun _ ->
     printfn "Yarn version:"
-    runTool yarnTool "--version" __SOURCE_DIRECTORY__
-    runTool yarnTool "install" __SOURCE_DIRECTORY__
+    yarn "--version"
+    yarn "install"
     runDotNet "restore" clientPath
 )
 
@@ -68,7 +59,10 @@ Target.create "RestoreServer" (fun _ ->
 
 Target.create "Build" (fun _ ->
     runDotNet "build" serverPath
-    runDotNet "fable webpack-cli -- --config src/Client/webpack.config.js -p" clientPath
+
+    let webpackConfig = Path.combine clientPath "webpack.production.js"
+    let webpackCommand =  "webpack --config " + webpackConfig
+    yarn webpackCommand
 )
 
 Target.create "RunWeb" (fun _ ->
@@ -76,14 +70,12 @@ Target.create "RunWeb" (fun _ ->
         runDotNet "watch run" serverPath
     }
     let client = async {
-        runDotNet "fable webpack-dev-server -- --config src/Client/webpack.config.js" clientPath
-    }
-    let browser = async {
-        do! Async.Sleep 5000
-        openBrowser "http://localhost:8080"
+        let webpackConfig = Path.combine clientPath "webpack.development.js"
+        let webpackCommand = sprintf "webpack-dev-server --config %s --open" webpackConfig
+        yarn webpackCommand
     }
 
-    [ server; client; browser ]
+    [ server; client ]
     |> Async.Parallel
     |> Async.RunSynchronously
     |> ignore
