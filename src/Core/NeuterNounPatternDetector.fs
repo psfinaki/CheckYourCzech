@@ -29,11 +29,11 @@ let isPatternKuře word =
     plurals |> Seq.exists (ends "ata")
 
 let isPatternDrama word =
-    let nominatives = word |> getDeclension Case.Nominative Number.Singular
-    let accusatives = word |> getDeclension Case.Accusative Number.Singular
+    let singulars = word |> getDeclension Case.Nominative Number.Singular
+    let plurals = word |> getDeclension Case.Nominative Number.Plural
 
-    nominatives |> Seq.exists (ends "ma") &&
-    accusatives |> Seq.exists (ends "ma")
+    singulars |> Seq.exists (ends "ma") &&
+    plurals |> Seq.exists (ends "mata")
 
 let patternDetectors = [
     (isPatternMěsto, "město")
