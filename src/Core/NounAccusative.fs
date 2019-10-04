@@ -7,12 +7,12 @@ let isValid word =
     word |> Noun.isNotNominalization &&
     word |> Noun.hasDeclension &&
     word |> Noun.hasGender &&
-    word |> Noun.hasSingleDeclensionForCase Noun.Case.Nominative Noun.Number.Singular
+    word |> Declensions.hasSingleDeclensionForCase Declensions.Case.Nominative Declensions.Number.Singular
 
 let getNominative = Storage.mapSafeString id
-let getAccusatives = Storage.mapSafeString (Noun.getDeclensionForCase Noun.Case.Accusative Noun.Number.Singular)
+let getAccusatives = Storage.mapSafeString (Declensions.getDeclension Declensions.Case.Accusative Declensions.Number.Singular)
 let getGender = Storage.mapSafeObject (Noun.getGender >> box)
-let getPattern = Storage.mapSafeStringOption Noun.getPattern 
+let getPatterns = Storage.mapSafeString Noun.getPatterns
 
 type NounAccusative(word) =
     inherit TableEntity(word, word)
@@ -21,7 +21,7 @@ type NounAccusative(word) =
 
     member val Nominative = getNominative word with get, set
     member val Gender = getGender word with get, set
-    member val Pattern = getPattern word with get, set
+    member val Patterns = getPatterns word with get, set
     member val Accusatives = getAccusatives word with get, set
 
 let record word =

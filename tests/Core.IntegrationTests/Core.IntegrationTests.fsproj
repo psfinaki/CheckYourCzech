@@ -14,7 +14,12 @@
   <ItemGroup>
     <Compile Include="AdjectiveTests.fs" />
     <Compile Include="AdjectiveComparativeTests.fs" />
+    <Compile Include="MasculineInanimateNounPatternDetectorTests.fs" />
+    <Compile Include="FeminineNounPatternDetectorTests.fs" />
+    <Compile Include="NeuterNounPatternDetectorTests.fs" />
+    <Compile Include="MasculineAnimateNounPatternDetectorTests.fs" />
     <Compile Include="ArticleTests.fs" />
+    <Compile Include="DeclensionsTests.fs" />
     <Compile Include="NounTests.fs" />
     <Compile Include="ComparativeBuilderTests.fs" />
     <Compile Include="ParticipleBuilderTests.fs" />

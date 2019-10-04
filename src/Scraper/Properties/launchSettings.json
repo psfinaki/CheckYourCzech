@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Scraper": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "STORAGE_CONNECTIONSTRING": "UseDevelopmentStorage=true",
+        "ASPNETCORE_ENVIRONMENT": "local"
+      }
+    }
+  }
+}

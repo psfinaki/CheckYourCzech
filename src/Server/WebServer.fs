@@ -11,23 +11,27 @@ type Task(word, answers) =
     member this.Word = word
     member this.Answers = answers
 
-let getFilter columnName queryCondition = function
+let getAzureFilter columnName queryCondition = function
     | Ok parameterValue -> Some (columnName, queryCondition, box parameterValue)
+    | Error _ -> None
+
+let getPostFilter filterCondition = function
+    | Ok parameterValue -> Some (filterCondition parameterValue)
     | Error _ -> None
 
 let getNounPluralsTask next (ctx: HttpContext) =
     task {
         let genderFromQuery = ctx.GetQueryStringValue "gender"
-        let genderFilter = getFilter "Gender" String genderFromQuery
+        let genderFilter = getAzureFilter "Gender" String genderFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilter = getFilter "Pattern" String patternFromQuery
+        let patternFilterCondition (pattern: string) (noun: NounPlural.NounPlural) = noun.Patterns.Contains(pattern)
+        let patternFilter = getPostFilter patternFilterCondition patternFromQuery
 
-        let filters = 
-            [ genderFilter; patternFilter ] 
-            |> Seq.choose id
+        let azureFilters = [ genderFilter ] |> Seq.choose id
+        let postFilters = [ patternFilter ] |> Seq.choose id
         
-        let noun = tryGetRandom<NounPlural.NounPlural> "nounplurals" filters
+        let noun = tryGetRandomWithFilters<NounPlural.NounPlural> "nounplurals" azureFilters postFilters
         let getTask (noun: NounPlural.NounPlural) = 
             let singular = getAs<string> noun.Singular
             let plurals = getAs<string []> noun.Plurals
@@ -40,16 +44,16 @@ let getNounPluralsTask next (ctx: HttpContext) =
 let getNounAccusativesTask next (ctx : HttpContext) =
     task {
         let genderFromQuery = ctx.GetQueryStringValue "gender"
-        let genderFilter = getFilter "Gender" String genderFromQuery
+        let genderFilter = getAzureFilter "Gender" String genderFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilter = getFilter "Pattern" String patternFromQuery
+        let patternFilterCondition (pattern: string) (noun: NounAccusative.NounAccusative) = noun.Patterns.Contains(pattern)
+        let patternFilter = getPostFilter patternFilterCondition patternFromQuery
 
-        let filters = 
-            [ genderFilter; patternFilter ] 
-            |> Seq.choose id
+        let azureFilters = [ genderFilter ] |> Seq.choose id
+        let postFilters = [ patternFilter ] |> Seq.choose id
 
-        let noun = tryGetRandom<NounAccusative.NounAccusative> "nounaccusatives" filters
+        let noun = tryGetRandomWithFilters<NounAccusative.NounAccusative> "nounaccusatives" azureFilters postFilters
         let getTask (noun: NounAccusative.NounAccusative) = 
             let singular = getAs<string> noun.Nominative 
             let accusatives = getAs<string []> noun.Accusatives
@@ -75,7 +79,7 @@ let getAdjectivePluralsTask next (ctx : HttpContext) =
 let getAdjectiveComparativesTask next (ctx : HttpContext) =
     task { 
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
-        let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
+        let regularityFilter = getAzureFilter "IsRegular" Bool regularityFromQuery
     
         let filters = [ regularityFilter ] |> Seq.choose id
         let adjective = tryGetRandom<AdjectiveComparative.AdjectiveComparative> "adjectivecomparatives" filters
@@ -92,10 +96,10 @@ let getAdjectiveComparativesTask next (ctx : HttpContext) =
 let getVerbImperativesTask next (ctx : HttpContext) =
     task {
         let classFromQuery = ctx.GetQueryStringValue "class"
-        let classFilter = getFilter "Class" Int classFromQuery
+        let classFilter = getAzureFilter "Class" Int classFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilter = getFilter "Pattern" String patternFromQuery
+        let patternFilter = getAzureFilter "Pattern" String patternFromQuery
 
         let filters = 
             [ classFilter; patternFilter ]
@@ -115,10 +119,10 @@ let getVerbImperativesTask next (ctx : HttpContext) =
 let getVerbParticiplesTask next (ctx: HttpContext) =
     task {
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilter = getFilter "Pattern" String patternFromQuery
+        let patternFilter = getAzureFilter "Pattern" String patternFromQuery
 
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
-        let regularityFilter = getFilter "IsRegular" Bool regularityFromQuery
+        let regularityFilter = getAzureFilter "IsRegular" Bool regularityFromQuery
 
         let filters =
             [ patternFilter; regularityFilter ] 
