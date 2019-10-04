@@ -4,13 +4,12 @@ open FSharp.Data
 open Article
 open Genders
 open ArticleParser
-
-type EditableArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
-type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
+open StringHelper
 
 let hasDeclension = 
     tryGetNoun
-    >> Option.bind (tryGetChildPart "skloňování")
+    >> Option.bind (tryGetChildrenPartsWhen (starts "skloňování"))
+    >> Option.filter (not << Seq.isEmpty)
     >> Option.isSome
 
 let hasGender =

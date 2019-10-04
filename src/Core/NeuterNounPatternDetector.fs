@@ -2,6 +2,7 @@
 
 open Declensions
 open StringHelper
+open NounCategories
 
 let isPatternMěsto word = 
     let nominatives = word |> getDeclension Case.Nominative Number.Singular

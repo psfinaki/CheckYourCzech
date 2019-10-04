@@ -2,6 +2,7 @@
 
 open Declensions
 open StringHelper
+open NounCategories
 
 let isPatternHrad = 
     getDeclension Case.Genitive Number.Singular

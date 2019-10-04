@@ -29,6 +29,8 @@
     <Compile Include="ComparativeBuilder.fs" />
     <Compile Include="ParticipleBuilder.fs" />
     <Compile Include="ParticiplePatternDetector.fs" />
+    <Compile Include="NounCategories.fs" />
+    <Compile Include="WikiDeclensions.fs" />
     <Compile Include="Declensions.fs" />
     <Compile Include="FeminineNounPatternDetector.fs.fs" />
     <Compile Include="NeuterNounPatternDetector.fs" />
