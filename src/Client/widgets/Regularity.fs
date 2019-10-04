@@ -35,10 +35,10 @@ let view model dispatch =
         [
             div [ ClassName "regularity-filter-label" ] 
                 [
-                    Markup.label Styles.whiteLabel (str "Regularity") 
+                    label [] [ str "Regularity" ] 
                 ]
 
-            div [ Styles.select ] 
+            div [ ] 
                 [
                     Markup.select selectedValue handleChangeRegularity [
                         Markup.option RegularityUnset "Any"

@@ -28,18 +28,19 @@ let isPatternKuře word =
     singulars |> Seq.exists (endsOneOf ["e"; "ě"]) &&
     plurals |> Seq.exists (ends "ata")
 
-let getPattern = function
-    | word when word |> isPatternMěsto -> Some "pan"
-    | word when word |> isPatternMoře -> Some "muž"
-    | word when word |> isPatternStavení -> Some "předseda"
-    | word when word |> isPatternKuře -> Some "soudce"
-    | _ -> None
+let isPatternDrama word =
+    let singulars = word |> getDeclension Case.Nominative Number.Singular
+    let plurals = word |> getDeclension Case.Nominative Number.Plural
+
+    singulars |> Seq.exists (ends "ma") &&
+    plurals |> Seq.exists (ends "mata")
 
 let patternDetectors = [
-    (isPatternMěsto, "okno")
+    (isPatternMěsto, "město")
     (isPatternMoře, "moře")
     (isPatternStavení, "stavení")
     (isPatternKuře, "kuře")
+    (isPatternDrama, "drama")
 ]
 
 let isPattern word patternDetector = fst patternDetector word

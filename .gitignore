@@ -6,7 +6,7 @@ bin/
 packages/
 paket-files/
 node_modules/
-src/Client/public/js/
+src/Client/public/
 src/Server/Properties/launchSettings.json
 release.cmd
 release.sh

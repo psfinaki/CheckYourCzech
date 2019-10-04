@@ -35,10 +35,10 @@ let view model dispatch =
         [
             div [ ClassName "gender-filter-label" ] 
                 [
-                    Markup.label Styles.whiteLabel (str "Gender") 
+                    label [] [ str "Gender" ]
                 ]
 
-            div [ Styles.select ] 
+            div [ ] 
                 [
                     Markup.select selectedValue handleChangeGender [
                         Markup.option GenderUnset "Any"
