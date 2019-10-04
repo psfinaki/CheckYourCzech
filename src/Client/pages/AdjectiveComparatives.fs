@@ -35,6 +35,9 @@ let init() =
       Task = task },
     Cmd.map Task cmd
 
+let reloadTaskCmd =
+    Task.NextTask |> (Cmd.ofMsg >> Cmd.map Task)
+    
 let update msg model =
     match msg with
     | FilterBlock msg' ->
@@ -42,7 +45,7 @@ let update msg model =
         { model with FilterBlock = filterBlock }, cmd
     | Regularity msg' ->
         let regularity = Regularity.update msg' model.Regularity
-        { model with Regularity = regularity }, Cmd.none
+        { model with Regularity = regularity }, reloadTaskCmd
     | Task msg' ->
         let task, cmd = Task.update msg' model.Task (getTask model.Regularity.Regularity)
         { model with Task = task }, Cmd.map Task cmd

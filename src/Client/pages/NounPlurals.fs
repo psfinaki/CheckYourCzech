@@ -56,6 +56,9 @@ let init () =
       Task = task },
     Cmd.map Task cmd
 
+let reloadTaskCmd =
+    Task.NextTask |> (Cmd.ofMsg >> Cmd.map Task)
+
 let update msg model =
     match msg with
     | FilterBlock msg' ->
@@ -68,10 +71,10 @@ let update msg model =
         { model with 
             Gender = gender 
             Pattern = pattern
-        }, Cmd.none
+        }, reloadTaskCmd
     | Pattern msg' ->
         let pattern = Pattern.update msg' model.Pattern
-        { model with Pattern = pattern }, Cmd.none
+        { model with Pattern = pattern }, reloadTaskCmd
     | Task msg' ->
         let task, cmd = Task.update msg' model.Task (getTask model.Gender.Gender model.Pattern.SelectedPattern)
         { model with Task = task }, Cmd.map Task cmd
