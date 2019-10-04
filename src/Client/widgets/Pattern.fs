@@ -45,10 +45,10 @@ let view model dispatch =
         [
             div [ ClassName "pattern-filter-label" ] 
                 [
-                    Markup.label Styles.whiteLabel (str "Pattern") 
+                    label [] [ str "Pattern" ]
                 ]
 
-            div [ Styles.select ] 
+            div [ ] 
                 [
                     Markup.select selectedValue handleChangePattern options
                 ]

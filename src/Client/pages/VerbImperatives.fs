@@ -7,12 +7,14 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 
 type Model = { 
+    FilterBlock : FilterBlock.Types.Model
     Class: Class.Model
     Pattern: Pattern.Model
     Task : Task.Model
 }
 
 type Msg = 
+    | FilterBlock of FilterBlock.Types.Msg
     | Class of Class.Msg
     | Pattern of Pattern.Msg
     | Task of Task.Msg
@@ -43,17 +45,25 @@ let getTask ``class`` pattern =
     fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
 
 let init() =
+    let filterBlock = FilterBlock.State.init()
     let ``class`` = Class.init()
     let pattern = Pattern.init None
     let task, cmd = Task.init "Verb Imperatives" (getTask None None)
 
-    { Class = ``class``
+    { FilterBlock = filterBlock
+      Class = ``class``
       Pattern = pattern
       Task = task }, 
     Cmd.map Task cmd
 
+let reloadTaskCmd =
+    Task.NextTask |> (Cmd.ofMsg >> Cmd.map Task)
+
 let update msg model =
     match msg with
+    | FilterBlock msg' ->
+        let filterBlock, cmd = FilterBlock.State.update msg' model.FilterBlock
+        { model with FilterBlock = filterBlock }, cmd
     | Class msg' ->
         let ``class`` = Class.update msg' model.Class
         let patterns = ``class``.Class |> Option.map getPatterns
@@ -61,10 +71,10 @@ let update msg model =
         { model with 
             Class = ``class`` 
             Pattern = pattern
-        }, Cmd.none
+        }, reloadTaskCmd
     | Pattern msg' ->
         let pattern = Pattern.update msg' model.Pattern
-        { model with Pattern = pattern }, Cmd.none
+        { model with Pattern = pattern }, reloadTaskCmd
     | Task msg' ->
         let task, cmd = Task.update msg' model.Task (getTask model.Class.Class model.Pattern.SelectedPattern)
         { model with Task = task }, Cmd.map Task cmd
@@ -75,15 +85,14 @@ let view model dispatch =
 
         div [ Styles.middle ]
             [
-
-                div [ClassName "task-filter-container is-hidden-mobile"]
+                FilterBlock.View.root model.FilterBlock (FilterBlock >> dispatch) 
                     [
-                        div [ Styles.halfParent ]
+                        div [ ]
                             [
                                 Class.view model.Class (Class >> dispatch)
                             ]
 
-                        div [ Styles.halfParent ]
+                        div [ ]
                             [
                                 Pattern.view model.Pattern (Pattern >> dispatch)
                             ]
