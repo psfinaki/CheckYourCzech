@@ -2,7 +2,7 @@
 
 open Declensions
 open StringHelper
-open NounCategories
+open GrammarCategories
 
 let isPatternŽena word = 
     let nominatives = word |> getDeclension Case.Nominative Number.Singular

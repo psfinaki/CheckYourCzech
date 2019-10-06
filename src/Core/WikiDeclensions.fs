@@ -1,7 +1,7 @@
 ﻿module WikiDeclensions
 
 open FSharp.Data
-open NounCategories
+open GrammarCategories
 open Article
 open StringHelper
 

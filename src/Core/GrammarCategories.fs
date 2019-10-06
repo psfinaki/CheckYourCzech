@@ -1,4 +1,4 @@
-﻿module NounCategories
+﻿module GrammarCategories
 
 type Case = 
     | Nominative = 0

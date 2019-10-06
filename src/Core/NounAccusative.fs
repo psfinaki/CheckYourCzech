@@ -7,10 +7,10 @@ let isValid word =
     word |> Noun.isNotNominalization &&
     word |> Noun.hasDeclension &&
     word |> Noun.hasGender &&
-    word |> Declensions.hasSingleDeclensionForCase NounCategories.Case.Nominative NounCategories.Number.Singular
+    word |> Declensions.hasSingleDeclensionForCase GrammarCategories.Case.Nominative GrammarCategories.Number.Singular
 
 let getNominative = Storage.mapSafeString id
-let getAccusatives = Storage.mapSafeString (Declensions.getDeclension NounCategories.Case.Accusative NounCategories.Number.Singular)
+let getAccusatives = Storage.mapSafeString (Declensions.getDeclension GrammarCategories.Case.Accusative GrammarCategories.Number.Singular)
 let getGender = Storage.mapSafeObject (Noun.getGender >> box)
 let getPatterns = Storage.mapSafeString Noun.getPatterns
 

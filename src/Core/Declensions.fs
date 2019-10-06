@@ -2,7 +2,7 @@
 
 open Article
 open WikiString
-open NounCategories
+open GrammarCategories
 open StringHelper
 
 let isIndeclinable = 
