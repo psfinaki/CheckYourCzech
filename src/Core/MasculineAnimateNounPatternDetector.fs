@@ -2,6 +2,7 @@
 
 open Declensions
 open StringHelper
+open GrammarCategories
 
 let isPatternPan = 
     getDeclension Case.Genitive Number.Singular
