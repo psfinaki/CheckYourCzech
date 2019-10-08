@@ -156,7 +156,7 @@ let inputView model dispatch handleKeyDown =
                                     [
                                         Input.text
                                             [
-                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"] 
+                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"; AutoFocus true] 
                                                 Input.Value inputViewState.InputText
                                                 Input.Size Size.IsLarge
                                             ]
@@ -191,6 +191,7 @@ let buttonView model dispatch nextButtonDisplayed =
             [
                 Button.Disabled disabled
                 Button.CustomClass "task-button"
+                Button.Props [OnFocus (fun (e) -> ())] // TODO figure out how to do this
             ]
 
     let rightButton = 
