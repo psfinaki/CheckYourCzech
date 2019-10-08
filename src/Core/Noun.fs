@@ -4,6 +4,7 @@ open FSharp.Data
 open Article
 open Genders
 open ArticleParser
+open StringHelper
 
 type EditableArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
@@ -38,6 +39,10 @@ let isNominalization (noun: string) =
     let adjectiveEndings = ['ý'; 'á'; 'é'; 'í']
     let nounEnding = Seq.last noun
     adjectiveEndings |> Seq.contains nounEnding
+
+let hasParticles noun = 
+    noun |> ends " se" ||
+    noun |> ends " si"
 
 let isNotNominalization = not << isNominalization
 

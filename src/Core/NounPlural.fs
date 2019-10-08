@@ -5,6 +5,7 @@ open Microsoft.WindowsAzure.Storage.Table
 let isValid word = 
     word |> Word.isNoun &&
     word |> Noun.isNotNominalization &&
+    word |> (not << Noun.hasParticles) &&
     word |> Noun.hasDeclension &&
     word |> Noun.hasGender &&
     word |> Declensions.hasSingleDeclensionForCase Declensions.Case.Nominative Declensions.Number.Singular &&
