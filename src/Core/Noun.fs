@@ -25,14 +25,6 @@ let getGender =
     >> getInfo "rod "
     >> translateGender
 
-let isIndeclinable = 
-    getContent
-    >> getChildPart "čeština"
-    >> getChildPart "podstatné jméno"
-    >> getChildPart "skloňování"
-    >> tryGetInfo "nesklonné"
-    >> Option.isSome
-
 let isNominalization (noun: string) =
     let adjectiveEndings = ['ý'; 'á'; 'é'; 'í']
     let nounEnding = Seq.last noun
