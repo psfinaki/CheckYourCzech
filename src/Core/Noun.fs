@@ -6,12 +6,10 @@ open Genders
 open ArticleParser
 open StringHelper
 
-type EditableArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
-type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
-
 let hasDeclension = 
     tryGetNoun
-    >> Option.bind (tryGetChildPart "skloňování")
+    >> Option.bind (tryGetChildrenPartsWhen (starts "skloňování"))
+    >> Option.filter (not << Seq.isEmpty)
     >> Option.isSome
 
 let hasGender =

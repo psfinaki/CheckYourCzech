@@ -18,6 +18,7 @@
     <Compile Include="WikiString.fs" />
     <Compile Include="Html.fs" />
     <Compile Include="Stem.fs" />
+    <Compile Include="GrammarCategories.fs" />
     <Compile Include="Storage.fs" />
     <Compile Include="Genders.fs" />
     <Compile Include="Article.fs" />
@@ -29,6 +30,7 @@
     <Compile Include="ComparativeBuilder.fs" />
     <Compile Include="ParticipleBuilder.fs" />
     <Compile Include="ParticiplePatternDetector.fs" />
+    <Compile Include="WikiDeclensions.fs" />
     <Compile Include="Declensions.fs" />
     <Compile Include="FeminineNounPatternDetector.fs.fs" />
     <Compile Include="NeuterNounPatternDetector.fs" />
