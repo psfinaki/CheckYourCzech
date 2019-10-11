@@ -30,6 +30,10 @@ let isNominalization (noun: string) =
     let nounEnding = Seq.last noun
     adjectiveEndings |> Seq.contains nounEnding
 
+let hasParticles noun = 
+    noun |> ends " se" ||
+    noun |> ends " si"
+
 let isNotNominalization = not << isNominalization
 
 let getUrl = (+) "https://cs.wiktionary.org/wiki/"

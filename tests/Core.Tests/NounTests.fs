@@ -20,3 +20,15 @@ let ``Detects no nominalization``() =
     "láska"
     |> isNominalization
     |> Assert.False
+
+[<Fact>]
+let ``Detects particles``() =
+    "prstění se"
+    |> hasParticles
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no particles``() =
+    "slunce"
+    |> hasParticles
+    |> Assert.False
