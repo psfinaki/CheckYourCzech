@@ -56,9 +56,11 @@ let ``Gets singulars - multiple options``() =
     |> getDeclension Case.Nominative Number.Singular
     |> seqEquals ["temeno"; "témě"]
     
-[<Fact>]
-let ``Detects indeclinable``() =
-    "dada"
+[<Theory>]
+[<InlineData "dada">]
+[<InlineData "karé">]
+let ``Detects indeclinable`` word =
+    word
     |> isIndeclinable
     |> Assert.True
     

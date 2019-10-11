@@ -5,13 +5,25 @@ open WikiString
 open GrammarCategories
 open StringHelper
 
-let isIndeclinable = 
-    getContent
-    >> getChildPart "čeština"
-    >> getChildPart "podstatné jméno"
-    >> getChildrenPartsWhen (starts "skloňování")
-    >> Seq.map (tryGetInfo "nesklonné")
-    >> Seq.forall Option.isSome
+let isIndeclinable word = 
+    let getNounSection =
+        getContent
+        >> getChildPart "čeština"
+        >> getChildPart "podstatné jméno"
+
+    let hasIndeclinabilityMarkInNounSection = 
+        getNounSection
+        >> tryGetInfo "nesklonné"
+        >> Option.isSome
+
+    let hasIndeclinabilityMarkInDeclensionSections =
+        getNounSection
+        >> getChildrenPartsWhen (starts "skloňování")
+        >> Seq.map (tryGetInfo "nesklonné")
+        >> Seq.forall Option.isSome
+
+    word |> hasIndeclinabilityMarkInNounSection || 
+    word |> hasIndeclinabilityMarkInDeclensionSections
 
 let isNominalization (noun: string) =
     let adjectiveEndings = ['ý'; 'á'; 'é'; 'í']
