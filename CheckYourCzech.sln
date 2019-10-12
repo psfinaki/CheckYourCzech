@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Client", "src\Client\Client.fsproj", "{E6131AB6-007B-4D2C-933E-43309B380B1D}"
 EndProject
@@ -18,7 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Core.IntegrationTests", "tests\Core.IntegrationTests\Core.IntegrationTests.fsproj", "{E4892082-9112-486C-B9F8-28B6F3A35F91}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Core.IntegrationTests", "tests\Core.IntegrationTests\Core.IntegrationTests.fsproj", "{E4892082-9112-486C-B9F8-28B6F3A35F91}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "WikiParsing", "src\WikiParsing\WikiParsing.fsproj", "{CA632575-A3D8-4B18-B4BB-3AEA1A53FDCF}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Common", "src\Common\Common.fsproj", "{E1EB1157-29F2-49C8-9EFB-F6387BEABD29}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "WikiParsing.Tests", "tests\WikiParsing.Tests\WikiParsing.Tests.fsproj", "{6D4C80DA-828C-43F9-B9AB-C8935A4F117D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +56,18 @@ Global
 		{E4892082-9112-486C-B9F8-28B6F3A35F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4892082-9112-486C-B9F8-28B6F3A35F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4892082-9112-486C-B9F8-28B6F3A35F91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA632575-A3D8-4B18-B4BB-3AEA1A53FDCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA632575-A3D8-4B18-B4BB-3AEA1A53FDCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA632575-A3D8-4B18-B4BB-3AEA1A53FDCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA632575-A3D8-4B18-B4BB-3AEA1A53FDCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1EB1157-29F2-49C8-9EFB-F6387BEABD29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1EB1157-29F2-49C8-9EFB-F6387BEABD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1EB1157-29F2-49C8-9EFB-F6387BEABD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1EB1157-29F2-49C8-9EFB-F6387BEABD29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D4C80DA-828C-43F9-B9AB-C8935A4F117D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D4C80DA-828C-43F9-B9AB-C8935A4F117D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D4C80DA-828C-43F9-B9AB-C8935A4F117D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D4C80DA-828C-43F9-B9AB-C8935A4F117D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,18 +12,14 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="NounValidationTests.fs" />
-    <Compile Include="AdjectiveValidationTests.fs" />
-    <Compile Include="VerbValidationTests.fs" />
-    <Compile Include="MasculineInanimateNounPatternDetectorTests.fs" />
-    <Compile Include="FeminineNounPatternDetectorTests.fs" />
-    <Compile Include="NeuterNounPatternDetectorTests.fs" />
-    <Compile Include="MasculineAnimateNounPatternDetectorTests.fs" />
-    <Compile Include="ComparativeBuilderTests.fs" />
-    <Compile Include="ParticipleBuilderTests.fs" />
+    <Compile Include="ArticleTests.fs" />
+    <Compile Include="NounArticleTests.fs" />
+    <Compile Include="AdjecitveArticleTests.fs" />
+    <Compile Include="VerbArticleTests.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Core\Core.fsproj" />
+    <ProjectReference Include="..\..\src\Common\Common.fsproj" />
+    <ProjectReference Include="..\..\src\WikiParsing\WikiParsing.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

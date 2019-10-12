@@ -13,12 +13,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ParticiplePatternDetectorTests.fs" />
+    <Compile Include="ReflexivesTests.fs" />
+    <Compile Include="VerbClassesTests.fs" />
     <Compile Include="VerbPatternDetectorTests.fs" />
-    <Compile Include="NounTests.fs" />
-    <Compile Include="WikiStringTests.fs" />
     <Compile Include="ComparativeBuilderTests.fs" />
-    <Compile Include="AdjectiveTests.fs" />
-    <Compile Include="VerbTests.fs" />
+    <Compile Include="NominalizationTests.fs" />
+    <Compile Include="ComparisonTests.fs" />
+    <Compile Include="ArchaismsTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core\Core.fsproj" />
