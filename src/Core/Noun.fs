@@ -1,6 +1,5 @@
 ﻿module Noun
 
-open FSharp.Data
 open Article
 open Genders
 open ArticleParser
@@ -47,6 +46,10 @@ let patternsGenderMap =
 let getPatternsByGender word gender = patternsGenderMap.[gender] word
 
 let getPatterns noun =
-    noun
-    |> getGender
-    |> getPatternsByGender noun
+    if noun |> Declensions.isIndeclinable
+    then 
+        Seq.empty
+    else
+        noun
+        |> getGender
+        |> getPatternsByGender noun

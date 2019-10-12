@@ -59,3 +59,9 @@ let ``Detects no gender - incorrect gender``() =
     "benediktin"
     |> hasGender
     |> Assert.False
+
+[<Fact>]
+let ``Detects no patterns for indeclinables``() =
+    "ale"
+    |> getPatterns
+    |> Assert.Empty
