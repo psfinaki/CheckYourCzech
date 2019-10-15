@@ -5,11 +5,16 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.PowerPack
 open Fable.Import.React
+open Fable.Core
 open Fable.Core.JsInterop
 open Fable.FontAwesome
 open Fable.FontAwesome.Free
+
 open Fulma
 open Markup
+
+[<Emit("alert('here');$0.preventDefault(); document.getElementById($1).focus();")>]
+let focusElement (e: SyntheticEvent, id: string): unit = jsNative
 
 [<Literal>] 
 let DefaultWord = ""
@@ -122,7 +127,7 @@ type InputViewState = {
     InputText : string
 }
 
-let inputView model dispatch handleKeyDown =
+let inputView model dispatch handleKeyDown inputElementId =
     let defaultInputClass = "task-input-none"
     let defaultInputText = ""
 
@@ -156,6 +161,7 @@ let inputView model dispatch handleKeyDown =
                                     [
                                         Input.text
                                             [
+                                                Input.Id inputElementId
                                                 Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"; AutoFocus true] 
                                                 Input.Value inputViewState.InputText
                                                 Input.Size Size.IsLarge
@@ -172,7 +178,7 @@ type ButtonViewState = {
     ShowButtonDisabled : bool
 }
 
-let buttonView model dispatch nextButtonDisplayed =
+let buttonView model dispatch nextButtonDisplayed inputElementId =
     let handleShowAnswerClick _ = dispatch ShowAnswer
     let handleUpdateClick _ = dispatch NextTask
     let handleCheckClick _ = dispatch CheckAnswer
@@ -187,12 +193,19 @@ let buttonView model dispatch nextButtonDisplayed =
             { NextButtonDisabled = false; CheckButtonDisabled = true; ShowButtonDisabled = false; }
 
     let taskButton color handler text disabled = 
-        button IsMedium color handler text  
+        let options = 
             [
+                Button.Props 
+                    [ 
+                        OnClick handler; 
+                        OnFocus (fun (e) -> Fable.Import.Browser.document.getElementById(inputElementId).focus()) 
+                    ]
+                Button.Size IsMedium
+                Button.Color color
                 Button.Disabled disabled
                 Button.CustomClass "task-button"
-                Button.Props [OnFocus (fun (e) -> ())] // TODO figure out how to do this
-            ]
+              ]
+        Button.button options [ str text ]
 
     let rightButton = 
         match nextButtonDisplayed with
@@ -206,6 +219,7 @@ let buttonView model dispatch nextButtonDisplayed =
         ]
 
 let view model dispatch =
+    let inputElementId = "task-input-element"
     let nextButtonDisplayed = 
         match model.State with
         | InputProvided (_, _, inpState) 
@@ -230,6 +244,6 @@ let view model dispatch =
                 ()
     div []
         [
-            inputView model dispatch handleKeyDown
-            buttonView model dispatch nextButtonDisplayed
+            inputView model dispatch handleKeyDown inputElementId
+            buttonView model dispatch nextButtonDisplayed inputElementId
         ]
