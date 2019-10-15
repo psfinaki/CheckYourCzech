@@ -13,9 +13,6 @@ open Fable.FontAwesome.Free
 open Fulma
 open Markup
 
-[<Emit("alert('here');$0.preventDefault(); document.getElementById($1).focus();")>]
-let focusElement (e: SyntheticEvent, id: string): unit = jsNative
-
 [<Literal>] 
 let DefaultWord = ""
 let DefaultAnswers = [||]
