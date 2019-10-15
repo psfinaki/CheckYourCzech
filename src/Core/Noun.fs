@@ -1,16 +1,14 @@
 ﻿module Noun
 
-open FSharp.Data
 open Article
 open Genders
 open ArticleParser
-
-type EditableArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
-type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
+open StringHelper
 
 let hasDeclension = 
     tryGetNoun
-    >> Option.bind (tryGetChildPart "skloňování")
+    >> Option.bind (tryGetChildrenPartsWhen (starts "skloňování"))
+    >> Option.filter (not << Seq.isEmpty)
     >> Option.isSome
 
 let hasGender =
@@ -26,18 +24,14 @@ let getGender =
     >> getInfo "rod "
     >> translateGender
 
-let isIndeclinable = 
-    getContent
-    >> getChildPart "čeština"
-    >> getChildPart "podstatné jméno"
-    >> getChildPart "skloňování"
-    >> tryGetInfo "nesklonné"
-    >> Option.isSome
-
 let isNominalization (noun: string) =
     let adjectiveEndings = ['ý'; 'á'; 'é'; 'í']
     let nounEnding = Seq.last noun
     adjectiveEndings |> Seq.contains nounEnding
+
+let hasParticles noun = 
+    noun |> ends " se" ||
+    noun |> ends " si"
 
 let isNotNominalization = not << isNominalization
 
@@ -52,6 +46,10 @@ let patternsGenderMap =
 let getPatternsByGender word gender = patternsGenderMap.[gender] word
 
 let getPatterns noun =
-    noun
-    |> getGender
-    |> getPatternsByGender noun
+    if noun |> Declensions.isIndeclinable
+    then 
+        Seq.empty
+    else
+        noun
+        |> getGender
+        |> getPatternsByGender noun

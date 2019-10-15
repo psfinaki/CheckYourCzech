@@ -29,18 +29,6 @@ let ``Gets gender neuter``() =
     "okno"
     |> getGender
     |> equals Neuter
-    
-[<Fact>]
-let ``Detects indeclinable``() =
-    "dada"
-    |> isIndeclinable
-    |> Assert.True
-    
-[<Fact>]
-let ``Detects declinable``() =
-    "panda"
-    |> isIndeclinable
-    |> Assert.False
 
 [<Fact>]
 let ``Detects declension``() =
@@ -71,3 +59,9 @@ let ``Detects no gender - incorrect gender``() =
     "benediktin"
     |> hasGender
     |> Assert.False
+
+[<Fact>]
+let ``Detects no patterns for indeclinables``() =
+    "ale"
+    |> getPatterns
+    |> Assert.Empty

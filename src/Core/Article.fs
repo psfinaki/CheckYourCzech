@@ -109,6 +109,11 @@ let getChildrenParts elements =
     | None -> 
         Seq.empty
 
+let getChildrenPartsWhen filter =
+    getChildrenParts
+    >> Seq.where (fun (header, _) -> filter header)
+    >> Seq.map snd
+
 let getParts name =
     getAllParts
     >> Seq.where (fun (header, _) -> header = name)
@@ -133,4 +138,5 @@ let tryFunc2 func x y = try func x y |> Some with | :? KeyNotFoundException | :?
 let tryGetTableOfContents word = tryFunc1 getTableOfContents word
 let tryGetContent word = tryFunc1 getContent word
 let tryGetChildPart name elements = tryFunc2 getChildPart name elements
+let tryGetChildrenPartsWhen filter = tryFunc2 getChildrenPartsWhen filter
 let tryGetInfo name elements = tryFunc2 getInfo name elements

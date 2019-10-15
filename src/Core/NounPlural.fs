@@ -5,13 +5,14 @@ open Microsoft.WindowsAzure.Storage.Table
 let isValid word = 
     word |> Word.isNoun &&
     word |> Noun.isNotNominalization &&
+    word |> (not << Noun.hasParticles) &&
     word |> Noun.hasDeclension &&
     word |> Noun.hasGender &&
-    word |> Declensions.hasSingleDeclensionForCase Declensions.Case.Nominative Declensions.Number.Singular &&
-    word |> Declensions.hasDeclensionForCase Declensions.Case.Nominative Declensions.Number.Plural
+    word |> Declensions.hasSingleDeclensionForCase GrammarCategories.Case.Nominative GrammarCategories.Number.Singular &&
+    word |> Declensions.hasDeclensionForCase GrammarCategories.Case.Nominative GrammarCategories.Number.Plural
 
 let getSingular = Storage.mapSafeString id
-let getPlurals = Storage.mapSafeString (Declensions.getDeclension Declensions.Case.Nominative Declensions.Number.Plural)
+let getPlurals = Storage.mapSafeString (Declensions.getDeclension GrammarCategories.Case.Nominative GrammarCategories.Number.Plural)
 let getGender = Storage.mapSafeObject (Noun.getGender >> box)
 let getPatterns = Storage.mapSafeString Noun.getPatterns
 
