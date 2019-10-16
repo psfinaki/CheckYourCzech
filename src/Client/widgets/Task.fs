@@ -16,6 +16,7 @@ open Markup
 [<Literal>] 
 let DefaultWord = ""
 let DefaultAnswers = [||]
+let SpecialSymbols = ["Á"; "Č"; "Ď"; "É"; "Ě"; "Í"; "Ň"; "Ó"; "Ř"; "Š"; "Ť"; "Ú"; "Ů"; "Ý"; "Ž"]
 
 type Task = { 
     Word : string 
@@ -152,22 +153,33 @@ let inputView model dispatch handleKeyDown inputElementId =
                
     Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
         [
-            Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [inputViewState.Word] ]
+            Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label"; ] [inputViewState.Word] ]
             Column.column [ ] [
-                                div [ClassName ("control has-icons-right " + inputViewState.InputClass)]
-                                    [
-                                        Input.text
-                                            [
-                                                Input.Id inputElementId
-                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"; AutoFocus true] 
-                                                Input.Value inputViewState.InputText
-                                                Input.Size Size.IsLarge
-                                            ]
-                                        Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
-                                            [ Fa.i [ inputIcon ] [] ]
-                                    ]                     
-                              ]
+                div [ClassName ("control has-icons-right " + inputViewState.InputClass)]
+                    [
+                        Input.text
+                            [
+                                Input.Id inputElementId
+                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"; AutoFocus true] 
+                                Input.Value inputViewState.InputText
+                                Input.Size Size.IsLarge
+                            ]
+                        Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
+                            [ Fa.i [ inputIcon ] [] ]
+                    ]                     
+            ]        
         ]
+
+let symbolButtonsView model dispatch = 
+    let createSymbolButton s = Button.button [ ] [ str s ]
+    Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
+            [
+                Column.column [ ] [ ]
+                Column.column [ ] [
+                    div [ClassName "symbol-buttons"] 
+                        (List.map createSymbolButton SpecialSymbols)
+                ]        
+            ]
 
 type ButtonViewState = {
     NextButtonDisabled : bool
@@ -242,5 +254,6 @@ let view model dispatch =
     div []
         [
             inputView model dispatch handleKeyDown inputElementId
+            symbolButtonsView model dispatch
             buttonView model dispatch nextButtonDisplayed inputElementId
         ]

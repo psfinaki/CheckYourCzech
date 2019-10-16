@@ -171,6 +171,23 @@ body { width: 100%; }
 
         
     }
+
+    /* override Bulma's margin, we don't need it */
+    .columns:not(last-child) {
+        margin-bottom: 0 !important;
+    }
+
+    .symbol-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        button {
+            width: 30px;
+            height: 30px;
+            font-size: 15px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+    }
     
 }
 @media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
