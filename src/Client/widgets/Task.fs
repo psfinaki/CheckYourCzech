@@ -171,7 +171,7 @@ let inputView model dispatch handleKeyDown inputElementId =
         ]
 
 let symbolButtonsView model dispatch = 
-    let createSymbolButton s = Button.button [ ] [ str s ]
+    let createSymbolButton s = Button.button [ Button.Color IsLight ] [ str s ]
     Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
             [
                 Column.column [ ] [ ]
