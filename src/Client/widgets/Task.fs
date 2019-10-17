@@ -11,12 +11,13 @@ open Fable.FontAwesome
 open Fable.FontAwesome.Free
 
 open Fulma
+open System
 open Markup
 
 [<Literal>] 
 let DefaultWord = ""
 let DefaultAnswers = [||]
-let SpecialSymbols = ["Á"; "Č"; "Ď"; "É"; "Ě"; "Í"; "Ň"; "Ó"; "Ř"; "Š"; "Ť"; "Ú"; "Ů"; "Ý"; "Ž"]
+let SpecialSymbols = ['á'; 'č'; 'ď'; 'é'; 'ě'; 'í'; 'ň'; 'ó'; 'ř'; 'š'; 'ť'; 'ú'; 'ů'; 'ý'; 'ž']
 
 type Task = { 
     Word : string 
@@ -39,11 +40,13 @@ type State =
 
 type Model = {
     TaskName: string
+    Input: ImprovedInput.Types.Model
     State: State
 }
 
 type Msg = 
-    | SetAnswer of string
+    | ImprovedInput of ImprovedInput.Types.Msg
+    | InputUpdated
     | ShowAnswer
     | CheckAnswer
     | NextTask
@@ -88,7 +91,9 @@ let checkAnswer model =
             | _ -> checkAnswer' ()
 
 let init taskName getTask =
-    { TaskName = taskName
+    let input = ImprovedInput.State.init()
+    { Input = input
+      TaskName = taskName
       State = Fetching },
       loadTaskCmd getTask
 
@@ -103,7 +108,12 @@ let update msg model getTask =
         }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
-    | SetAnswer input ->
+    | ImprovedInput msg' ->
+        let input, cmd = ImprovedInput.State.update msg' model.Input
+        
+        { model with Input = input }, Cmd.batch [ cmd; Cmd.ofMsg InputUpdated ]
+    | InputUpdated ->
+        let input = model.Input.Value
         let newState = 
             if input <> "" then
                 InputProvided (getStateTask model.State, input, Unknown)
@@ -148,30 +158,43 @@ let inputView model dispatch handleKeyDown inputElementId =
     
     let inputIcon = getTaskIcon inputViewState.InputClass
 
-    let handleChangeAnswer (event: FormEvent) =
-        dispatch (SetAnswer !!event.target?value)
-               
+    // let handleChangeAnswer (event: FormEvent) =
+    //     dispatch (SetAnswer !!event.target?value)
+    let inputProps : ImprovedInput.View.Props = {
+        InputId = inputElementId
+        InputSize = IsLarge
+        OnKeyDownHandler = handleKeyDown
+        AutoCapitalize = "none"
+        AutoFocus = true
+        AutoComplete = "off"
+    }
     Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
         [
             Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label"; ] [inputViewState.Word] ]
             Column.column [ ] [
                 div [ClassName ("control has-icons-right " + inputViewState.InputClass)]
                     [
-                        Input.text
-                            [
-                                Input.Id inputElementId
-                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"; AutoFocus true] 
-                                Input.Value inputViewState.InputText
-                                Input.Size Size.IsLarge
-                            ]
+                        ImprovedInput.View.root inputProps model.Input (ImprovedInput >> dispatch)
                         Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
                             [ Fa.i [ inputIcon ] [] ]
                     ]                     
             ]        
         ]
 
-let symbolButtonsView model dispatch = 
-    let createSymbolButton s = Button.button [ Button.Color IsLight ] [ str s ]
+let symbolButtonsView model dispatch inputElementId = 
+    let disabled = 
+        match model.State with
+        | Fetching -> true
+        | _ -> false
+    let createSymbolButton s = 
+        Button.button [ 
+            Button.Color IsLight
+            Button.Disabled disabled 
+            Button.Props [
+                OnClick (fun _ -> (ImprovedInput >> dispatch) <| ImprovedInput.Types.AddSymbol s)
+                OnFocus (fun (e) -> Fable.Import.Browser.document.getElementById(inputElementId).focus()) 
+            ]
+        ] [ str <| string (Char.ToUpper(s)) ]
     Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
             [
                 Column.column [ ] [ ]
@@ -254,6 +277,6 @@ let view model dispatch =
     div []
         [
             inputView model dispatch handleKeyDown inputElementId
-            symbolButtonsView model dispatch
+            symbolButtonsView model dispatch inputElementId
             buttonView model dispatch nextButtonDisplayed inputElementId
         ]
