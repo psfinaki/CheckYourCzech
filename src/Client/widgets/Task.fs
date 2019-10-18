@@ -25,18 +25,15 @@ type Task = {
 }
 
 type InputState = 
+    | NoInput
     | Unknown
     | Wrong
     | Right
     | Shown
 
-type Input = string
-type TaskWithInput = Task * Input * InputState
-
 type State = 
     | Fetching
-    | TaskProvided of Task
-    | InputProvided of TaskWithInput
+    | InputProvided of Task * InputState
 
 type Model = {
     TaskName: string
@@ -65,8 +62,7 @@ let loadTaskCmd getTask =
 let getStateTask s = 
     match s with 
     | Fetching -> { Word = DefaultWord; Answers = DefaultAnswers}
-    | TaskProvided t -> t
-    | InputProvided (t, _, _) -> t
+    | InputProvided (t, _) -> t
 
 let getTaskIcon c = 
     match c with 
@@ -78,13 +74,12 @@ let getTaskIcon c =
 let checkAnswer model = 
     match model.State with 
         | Fetching -> model
-        | TaskProvided _ -> model
-        | InputProvided (t, inp, inpState) -> 
+        | InputProvided (t, inpState) -> 
             let checkAnswer' () = 
-                let result = t.Answers |> Array.contains inp
-                log model.TaskName t.Word inp result
+                let result = t.Answers |> Array.contains model.Input.Value
+                log model.TaskName t.Word model.Input.Value result
                 let nextState = if result then Right else Wrong
-                { model with State = InputProvided (t, inp, nextState) }
+                { model with State = InputProvided (t, nextState) }
 
             match inpState with
             | Shown -> model
@@ -101,33 +96,34 @@ let update msg model getTask =
     match msg with
     | FetchedTask task -> 
         { model with 
-            State = TaskProvided { 
+            State = InputProvided ({ 
                         Word = task |> Option.map (fun t -> t.Word) |> Option.defaultValue DefaultWord; 
                         Answers = task |> Option.map (fun t -> t.Answers) |> Option.defaultValue DefaultAnswers
-                    }
+                    }, NoInput)
         }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
     | ImprovedInput msg' ->
         let input, cmd = ImprovedInput.State.update msg' model.Input
-        
-        { model with Input = input }, Cmd.batch [ cmd; Cmd.ofMsg InputUpdated ]
+        let triggeredCmd = 
+            match msg' with
+            | ImprovedInput.Types.ChangeInput _ -> Cmd.ofMsg InputUpdated
+            | _ -> Cmd.none
+        { model with Input = input }, Cmd.batch [ cmd; triggeredCmd ]
     | InputUpdated ->
         let input = model.Input.Value
         let newState = 
-            if input <> "" then
-                InputProvided (getStateTask model.State, input, Unknown)
-            else
-                TaskProvided (getStateTask model.State)
-        { model with State = newState }, Cmd.none
+            if input <> "" then Unknown
+            else NoInput
+        { model with State = InputProvided (getStateTask model.State, newState) }, Cmd.none
     | ShowAnswer ->
         let task = getStateTask model.State
         let answer = task.Answers |> Array.tryHead |> Option.defaultValue DefaultWord
-        { model with State = InputProvided (task, answer, Shown) }, Cmd.none
+        { model with State = InputProvided (task, Shown) }, answer |> (ImprovedInput.Types.SetInput >> ImprovedInput >> Cmd.ofMsg)
     | CheckAnswer -> 
         checkAnswer model, Cmd.none
     | NextTask ->
-        { model with State = Fetching }, loadTaskCmd getTask
+        { model with State = Fetching }, Cmd.batch[ Cmd.ofMsg (ImprovedInput ImprovedInput.Types.Reset); loadTaskCmd getTask ]
 
 type InputViewState = {
     Word : ReactElement
@@ -146,20 +142,16 @@ let inputView model dispatch handleKeyDown inputElementId =
             let altText = "Loading..."
             let wordDisplay = icon imageSource 25 altText
             { Word = wordDisplay; InputClass = defaultInputClass; InputText = defaultInputText }
-        | InputProvided (task, inputText, inputState) ->
+        | InputProvided (task, inputState) ->
             let inputClass =  
                 match inputState with
                 | Right -> "task-input-correct"
                 | Wrong -> "task-input-incorrect"
                 | _ -> defaultInputClass
-            { Word = str task.Word; InputClass = inputClass; InputText = inputText }
-        | TaskProvided task ->
-            { Word = str task.Word; InputClass = defaultInputClass; InputText = defaultInputText }
+            { Word = str task.Word; InputClass = inputClass; InputText = model.Input.Value }
     
     let inputIcon = getTaskIcon inputViewState.InputClass
 
-    // let handleChangeAnswer (event: FormEvent) =
-    //     dispatch (SetAnswer !!event.target?value)
     let inputProps : ImprovedInput.View.Props = {
         InputId = inputElementId
         InputSize = IsLarge
@@ -219,10 +211,12 @@ let buttonView model dispatch nextButtonDisplayed inputElementId =
         match model.State with
         | Fetching -> 
             { NextButtonDisabled = true; CheckButtonDisabled = true; ShowButtonDisabled = true; }
-        | InputProvided _ ->
-            { NextButtonDisabled = false; CheckButtonDisabled = false; ShowButtonDisabled = false; }
-        | _ -> 
-            { NextButtonDisabled = false; CheckButtonDisabled = true; ShowButtonDisabled = false; }
+        | InputProvided (_, inputState) ->
+            let checkButtonDisabled = 
+                match inputState with
+                | NoInput -> true
+                | _ -> false
+            { NextButtonDisabled = false; CheckButtonDisabled = checkButtonDisabled; ShowButtonDisabled = false; }
 
     let taskButton color handler text disabled = 
         let options = 
@@ -254,7 +248,7 @@ let view model dispatch =
     let inputElementId = "task-input-element"
     let nextButtonDisplayed = 
         match model.State with
-        | InputProvided (_, _, inpState) 
+        | InputProvided (_, inpState) 
             when inpState = Shown || inpState = Right ->
             true
         | _ ->

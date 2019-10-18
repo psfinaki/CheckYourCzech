@@ -21,7 +21,7 @@ let inputView props model dispatch =
         [
             Input.Id props.InputId
             Input.Props [
-                OnChange (fun _ -> ())
+                OnChange (ChangeInput >> dispatch)
                 OnKeyDown props.OnKeyDownHandler
                 AutoCapitalize props.AutoCapitalize
                 AutoFocus props.AutoFocus

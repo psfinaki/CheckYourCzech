@@ -8,5 +8,7 @@ type Model = {
 }
 
 type Msg = 
-    | SetInput of FormEvent
+    | ChangeInput of FormEvent
+    | SetInput of string
     | AddSymbol of char
+    | Reset

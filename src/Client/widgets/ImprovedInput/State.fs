@@ -2,6 +2,7 @@ module ImprovedInput.State
 
 open Elmish
 open Types
+open Fable.Core.JsInterop
 
 (*
     function handleInputValueChange(e) {
@@ -14,7 +15,8 @@ open Types
         e.target.setSelectionRange(cursorStart, cursorEnd);
     }
 *)
-
+// let handleChangeAnswer (event: FormEvent) =
+//     dispatch (SetAnswer !!event.target?value)
 let init () = { 
     Value = "" 
     CursorStart = 1
@@ -23,4 +25,13 @@ let init () = {
 
 let update msg model =
     match msg with
-    | _ -> model, Cmd.none // trigger a cmd when value changed
+    | ChangeInput e -> 
+        { model with Value = e.target?value; CursorStart = e.target?selectionStart; CursorEnd = e.target?selectionEnd}, Cmd.none
+    | SetInput s ->
+        { model with Value = s}, Cmd.none
+    | AddSymbol c ->
+        { model with Value = model.Value + string c}, Cmd.none
+    | Reset ->
+        init(), Cmd.none
+    | _ ->
+        model, Cmd.none // trigger a cmd when value changed
