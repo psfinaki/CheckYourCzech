@@ -5,17 +5,6 @@ open Types
 open Fable.Core.JsInterop
 open Fable.Import.Browser
 
-(*
-    function handleInputValueChange(e) {
- 
-        var cursorStart = e.target.selectionStart,
-            cursorEnd = e.target.selectionEnd;
-     
-            // value manipulations...
-     
-        e.target.setSelectionRange(cursorStart, cursorEnd);
-    }
-*)
 let init inputId = { 
     Value = "" 
     CursorStart = 1
