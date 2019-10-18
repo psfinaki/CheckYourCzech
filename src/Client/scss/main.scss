@@ -178,7 +178,7 @@ body { width: 100%; }
     }
 
     .symbol-buttons {
-        display: flex;
+        display: none; /* hidden on mobile */
         flex-wrap: wrap;
         button {
             width: 30px;
@@ -231,6 +231,10 @@ body { width: 100%; }
     .filter-block-children {
         display: flex;
         justify-content: space-around;
+    }
+
+    .symbol-buttons {
+        display: flex;
     }
 }
 @media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }

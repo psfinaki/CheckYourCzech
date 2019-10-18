@@ -205,7 +205,7 @@ type ButtonViewState = {
     ShowButtonDisabled : bool
 }
 
-let buttonView model dispatch nextButtonDisplayed =
+let buttonView model dispatch nextButtonDisplayed checkButtonDisabled =
     let handleShowAnswerClick _ = dispatch ShowAnswer
     let handleUpdateClick _ = dispatch NextTask
     let handleCheckClick _ = dispatch CheckAnswer
@@ -215,11 +215,7 @@ let buttonView model dispatch nextButtonDisplayed =
         match model.State with
         | Fetching -> 
             { NextButtonDisabled = true; CheckButtonDisabled = true; ShowButtonDisabled = true; }
-        | InputProvided (_, inputState) ->
-            let checkButtonDisabled = 
-                match inputState with
-                | NoInput -> true
-                | _ -> false
+        | InputProvided _ ->
             { NextButtonDisabled = false; CheckButtonDisabled = checkButtonDisabled; ShowButtonDisabled = false; }
 
     let taskButton color handler text disabled = 
@@ -249,13 +245,13 @@ let buttonView model dispatch nextButtonDisplayed =
         ]
 
 let view model dispatch =
-    let nextButtonDisplayed = 
+    let nextButtonDisplayed, checkButtonDisabled = 
         match model.State with
         | InputProvided (_, inpState) 
             when inpState = Shown || inpState = Right ->
-            true
+            true, false
         | _ ->
-            false
+            false, true
 
     let handleKeyDown (event: KeyboardEvent) =
         match model.State with
@@ -267,7 +263,8 @@ let view model dispatch =
                 | false -> 
                     match nextButtonDisplayed with
                     | true -> dispatch NextTask
-                    | false -> dispatch CheckAnswer
+                    | false -> if checkButtonDisabled then () 
+                               else dispatch CheckAnswer
                 | true  -> dispatch ShowAnswer
             | _ -> 
                 ()
@@ -275,5 +272,5 @@ let view model dispatch =
         [
             inputView model dispatch handleKeyDown
             symbolButtonsView model dispatch
-            buttonView model dispatch nextButtonDisplayed
+            buttonView model dispatch nextButtonDisplayed checkButtonDisabled
         ]
