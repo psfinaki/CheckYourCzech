@@ -247,9 +247,11 @@ let buttonView model dispatch nextButtonDisplayed checkButtonDisabled =
 let view model dispatch =
     let nextButtonDisplayed, checkButtonDisabled = 
         match model.State with
-        | InputProvided (_, inpState) 
-            when inpState = Shown || inpState = Right ->
-            true, false
+        | InputProvided (_, inpState) ->
+            match inpState with
+            | Shown | Right -> true, true
+            | Unknown | Wrong -> false, false
+            | NoInput -> false, true
         | _ ->
             false, true
 
