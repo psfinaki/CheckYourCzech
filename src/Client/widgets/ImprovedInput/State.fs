@@ -3,6 +3,7 @@ module ImprovedInput.State
 open Elmish
 open Types
 open Fable.Core.JsInterop
+open Fable.Import.Browser
 
 (*
     function handleInputValueChange(e) {
@@ -15,12 +16,11 @@ open Fable.Core.JsInterop
         e.target.setSelectionRange(cursorStart, cursorEnd);
     }
 *)
-// let handleChangeAnswer (event: FormEvent) =
-//     dispatch (SetAnswer !!event.target?value)
-let init () = { 
+let init inputId = { 
     Value = "" 
     CursorStart = 1
     CursorEnd = 1
+    InputId = inputId
 }
 
 let update msg model =
@@ -30,8 +30,14 @@ let update msg model =
     | SetInput s ->
         { model with Value = s}, Cmd.none
     | AddSymbol c ->
-        { model with Value = model.Value + string c}, Cmd.none
+        let input : HTMLInputElement = !!document.getElementById(model.InputId)
+        let cursorStart = int input.selectionStart
+        let cursorEnd = int input.selectionEnd
+        let startSection = model.Value.[0..cursorStart-1]
+        let endSection = model.Value.[cursorEnd..]
+        { model with Value = startSection + string c + endSection; CursorStart = cursorStart; CursorEnd = cursorEnd }, Cmd.none
+    | FocusInput ->
+        document.getElementById(model.InputId).focus()
+        model, Cmd.none
     | Reset ->
-        init(), Cmd.none
-    | _ ->
-        model, Cmd.none // trigger a cmd when value changed
+        init model.InputId, Cmd.none

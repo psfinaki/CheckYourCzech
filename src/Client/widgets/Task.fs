@@ -13,11 +13,14 @@ open Fable.FontAwesome.Free
 open Fulma
 open System
 open Markup
+open ImprovedInput.Types
 
 [<Literal>] 
 let DefaultWord = ""
 let DefaultAnswers = [||]
 let SpecialSymbols = ['á'; 'č'; 'ď'; 'é'; 'ě'; 'í'; 'ň'; 'ó'; 'ř'; 'š'; 'ť'; 'ú'; 'ů'; 'ý'; 'ž']
+[<Literal>]
+let InputElementId = "task-input-element"
 
 type Task = { 
     Word : string 
@@ -86,7 +89,7 @@ let checkAnswer model =
             | _ -> checkAnswer' ()
 
 let init taskName getTask =
-    let input = ImprovedInput.State.init()
+    let input = ImprovedInput.State.init InputElementId
     { Input = input
       TaskName = taskName
       State = Fetching },
@@ -107,9 +110,9 @@ let update msg model getTask =
         let input, cmd = ImprovedInput.State.update msg' model.Input
         let triggeredCmd = 
             match msg' with
-            | ImprovedInput.Types.ChangeInput _ -> Cmd.ofMsg InputUpdated
+            | ChangeInput _ -> Cmd.ofMsg InputUpdated
             | _ -> Cmd.none
-        { model with Input = input }, Cmd.batch [ cmd; triggeredCmd ]
+        { model with Input = input }, Cmd.batch [ Cmd.map ImprovedInput cmd; triggeredCmd ]
     | InputUpdated ->
         let input = model.Input.Value
         let newState = 
@@ -119,11 +122,11 @@ let update msg model getTask =
     | ShowAnswer ->
         let task = getStateTask model.State
         let answer = task.Answers |> Array.tryHead |> Option.defaultValue DefaultWord
-        { model with State = InputProvided (task, Shown) }, answer |> (ImprovedInput.Types.SetInput >> ImprovedInput >> Cmd.ofMsg)
+        { model with State = InputProvided (task, Shown) }, answer |> (SetInput >> ImprovedInput >> Cmd.ofMsg)
     | CheckAnswer -> 
         checkAnswer model, Cmd.none
     | NextTask ->
-        { model with State = Fetching }, Cmd.batch[ Cmd.ofMsg (ImprovedInput ImprovedInput.Types.Reset); loadTaskCmd getTask ]
+        { model with State = Fetching }, Cmd.batch[ (ImprovedInput Reset |> Cmd.ofMsg); loadTaskCmd getTask ]
 
 type InputViewState = {
     Word : ReactElement
@@ -131,7 +134,7 @@ type InputViewState = {
     InputText : string
 }
 
-let inputView model dispatch handleKeyDown inputElementId =
+let inputView model dispatch handleKeyDown =
     let defaultInputClass = "task-input-none"
     let defaultInputText = ""
 
@@ -153,7 +156,6 @@ let inputView model dispatch handleKeyDown inputElementId =
     let inputIcon = getTaskIcon inputViewState.InputClass
 
     let inputProps : ImprovedInput.View.Props = {
-        InputId = inputElementId
         InputSize = IsLarge
         OnKeyDownHandler = handleKeyDown
         AutoCapitalize = "none"
@@ -173,7 +175,8 @@ let inputView model dispatch handleKeyDown inputElementId =
             ]        
         ]
 
-let symbolButtonsView model dispatch inputElementId = 
+let symbolButtonsView model dispatch = 
+    let handleButtonOnFocus _ = dispatch (ImprovedInput FocusInput)
     let disabled = 
         match model.State with
         | Fetching -> true
@@ -183,8 +186,8 @@ let symbolButtonsView model dispatch inputElementId =
             Button.Color IsLight
             Button.Disabled disabled 
             Button.Props [
-                OnClick (fun _ -> (ImprovedInput >> dispatch) <| ImprovedInput.Types.AddSymbol s)
-                OnFocus (fun (e) -> Fable.Import.Browser.document.getElementById(inputElementId).focus()) 
+                OnClick (fun _ -> (ImprovedInput >> dispatch) <| AddSymbol s)
+                OnFocus handleButtonOnFocus
             ]
         ] [ str <| string (Char.ToUpper(s)) ]
     Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
@@ -202,10 +205,11 @@ type ButtonViewState = {
     ShowButtonDisabled : bool
 }
 
-let buttonView model dispatch nextButtonDisplayed inputElementId =
+let buttonView model dispatch nextButtonDisplayed =
     let handleShowAnswerClick _ = dispatch ShowAnswer
     let handleUpdateClick _ = dispatch NextTask
     let handleCheckClick _ = dispatch CheckAnswer
+    let handleButtonOnFocus _ = dispatch (ImprovedInput FocusInput)
 
     let buttonViewState =
         match model.State with
@@ -224,7 +228,7 @@ let buttonView model dispatch nextButtonDisplayed inputElementId =
                 Button.Props 
                     [ 
                         OnClick handler; 
-                        OnFocus (fun (e) -> Fable.Import.Browser.document.getElementById(inputElementId).focus()) 
+                        OnFocus handleButtonOnFocus
                     ]
                 Button.Size IsMedium
                 Button.Color color
@@ -245,7 +249,6 @@ let buttonView model dispatch nextButtonDisplayed inputElementId =
         ]
 
 let view model dispatch =
-    let inputElementId = "task-input-element"
     let nextButtonDisplayed = 
         match model.State with
         | InputProvided (_, inpState) 
@@ -270,7 +273,7 @@ let view model dispatch =
                 ()
     div []
         [
-            inputView model dispatch handleKeyDown inputElementId
-            symbolButtonsView model dispatch inputElementId
-            buttonView model dispatch nextButtonDisplayed inputElementId
+            inputView model dispatch handleKeyDown
+            symbolButtonsView model dispatch
+            buttonView model dispatch nextButtonDisplayed
         ]

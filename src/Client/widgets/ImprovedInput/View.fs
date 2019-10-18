@@ -8,7 +8,6 @@ open Fulma
 open Types
 
 type Props = {
-    InputId: string
     InputSize: ISize
     OnKeyDownHandler: KeyboardEvent -> unit
     AutoCapitalize: string
@@ -19,7 +18,7 @@ type Props = {
 let inputView props model dispatch =
     Input.text
         [
-            Input.Id props.InputId
+            Input.Id model.InputId
             Input.Props [
                 OnChange (ChangeInput >> dispatch)
                 OnKeyDown props.OnKeyDownHandler
@@ -27,7 +26,7 @@ let inputView props model dispatch =
                 AutoFocus props.AutoFocus
                 AutoComplete props.AutoComplete
             ] 
-            Input.Value model.Value
+            Input.ValueOrDefault model.Value
             Input.Size props.InputSize
         ]
 
