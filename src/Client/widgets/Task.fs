@@ -18,7 +18,12 @@ open ImprovedInput.Types
 [<Literal>] 
 let DefaultWord = ""
 let DefaultAnswers = [||]
+[<Literal>]
+let UpArrowSymbol = '↑'
+[<Literal>]
+let DownArrowSymbol = '↓'
 let SpecialSymbols = ['á'; 'č'; 'ď'; 'é'; 'ě'; 'í'; 'ň'; 'ó'; 'ř'; 'š'; 'ť'; 'ú'; 'ů'; 'ý'; 'ž']
+let SpecialSymbolsUpper = List.map (fun c -> Char.ToUpper(c)) SpecialSymbols
 [<Literal>]
 let InputElementId = "task-input-element"
 
@@ -41,6 +46,7 @@ type State =
 type Model = {
     TaskName: string
     Input: ImprovedInput.Types.Model
+    UpperCase: bool
     State: State
 }
 
@@ -50,6 +56,7 @@ type Msg =
     | ShowAnswer
     | CheckAnswer
     | NextTask
+    | ChangeSymbolCase
     | FetchedTask of Task option
     | FetchError of exn
 
@@ -92,6 +99,7 @@ let init taskName getTask =
     let input = ImprovedInput.State.init InputElementId
     { Input = input
       TaskName = taskName
+      UpperCase = true
       State = Fetching },
       loadTaskCmd getTask
 
@@ -110,15 +118,23 @@ let update msg model getTask =
         let input, cmd = ImprovedInput.State.update msg' model.Input
         let triggeredCmd = 
             match msg' with
-            | ChangeInput _ -> Cmd.ofMsg InputUpdated
+            | ChangeInput _ | AddSymbol _ -> Cmd.ofMsg InputUpdated
             | _ -> Cmd.none
         { model with Input = input }, Cmd.batch [ Cmd.map ImprovedInput cmd; triggeredCmd ]
     | InputUpdated ->
-        let input = model.Input.Value
-        let newState = 
-            if input <> "" then Unknown
-            else NoInput
-        { model with State = InputProvided (getStateTask model.State, newState) }, Cmd.none
+        match model.State with
+        | Fetching -> model, Cmd.none
+        | InputProvided (task, oldState) ->
+            let input = model.Input.Value
+            let newState = 
+                if input <> "" then Unknown
+                else NoInput
+            let newCaseState = 
+                match newState with
+                | NoInput -> true // Upper case
+                | s when s <> oldState -> false 
+                | _ -> model.UpperCase
+            { model with State = InputProvided (task, newState); UpperCase = newCaseState }, Cmd.none
     | ShowAnswer ->
         let task = getStateTask model.State
         let answer = task.Answers |> Array.tryHead |> Option.defaultValue DefaultWord
@@ -127,6 +143,8 @@ let update msg model getTask =
         checkAnswer model, Cmd.none
     | NextTask ->
         { model with State = Fetching }, Cmd.batch[ (ImprovedInput Reset |> Cmd.ofMsg); loadTaskCmd getTask ]
+    | ChangeSymbolCase ->
+        { model with UpperCase = not model.UpperCase}, Cmd.none
 
 type InputViewState = {
     Word : ReactElement
@@ -176,26 +194,32 @@ let inputView model dispatch handleKeyDown =
         ]
 
 let symbolButtonsView model dispatch = 
+    let arrowButtonSymbol = if model.UpperCase then DownArrowSymbol else UpArrowSymbol
+    let specialSymbols = if model.UpperCase then SpecialSymbolsUpper else SpecialSymbols
     let handleButtonOnFocus _ = dispatch (ImprovedInput FocusInput)
     let disabled = 
         match model.State with
         | Fetching -> true
         | _ -> false
-    let createSymbolButton s = 
+    let createSymbolButton h s = 
         Button.button [ 
             Button.Color IsLight
             Button.Disabled disabled 
             Button.Props [
-                OnClick (fun _ -> (ImprovedInput >> dispatch) <| AddSymbol s)
+                OnClick h
                 OnFocus handleButtonOnFocus
             ]
-        ] [ str <| string (Char.ToUpper(s)) ]
+        ] [ str <| string s ]
+    let createCzechSymbolButton s =
+        createSymbolButton (fun _ -> (ImprovedInput >> dispatch) <| AddSymbol s) s
+    let createArrowButton =
+        createSymbolButton (fun _ -> dispatch ChangeSymbolCase) arrowButtonSymbol
     Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
             [
                 Column.column [ ] [ ]
                 Column.column [ ] [
                     div [ClassName "symbol-buttons"] 
-                        (List.map createSymbolButton SpecialSymbols)
+                        (createArrowButton :: (List.map createCzechSymbolButton specialSymbols))
                 ]        
             ]
 
