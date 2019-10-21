@@ -99,7 +99,7 @@ let init taskName getTask =
     let input = ImprovedInput.State.init InputElementId
     { Input = input
       TaskName = taskName
-      UpperCase = true
+      UpperCase = false
       State = Fetching },
       loadTaskCmd getTask
 
@@ -129,12 +129,7 @@ let update msg model getTask =
             let newState = 
                 if input <> "" then Unknown
                 else NoInput
-            let newCaseState = 
-                match newState with
-                | NoInput -> true // Upper case
-                | s when s <> oldState -> false 
-                | _ -> model.UpperCase
-            { model with State = InputProvided (task, newState); UpperCase = newCaseState }, Cmd.none
+            { model with State = InputProvided (task, newState) }, Cmd.none
     | ShowAnswer ->
         let task = getStateTask model.State
         let answer = task.Answers |> Array.tryHead |> Option.defaultValue DefaultWord
@@ -142,7 +137,7 @@ let update msg model getTask =
     | CheckAnswer -> 
         checkAnswer model, Cmd.none
     | NextTask ->
-        { model with State = Fetching }, Cmd.batch[ (ImprovedInput Reset |> Cmd.ofMsg); loadTaskCmd getTask ]
+        { model with State = Fetching; UpperCase = false }, Cmd.batch[ (ImprovedInput Reset |> Cmd.ofMsg); loadTaskCmd getTask ]
     | ChangeSymbolCase ->
         { model with UpperCase = not model.UpperCase}, Cmd.none
 

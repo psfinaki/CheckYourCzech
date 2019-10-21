@@ -22,9 +22,9 @@
 		<Compile Include="widgets\Navbar\Types.fs" />
 		<Compile Include="widgets\Navbar\State.fs" />
 		<Compile Include="widgets\Navbar\View.fs" />
-    <Compile Include="widgets/ImprovedInput/Types.fs" />
-    <Compile Include="widgets/ImprovedInput/State.fs" />
-    <Compile Include="widgets/ImprovedInput/View.fs" />
+		<Compile Include="widgets\ImprovedInput\Types.fs" />
+		<Compile Include="widgets\ImprovedInput\State.fs" />
+		<Compile Include="widgets\ImprovedInput\View.fs" />
 		<Compile Include="widgets\FilterBlock\Types.fs" />
 		<Compile Include="widgets\FilterBlock\State.fs" />
 		<Compile Include="widgets\FilterBlock\View.fs" />
