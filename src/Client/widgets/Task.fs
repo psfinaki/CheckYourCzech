@@ -211,7 +211,7 @@ let symbolButtonsView model dispatch =
         createSymbolButton (fun _ -> (ImprovedInput >> dispatch) <| AddSymbol s) s
     let createArrowButton =
         createSymbolButton (fun _ -> dispatch ChangeSymbolCase) arrowButtonSymbol
-    Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
+    Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3); Columns.CustomClass "symbol-buttons-columns" ]
             [
                 Column.column [ ] [ ]
                 Column.column [ ] [

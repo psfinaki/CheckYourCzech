@@ -177,6 +177,10 @@ body { width: 100%; }
         margin-bottom: 0 !important;
     }
 
+    .symbol-buttons-columns {
+        display: none;
+    }
+
     .symbol-buttons {
         display: none; /* hidden on mobile */
         flex-wrap: wrap;
@@ -231,6 +235,10 @@ body { width: 100%; }
     .filter-block-children {
         display: flex;
         justify-content: space-around;
+    }
+
+    .symbol-buttons-columns {
+        display: block;
     }
 
     .symbol-buttons {
