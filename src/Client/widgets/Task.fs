@@ -11,11 +11,21 @@ open Fable.FontAwesome
 open Fable.FontAwesome.Free
 
 open Fulma
+open System
 open Markup
+open ImprovedInput.Types
 
 [<Literal>] 
 let DefaultWord = ""
 let DefaultAnswers = [||]
+[<Literal>]
+let UpArrowSymbol = '↑'
+[<Literal>]
+let DownArrowSymbol = '↓'
+let SpecialSymbols = ['á'; 'č'; 'ď'; 'é'; 'ě'; 'í'; 'ň'; 'ó'; 'ř'; 'š'; 'ť'; 'ú'; 'ů'; 'ý'; 'ž']
+let SpecialSymbolsUpper = List.map (fun c -> Char.ToUpper(c)) SpecialSymbols
+[<Literal>]
+let InputElementId = "task-input-element"
 
 type Task = { 
     Word : string 
@@ -23,29 +33,30 @@ type Task = {
 }
 
 type InputState = 
+    | NoInput
     | Unknown
     | Wrong
     | Right
     | Shown
 
-type Input = string
-type TaskWithInput = Task * Input * InputState
-
 type State = 
     | Fetching
-    | TaskProvided of Task
-    | InputProvided of TaskWithInput
+    | InputProvided of Task * InputState
 
 type Model = {
     TaskName: string
+    Input: ImprovedInput.Types.Model
+    UpperCase: bool
     State: State
 }
 
 type Msg = 
-    | SetAnswer of string
+    | ImprovedInput of ImprovedInput.Types.Msg
+    | InputUpdated
     | ShowAnswer
     | CheckAnswer
     | NextTask
+    | ChangeSymbolCase
     | FetchedTask of Task option
     | FetchError of exn
 
@@ -61,8 +72,7 @@ let loadTaskCmd getTask =
 let getStateTask s = 
     match s with 
     | Fetching -> { Word = DefaultWord; Answers = DefaultAnswers}
-    | TaskProvided t -> t
-    | InputProvided (t, _, _) -> t
+    | InputProvided (t, _) -> t
 
 let getTaskIcon c = 
     match c with 
@@ -74,20 +84,22 @@ let getTaskIcon c =
 let checkAnswer model = 
     match model.State with 
         | Fetching -> model
-        | TaskProvided _ -> model
-        | InputProvided (t, inp, inpState) -> 
+        | InputProvided (t, inpState) -> 
             let checkAnswer' () = 
-                let result = t.Answers |> Array.contains inp
-                log model.TaskName t.Word inp result
+                let result = t.Answers |> Array.contains model.Input.Value
+                log model.TaskName t.Word model.Input.Value result
                 let nextState = if result then Right else Wrong
-                { model with State = InputProvided (t, inp, nextState) }
+                { model with State = InputProvided (t, nextState) }
 
             match inpState with
             | Shown -> model
             | _ -> checkAnswer' ()
 
 let init taskName getTask =
-    { TaskName = taskName
+    let input = ImprovedInput.State.init InputElementId
+    { Input = input
+      TaskName = taskName
+      UpperCase = false
       State = Fetching },
       loadTaskCmd getTask
 
@@ -95,28 +107,39 @@ let update msg model getTask =
     match msg with
     | FetchedTask task -> 
         { model with 
-            State = TaskProvided { 
+            State = InputProvided ({ 
                         Word = task |> Option.map (fun t -> t.Word) |> Option.defaultValue DefaultWord; 
                         Answers = task |> Option.map (fun t -> t.Answers) |> Option.defaultValue DefaultAnswers
-                    }
+                    }, NoInput)
         }, Cmd.none
     | FetchError _ ->
         model, Cmd.none
-    | SetAnswer input ->
-        let newState = 
-            if input <> "" then
-                InputProvided (getStateTask model.State, input, Unknown)
-            else
-                TaskProvided (getStateTask model.State)
-        { model with State = newState }, Cmd.none
+    | ImprovedInput msg' ->
+        let input, cmd = ImprovedInput.State.update msg' model.Input
+        let triggeredCmd = 
+            match msg' with
+            | ChangeInput _ | AddSymbol _ -> Cmd.ofMsg InputUpdated
+            | _ -> Cmd.none
+        { model with Input = input }, Cmd.batch [ Cmd.map ImprovedInput cmd; triggeredCmd ]
+    | InputUpdated ->
+        match model.State with
+        | Fetching -> model, Cmd.none
+        | InputProvided (task, oldState) ->
+            let input = model.Input.Value
+            let newState = 
+                if input <> "" then Unknown
+                else NoInput
+            { model with State = InputProvided (task, newState) }, Cmd.none
     | ShowAnswer ->
         let task = getStateTask model.State
         let answer = task.Answers |> Array.tryHead |> Option.defaultValue DefaultWord
-        { model with State = InputProvided (task, answer, Shown) }, Cmd.none
+        { model with State = InputProvided (task, Shown) }, answer |> (SetInput >> ImprovedInput >> Cmd.ofMsg)
     | CheckAnswer -> 
         checkAnswer model, Cmd.none
     | NextTask ->
-        { model with State = Fetching }, loadTaskCmd getTask
+        { model with State = Fetching; UpperCase = false }, Cmd.batch[ (ImprovedInput Reset |> Cmd.ofMsg); loadTaskCmd getTask ]
+    | ChangeSymbolCase ->
+        { model with UpperCase = not model.UpperCase}, Cmd.none
 
 type InputViewState = {
     Word : ReactElement
@@ -124,7 +147,7 @@ type InputViewState = {
     InputText : string
 }
 
-let inputView model dispatch handleKeyDown inputElementId =
+let inputView model dispatch handleKeyDown =
     let defaultInputClass = "task-input-none"
     let defaultInputText = ""
 
@@ -135,39 +158,65 @@ let inputView model dispatch handleKeyDown inputElementId =
             let altText = "Loading..."
             let wordDisplay = icon imageSource 25 altText
             { Word = wordDisplay; InputClass = defaultInputClass; InputText = defaultInputText }
-        | InputProvided (task, inputText, inputState) ->
+        | InputProvided (task, inputState) ->
             let inputClass =  
                 match inputState with
                 | Right -> "task-input-correct"
                 | Wrong -> "task-input-incorrect"
                 | _ -> defaultInputClass
-            { Word = str task.Word; InputClass = inputClass; InputText = inputText }
-        | TaskProvided task ->
-            { Word = str task.Word; InputClass = defaultInputClass; InputText = defaultInputText }
+            { Word = str task.Word; InputClass = inputClass; InputText = model.Input.Value }
     
     let inputIcon = getTaskIcon inputViewState.InputClass
 
-    let handleChangeAnswer (event: FormEvent) =
-        dispatch (SetAnswer !!event.target?value)
-               
+    let inputProps : ImprovedInput.View.Props = {
+        InputSize = IsLarge
+        OnKeyDownHandler = handleKeyDown
+        AutoCapitalize = "none"
+        AutoFocus = true
+        AutoComplete = "off"
+    }
     Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
         [
-            Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label" ] [inputViewState.Word] ]
+            Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label"; ] [inputViewState.Word] ]
             Column.column [ ] [
-                                div [ClassName ("control has-icons-right " + inputViewState.InputClass)]
-                                    [
-                                        Input.text
-                                            [
-                                                Input.Id inputElementId
-                                                Input.Props [OnChange handleChangeAnswer; OnKeyDown handleKeyDown; AutoCapitalize "none"; AutoFocus true] 
-                                                Input.Value inputViewState.InputText
-                                                Input.Size Size.IsLarge
-                                            ]
-                                        Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
-                                            [ Fa.i [ inputIcon ] [] ]
-                                    ]                     
-                              ]
+                div [ClassName ("control has-icons-right " + inputViewState.InputClass)]
+                    [
+                        ImprovedInput.View.root inputProps model.Input (ImprovedInput >> dispatch)
+                        Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
+                            [ Fa.i [ inputIcon ] [] ]
+                    ]                     
+            ]        
         ]
+
+let symbolButtonsView model dispatch = 
+    let arrowButtonSymbol = if model.UpperCase then DownArrowSymbol else UpArrowSymbol
+    let specialSymbols = if model.UpperCase then SpecialSymbolsUpper else SpecialSymbols
+    let handleButtonOnFocus _ = dispatch (ImprovedInput FocusInput)
+    let disabled = 
+        match model.State with
+        | Fetching -> true
+        | _ -> false
+    let createSymbolButton h s = 
+        Button.button [ 
+            Button.Color IsLight
+            Button.Disabled disabled 
+            Button.Props [
+                OnClick h
+                OnFocus handleButtonOnFocus
+            ]
+        ] [ str <| string s ]
+    let createCzechSymbolButton s =
+        createSymbolButton (fun _ -> (ImprovedInput >> dispatch) <| AddSymbol s) s
+    let createArrowButton =
+        createSymbolButton (fun _ -> dispatch ChangeSymbolCase) arrowButtonSymbol
+    Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
+            [
+                Column.column [ ] [ ]
+                Column.column [ ] [
+                    div [ClassName "symbol-buttons"] 
+                        (createArrowButton :: (List.map createCzechSymbolButton specialSymbols))
+                ]        
+            ]
 
 type ButtonViewState = {
     NextButtonDisabled : bool
@@ -175,19 +224,18 @@ type ButtonViewState = {
     ShowButtonDisabled : bool
 }
 
-let buttonView model dispatch nextButtonDisplayed inputElementId =
+let buttonView model dispatch nextButtonDisplayed checkButtonDisabled =
     let handleShowAnswerClick _ = dispatch ShowAnswer
     let handleUpdateClick _ = dispatch NextTask
     let handleCheckClick _ = dispatch CheckAnswer
+    let handleButtonOnFocus _ = dispatch (ImprovedInput FocusInput)
 
     let buttonViewState =
         match model.State with
         | Fetching -> 
             { NextButtonDisabled = true; CheckButtonDisabled = true; ShowButtonDisabled = true; }
         | InputProvided _ ->
-            { NextButtonDisabled = false; CheckButtonDisabled = false; ShowButtonDisabled = false; }
-        | _ -> 
-            { NextButtonDisabled = false; CheckButtonDisabled = true; ShowButtonDisabled = false; }
+            { NextButtonDisabled = false; CheckButtonDisabled = checkButtonDisabled; ShowButtonDisabled = false; }
 
     let taskButton color handler text disabled = 
         let options = 
@@ -195,7 +243,7 @@ let buttonView model dispatch nextButtonDisplayed inputElementId =
                 Button.Props 
                     [ 
                         OnClick handler; 
-                        OnFocus (fun (e) -> Fable.Import.Browser.document.getElementById(inputElementId).focus()) 
+                        OnFocus handleButtonOnFocus
                     ]
                 Button.Size IsMedium
                 Button.Color color
@@ -216,14 +264,15 @@ let buttonView model dispatch nextButtonDisplayed inputElementId =
         ]
 
 let view model dispatch =
-    let inputElementId = "task-input-element"
-    let nextButtonDisplayed = 
+    let nextButtonDisplayed, checkButtonDisabled = 
         match model.State with
-        | InputProvided (_, _, inpState) 
-            when inpState = Shown || inpState = Right ->
-            true
+        | InputProvided (_, inpState) ->
+            match inpState with
+            | Shown | Right -> true, true
+            | Unknown | Wrong -> false, false
+            | NoInput -> false, true
         | _ ->
-            false
+            false, true
 
     let handleKeyDown (event: KeyboardEvent) =
         match model.State with
@@ -235,12 +284,14 @@ let view model dispatch =
                 | false -> 
                     match nextButtonDisplayed with
                     | true -> dispatch NextTask
-                    | false -> dispatch CheckAnswer
+                    | false -> if checkButtonDisabled then () 
+                               else dispatch CheckAnswer
                 | true  -> dispatch ShowAnswer
             | _ -> 
                 ()
     div []
         [
-            inputView model dispatch handleKeyDown inputElementId
-            buttonView model dispatch nextButtonDisplayed inputElementId
+            inputView model dispatch handleKeyDown
+            symbolButtonsView model dispatch
+            buttonView model dispatch nextButtonDisplayed checkButtonDisabled
         ]

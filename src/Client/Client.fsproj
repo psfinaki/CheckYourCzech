@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
@@ -22,6 +22,9 @@
 		<Compile Include="widgets\Navbar\Types.fs" />
 		<Compile Include="widgets\Navbar\State.fs" />
 		<Compile Include="widgets\Navbar\View.fs" />
+		<Compile Include="widgets\ImprovedInput\Types.fs" />
+		<Compile Include="widgets\ImprovedInput\State.fs" />
+		<Compile Include="widgets\ImprovedInput\View.fs" />
 		<Compile Include="widgets\FilterBlock\Types.fs" />
 		<Compile Include="widgets\FilterBlock\State.fs" />
 		<Compile Include="widgets\FilterBlock\View.fs" />
@@ -43,4 +46,4 @@
       <ProjectReference Include="..\Core\Core.fsproj" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
-</Project>
+</Project> 
