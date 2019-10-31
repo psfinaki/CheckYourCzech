@@ -26,12 +26,12 @@ let hasRequiredInfoImperative =
     tryGetVerb
     >> hasImperative
 
-let isValidCommon = isModern
+let isValidVerb = isModern
 
 let isParticipleValid word = 
-    word |> isValidCommon &&
+    word |> isValidVerb &&
     word |> hasRequiredInfoParticiple
 
 let isImperativeValid word =
-    word |> isValidCommon &&
+    word |> isValidVerb &&
     word |> hasRequiredInfoImperative

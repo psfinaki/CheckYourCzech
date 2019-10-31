@@ -34,7 +34,7 @@ let hasRequiredInfo =
     >> Option.filter hasGender
     >> Option.isSome
 
-let isValidCommon word =
+let isValidNoun word =
     word |> hasRequiredInfo &&
     word |> isGenderValid &&
     word |> (not << isNominalization) &&
@@ -42,10 +42,10 @@ let isValidCommon word =
     word |> hasSingleDeclension Case.Nominative Number.Singular 
 
 let isPluralValid word = 
-    word |> isValidCommon &&
+    word |> isValidNoun &&
     word |> hasDeclension Case.Nominative Number.Plural
 
 let isAccusativeValid word = 
-    word |> isValidCommon &&
+    word |> isValidNoun &&
     word |> hasDeclension Case.Accusative Number.Singular
 

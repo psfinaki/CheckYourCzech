@@ -25,14 +25,14 @@ let hasRequiredInfoPlural =
     tryGetAdjective 
     >> Option.exists (hasChildPart "skloňování")
 
-let isValidCommon = isPositive
+let isValidAdjective = isPositive
 
 let isComparativeValid word = 
-    word |> isValidCommon &&
+    word |> isValidAdjective &&
     word |> hasRequiredInfoComparative &&
     word |> hasMorphologicalComparatives &&
     word |> canBuildComparative
 
 let isPluralValid word = 
-    word |> isValidCommon &&
+    word |> isValidAdjective &&
     word |> hasRequiredInfoPlural
