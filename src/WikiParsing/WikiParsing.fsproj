@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk;Microsoft.NET.Sdk.Publish">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -13,18 +12,15 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <None Include="run.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Compile Include="ApplicationInsightsLogger.fs" />
-    <Compile Include="ConsoleLogger.fs" />
-    <Compile Include="Logging.fs" />
-    <Compile Include="Word.fs" />
-    <Compile Include="App.fs" />
-    <Compile Include="Program.fs" />
+    <Compile Include="Html.fs" />
+    <Compile Include="WikiString.fs" />
+    <Compile Include="Articles\Article.fs" />
+    <Compile Include="Articles\NounArticle.fs" />
+    <Compile Include="Articles\AdjectiveArticle.fs" />
+    <Compile Include="Articles\VerbArticle.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.fsproj" />
+    <ProjectReference Include="..\Common\Common.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

@@ -1,0 +1,5 @@
+group WikiParsing.Tests
+	FSharp.Core
+	xunit
+	xunit.runner.visualstudio
+	

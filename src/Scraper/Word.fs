@@ -1,30 +1,33 @@
 ﻿module Word
 
 open Article
+open Storage
 
 let recordCzechPartOfSpeech word = function
     | "podstatné jméno" ->
-        NounPlural.record word
-        NounAccusative.record word
-    | "přídavné jméno"  ->
-        AdjectivePlural.record word
-        AdjectiveComparative.record word
-    | "sloveso"         -> 
-        VerbImperative.record word
-        VerbParticiple.record word
+        if word |> NounValidation.isPluralValid
+        then word |> NounPlural.NounPlural |> upsert "nounplurals"
+
+        if word |> NounValidation.isAccusativeValid
+        then word |> NounAccusative.NounAccusative |> upsert "nounaccusatives"
+
+    | "přídavné jméno" ->
+        if word |> AdjectiveValidation.isPluralValid
+        then word |>  AdjectivePlural.AdjectivePlural |> upsert "adjectiveplurals"
+
+        if word |> AdjectiveValidation.isComparativeValid
+        then word |> AdjectiveComparative.AdjectiveComparative |> upsert "adjectivecomparatives"
+            
+    | "sloveso" ->
+        if word |> VerbValidation.isImperativeValid
+        then word |> VerbImperative.VerbImperative |> upsert "verbimperatives"
+
+        if word |> VerbValidation.isParticipleValid
+        then word |> VerbParticiple.VerbParticiple |> upsert "verbparticiples"
+
     | _ -> ()
     
-let recordCzechPart word = 
-    getChildrenParts 
-    >> Seq.map fst
-    >> Seq.iter (recordCzechPartOfSpeech word)
-
-let recordLanguagePart word = function
-    | ("čeština", part) -> recordCzechPart word part
-    | _ -> ()
-
 let record word =
     word
-    |> getContent 
-    |> getChildrenParts
-    |> Seq.iter (recordLanguagePart word)
+    |> getPartsOfSpeech
+    |> Seq.iter (recordCzechPartOfSpeech word)

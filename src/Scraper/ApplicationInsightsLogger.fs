@@ -6,8 +6,9 @@ open Microsoft.ApplicationInsights.Extensibility
 
 let getTelemetryClient() =
     let key = Environment.GetEnvironmentVariable "APPINSIGHTS_INSTRUMENTATIONKEY"
-    TelemetryConfiguration.Active.InstrumentationKey <- key
-    TelemetryClient()
+    let configuration = TelemetryConfiguration.CreateDefault()
+    configuration.InstrumentationKey <- key
+    TelemetryClient configuration
 
 let getLogger() = (lazy getTelemetryClient()).Value
 

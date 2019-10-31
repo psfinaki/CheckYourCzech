@@ -2,8 +2,12 @@
 
 open Logging
 
+let getRandomWord() = 
+    "Speciální:Náhodná_stránka"
+    |> Article.getArticleName
+
 let run log =
-    let iterator _ = WordGenerator.getRandomWord()
+    let iterator _ = getRandomWord()
 
     let recordWithLog word = 
         try
