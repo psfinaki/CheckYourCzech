@@ -18,7 +18,7 @@
     <Compile Include="Reflexives.fs" />
     <Compile Include="Nouns\Genders.fs" />
     <Compile Include="Nouns\Nominalization.fs" />
-    <Compile Include="Nouns\FeminineNounPatternDetector.fs.fs" />
+    <Compile Include="Nouns\FeminineNounPatternDetector.fs" />
     <Compile Include="Nouns\NeuterNounPatternDetector.fs" />
     <Compile Include="Nouns\MasculineInanimateNounPatternDetector.fs" />
     <Compile Include="Nouns\MasculineAnimateNounPatternDetector.fs" />
