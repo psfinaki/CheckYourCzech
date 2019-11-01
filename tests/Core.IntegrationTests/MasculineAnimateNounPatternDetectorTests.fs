@@ -11,9 +11,9 @@ let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 [<InlineData "Bohumil">]
 [<InlineData "bonobo">]
 [<InlineData "geolog">]
-let ``Detects pattern pan`` word =
+let ``Detects pattern pán`` word =
     word
-    |> isPatternPan
+    |> isPatternPán
     |> Assert.True
 
 [<Theory>]
@@ -21,9 +21,9 @@ let ``Detects pattern pan`` word =
 [<InlineData "král">]
 [<InlineData "předseda">]
 [<InlineData "dárce">]
-let ``Detects not pattern pan`` word =
+let ``Detects not pattern pán`` word =
     word
-    |> isPatternPan
+    |> isPatternPán
     |> Assert.False
 
 [<Theory>]
@@ -40,7 +40,7 @@ let ``Detects pattern muž`` word =
     |> Assert.True
 
 [<Theory>]
-[<InlineData "pan">]
+[<InlineData "pán">]
 [<InlineData "debil">]
 [<InlineData "turista">]
 [<InlineData "vůdce">]
