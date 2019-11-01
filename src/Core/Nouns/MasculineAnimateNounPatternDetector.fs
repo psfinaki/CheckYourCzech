@@ -4,7 +4,7 @@ open NounArticle
 open StringHelper
 open GrammarCategories
 
-let isPatternPan = 
+let isPatternPán = 
     getDeclension Case.Genitive Number.Singular
     >> Seq.exists (ends "a")
 
@@ -24,7 +24,7 @@ let isPatternSoudce =
     >> Seq.exists (ends "ce")
 
 let patternDetectors = [
-    (isPatternPan, "pan")
+    (isPatternPán, "pán")
     (isPatternMuž, "muž")
     (isPatternPředseda, "předseda")
     (isPatternSoudce, "soudce")
