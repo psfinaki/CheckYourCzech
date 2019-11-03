@@ -1,19 +1,27 @@
 ﻿module VerbClasses
 
 open StringHelper
-open VerbArticle
-open Reflexives
+
+type VerbClass = 
+    | E
+    | NE
+    | JE
+    | Í
+    | Á
+
+let translations = 
+    dict [ ("E",  E) 
+           ("NE", NE) 
+           ("JE", JE) 
+           ("Í",  Í) 
+           ("Á",  Á) ]   
+
+let fromString verbClass = translations.[verbClass]
 
 let getClassByThirdPersonSingular = function
-    | form when form |> ends "á"  -> 5
-    | form when form |> ends "í"  -> 4
-    | form when form |> ends "je" -> 3
-    | form when form |> ends "ne" -> 2
-    | form when form |> ends "e"  -> 1
+    | form when form |> ends "á"  -> Á
+    | form when form |> ends "í"  -> Í
+    | form when form |> ends "je" -> JE
+    | form when form |> ends "ne" -> NE
+    | form when form |> ends "e"  -> E
     | _ -> invalidArg "verb" "Incorrect third person singular."
-
-let getClass =
-    getThirdPersonSingular
-    >> Seq.tryExactlyOne
-    >> Option.map removeReflexive
-    >> Option.map getClassByThirdPersonSingular

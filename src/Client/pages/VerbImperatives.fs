@@ -4,7 +4,7 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
-open Fable.Helpers.React.Props
+open VerbClasses
 
 type Model = { 
     FilterBlock : FilterBlock.Types.Model
@@ -20,16 +20,16 @@ type Msg =
     | Task of Task.Msg
     
 let patterns =
-    dict [ (1, ["nést"; "číst"; "péct"; "třít"; "brát"; "mazat"])
-           (2, ["tisknout"; "minout"; "začít"])
-           (3, ["krýt"; "kupovat"])
-           (4, ["prosit"; "čistit"; "trpět"; "sázet"])
-           (5, ["dělat"]) ]
+    dict [ (E, ["nést"; "číst"; "péct"; "třít"; "brát"; "mazat"])
+           (NE, ["tisknout"; "minout"; "začít"])
+           (JE, ["krýt"; "kupovat"])
+           (Í, ["prosit"; "čistit"; "trpět"; "sázet"])
+           (Á, ["dělat"]) ]
 
 let getPatterns ``class`` = patterns.[``class``]
 
 let getTask ``class`` pattern =
-    let classQuery = ``class`` |> Option.map (sprintf "class=%i")
+    let classQuery = ``class`` |> Option.map string |> Option.map (sprintf "class=%s")
     let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
 
     let queryString =

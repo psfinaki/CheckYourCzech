@@ -1,6 +1,7 @@
 ﻿module VerbImperative
 
 open Microsoft.WindowsAzure.Storage.Table
+open VerbClasses
 open Verb
 open Storage
 
@@ -9,9 +10,8 @@ type VerbImperative(word) =
 
     let getIndicative = map id serializeObject ""
     let getImperatives = map getImperatives serializeObject ""
-    // Class cannot be int as with int the value will be 0 for verbs without class
-    let getClass = map getClass serializeIntOption ""
-    let getPattern = map getImperativePattern serializeStringOption ""
+    let getClass = map getClass serializeOption<VerbClass> ""
+    let getPattern = map getImperativePattern serializeOption<string> ""
 
     new() = VerbImperative null
 

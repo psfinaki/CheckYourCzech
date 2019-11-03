@@ -5,16 +5,17 @@ open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
+open VerbClasses
 
 [<Literal>]
 let ClassUnset = ""
 
 type Model = { 
-    Class : int option
+    Class : VerbClass option
 }
 
 type Msg =
-    | SetClass of int option
+    | SetClass of VerbClass option
 
 let init() =
     { Class = None }
@@ -26,7 +27,7 @@ let update msg model =
 
 let view model dispatch =
     let handleChangeClass (event: FormEvent) =
-        let translate = function | ClassUnset -> None | x -> Some (Int32.Parse x)
+        let translate = function | ClassUnset -> None | x -> Some (VerbClasses.fromString x)
         dispatch (SetClass (translate !!event.target?value))
 
     let selectedValue = model.Class |> Option.map string |> Option.defaultValue "Any"
@@ -42,11 +43,11 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeClass [
                         Markup.option ClassUnset "Any"
-                        Markup.option 1 "1"
-                        Markup.option 2 "2"
-                        Markup.option 3 "3"
-                        Markup.option 4 "4"
-                        Markup.option 5 "5"
+                        Markup.option (string E) "E"
+                        Markup.option (string NE) "NE"
+                        Markup.option (string JE) "JE"
+                        Markup.option (string Í) "Í"
+                        Markup.option (string Á) "Á"
                     ]
                 ]
         ]

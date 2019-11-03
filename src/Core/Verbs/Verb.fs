@@ -1,7 +1,10 @@
 ﻿module Verb
 
 let getClass = 
-    VerbClasses.getClass
+    VerbArticle.getThirdPersonSingular
+    >> Seq.tryExactlyOne
+    >> Option.map Reflexives.removeReflexive
+    >> Option.map VerbClasses.getClassByThirdPersonSingular
 
 let getImperatives = 
     VerbArticle.getImperatives
