@@ -4,6 +4,8 @@ open StringHelper
 open Letters
 open Stem
 open Reflexives
+open VerbClasses
+open VerbArticle
 
 let isPatternTisknoutNonReflexive word = 
     let getStem = removeLast 4
@@ -42,7 +44,7 @@ let invalidVerb verb verbClass =
     sprintf "The verb %s does not belong to the class %i." verb verbClass
     |> invalidArg "verb"
 
-let getPatternClass1 = function
+let getPatternClassE = function
     | verb when verb |> ends "ést" -> Some "nést"
     | verb when verb |> ends "íst" -> Some "číst"
     | verb when verb |> ends "ct" -> Some "péct"
@@ -51,38 +53,41 @@ let getPatternClass1 = function
     | verb when verb |> ends "at" -> Some "mazat"
     | _ -> None
 
-let getPatternClass2 = function
+let getPatternClassNE = function
     | verb when verb |> isPatternTisknout -> Some "tisknout"
     | verb when verb |> isPatternMinout -> Some "minout"
     | verb when verb |> ends "ít" -> Some "začít"
     | _ -> None
 
-let getPatternClass3 = function
+let getPatternClassJE = function
     | verb when verb |> ends "ovat" -> Some "kupovat"
     | verb when verb |> ends "ýt" -> Some "krýt"
     | _ -> None
 
-let getPatternClass4 = function
+let getPatternClassÍ = function
     | verb when verb |> isPatternProsit -> Some "prosit"
     | verb when verb |> isPatternČistit -> Some "čistit"
     | verb when verb |> ends "ět" -> Some "trpět"
     | verb when verb |> ends "et" -> Some "sázet"
     | _ -> None
 
-let getPatternClass5 = function
+let getPatternClassÁ = function
     | verb when verb |> ends "at" -> Some "dělat"
     | _ -> None
 
 let patternClassMap =
-    dict [ (1, getPatternClass1)
-           (2, getPatternClass2)
-           (3, getPatternClass3)
-           (4, getPatternClass4)
-           (5, getPatternClass5) ]
+    dict [ (E, getPatternClassE)
+           (NE, getPatternClassNE)
+           (JE, getPatternClassJE)
+           (Í, getPatternClassÍ)
+           (Á, getPatternClassÁ) ]
 
 let getPatternByClass verb verbClass = patternClassMap.[verbClass] verb
 
 let getPattern verb = 
     verb
-    |> VerbClasses.getClass
+    |> getThirdPersonSingular
+    |> Seq.tryExactlyOne
+    |> Option.map removeReflexive
+    |> Option.map getClassByThirdPersonSingular
     |> Option.bind (getPatternByClass verb)

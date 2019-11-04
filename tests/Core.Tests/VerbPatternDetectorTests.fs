@@ -76,9 +76,9 @@ let ``Detects pattern is not čistit`` word =
 [<InlineData("dřít", "třít")>]
 [<InlineData("prát", "brát")>]
 [<InlineData("vázat", "mazat")>]
-let ``Gets pattern class 1`` verb pattern =
+let ``Gets pattern class E`` verb pattern =
     verb
-    |> getPatternClass1
+    |> getPatternClassE
     |> equals (Some pattern)
 
 [<Theory>]
@@ -87,34 +87,34 @@ let ``Gets pattern class 1`` verb pattern =
 [<InlineData "zaujmout">]
 [<InlineData "růst">]
 [<InlineData "vézt">]
-let ``Detects unknown pattern for class 1`` verb =
+let ``Detects unknown pattern for class E`` verb =
     verb
-    |> getPatternClass1
+    |> getPatternClassE
     |> equals None
 
 [<Theory>]
 [<InlineData("prasknout", "tisknout")>]
 [<InlineData("hynout", "minout")>]
 [<InlineData("načít", "začít")>]
-let ``Gets pattern class 2`` verb pattern =
+let ``Gets pattern class NE`` verb pattern =
     verb
-    |> getPatternClass2
+    |> getPatternClassNE
     |> equals (Some pattern)
 
 [<Theory>]
 [<InlineData "dostat">]
 [<InlineData "sehnat">]
-let ``Detects unknown pattern for class 2`` verb =
+let ``Detects unknown pattern for class NE`` verb =
     verb
-    |> getPatternClass2
+    |> getPatternClassNE
     |> equals None
 
 [<Theory>]
 [<InlineData("pracovat", "kupovat")>]
 [<InlineData("výt", "krýt")>]
-let ``Gets pattern class 3`` verb pattern =
+let ``Gets pattern class JE`` verb pattern =
     verb
-    |> getPatternClass3
+    |> getPatternClassJE
     |> equals (Some pattern)
 
 [<Theory>]
@@ -123,9 +123,9 @@ let ``Gets pattern class 3`` verb pattern =
 [<InlineData "říct">]
 [<InlineData "zout">]
 [<InlineData "přispět">]
-let ``Detects unknown pattern for class 3`` verb =
+let ``Detects unknown pattern for class JE`` verb =
     verb
-    |> getPatternClass3
+    |> getPatternClassJE
     |> equals None
 
 [<Theory>]
@@ -133,28 +133,28 @@ let ``Detects unknown pattern for class 3`` verb =
 [<InlineData("mastit", "čistit")>]
 [<InlineData("sedět", "trpět")>]
 [<InlineData("házet", "sázet")>]
-let ``Gets pattern class 4`` verb pattern =
+let ``Gets pattern class Í`` verb pattern =
     verb
-    |> getPatternClass4
+    |> getPatternClassÍ
     |> equals (Some pattern)
 
 [<Theory>]
 [<InlineData "bdít">]
 [<InlineData "spát">]
 [<InlineData "jíst">]
-let ``Detects unknown pattern for class 4`` verb =
+let ``Detects unknown pattern for class Í`` verb =
     verb
-    |> getPatternClass4
+    |> getPatternClassÍ
     |> equals None
 
 [<Fact>]
-let ``Gets pattern class 5``() =
+let ``Gets pattern class Á``() =
     "létat"
-    |> getPatternClass5
+    |> getPatternClassÁ
     |> equals (Some "dělat")
 
 [<Fact>]
-let ``Detects unknown pattern for class 5``() =
+let ``Detects unknown pattern for class Á``() =
     "znát"
-    |> getPatternClass5
+    |> getPatternClassÁ
     |> equals None

@@ -38,8 +38,7 @@ let map func serialization defaultValue =
 
 let serializeObject = JsonConvert.SerializeObject
 let serializeString = string
-let serializeIntOption (o: int option) = o |> function | Some v -> string v | None -> ""
-let serializeStringOption (o: string option) = o |> function | Some v -> string v | None -> ""
+let serializeOption<'T> : ('T option -> string) = function | Some v -> v.ToString() | None -> ""
 
 let getAs<'T> = JsonConvert.DeserializeObject<'T>
 

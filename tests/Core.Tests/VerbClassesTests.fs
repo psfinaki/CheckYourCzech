@@ -6,16 +6,35 @@ open VerbClasses
 
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 
-[<Theory>]
-[<InlineData("dělá", 5)>]
-[<InlineData("prosí", 4)>]
-[<InlineData("kupuje", 3)>]
-[<InlineData("praskne", 2)>]
-[<InlineData("nése", 1)>]
-let ``Gets class by third person singular`` ``third person singular`` ``class`` =
-    ``third person singular``
+[<Fact>]
+let ``Gets E class by third person singular``() =
+    "nése"
     |> getClassByThirdPersonSingular
-    |> equals ``class``
+    |> equals E
+
+[<Fact>]
+let ``Gets NE class by third person singular``() =
+    "praskne"
+    |> getClassByThirdPersonSingular
+    |> equals NE
+
+[<Fact>]
+let ``Gets JE class by third person singular``() =
+    "kupuje"
+    |> getClassByThirdPersonSingular
+    |> equals JE
+    
+[<Fact>]
+let ``Gets Í class by third person singular``() =
+    "prosí"
+    |> getClassByThirdPersonSingular
+    |> equals Í
+    
+[<Fact>]
+let ``Gets Á class by third person singular``() =
+    "dělá"
+    |> getClassByThirdPersonSingular
+    |> equals Á
 
 [<Fact>]
 let ``Throws for invalid third person singular``() =
