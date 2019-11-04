@@ -29,7 +29,7 @@ let patterns =
 let getPatterns ``class`` = patterns.[``class``]
 
 let getTask ``class`` pattern =
-    let classQuery = ``class`` |> Option.map string |> Option.map (sprintf "class=%s")
+    let classQuery = ``class`` |> Option.map (sprintf "class=%A")
     let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
 
     let queryString =

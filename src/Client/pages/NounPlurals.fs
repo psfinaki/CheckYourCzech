@@ -29,7 +29,7 @@ let patterns =
 let getPatterns gender = patterns.[gender]
 
 let getTask gender pattern =
-    let genderQuery = gender |> Option.map string |> Option.map (sprintf "gender=%s")
+    let genderQuery = gender |> Option.map (sprintf "gender=%A")
     let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
 
     let queryString =
