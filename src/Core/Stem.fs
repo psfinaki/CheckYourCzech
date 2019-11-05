@@ -1,6 +1,7 @@
 ﻿module Stem
 
 open System
+open Letters 
 
 type String with
     member this.EndsWith (values: seq<char>) = 
@@ -14,11 +15,6 @@ type String with
 
     member this.ReplaceEnd (oldValue: string) newValue =
         this.Remove(this.Length - oldValue.Length) + newValue
-
-let hardConsonants = ['d';'t';'n']
-let softConsonants = ['ř';'č';'ž';'š';'ť';'ď';'ň']
-let neutralHardConsonants = ['v';'m';'b';'p']
-let neutralSoftConsonants = ['l';'z';'s';'c';'j';'x']
 
 let alternations = 
     dict [ ("ch", "š")

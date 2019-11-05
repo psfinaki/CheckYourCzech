@@ -1,6 +1,11 @@
 ﻿module Letters 
 
 let syllabicConsonants = ['l';'r']
+let hardConsonants = ['d';'t';'n']
+let softConsonants = ['ř';'č';'ž';'š';'ť';'ď';'ň']
+let neutralHardConsonants = ['v';'m';'b';'p']
+let neutralSoftConsonants = ['l';'z';'s';'c';'j';'x']
+
 let longVowels = ['á';'é';'í';'ó';'ú';'ů']
 let shortVowels = ['a';'e';'ě';'i';'o';'u';'y']
 let vowels = longVowels @ shortVowels
