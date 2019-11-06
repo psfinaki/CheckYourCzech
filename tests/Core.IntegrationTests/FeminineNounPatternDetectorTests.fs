@@ -3,8 +3,6 @@
 open Xunit
 open FeminineNounPatternDetector
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Theory>]
 [<InlineData "holka">]
 [<InlineData "dača">]

@@ -3,8 +3,6 @@
 open Xunit
 open ParticiplePatternDetector
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Fact>]
 let ``Detects pattern tisknout``() =
     "lehnout"

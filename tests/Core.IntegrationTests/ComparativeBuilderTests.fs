@@ -4,8 +4,6 @@ open Xunit
 open System
 open ComparativeBuilder
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Theory>]
 [<InlineData("rudý", "rudější")>]
 [<InlineData("důležitý", "důležitější")>]
