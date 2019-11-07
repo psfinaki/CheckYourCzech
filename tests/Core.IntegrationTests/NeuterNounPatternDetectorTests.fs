@@ -3,8 +3,6 @@
 open Xunit
 open NeuterNounPatternDetector
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Theory>]
 [<InlineData "okno">]
 [<InlineData "slovo">]

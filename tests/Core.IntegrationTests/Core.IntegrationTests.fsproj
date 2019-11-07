@@ -12,6 +12,7 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helper.fs" />
     <Compile Include="NounValidationTests.fs" />
     <Compile Include="AdjectiveValidationTests.fs" />
     <Compile Include="VerbValidationTests.fs" />

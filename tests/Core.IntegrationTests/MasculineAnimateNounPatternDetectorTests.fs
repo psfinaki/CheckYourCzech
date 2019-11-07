@@ -3,8 +3,6 @@
 open Xunit
 open MasculineAnimateNounPatternDetector
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Theory>]
 [<InlineData "syn">]
 [<InlineData "blb">]

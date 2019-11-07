@@ -3,8 +3,6 @@
 open Xunit
 open Comparison
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Fact>]
 let ``Detects syntactic comparison``() = 
     "více hyzdící"

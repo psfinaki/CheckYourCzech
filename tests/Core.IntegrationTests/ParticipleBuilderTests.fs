@@ -4,8 +4,6 @@ open Xunit
 open ParticipleBuilder
 open System
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Theory>]
 [<InlineData("dělat", "dělal")>]
 [<InlineData("tisknout", "tiskl")>]
