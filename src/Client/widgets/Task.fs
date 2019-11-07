@@ -15,6 +15,8 @@ open System
 open Markup
 open ImprovedInput.Types
 
+[<Emit("/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)")>]
+let isMobile : bool = jsNative
 [<Literal>] 
 let DefaultWord = ""
 let DefaultAnswers = [||]
@@ -209,7 +211,7 @@ let symbolButtonsView model dispatch =
         createSymbolButton (fun _ -> (ImprovedInput >> dispatch) <| AddSymbol s) s
     let createArrowButton =
         createSymbolButton (fun _ -> dispatch ChangeSymbolCase) arrowButtonSymbol
-    Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
+    Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3); Columns.CustomClass "symbol-buttons-columns" ]
             [
                 Column.column [ ] [ ]
                 Column.column [ ] [
@@ -251,15 +253,18 @@ let buttonView model dispatch nextButtonDisplayed checkButtonDisabled =
                 Button.CustomClass "task-button"
               ]
         Button.button options [ str text ]
+    let nextButtonText = if isMobile then "Next" else "Next (⏎)"
+    let checkButtonText = if isMobile then "Check" else "Check (⏎)"
+    let showButtonText = if isMobile then "Show" else "Show (⇧ + ⏎)"
 
     let rightButton = 
         match nextButtonDisplayed with
-        | true -> taskButton NoColor handleUpdateClick "Next (⏎)" buttonViewState.NextButtonDisabled
-        | false -> taskButton IsSuccess handleCheckClick "Check (⏎)" buttonViewState.CheckButtonDisabled
+        | true -> taskButton NoColor handleUpdateClick nextButtonText buttonViewState.NextButtonDisabled
+        | false -> taskButton IsSuccess handleCheckClick checkButtonText buttonViewState.CheckButtonDisabled
 
     div [ ClassName "task-buttons-container" ]
         [
-            taskButton IsLight handleShowAnswerClick "Show (⇧ + ⏎)" buttonViewState.ShowButtonDisabled
+            taskButton IsLight handleShowAnswerClick showButtonText buttonViewState.ShowButtonDisabled
             rightButton
         ]
 

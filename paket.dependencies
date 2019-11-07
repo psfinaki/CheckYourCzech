@@ -1,7 +1,11 @@
-group Core
-    source https://api.nuget.org/v3/index.json
+group WikiParsing
+	source https://api.nuget.org/v3/index.json
 	
 	nuget FSharp.Data 3.0.0-beta3
+
+group Core
+    source https://api.nuget.org/v3/index.json
+
 	nuget WindowsAzure.Storage
 
 group Server
@@ -16,7 +20,6 @@ group Server
 group Scraper
     source https://api.nuget.org/v3/index.json
 
-	nuget FSharp.Data 3.0.0-beta3
 	nuget Microsoft.ApplicationInsights
 	
 group Client
@@ -46,6 +49,13 @@ group Core.IntegrationTests
 	nuget FSharp.Core
 	nuget xunit
 	nuget xunit.runner.visualstudio	
+
+group WikiParsing.Tests
+	source https://nuget.org/api/v2
+
+	nuget FSharp.Core
+	nuget xunit
+	nuget xunit.runner.visualstudio
 	
 group Build
     source https://api.nuget.org/v3/index.json
