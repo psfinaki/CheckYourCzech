@@ -25,6 +25,7 @@ let configureAzure (services:IServiceCollection) =
 
 let app = application {
     url ("http://0.0.0.0:" + port.ToString() + "/")
+    force_ssl
     use_router WebServer.webApp
     memory_cache
     use_static publicPath
