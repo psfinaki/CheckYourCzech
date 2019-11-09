@@ -19,7 +19,7 @@ module.exports = merge(commonConfiguration, {
         proxy: {
             '/api/*': {
                 target: 'https://localhost:8085',
-				secure: false
+                secure: false
             }
         },
         hot: true,
