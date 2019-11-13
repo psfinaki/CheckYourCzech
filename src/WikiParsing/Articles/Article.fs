@@ -118,11 +118,8 @@ let getInfos text =
 let getInfo text = getInfos text >> Seq.exactlyOne
 
 let hasInfo info = 
-    try 
-        getInfos info
-        >> (not << Seq.isEmpty)
-    with | :? KeyNotFoundException | :? ArgumentException ->
-        (fun _ -> false)
+    getInfos info
+    >> (not << Seq.isEmpty)
 
 let isLocked word = 
     let getLockInfo = 
