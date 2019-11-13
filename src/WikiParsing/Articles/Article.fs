@@ -111,17 +111,15 @@ let hasChildrenPartsWhen filter elements =
     with | :? KeyNotFoundException | :? ArgumentException -> 
         false
 
-let getInfo text nodes =
-    nodes
-    |> getNodeByInnerText text
-    |> getInnerText
+let getInfos text =
+    getNodesByInnerText text
+    >> Seq.map getInnerText
 
-let hasInfo info elements = 
-    try 
-        getInfo info elements |> ignore
-        true
-    with | :? KeyNotFoundException | :? ArgumentException ->
-        false
+let getInfo text = getInfos text >> Seq.exactlyOne
+
+let hasInfo info = 
+    getInfos info
+    >> (not << Seq.isEmpty)
 
 let isLocked word = 
     let getLockInfo = 
