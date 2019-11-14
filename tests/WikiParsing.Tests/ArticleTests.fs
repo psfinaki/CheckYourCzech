@@ -3,9 +3,6 @@
 open Xunit
 open Article
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-let equalsMany (x: string list) (y: seq<string>) = Assert.Equal<string list>(x, Seq.toList y)
-
 [<Theory>]
 [<InlineData "panda">]
 [<InlineData "mnoho myslivců – zajícova smrt">]
@@ -31,7 +28,7 @@ let ``Gets children parts``() =
     |> getChildPart "čeština"
     |> getChildrenParts
     |> Seq.map fst
-    |> equalsMany [ "výslovnost"; "dělení"; "podstatné jméno" ]
+    |> seqEquals [ "výslovnost"; "dělení"; "podstatné jméno" ]
 
 [<Fact>]
 let ``Detects no children parts``() =
@@ -39,7 +36,7 @@ let ``Detects no children parts``() =
     |> getContent
     |> getChildrenParts
     |> Seq.map fst
-    |> equalsMany []
+    |> seqEquals []
 
 [<Fact>]
 let ``Detects child part``() =
@@ -100,7 +97,7 @@ let ``Gets tables``() =
     |> getChildPart "časování"
     |> getTables
     |> Seq.map fst
-    |> equalsMany [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
+    |> seqEquals [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
 
 [<Fact>]
 let ``Detects no tables``() =
@@ -111,7 +108,7 @@ let ``Detects no tables``() =
     |> getChildPart "význam"
     |> getTables
     |> Seq.map fst
-    |> equalsMany []
+    |> seqEquals []
 
 [<Fact>]
 let ``Detects non-locked article``() =
@@ -129,10 +126,10 @@ let ``Detects locked article``() =
 let ``Gets parts of speech``() =
     "starý"
     |> getPartsOfSpeech
-    |> equalsMany [ "podstatné jméno"; "přídavné jméno" ]
+    |> seqEquals [ "podstatné jméno"; "přídavné jméno" ]
 
 [<Fact>]
 let ``Detects no parts of speech``() =
     "hello"
     |> getPartsOfSpeech
-    |> equalsMany []
+    |> seqEquals []

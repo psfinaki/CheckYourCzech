@@ -3,8 +3,6 @@
 open Xunit
 open AdjectiveArticle
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Fact>]
 let ``Gets plural - when not nominalized``() = 
     "laskavý"

@@ -3,8 +3,6 @@
 open Xunit
 open Nominalization
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Theory>]
 [<InlineData "Hrabovský">]
 [<InlineData "Abrahámová">]

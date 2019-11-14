@@ -3,8 +3,6 @@
 open Xunit
 open VerbArticle
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Fact>]
 let ``Gets imperatives - single option``() =
     "milovat"
