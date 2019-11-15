@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Compile Include="GrammarCategories.fs" />
+    <Compile Include="Pronoun.fs" />
     <Compile Include="SequenceExtensions.fs" />
     <Compile Include="StringHelper.fs" />
   </ItemGroup>
