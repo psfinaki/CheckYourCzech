@@ -24,7 +24,7 @@ let patterns =
     dict [ (MasculineAnimate, ["pán"; "muž"; "předseda"; "soudce"])
            (MasculineInanimate, ["hrad"; "stroj"])
            (Feminine, ["žena"; "růže"; "píseň"; "kost"])
-           (Neuter, ["město"; "kuře"; "moře"; "stavení"; "drama"]) ]
+           (Neuter, ["město"; "kuře"; "moře"; "stavení"; "drama"; "muzeum" ]) ]
 
 let getPatterns gender = patterns.[gender]
 

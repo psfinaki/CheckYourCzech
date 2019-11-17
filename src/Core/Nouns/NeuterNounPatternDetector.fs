@@ -3,6 +3,7 @@
 open NounArticle
 open StringHelper
 open GrammarCategories
+open Letters
 
 let isPatternMěsto word = 
     let nominatives = word |> getDeclension Case.Nominative Number.Singular
@@ -36,12 +37,20 @@ let isPatternDrama word =
     singulars |> Seq.exists (ends "ma") &&
     plurals |> Seq.exists (ends "mata")
 
+let isPatternMuzeum word =
+    let stemEndsVowel = remove "um" >> Seq.last >> isVowel
+    let rule word = word |> ends "um" && word |> stemEndsVowel
+
+    let singulars = word |> getDeclension Case.Nominative Number.Singular
+    singulars |> Seq.exists rule
+
 let patternDetectors = [
     (isPatternMěsto, "město")
     (isPatternMoře, "moře")
     (isPatternStavení, "stavení")
     (isPatternKuře, "kuře")
     (isPatternDrama, "drama")
+    (isPatternMuzeum, "muzeum")
 ]
 
 let isPattern word patternDetector = fst patternDetector word
