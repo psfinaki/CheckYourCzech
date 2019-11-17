@@ -4,6 +4,8 @@ open System
 open FSharp.Data
 open Html
 open System.Collections.Generic
+open System.Net
+open StringHelper
 
 type Article = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
@@ -14,6 +16,16 @@ let contentClass = "mw-parser-output"
 let headerClass = "mw-headline"
 let tableElementName = "table"
 let tableNameElementName = "caption"
+
+type MatchCondition =
+    | Any
+    | Is of string
+    | Starts of string
+
+let getCondition = function
+    | Any -> fun _ -> true
+    | Is partName -> (=) partName
+    | Starts partName -> starts partName
 
 let getUrl = (+) wikiUrl
 
@@ -32,7 +44,7 @@ let tryGetContent word =
     try 
         getContent word   
         |> Some 
-    with | :? KeyNotFoundException | :? ArgumentException -> 
+    with | :? KeyNotFoundException | :? ArgumentException | :? WebException -> 
         None
 
 let getTables nodes =
@@ -58,14 +70,7 @@ let getHeaderName (header: HtmlNode) =
     |> getNodeByClass headerClass
     |> fun node -> node.DirectInnerText()
 
-let getParts name =
-    Seq.skipWhile (not << isHeader)
-    >> Seq.splitBy isHeader
-    >> Seq.map Seq.behead
-    >> Seq.map (fun (header, nodes) -> (getHeaderName header, nodes))
-    >> Seq.where (fun (header, _) -> header = name)
-
-let getChildrenParts elements =
+let getParts elements =
     let biggestHeader = 
         elements
         |> Seq.filter isHeader
@@ -86,36 +91,34 @@ let getChildrenParts elements =
     | None -> 
         Seq.empty
 
-let getChildrenPartsWhen filter =
-    getChildrenParts
+let getPartsWhen filter =
+    getParts
     >> Seq.where (fun (header, _) -> filter header)
     >> Seq.map snd
 
-let getChildPart name =
-    getChildrenParts
+let getPart name =
+    getParts
     >> Seq.where (fun (header, _) -> header = name)
     >> Seq.exactlyOne
     >> snd
 
-let hasChildPart name elements = 
+let hasPart name elements = 
     try 
-        getChildPart name elements |> ignore
+        getPart name elements |> ignore
         true
     with | :? KeyNotFoundException | :? ArgumentException ->
         false
 
-let hasChildrenPartsWhen filter elements = 
+let hasPartsWhen filter elements = 
     try 
-        getChildrenPartsWhen filter elements
+        getPartsWhen filter elements
         |> (not << Seq.isEmpty)
     with | :? KeyNotFoundException | :? ArgumentException -> 
         false
 
-let getInfos text =
-    getNodesByInnerText text
+let getInfos filter =
+    getNodesByInnerText (getCondition filter)
     >> Seq.map getInnerText
-
-let getInfo text = getInfos text >> Seq.exactlyOne
 
 let hasInfo info = 
     getInfos info
@@ -140,11 +143,11 @@ let getPartsOfSpeech word =
     let isPartOfSpeech s = partsOfSpeech |> Seq.contains s
 
     let content = getContent word
-    if content |> hasChildPart "čeština"
+    if content |> hasPart "čeština"
     then
         content
-        |> getChildPart "čeština"
-        |> getChildrenParts
+        |> getPart "čeština"
+        |> getParts
         |> Seq.map fst
         |> Seq.filter isPartOfSpeech
     else
@@ -158,3 +161,45 @@ let getArticleName =
     >> Seq.filter isTitleTag
     >> Seq.exactlyOne
     >> extractName
+
+let rec private getPartMatch parts nodes = 
+    if parts |> Seq.isEmpty
+    then 
+        Some nodes
+    else
+        let (head, tail) = parts |> Seq.behead
+        let partCondition = getCondition head
+        if nodes |> hasPartsWhen partCondition
+        then 
+            nodes
+            |> getPartsWhen partCondition
+            |> Seq.exactlyOne
+            |> getPartMatch tail
+        else 
+            None
+
+let rec private getPartMatches parts (nodes: seq<HtmlNode>) = 
+    if parts |> Seq.isEmpty
+    then 
+        seq { nodes }
+    else
+        let (head, tail) = parts |> Seq.behead
+        let partCondition = getCondition head
+        if nodes |> hasPartsWhen partCondition
+        then
+            nodes
+            |> getPartsWhen partCondition
+            |> Seq.collect (getPartMatches tail)
+        else 
+            Seq.empty
+
+let ``match`` parts =
+    tryGetContent
+    >> Option.bind (getPartMatch parts)
+
+let matches parts =
+    tryGetContent
+    >> Option.map (getPartMatches parts)
+    >> Option.defaultValue Seq.empty
+
+let isMatch parts = matches parts >> (not << Seq.isEmpty)

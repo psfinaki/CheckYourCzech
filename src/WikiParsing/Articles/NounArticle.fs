@@ -1,7 +1,6 @@
 ﻿module NounArticle
 
 open FSharp.Data
-open StringHelper
 open GrammarCategories
 open WikiString
 open Article
@@ -10,14 +9,12 @@ type EditableArticleOneDeclension = HtmlProvider<"https://cs.wiktionary.org/wiki
 type EditableArticleTwoDeclensions = HtmlProvider<"https://cs.wiktionary.org/wiki/čtvrt">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
 
-let getNoun =
-    getContent
-    >> getChildPart "čeština"
-    >> getChildPart "podstatné jméno"
-
 let getNumberOfDeclensions =
-    getNoun
-    >> getChildrenPartsWhen (starts "skloňování")
+    matches [
+        Is "čeština"
+        Is "podstatné jméno"
+        Starts "skloňování"
+    ]
     >> Seq.length
 
 let getEditable case number word =
@@ -53,13 +50,19 @@ let getLocked case number word =
 
 let getDeclinability word = 
     let hasIndeclinabilityMarkInNounSection = 
-        getNoun
-        >> hasInfo "nesklonné"
+        ``match`` [
+            Is "čeština"
+            Is "podstatné jméno"
+        ] 
+        >> Option.exists (hasInfo (Is "nesklonné"))
 
     let hasIndeclinabilityMarkInDeclensionSections =
-        getNoun
-        >> getChildrenPartsWhen (starts "skloňování")
-        >> Seq.forall (hasInfo "nesklonné")
+        matches [
+            Is "čeština"
+            Is "podstatné jméno"
+            Starts "skloňování"
+        ]
+        >> Seq.exists (hasInfo (Is "nesklonné"))
 
     if
         word |> hasIndeclinabilityMarkInNounSection || 
@@ -84,5 +87,17 @@ let getDeclension case number =
     >> Seq.distinct
 
 let getGender =
-    getNoun
-    >> getInfo "rod "
+    ``match`` [
+        Is "čeština"
+        Is "podstatné jméno"
+    ] 
+    >> Option.map (getInfos (Starts "rod "))
+    >> Option.filter Seq.hasOneElement
+    >> Option.map Seq.exactlyOne
+    // TODO:
+    // There is a problem here: we couple this place
+    // with the fact that this is called after the noun validation
+    // where we check the existance of gender in the article.
+    // So logically we know that the gender exists
+    // but code-wise we don't. This should be fixed.
+    >> Option.defaultWith (fun () -> failwith "odd word")

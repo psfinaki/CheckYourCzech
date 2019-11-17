@@ -34,9 +34,11 @@ let pluralDeclensionsMap =
            (3, getPluralVrchní) ]
 
 let getNumberOfDeclensions = 
-    getContent
-    >> getChildPart "čeština"
-    >> getParts "skloňování"
+    matches [
+        Is "čeština"
+        Any
+        Is "skloňování"
+    ]
     >> Seq.length
 
 let getPlural adjective = 
