@@ -15,6 +15,9 @@ let getImperativePattern =
 let getParticiples =
     VerbArticle.getParticiples
 
+let getConjugations = 
+    VerbArticle.getConjugations
+
 let hasRegularParticiple word = 
     let theoretical = ParticipleBuilder.buildParticiple word
     let practical = getParticiples word

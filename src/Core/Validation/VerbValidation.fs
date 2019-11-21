@@ -26,6 +26,10 @@ let hasRequiredInfoImperative =
     tryGetVerb
     >> hasImperative
 
+let hasRequiredInfoConjugation = 
+    tryGetVerb
+    >> Option.exists (hasChildPart "časování")
+
 let isValidVerb = isModern
 
 let isParticipleValid word = 
@@ -35,3 +39,7 @@ let isParticipleValid word =
 let isImperativeValid word =
     word |> isValidVerb &&
     word |> hasRequiredInfoImperative
+
+let isConjugationValid word =
+    word |> isValidVerb &&
+    word |> hasRequiredInfoConjugation

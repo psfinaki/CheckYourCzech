@@ -34,3 +34,19 @@ let ``Detects invalid word for imperatives`` word =
     word
     |> isImperativeValid
     |> Assert.False
+
+[<Theory>]
+[<InlineData "spát">]
+[<InlineData "milovat">]
+let ``Detects valid word for conjugations`` word =
+    word
+    |> isConjugationValid
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "hello">]
+[<InlineData "nový">]
+let ``Detects invalid word for conjugations`` word =
+    word
+    |> isConjugationValid
+    |> Assert.False

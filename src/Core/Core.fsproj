@@ -42,6 +42,7 @@
     <Compile Include="ExerciseModels\AdjectiveComparative.fs" />
     <Compile Include="ExerciseModels\VerbParticiple.fs" />
     <Compile Include="ExerciseModels\VerbImperative.fs" />
+    <Compile Include="ExerciseModels\VerbConjugation.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.fsproj" />

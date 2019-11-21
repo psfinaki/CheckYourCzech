@@ -22,3 +22,6 @@ let pronounToString pronoun =
     | My  -> "my"
     | Vy  -> "vy"
     | Oni -> "oni"
+
+let getPronounString num pers =
+    getPronoun num pers |> pronounToString

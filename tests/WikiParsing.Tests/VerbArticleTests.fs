@@ -32,8 +32,6 @@ let ``Gets participle from the third table``() =
 [<Fact>]
 let ``Gets all conjugations``() = 
     let conj = "myslet" |> getConjugations
-    let getKeyValue (kv:KeyValuePair<'a, 'b>) = 
-        kv.Key, kv.Value
     
     conj.Item(Singular, First) |> equals [|"myslím"|]
     conj.Item(Singular, Second) |> equals [|"myslíš"|]
