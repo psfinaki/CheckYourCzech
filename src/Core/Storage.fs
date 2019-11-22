@@ -39,11 +39,12 @@ let map func serialization defaultValue =
     >> Option.map (func >> serialization) 
     >> Option.defaultValue defaultValue
 
-let addTypeDescriptor<'a, 'b> () =
-    TypeDescriptor.AddAttributes(typeof<Tuple<'a, 'b>>,  TypeConverterAttribute(typeof<TupleConverter<'a, 'b>>)) |> ignore
+let addTypeConverter<'a, 'b> () =
+    TypeDescriptor.AddAttributes(typeof<Tuple<'a, 'b>>,  TypeConverterAttribute(typeof<TupleConverter<'a, 'b>>)) 
+    |> ignore
 
-let configTypeDescriptors () =
-    addTypeDescriptor<Number, Person>()
+let configTypeDescriptor () =
+    addTypeConverter<Number, Person>()
     
 let serializeObject = JsonConvert.SerializeObject
 let serializeString = string
