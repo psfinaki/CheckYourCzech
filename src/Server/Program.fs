@@ -16,7 +16,9 @@ let publicPath = GetEnvVar "public_path" |> Option.defaultValue "../Client/publi
 let port = 8085us
 
 let configureSerialization (services:IServiceCollection) =
+    Storage.configTypeDescriptors() |> ignore
     services.AddSingleton<IJsonSerializer>(ThothSerializer())
+    
 
 let configureAzure (services:IServiceCollection) =
     GetEnvVar "APPINSIGHTS_INSTRUMENTATIONKEY"

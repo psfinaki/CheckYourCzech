@@ -16,6 +16,10 @@ type TupleConverter<'T1, 'T2> () =
                 .ToString(value)
                 .Trim('(').Trim(')')
                 .Split([|','|], StringSplitOptions.RemoveEmptyEntries)
-        match (elements.[0].Trim() |> fromString<'T1>, elements.[1].Trim() |> fromString<'T2>) with
-        | Some e1, Some e2 -> (e1, e2) :> obj
+
+        let e1 = elements.[0].Trim() |> fromString<'T1>
+        let e2 = elements.[1].Trim() |> fromString<'T2>
+
+        match (e1, e2) with
+        | Some v1, Some v2 -> (v1, v2) :> obj
         | _ -> failwith "failed to parse tuple type"

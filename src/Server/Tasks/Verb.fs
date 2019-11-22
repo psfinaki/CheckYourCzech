@@ -71,8 +71,6 @@ let getVerbConjugationTask next (ctx: HttpContext) =
         let filters =
             [ patternFilter ] 
             |> Seq.choose id
-
-        addTypeDescriptor<Number, Person>()
         
         let verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
         let getTask (verb: VerbConjugation.VerbConjugation) = 
