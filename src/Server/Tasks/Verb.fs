@@ -5,6 +5,9 @@ open Giraffe
 open Storage
 open Microsoft.AspNetCore.Http
 open Tasks.Utils
+open Conjugation
+open Common.Utils
+open Microsoft.Extensions.Logging
 
 let getVerbImperativesTask next (ctx : HttpContext) =
     task {
@@ -49,5 +52,41 @@ let getVerbParticiplesTask next (ctx: HttpContext) =
             Task(infinitive, participles)
 
         let task = verb |> Option.map getTask |> Option.toObj 
+        return! Successful.OK task next ctx
+    }
+
+[<AllowNullLiteral>]
+type ConjugationTask(word, answers, pronoun) = 
+    inherit Task(word, answers)
+    member this.Pronoun: string = pronoun
+
+let getVerbConjugationTask next (ctx: HttpContext) =
+    task {
+        let logger = ctx.GetLogger()
+
+        let patternFromQuery = ctx.GetQueryStringValue "pattern"
+        let patternFilter = getAzureFilter "Pattern" String patternFromQuery
+
+        let filters =
+            [ patternFilter ] 
+            |> Seq.choose id
+        
+        let verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
+        let getTask (verb: VerbConjugation.VerbConjugation) = 
+            let number = getRandomNumber()
+            let person = getRandomPerson()
+            match (number, person) with 
+            | Some n, Some p ->
+                let infinitive = getAs<string> verb.Infinitive
+                let conjugations = getAs<ConjugationMapping> verb.Conjugations
+                logger.Log(LogLevel.Information, sprintf "getTask %A" conjugations)
+                let answers = conjugations.Item((n, p))
+                let pronoun = getPronounString n p
+                Some (ConjugationTask(infinitive, answers, pronoun))
+            | _, _ -> 
+                None
+            
+
+        let task = verb |> Option.bind getTask |> Option.toObj 
         return! Successful.OK task next ctx
     }

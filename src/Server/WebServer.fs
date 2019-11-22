@@ -10,4 +10,5 @@ let webApp = router {
     get "/api/adjectives/comparatives" Adjective.getAdjectiveComparativesTask
     get "/api/verbs/imperatives" Verb.getVerbImperativesTask
     get "/api/verbs/participles" Verb.getVerbParticiplesTask
+    get "/api/verbs/conjugations" Verb.getVerbConjugationTask
 }

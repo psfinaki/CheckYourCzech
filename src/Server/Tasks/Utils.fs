@@ -11,5 +11,5 @@ let getPostFilter filterCondition = function
 
 [<AllowNullLiteral>]
 type Task(word, answers) = 
-    member this.Word = word
-    member this.Answers = answers
+    member this.Word: string = word
+    member this.Answers: string [] = answers

@@ -1,5 +1,8 @@
 module Conjugation
 
+open System
+open System.Collections.Generic
+
 open GrammarCategories
 
 type Pronoun =
@@ -26,4 +29,4 @@ let pronounToString pronoun =
 let getPronounString num pers =
     getPronoun num pers |> pronounToString
 
-type ConjugationMapping = System.Collection.Generic.IDictionary<(Number, Person), string []>
+type ConjugationMapping = IDictionary<Tuple<Number, Person>, string []>

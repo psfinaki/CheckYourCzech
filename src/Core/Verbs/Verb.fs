@@ -1,5 +1,7 @@
 ﻿module Verb
 
+open Conjugation
+
 let getClass = 
     VerbArticle.getThirdPersonSingular
     >> Seq.tryExactlyOne
@@ -15,7 +17,7 @@ let getImperativePattern =
 let getParticiples =
     VerbArticle.getParticiples
 
-let getConjugations = 
+let getConjugations : string -> ConjugationMapping = 
     VerbArticle.getConjugations
 
 let hasRegularParticiple word = 
