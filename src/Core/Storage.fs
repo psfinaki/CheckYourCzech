@@ -4,6 +4,8 @@ open System
 open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Table
 open Newtonsoft.Json
+open System.ComponentModel
+open TypeConverter
 
 type CloudTable with
     member this.ExecuteQuery (query : TableQuery<'T>) =
@@ -35,6 +37,9 @@ let map func serialization defaultValue =
     Option.ofObj 
     >> Option.map (func >> serialization) 
     >> Option.defaultValue defaultValue
+
+let addTypeDescriptor<'a, 'b> () =
+    TypeDescriptor.AddAttributes(typeof<Tuple<'a, 'b>>,  TypeConverterAttribute(typeof<TupleConverter<'a, 'b>>)) |> ignore
 
 let serializeObject = JsonConvert.SerializeObject
 let serializeString = string

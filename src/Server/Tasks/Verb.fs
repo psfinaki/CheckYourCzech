@@ -8,6 +8,7 @@ open Tasks.Utils
 open Conjugation
 open Common.Utils
 open Microsoft.Extensions.Logging
+open GrammarCategories
 
 let getVerbImperativesTask next (ctx : HttpContext) =
     task {
@@ -62,7 +63,7 @@ type ConjugationTask(word, answers, pronoun) =
 
 let getVerbConjugationTask next (ctx: HttpContext) =
     task {
-        let logger = ctx.GetLogger()
+        // let logger = ctx.GetLogger()
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
         let patternFilter = getAzureFilter "Pattern" String patternFromQuery
@@ -70,6 +71,8 @@ let getVerbConjugationTask next (ctx: HttpContext) =
         let filters =
             [ patternFilter ] 
             |> Seq.choose id
+
+        addTypeDescriptor<Number, Person>()
         
         let verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
         let getTask (verb: VerbConjugation.VerbConjugation) = 
@@ -79,7 +82,6 @@ let getVerbConjugationTask next (ctx: HttpContext) =
             | Some n, Some p ->
                 let infinitive = getAs<string> verb.Infinitive
                 let conjugations = getAs<ConjugationMapping> verb.Conjugations
-                logger.Log(LogLevel.Information, sprintf "getTask %A" conjugations)
                 let answers = conjugations.Item((n, p))
                 let pronoun = getPronounString n p
                 Some (ConjugationTask(infinitive, answers, pronoun))
