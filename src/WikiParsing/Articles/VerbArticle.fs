@@ -47,29 +47,26 @@ let getImperatives verb =
     let data = getVerbProvider verb
     let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
     getForms answer
+
+let removeHovorově (w:string) =
+    let parenthesis = w.IndexOf("(")
+    if parenthesis >= 0 then
+        w.Substring(0, parenthesis - 1)
+    else w
     
-let getConjugations verb : ConjugationMapping = 
+
+let getConjugation p verb = 
     let data = getVerbProvider verb
-    let conjugationKeyValue num per = 
-        let answer = 
-            match num, per with
-            | Singular, First  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 1.``
-            | Singular, Second -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 2.``
-            | Singular, Third  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
-            | Plural,   First  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 1.``
-            | Plural,   Second -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 2.``
-            | Plural,   Third  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 3.``
-    
-        (num, per), getForms answer
-    
-    dict[
-        conjugationKeyValue Singular First;
-        conjugationKeyValue Singular Second;
-        conjugationKeyValue Singular Third;
-        conjugationKeyValue Plural First;
-        conjugationKeyValue Plural Second;
-        conjugationKeyValue Plural Third;
-    ]
+    let answer = 
+        match p with
+        | FirstSingular  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 1.``
+        | SecondSingular -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 2.``
+        | ThirdSingular  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
+        | FirstPlural    -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 1.``
+        | SecondPlural   -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 2.``
+        | ThirdPlural    -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 3.``
+
+    (getForms >> Array.map removeHovorově) answer
 
 let getThirdPersonSingular verb = 
     let data = getVerbProvider verb

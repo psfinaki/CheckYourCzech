@@ -63,8 +63,6 @@ type ConjugationTask(word, answers, pronoun) =
 
 let getVerbConjugationTask next (ctx: HttpContext) =
     task {
-        // let logger = ctx.GetLogger()
-
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
         let patternFilter = getAzureFilter "Pattern" String patternFromQuery
 
@@ -73,18 +71,15 @@ let getVerbConjugationTask next (ctx: HttpContext) =
             |> Seq.choose id
         
         let verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
-        let getTask (verb: VerbConjugation.VerbConjugation) = 
-            let number = getRandomNumber()
-            let person = getRandomPerson()
-            match (number, person) with 
-            | Some n, Some p ->
+        let getTask (verb: VerbConjugation.VerbConjugation) =
+            let pronoun = getRandomPronoun()
+            match pronoun with 
+            | Some p ->
                 let infinitive = getAs<string> verb.Infinitive
-                let conjugations = getAs<ConjugationMapping> verb.Conjugations
-                let answers = conjugations.Item((n, p))
-                let pronoun = getPronounString n p
-                Some (ConjugationTask(infinitive, answers, pronoun))
-            | _, _ -> 
-                None
+                let answers = getAs<string[]> (verb.Conjugation p)
+                let pn = pronounToString p
+                Some (ConjugationTask(infinitive, answers, pn))
+            | _ -> None
             
 
         let task = verb |> Option.bind getTask |> Option.toObj 

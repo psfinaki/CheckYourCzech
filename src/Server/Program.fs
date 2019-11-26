@@ -16,7 +16,6 @@ let publicPath = GetEnvVar "public_path" |> Option.defaultValue "../Client/publi
 let port = 8085us
 
 let configureSerialization (services:IServiceCollection) =
-    Storage.configTypeDescriptor() |> ignore
     services.AddSingleton<IJsonSerializer>(ThothSerializer())
     
 

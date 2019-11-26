@@ -2,8 +2,7 @@
 
 open Xunit
 open VerbArticle
-open GrammarCategories
-open System.Collections.Generic
+open Conjugation
 
 [<Fact>]
 let ``Gets imperatives - single option``() =
@@ -30,13 +29,23 @@ let ``Gets participle from the third table``() =
     |> equals [|"myslel"|]
 
 [<Fact>]
-let ``Gets all conjugations``() = 
-    let conj = "myslet" |> getConjugations
+let ``Gets all conjugations``() =
+    let verb =  "myslet"
     
-    conj.Item(Singular, First) |> equals [|"myslím"|]
-    conj.Item(Singular, Second) |> equals [|"myslíš"|]
-    conj.Item(Singular, Third) |> equals [|"myslí"|]
+    getConjugation FirstSingular verb  |> equals [|"myslím"|]
+    getConjugation SecondSingular verb |> equals [|"myslíš"|]
+    getConjugation ThirdSingular verb  |> equals [|"myslí"|]
 
-    conj.Item(Plural, First) |> equals [|"myslíme"|]
-    conj.Item(Plural, Second) |> equals [|"myslíte"|]
-    conj.Item(Plural, Third) |> equals [| "myslí"; "myslejí"|]
+    getConjugation FirstPlural verb    |> equals [|"myslíme"|]
+    getConjugation SecondPlural verb   |> equals [|"myslíte"|]
+    getConjugation ThirdPlural verb    |> equals [| "myslí"; "myslejí"|]
+
+[<Fact>]
+let ``Removes hovorově conjugation``() = 
+    let verb = "jmenuji (hovorově: jmenuju)"
+    verb |> removeHovorově |> equals "jmenuji"
+
+[<Fact>]
+let ``Keeps hovorově conjugation``() = 
+    let verb = "vařit"
+    verb |> removeHovorově |> equals verb
