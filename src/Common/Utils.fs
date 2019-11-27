@@ -2,7 +2,6 @@ module Common.Utils
 
 open Microsoft.FSharp.Collections
 open Microsoft.FSharp.Reflection
-open Conjugation
 
 let fromString<'a> (s:string) =
     match FSharpType.GetUnionCases typeof<'a> |> Array.filter (fun case -> case.Name = s) with
@@ -15,6 +14,3 @@ let getRandomUnion<'a> =
     >> Seq.random 
     >> (fun case -> case.Name)
     >> fromString<'a>)
-
-let getRandomPronoun () = 
-     getRandomUnion<Pronoun>

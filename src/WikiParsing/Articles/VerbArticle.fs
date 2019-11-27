@@ -48,13 +48,6 @@ let getImperatives verb =
     let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
     getForms answer
 
-let removeHovorově (w:string) =
-    let parenthesis = w.IndexOf("(")
-    if parenthesis >= 0 then
-        w.Substring(0, parenthesis - 1)
-    else w
-    
-
 let getConjugation p verb = 
     let data = getVerbProvider verb
     let answer = 
@@ -66,7 +59,7 @@ let getConjugation p verb =
         | SecondPlural   -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 2.``
         | ThirdPlural    -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 3.``
 
-    (getForms >> Array.map removeHovorově) answer
+    getForms answer
 
 let getThirdPersonSingular verb = 
     let data = getVerbProvider verb

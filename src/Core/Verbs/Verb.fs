@@ -1,6 +1,7 @@
 ﻿module Verb
 
 open Conjugation
+open Common.Utils
 
 let getClass = 
     VerbArticle.getThirdPersonSingular
@@ -28,3 +29,5 @@ let hasRegularParticiple word =
 let getParticiplePattern = 
     ParticiplePatternDetector.getPattern
 
+let getRandomPronoun () = 
+     getRandomUnion<Pronoun>
