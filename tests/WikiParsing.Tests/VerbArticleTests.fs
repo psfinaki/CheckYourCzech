@@ -39,13 +39,3 @@ let ``Gets all conjugations``() =
     getConjugation FirstPlural verb    |> equals [|"myslíme"|]
     getConjugation SecondPlural verb   |> equals [|"myslíte"|]
     getConjugation ThirdPlural verb    |> equals [| "myslí"; "myslejí"|]
-
-[<Fact>]
-let ``Removes hovorově conjugation``() = 
-    let verb = "jmenuji (hovorově: jmenuju)"
-    verb |> removeHovorově |> equals "jmenuji"
-
-[<Fact>]
-let ``Keeps hovorově conjugation``() = 
-    let verb = "vařit"
-    verb |> removeHovorově |> equals verb
