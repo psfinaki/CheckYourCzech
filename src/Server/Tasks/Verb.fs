@@ -73,15 +73,11 @@ let getVerbConjugationTask next (ctx: HttpContext) =
         let verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
         let getTask (verb: VerbConjugation.VerbConjugation) =
             let pronoun = getRandomPronoun()
-            match pronoun with 
-            | Some p ->
-                let infinitive = getAs<string> verb.Infinitive
-                let answers = getAs<string[]> (verb.Conjugation p)
-                let pn = pronounToString p
-                Some (ConjugationTask(infinitive, answers, pn))
-            | _ -> None
-            
+            let infinitive = getAs<string> verb.Infinitive
+            let answers = getAs<string[]> (verb.Conjugation pronoun)
+            let pn = pronounToString pronoun
+            ConjugationTask(infinitive, answers, pn)
 
-        let task = verb |> Option.bind getTask |> Option.toObj 
+        let task = verb |> Option.map getTask |> Option.toObj 
         return! Successful.OK task next ctx
     }

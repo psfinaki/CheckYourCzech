@@ -24,8 +24,7 @@ type VerbConjugation(word) =
     member val SecondPlural = getConjugation SecondPlural word with get, set
     member val ThirdPlural = getConjugation ThirdPlural word with get, set
     
-    member this.Conjugation p =
-        match p with
+    member this.Conjugation = function
         | FirstSingular  -> this.FirstSingular
         | SecondSingular -> this.SecondSingular
         | ThirdSingular  -> this.ThirdSingular
