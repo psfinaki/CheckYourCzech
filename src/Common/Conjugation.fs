@@ -17,7 +17,7 @@ let pronounToString pronoun =
     match pronoun with
     | FirstSingular   -> "já"
     | SecondSingular  -> "ty"
-    | ThirdSingular   -> "to"
+    | ThirdSingular   -> "ono"
     | FirstPlural     -> "my"
     | SecondPlural    -> "vy"
     | ThirdPlural     -> "oni"
