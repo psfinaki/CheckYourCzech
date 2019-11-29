@@ -1,10 +1,5 @@
 module Conjugation
 
-open System
-open System.Collections.Generic
-
-open GrammarCategories
-
 type Pronoun =
     | FirstSingular 
     | SecondSingular 
@@ -13,8 +8,7 @@ type Pronoun =
     | SecondPlural 
     | ThirdPlural
 
-let pronounToString pronoun =
-    match pronoun with
+let pronounToString = function
     | FirstSingular   -> "já"
     | SecondSingular  -> "ty"
     | ThirdSingular   -> "ono"

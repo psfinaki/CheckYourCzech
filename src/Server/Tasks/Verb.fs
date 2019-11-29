@@ -7,8 +7,6 @@ open Microsoft.AspNetCore.Http
 open Tasks.Utils
 open Conjugation
 open Verb
-open Microsoft.Extensions.Logging
-open GrammarCategories
 
 let getVerbImperativesTask next (ctx : HttpContext) =
     task {
