@@ -1,5 +1,8 @@
 ﻿module Verb
 
+open Conjugation
+open Common.Utils
+
 let getClass = 
     VerbArticle.getThirdPersonSingular
     >> Seq.tryExactlyOne
@@ -15,6 +18,9 @@ let getImperativePattern =
 let getParticiples =
     VerbArticle.getParticiples
 
+let getConjugation = 
+    VerbArticle.getConjugation
+
 let hasRegularParticiple word = 
     let theoretical = ParticipleBuilder.buildParticiple word
     let practical = getParticiples word
@@ -23,3 +29,5 @@ let hasRegularParticiple word =
 let getParticiplePattern = 
     ParticiplePatternDetector.getPattern
 
+let getRandomPronoun () = 
+     getRandomUnion<Pronoun>

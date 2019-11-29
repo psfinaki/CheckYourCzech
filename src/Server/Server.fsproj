@@ -13,6 +13,10 @@
 		<WarningsAsErrors />
 	</PropertyGroup>
     <ItemGroup>
+        <Compile Include="Tasks\Utils.fs" />
+        <Compile Include="Tasks\Adjective.fs" />
+        <Compile Include="Tasks\Noun.fs" />
+        <Compile Include="Tasks\Verb.fs" />
         <Compile Include="WebServer.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>

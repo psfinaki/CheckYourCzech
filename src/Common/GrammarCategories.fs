@@ -16,3 +16,6 @@ type Number =
 type Declinability =
     | Declinable
     | Indeclinable
+
+type Person = 
+    | First | Second | Third

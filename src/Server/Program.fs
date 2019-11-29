@@ -17,6 +17,7 @@ let port = 8085us
 
 let configureSerialization (services:IServiceCollection) =
     services.AddSingleton<IJsonSerializer>(ThothSerializer())
+    
 
 let configureAzure (services:IServiceCollection) =
     GetEnvVar "APPINSIGHTS_INSTRUMENTATIONKEY"

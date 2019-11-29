@@ -2,6 +2,8 @@
 
 open FSharp.Data
 open WikiString
+open GrammarCategories
+open Conjugation
 open Article
 
 type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
@@ -45,7 +47,20 @@ let getImperatives verb =
     let data = getVerbProvider verb
     let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
     getForms answer
-    
+
+let getConjugation p verb = 
+    let data = getVerbProvider verb
+    let answer = 
+        match p with
+        | FirstSingular  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 1.``
+        | SecondSingular -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 2.``
+        | ThirdSingular  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
+        | FirstPlural    -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 1.``
+        | SecondPlural   -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 2.``
+        | ThirdPlural    -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 3.``
+
+    getForms answer
+
 let getThirdPersonSingular verb = 
     let data = getVerbProvider verb
     let answer = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``

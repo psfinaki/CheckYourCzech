@@ -35,7 +35,7 @@ let map func serialization defaultValue =
     Option.ofObj 
     >> Option.map (func >> serialization) 
     >> Option.defaultValue defaultValue
-
+    
 let serializeObject = JsonConvert.SerializeObject
 let serializeString = string
 let serializeOption<'T> : ('T option -> string) = function | Some v -> v.ToString() | None -> ""

@@ -25,6 +25,9 @@ let recordCzechPartOfSpeech word = function
         if word |> VerbValidation.isParticipleValid
         then word |> VerbParticiple.VerbParticiple |> upsert "verbparticiples"
 
+        if word |> VerbValidation.isConjugationValid
+        then word |> VerbConjugation.VerbConjugation |> upsert "verbconjugation"
+
     | _ -> ()
     
 let record word =
