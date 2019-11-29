@@ -22,8 +22,11 @@ let hasRequiredInfoImperative =
     >> Option.contains true
 
 let hasRequiredInfoConjugation = 
-    tryGetVerb
-    >> Option.exists (hasChildPart "časování")
+    isMatch [
+        Is "čeština"
+        Is "sloveso"
+        Is "časování"
+    ]
 
 let isValidVerb = isModern
 
