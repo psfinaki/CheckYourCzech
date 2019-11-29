@@ -42,7 +42,7 @@ let getContent =
 
 let tryGetContent word =
     try 
-        getContent word   
+        getContent word 
         |> Some 
     with | :? KeyNotFoundException | :? ArgumentException | :? WebException -> 
         None
@@ -193,12 +193,17 @@ let rec private getPartMatches parts (nodes: seq<HtmlNode>) =
         else 
             Seq.empty
 
-let ``match`` parts =
+let getCzechContent = 
     tryGetContent
+    >> Option.filter (hasPart "čeština")
+    >> Option.map (getPart "čeština")
+
+let ``match`` parts =
+    getCzechContent
     >> Option.bind (getPartMatch parts)
 
 let matches parts =
-    tryGetContent
+    getCzechContent
     >> Option.map (getPartMatches parts)
     >> Option.defaultValue Seq.empty
 

@@ -23,7 +23,6 @@ let hasDeclension case number =
 let hasRequiredInfo word =
     word
     |> isMatch [
-        Is "čeština"
         Is "podstatné jméno"
         Starts "skloňování"
     ]
@@ -32,7 +31,6 @@ let hasRequiredInfo word =
 
     word
     |> ``match`` [
-        Is "čeština"
         Is "podstatné jméno"
     ] 
     |> Option.exists (hasInfo (Starts "rod"))

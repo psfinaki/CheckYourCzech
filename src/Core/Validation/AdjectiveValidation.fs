@@ -12,14 +12,12 @@ let hasMorphologicalComparatives =
 
 let hasRequiredInfoComparative =
     isMatch [
-        Is "čeština"
         Is "přídavné jméno"
         Is "stupňování"
     ]
 
 let hasRequiredInfoPlural = 
     isMatch [
-        Is "čeština"
         Is "přídavné jméno"
         Is "skloňování"
     ]

@@ -35,7 +35,6 @@ let pluralDeclensionsMap =
 
 let getNumberOfDeclensions = 
     matches [
-        Is "čeština"
         Any
         Is "skloňování"
     ]

@@ -138,7 +138,6 @@ let ``Detects no parts of speech``() =
 let ``Gets match``() =
     "panda"
     |> ``match`` [
-        Is "čeština"
         Is "podstatné jméno"
         Is "skloňování"
     ]
@@ -149,7 +148,6 @@ let ``Gets match``() =
 let ``Gets no match``() =
     "panda"
     |> ``match`` [
-        Is "čeština"
         Is "přídavné jméno"
         Is "skloňování"
     ]
@@ -159,7 +157,6 @@ let ``Gets no match``() =
 let ``Gets matches``() =
     "bus"
     |> matches [
-        Is "čeština"
         Starts "podstatné jméno"
     ]
     |> Seq.length
@@ -169,7 +166,6 @@ let ``Gets matches``() =
 let ``Gets no matches``() =
     "panda"
     |> matches [
-        Is "čeština"
         Is "přídavné jméno"
         Is "skloňování"
     ]
@@ -179,7 +175,6 @@ let ``Gets no matches``() =
 let ``Detects match``() =
     "čtvrt"
     |> isMatch [
-        Is "čeština"
         Is "podstatné jméno"
         Starts "skloňování"
     ]
@@ -189,7 +184,6 @@ let ``Detects match``() =
 let ``Detects no match``() =
     "bus"
     |> isMatch [
-        Is "čeština"
         Is "přídavné jméno"
         Is "skloňování"
     ]

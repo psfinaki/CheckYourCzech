@@ -11,7 +11,6 @@ type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
 
 let getNumberOfDeclensions =
     matches [
-        Is "čeština"
         Is "podstatné jméno"
         Starts "skloňování"
     ]
@@ -51,14 +50,12 @@ let getLocked case number word =
 let getDeclinability word = 
     let hasIndeclinabilityMarkInNounSection = 
         ``match`` [
-            Is "čeština"
             Is "podstatné jméno"
         ] 
         >> Option.exists (hasInfo (Is "nesklonné"))
 
     let hasIndeclinabilityMarkInDeclensionSections =
         matches [
-            Is "čeština"
             Is "podstatné jméno"
             Starts "skloňování"
         ]
@@ -88,7 +85,6 @@ let getDeclension case number =
 
 let getGender =
     ``match`` [
-        Is "čeština"
         Is "podstatné jméno"
     ] 
     >> Option.map (getInfos (Starts "rod "))

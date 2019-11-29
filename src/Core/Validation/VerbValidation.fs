@@ -5,14 +5,12 @@ open Archaisms
 
 let hasRequiredInfoParticiple = 
     isMatch [
-        Is "čeština"
         Is "sloveso"
         Is "časování"
     ]
 
 let hasRequiredInfoImperative = 
     ``match`` [
-        Is "čeština"
         Is "sloveso"
         Is "časování"
     ]
@@ -23,7 +21,6 @@ let hasRequiredInfoImperative =
 
 let hasRequiredInfoConjugation = 
     isMatch [
-        Is "čeština"
         Is "sloveso"
         Is "časování"
     ]

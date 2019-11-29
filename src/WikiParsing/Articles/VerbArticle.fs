@@ -2,7 +2,6 @@
 
 open FSharp.Data
 open WikiString
-open GrammarCategories
 open Conjugation
 open Article
 
@@ -34,7 +33,6 @@ let getParticipleByTableIndex word n =
 let getWikiParticiples word =
     word
     |> ``match`` [
-        Is "čeština"
         Is "sloveso"
     ]
     |> Option.map getTables
