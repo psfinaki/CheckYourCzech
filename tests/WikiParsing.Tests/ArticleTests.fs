@@ -25,8 +25,8 @@ let ``Detects content``() =
 let ``Gets children parts``() =
     "ananas"
     |> getContent
-    |> getChildPart "čeština"
-    |> getChildrenParts
+    |> getPart "čeština"
+    |> getParts
     |> Seq.map fst
     |> seqEquals [ "výslovnost"; "dělení"; "podstatné jméno" ]
 
@@ -34,7 +34,7 @@ let ``Gets children parts``() =
 let ``Detects no children parts``() =
     "provozovat"
     |> getContent
-    |> getChildrenParts
+    |> getParts
     |> Seq.map fst
     |> seqEquals []
 
@@ -42,59 +42,59 @@ let ``Detects no children parts``() =
 let ``Detects child part``() =
     "panda"
     |> getContent
-    |> hasChildPart "čeština"
+    |> hasPart "čeština"
     |> Assert.True
 
 [<Fact>]
 let ``Detects no child part``() =
     "panda"
     |> getContent
-    |> hasChildPart "ruština"
+    |> hasPart "ruština"
     |> Assert.False
 
 [<Fact>]
 let ``Detects children parts - filter``() =
     "panda"
     |> getContent
-    |> hasChildrenPartsWhen ((=) "čeština")
+    |> hasPartsWhen ((=) "čeština")
     |> Assert.True
 
 [<Fact>]
 let ``Detects no children parts - filter``() =
     "panda"
     |> getContent
-    |> hasChildrenPartsWhen ((=) "ruština")
+    |> hasPartsWhen ((=) "ruština")
     |> Assert.False
 
 [<Fact>]
-let ``Gets info``() = 
+let ``Gets infos``() = 
     "panda"
     |> getContent
-    |> getChildPart "čeština"
-    |> getInfo "rod"
-    |> equals "rod ženský"
+    |> getPart "čeština"
+    |> getInfos (Starts "rod")
+    |> seqEquals ["rod ženský"]
 
 [<Fact>]
 let ``Detects info``() = 
     "mozek"
     |> getContent
-    |> hasInfo "chytrý"
+    |> hasInfo (Is "chytrý")
     |> Assert.True
 
 [<Fact>]
 let ``Detects no info``() = 
     "panda"
     |> getContent
-    |> hasInfo "evil"
+    |> hasInfo (Is "evil")
     |> Assert.False
 
 [<Fact>]
 let ``Gets tables``() =
     "musit"
     |> getContent
-    |> getChildPart "čeština"
-    |> getChildPart "sloveso"
-    |> getChildPart "časování"
+    |> getPart "čeština"
+    |> getPart "sloveso"
+    |> getPart "časování"
     |> getTables
     |> Seq.map fst
     |> seqEquals [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
@@ -103,9 +103,9 @@ let ``Gets tables``() =
 let ``Detects no tables``() =
     "musit"
     |> getContent
-    |> getChildPart "čeština"
-    |> getChildPart "sloveso"
-    |> getChildPart "význam"
+    |> getPart "čeština"
+    |> getPart "sloveso"
+    |> getPart "význam"
     |> getTables
     |> Seq.map fst
     |> seqEquals []
@@ -133,3 +133,58 @@ let ``Detects no parts of speech``() =
     "hello"
     |> getPartsOfSpeech
     |> seqEquals []
+
+[<Fact>]
+let ``Gets match``() =
+    "panda"
+    |> ``match`` [
+        Is "podstatné jméno"
+        Is "skloňování"
+    ]
+    |> Option.isSome
+    |> Assert.True
+
+[<Fact>]
+let ``Gets no match``() =
+    "panda"
+    |> ``match`` [
+        Is "přídavné jméno"
+        Is "skloňování"
+    ]
+    |> equals Option.None
+
+[<Fact>]
+let ``Gets matches``() =
+    "bus"
+    |> matches [
+        Starts "podstatné jméno"
+    ]
+    |> Seq.length
+    |> equals 2
+
+[<Fact>]
+let ``Gets no matches``() =
+    "panda"
+    |> matches [
+        Is "přídavné jméno"
+        Is "skloňování"
+    ]
+    |> Assert.Empty
+
+[<Fact>]
+let ``Detects match``() =
+    "čtvrt"
+    |> isMatch [
+        Is "podstatné jméno"
+        Starts "skloňování"
+    ]
+    |> Assert.True
+
+[<Fact>]
+let ``Detects no match``() =
+    "bus"
+    |> isMatch [
+        Is "přídavné jméno"
+        Is "skloňování"
+    ]
+    |> Assert.False

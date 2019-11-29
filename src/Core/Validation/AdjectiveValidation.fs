@@ -10,20 +10,17 @@ let hasMorphologicalComparatives =
     >> Array.filter isMorphologicalComparison
     >> (not << Seq.isEmpty)
 
-let tryGetAdjective =
-    tryGetContent
-    >> Option.filter (hasChildPart "čeština")
-    >> Option.map (getChildPart "čeština")
-    >> Option.filter (hasChildPart "přídavné jméno")
-    >> Option.map (getChildPart "přídavné jméno")
-
 let hasRequiredInfoComparative =
-    tryGetAdjective
-    >> Option.exists (hasChildPart "stupňování")
+    isMatch [
+        Is "přídavné jméno"
+        Is "stupňování"
+    ]
 
 let hasRequiredInfoPlural = 
-    tryGetAdjective 
-    >> Option.exists (hasChildPart "skloňování")
+    isMatch [
+        Is "přídavné jméno"
+        Is "skloňování"
+    ]
 
 let isValidAdjective = isPositive
 

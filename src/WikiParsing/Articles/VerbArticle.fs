@@ -2,7 +2,6 @@
 
 open FSharp.Data
 open WikiString
-open GrammarCategories
 open Conjugation
 open Article
 
@@ -33,13 +32,20 @@ let getParticipleByTableIndex word n =
 
 let getWikiParticiples word =
     word
-    |> getContent
-    |> getChildPart "čeština"
-    |> getChildPart "sloveso"
-    |> getTables
-    |> Seq.map fst
-    |> Seq.findIndex ((=) "Příčestí")
-    |> getParticipleByTableIndex word
+    |> ``match`` [
+        Is "sloveso"
+    ]
+    |> Option.map getTables
+    |> Option.map (Seq.map fst)
+    |> Option.map (Seq.findIndex ((=) "Příčestí"))
+    |> Option.map (getParticipleByTableIndex word)
+    // TODO:
+    // There is a problem here: we couple this place
+    // with the fact that this is called after the verb validation
+    // where we check the existance of this table in the article.
+    // So logically we know that the table exists
+    // but code-wise we don't. This should be fixed.
+    |> Option.defaultWith (fun () -> failwith "odd word")
 
 let getParticiples = getWikiParticiples >> getForms
     

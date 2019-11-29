@@ -13,10 +13,10 @@ type HtmlNode with
 
 let headerTags = [ "h1"; "h2"; "h3"; "h4"; "h5"; "h6" ]
 
-let getNodesByInnerText text =
+let getNodesByInnerText filter =
     Seq.collect  (fun (node: HtmlNode) -> node.Descendants())
     >> Seq.map   (fun node -> node, node.DirectInnerText())
-    >> Seq.where (fun (node, innerText) -> innerText.Contains text)
+    >> Seq.where (fun (node, innerText) -> filter innerText)
     >> Seq.distinctBy snd
     >> Seq.map fst
 
