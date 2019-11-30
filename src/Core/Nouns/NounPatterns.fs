@@ -1,6 +1,6 @@
 ﻿module NounPatterns
 
-open Genders
+open GenderTranslations
 open NounArticle
 open GrammarCategories
 
@@ -19,6 +19,6 @@ let getPatterns noun =
     | Declinable ->
         noun
         |> getGender
-        |> translateGender
+        |> fromString
         |> getPatternsByGender noun
 

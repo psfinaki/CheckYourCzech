@@ -19,7 +19,6 @@
     <Compile Include="Stem.fs" />
     <Compile Include="Storage.fs" />
     <Compile Include="Reflexives.fs" />
-    <Compile Include="Nouns\Genders.fs" />
     <Compile Include="Nouns\Nominalization.fs" />
     <Compile Include="Nouns\FeminineNounPatternDetector.fs" />
     <Compile Include="Nouns\NeuterNounPatternDetector.fs" />
