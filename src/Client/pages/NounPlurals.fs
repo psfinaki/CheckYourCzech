@@ -4,8 +4,7 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Genders
+open GrammarCategories
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model

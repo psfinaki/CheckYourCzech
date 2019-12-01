@@ -4,6 +4,8 @@ open FSharp.Data
 open GrammarCategories
 open WikiString
 open Article
+open Common.Utils
+open GenderTranslations
 
 type EditableArticleOneDeclension = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type EditableArticleTwoDeclensions = HtmlProvider<"https://cs.wiktionary.org/wiki/čtvrt">
@@ -87,7 +89,7 @@ let getGender =
     ``match`` [
         Is "podstatné jméno"
     ] 
-    >> Option.map (getInfos (Starts "rod "))
+    >> Option.map (getInfos (OneOf (getAllUnion<Gender> |> Seq.map toString)))
     >> Option.filter Seq.hasOneElement
     >> Option.map Seq.exactlyOne
     // TODO:

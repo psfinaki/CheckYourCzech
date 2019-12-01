@@ -16,5 +16,6 @@
     <Compile Include="SequenceExtensions.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="StringHelper.fs" />
+    <Compile Include="GenderTranslations.fs" />
   </ItemGroup>
 </Project>

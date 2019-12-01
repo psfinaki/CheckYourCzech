@@ -72,8 +72,11 @@ let ``Detects declinable``() =
     |> getDeclinability
     |> equals Declinable
 
-[<Fact>]
-let ``Gets gender``() =
-    "panda"
+[<Theory>]
+[<InlineData "panda">]
+[<InlineData "lipnice">]
+[<InlineData "krajta">]
+let ``Gets gender`` word =
+    word
     |> getGender
     |> equals "rod ženský"

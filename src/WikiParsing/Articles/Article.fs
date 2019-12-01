@@ -21,11 +21,13 @@ type MatchCondition =
     | Any
     | Is of string
     | Starts of string
+    | OneOf of seq<string>
 
 let getCondition = function
     | Any -> fun _ -> true
     | Is partName -> (=) partName
     | Starts partName -> starts partName
+    | OneOf partNames -> fun x -> partNames |> Seq.contains x
 
 let getUrl = (+) wikiUrl
 

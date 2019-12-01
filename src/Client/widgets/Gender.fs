@@ -4,7 +4,14 @@ open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
-open Genders
+open GrammarCategories
+
+let translateGender = function
+    | "MasculineAnimate" -> MasculineAnimate
+    | "MasculineInanimate" -> MasculineInanimate
+    | "Feminine" -> Feminine
+    | "Neuter" -> Neuter
+    | _ -> failwith "Unknown gender"
 
 [<Literal>]
 let GenderUnset = ""
@@ -26,7 +33,7 @@ let update msg model =
 
 let view model dispatch =
     let handleChangeGender (event: FormEvent) =
-        let translate = function | GenderUnset -> None | x -> Some (Genders.fromString x)
+        let translate = function | GenderUnset -> None | x -> Some (translateGender x)
         dispatch (SetGender (translate !!event.target?value))
 
     let selectedValue = model.Gender |> Option.map string |> Option.defaultValue "Any"
