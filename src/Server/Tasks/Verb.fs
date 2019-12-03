@@ -20,7 +20,7 @@ let getVerbImperativesTask next (ctx : HttpContext) =
             [ classFilter; patternFilter ]
             |> Seq.choose id
             
-        let verb = tryGetRandom<VerbImperative.VerbImperative> "verbimperatives" filters
+        let! verb = tryGetRandom<VerbImperative.VerbImperative> "verbimperatives" filters
 
         let getTask (verb: VerbImperative.VerbImperative) = 
             let indicative = getAs<string> verb.Indicative
@@ -43,7 +43,7 @@ let getVerbParticiplesTask next (ctx: HttpContext) =
             [ patternFilter; regularityFilter ] 
             |> Seq.choose id
         
-        let verb = tryGetRandom<VerbParticiple.VerbParticiple> "verbparticiples" filters
+        let! verb = tryGetRandom<VerbParticiple.VerbParticiple> "verbparticiples" filters
 
         let getTask (verb: VerbParticiple.VerbParticiple) = 
             let infinitive = getAs<string> verb.Infinitive
@@ -68,7 +68,7 @@ let getVerbConjugationTask next (ctx: HttpContext) =
             [ patternFilter ] 
             |> Seq.choose id
         
-        let verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
+        let! verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
         let getTask (verb: VerbConjugation.VerbConjugation) =
             let pronoun = getRandomPronoun()
             let infinitive = getAs<string> verb.Infinitive

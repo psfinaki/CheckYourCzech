@@ -8,7 +8,7 @@ open Tasks.Utils
 
 let getAdjectivePluralsTask next (ctx : HttpContext) =
     task { 
-        let adjective = tryGetRandom<AdjectivePlural.AdjectivePlural> "adjectiveplurals" []
+        let! adjective = tryGetRandom<AdjectivePlural.AdjectivePlural> "adjectiveplurals" []
     
         let getTask (adjective: AdjectivePlural.AdjectivePlural) = 
             let singular = getAs<string> adjective.Singular
@@ -25,7 +25,7 @@ let getAdjectiveComparativesTask next (ctx : HttpContext) =
         let regularityFilter = getAzureFilter "IsRegular" Bool regularityFromQuery
     
         let filters = [ regularityFilter ] |> Seq.choose id
-        let adjective = tryGetRandom<AdjectiveComparative.AdjectiveComparative> "adjectivecomparatives" filters
+        let! adjective = tryGetRandom<AdjectiveComparative.AdjectiveComparative> "adjectivecomparatives" filters
     
         let getTask (adjective: AdjectiveComparative.AdjectiveComparative) = 
             let positive = getAs<string> adjective.Positive

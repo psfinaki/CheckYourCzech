@@ -18,7 +18,7 @@ let getNounPluralsTask next (ctx: HttpContext) =
         let azureFilters = [ genderFilter ] |> Seq.choose id
         let postFilters = [ patternFilter ] |> Seq.choose id
         
-        let noun = tryGetRandomWithFilters<NounPlural.NounPlural> "nounplurals" azureFilters postFilters
+        let! noun = tryGetRandomWithFilters<NounPlural.NounPlural> "nounplurals" azureFilters postFilters
         let getTask (noun: NounPlural.NounPlural) = 
             let singular = getAs<string> noun.Singular
             let plurals = getAs<string []> noun.Plurals
@@ -40,7 +40,7 @@ let getNounAccusativesTask next (ctx : HttpContext) =
         let azureFilters = [ genderFilter ] |> Seq.choose id
         let postFilters = [ patternFilter ] |> Seq.choose id
 
-        let noun = tryGetRandomWithFilters<NounAccusative.NounAccusative> "nounaccusatives" azureFilters postFilters
+        let! noun = tryGetRandomWithFilters<NounAccusative.NounAccusative> "nounaccusatives" azureFilters postFilters
         let getTask (noun: NounAccusative.NounAccusative) = 
             let singular = getAs<string> noun.Nominative 
             let accusatives = getAs<string []> noun.Accusatives

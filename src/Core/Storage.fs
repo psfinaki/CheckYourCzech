@@ -7,22 +7,23 @@ open Newtonsoft.Json
 
 type CloudTable with
     member this.ExecuteQuery (query : TableQuery<'T>) =
-        this.ExecuteQuerySegmentedAsync(query, null) 
-        |> Async.AwaitTask 
-        |> Async.RunSynchronously 
-        |> fun segment -> segment.Results
+        async {
+            let! segment = 
+                this.ExecuteQuerySegmentedAsync(query, null) 
+                |> Async.AwaitTask
 
-    member this.Execute operation =
-        this.ExecuteAsync operation 
-        |> Async.AwaitTask 
-        |> Async.RunSynchronously 
-        |> ignore
+            return segment.Results        
+        }
+
+    member this.Execute =
+        this.ExecuteAsync 
+        >> Async.AwaitTask 
+        >> Async.Ignore
 
     member this.CreateIfNotExists() =
         this.CreateIfNotExistsAsync() 
         |> Async.AwaitTask 
-        |> Async.RunSynchronously 
-        |> ignore
+        |> Async.Ignore 
 
 type QueryCondition =
     | Is
@@ -43,12 +44,14 @@ let serializeOption<'T> : ('T option -> string) = function | Some v -> v.ToStrin
 let getAs<'T> = JsonConvert.DeserializeObject<'T>
 
 let getTable name =
-    let connectionString = Environment.GetEnvironmentVariable "STORAGE_CONNECTIONSTRING"
-    let account = CloudStorageAccount.Parse connectionString
-    let client = account.CreateCloudTableClient() 
-    let table = client.GetTableReference name
-    table.CreateIfNotExists()
-    table
+    async {
+        let connectionString = Environment.GetEnvironmentVariable "STORAGE_CONNECTIONSTRING"
+        let account = CloudStorageAccount.Parse connectionString
+        let client = account.CreateCloudTableClient() 
+        let table = client.GetTableReference name
+        do! table.CreateIfNotExists()
+        return table
+    }
 
 let buildFilter (property, condition, value : obj) =
     let createStringFilter = TableQuery.GenerateFilterCondition
@@ -74,25 +77,23 @@ let buildQuery<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> filters =
         |> TableQuery<'T>().Where
 
 let tryGetRandomWithFilters<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName azureFilters postFilters =
-    let table = getTable tableName
-    
-    azureFilters
-    |> buildQuery<'T>
-    |> table.ExecuteQuery
-    |> Seq.tryRandomIf postFilters
+    async {
+        let! table = getTable tableName
+
+        let! queryResults = 
+            azureFilters
+            |> buildQuery<'T>
+            |> table.ExecuteQuery
+        
+        return queryResults |> Seq.tryRandomIf postFilters    
+    }
 
 let tryGetRandom<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName azureFilters = 
     tryGetRandomWithFilters<'T> tableName azureFilters []
 
-let getSingle<'T when 'T : (new : unit -> 'T) and 'T :> ITableEntity> tableName filters = 
-    let table = getTable tableName
-
-    filters
-    |> buildQuery<'T>
-    |> table.ExecuteQuery
-    |> Seq.exactlyOne
-
 let upsert tableName entity =
-    let table = getTable tableName
-    let operation = TableOperation.InsertOrReplace entity
-    table.Execute operation
+    async {
+        let! table = getTable tableName
+        let operation = TableOperation.InsertOrReplace entity
+        return! table.Execute operation
+    }
