@@ -35,6 +35,7 @@
 		<Compile Include="widgets\Task.fs" />
 		<Compile Include="pages\NounAccusatives.fs" />
 		<Compile Include="pages\VerbParticiples.fs" />
+		<Compile Include="pages\VerbConjugation.fs" />
 		<Compile Include="pages\Home.fs" />
 		<Compile Include="pages\NounPlurals.fs" />
 		<Compile Include="pages\AdjectivePlurals.fs" />

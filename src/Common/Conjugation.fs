@@ -1,10 +1,5 @@
 module Conjugation
 
-open System
-open System.Collections.Generic
-
-open GrammarCategories
-
 type Pronoun =
     | FirstSingular 
     | SecondSingular 
