@@ -19,6 +19,6 @@ let getPatterns noun =
     | Declinable ->
         noun
         |> getGender
-        |> fromString
-        |> getPatternsByGender noun
-
+        |> Option.map fromString
+        |> Option.map (getPatternsByGender noun)
+        |> Option.defaultValue Seq.empty

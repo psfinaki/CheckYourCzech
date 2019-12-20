@@ -10,7 +10,7 @@ type NounPlural(word) =
     
     let getSingular = map id serializeObject ""
     let getPlurals = map (getDeclension Case.Nominative Number.Plural) serializeObject ""
-    let getGender = map getGender serializeString ""
+    let getGender = map getGender serializeOption<Gender> ""
     let getPatterns = map getPatterns serializeObject ""
 
     new() = NounPlural null

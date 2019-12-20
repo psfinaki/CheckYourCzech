@@ -79,4 +79,4 @@ let ``Detects declinable``() =
 let ``Gets gender`` word =
     word
     |> getGender
-    |> equals "rod ženský"
+    |> equals (Some "rod ženský")

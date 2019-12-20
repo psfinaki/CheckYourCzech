@@ -92,10 +92,3 @@ let getGender =
     >> Option.map (getInfos (OneOf (getAllUnion<Gender> |> Seq.map toString)))
     >> Option.filter Seq.hasOneElement
     >> Option.map Seq.exactlyOne
-    // TODO:
-    // There is a problem here: we couple this place
-    // with the fact that this is called after the noun validation
-    // where we check the existance of gender in the article.
-    // So logically we know that the gender exists
-    // but code-wise we don't. This should be fixed.
-    >> Option.defaultWith (fun () -> failwith "odd word")
