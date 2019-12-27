@@ -39,15 +39,8 @@ let getWikiParticiples word =
     |> Option.map (Seq.map fst)
     |> Option.map (Seq.findIndex ((=) "Příčestí"))
     |> Option.map (getParticipleByTableIndex word)
-    // TODO:
-    // There is a problem here: we couple this place
-    // with the fact that this is called after the verb validation
-    // where we check the existance of this table in the article.
-    // So logically we know that the table exists
-    // but code-wise we don't. This should be fixed.
-    |> Option.defaultWith (fun () -> failwith "odd word")
 
-let getParticiples = getWikiParticiples >> getForms
+let getParticiples = getWikiParticiples >> Option.map getForms >> Option.defaultValue Array.empty
     
 let getImperatives verb =
     let data = getVerbProvider verb
