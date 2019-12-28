@@ -90,7 +90,7 @@ let getParts elements =
         |> Seq.where (fun group -> group |> Seq.head |> isBiggestHeader)
         |> Seq.map Seq.behead
         |> Seq.map (fun (header, nodes) -> (getHeaderName header, nodes))
-    | None -> 
+    | None ->
         Seq.empty
 
 let getPartsWhen filter =
@@ -101,15 +101,8 @@ let getPartsWhen filter =
 let getPart name =
     getParts
     >> Seq.where (fun (header, _) -> header = name)
-    >> Seq.exactlyOne
-    >> snd
-
-let hasPart name elements = 
-    try 
-        getPart name elements |> ignore
-        true
-    with | :? KeyNotFoundException | :? ArgumentException ->
-        false
+    >> Seq.tryExactlyOne
+    >> Option.map snd
 
 let hasPartsWhen filter elements = 
     try 
@@ -140,20 +133,16 @@ let isLocked word =
 
 let isEditable = not << isLocked
 
-let getPartsOfSpeech word =
+let getPartsOfSpeech =
     let partsOfSpeech = [ "podstatné jméno"; "přídavné jméno"; "sloveso" ]
     let isPartOfSpeech s = partsOfSpeech |> Seq.contains s
 
-    let content = getContent word
-    if content |> hasPart "čeština"
-    then
-        content
-        |> getPart "čeština"
-        |> getParts
-        |> Seq.map fst
-        |> Seq.filter isPartOfSpeech
-    else
-        Seq.empty
+    getContent
+    >> getPart "čeština"
+    >> Option.map getParts
+    >> Option.map (Seq.map fst)
+    >> Option.map (Seq.filter isPartOfSpeech)
+    >> Option.defaultValue Seq.empty
 
 let getArticleName = 
     let isTitleTag (node: HtmlNode) = node.Name() = "title"
@@ -197,8 +186,7 @@ let rec private getPartMatches parts (nodes: seq<HtmlNode>) =
 
 let getCzechContent = 
     tryGetContent
-    >> Option.filter (hasPart "čeština")
-    >> Option.map (getPart "čeština")
+    >> Option.bind (getPart "čeština")
 
 let ``match`` parts =
     getCzechContent

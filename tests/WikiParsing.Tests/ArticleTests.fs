@@ -26,9 +26,9 @@ let ``Gets children parts``() =
     "ananas"
     |> getContent
     |> getPart "čeština"
-    |> getParts
-    |> Seq.map fst
-    |> seqEquals [ "výslovnost"; "dělení"; "podstatné jméno" ]
+    |> Option.map getParts
+    |> Option.map (Seq.map fst >> Seq.toList)
+    |> equals (Some [ "výslovnost"; "dělení"; "podstatné jméno" ])
 
 [<Fact>]
 let ``Detects no children parts``() =
@@ -42,14 +42,16 @@ let ``Detects no children parts``() =
 let ``Detects child part``() =
     "panda"
     |> getContent
-    |> hasPart "čeština"
+    |> getPart "čeština"
+    |> Option.isSome
     |> Assert.True
 
 [<Fact>]
 let ``Detects no child part``() =
     "panda"
     |> getContent
-    |> hasPart "ruština"
+    |> getPart "ruština"
+    |> Option.isSome
     |> Assert.False
 
 [<Fact>]
@@ -71,8 +73,8 @@ let ``Gets infos``() =
     "panda"
     |> getContent
     |> getPart "čeština"
-    |> getInfos (Starts "rod")
-    |> seqEquals ["rod ženský"]
+    |> Option.map (getInfos (Starts "rod") >> Seq.toList)
+    |> equals (Some ["rod ženský"])
 
 [<Fact>]
 let ``Detects info``() = 
@@ -93,22 +95,22 @@ let ``Gets tables``() =
     "musit"
     |> getContent
     |> getPart "čeština"
-    |> getPart "sloveso"
-    |> getPart "časování"
-    |> getTables
-    |> Seq.map fst
-    |> seqEquals [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
+    |> Option.bind (getPart "sloveso")
+    |> Option.bind (getPart "časování")
+    |> Option.map getTables
+    |> Option.map (Seq.map fst >> Seq.toList)
+    |> equals (Some [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ])
 
 [<Fact>]
 let ``Detects no tables``() =
     "musit"
     |> getContent
     |> getPart "čeština"
-    |> getPart "sloveso"
-    |> getPart "význam"
-    |> getTables
-    |> Seq.map fst
-    |> seqEquals []
+    |> Option.bind (getPart "sloveso")
+    |> Option.bind (getPart "význam")
+    |> Option.map getTables
+    |> Option.map (Seq.map fst >> Seq.toList)
+    |> equals (Some [])
 
 [<Fact>]
 let ``Detects non-locked article``() =
