@@ -139,9 +139,7 @@ let getPartsOfSpeech =
 
     getContent
     >> getPart "čeština"
-    >> Option.map getParts
-    >> Option.map (Seq.map fst)
-    >> Option.map (Seq.filter isPartOfSpeech)
+    >> Option.map (getParts >> Seq.map fst >> Seq.filter isPartOfSpeech)
     >> Option.defaultValue Seq.empty
 
 let getArticleName = 
