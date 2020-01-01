@@ -6,7 +6,7 @@ open MasculineInanimateNounPatternDetector
 [<Theory>]
 [<InlineData "strom">]
 [<InlineData "leden">]
-[<InlineData "ateizmus">]
+[<InlineData "bonus">]
 [<InlineData "game">]
 [<InlineData "hardware">]
 [<InlineData "hemenex">]
@@ -22,6 +22,7 @@ let ``Detects pattern hrad`` word =
 [<InlineData "konec">]
 [<InlineData "déšť">]
 [<InlineData "hokej">]
+[<InlineData "kosmos">]
 let ``Detects not pattern hrad`` word =
     word
     |> isPatternHrad
@@ -41,15 +42,37 @@ let ``Detects pattern stroj`` word =
 [<InlineData "týl">]
 [<InlineData "leden">]
 [<InlineData "hřeben">]
+[<InlineData "kosmos">]
 let ``Detects not pattern stroj`` word =
     word
     |> isPatternStroj
     |> Assert.False
 
 [<Theory>]
+[<InlineData "eukalyptus">]
+[<InlineData "diabetes">]
+[<InlineData "kosmos">]
+let ``Detects pattern rytmus`` word =
+    word
+    |> isPatternRytmus
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "bonus">]
+[<InlineData "chaos">]
+[<InlineData "rádius">]
+[<InlineData "hrad">]
+[<InlineData "stroj">]
+let ``Detects not pattern rytmus`` word =
+    word
+    |> isPatternRytmus
+    |> Assert.False
+
+[<Theory>]
 [<InlineData "rubl">]
 [<InlineData "plevel">]
 [<InlineData "hospic">]
+[<InlineData "glóbus">]
 let ``Detects multiple patterns`` word =
     word
     |> getPatterns
