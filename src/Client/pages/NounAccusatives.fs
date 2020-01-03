@@ -21,7 +21,7 @@ type Msg =
 
 let patterns =
     dict [ (MasculineAnimate, ["pán"; "muž"; "předseda"; "soudce"])
-           (MasculineInanimate, ["hrad"; "stroj"])
+           (MasculineInanimate, ["hrad"; "stroj"; "rytmus"])
            (Feminine, ["žena"; "růže"; "píseň"; "kost"])
            (Neuter, ["město"; "kuře"; "moře"; "stavení"; "drama"; "muzeum" ]) ]
 
