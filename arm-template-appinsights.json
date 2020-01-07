@@ -4,7 +4,10 @@
   "parameters": {
     "appName": {
       "type": "string"
-    }
+    },
+	"adminEmail": {
+	  "type": "string"
+	}
   },
   "variables": {
     "insights": "[concat(parameters('appName'), '-insights')]",
@@ -29,7 +32,7 @@
         "emailReceivers": [
           {
             "name": "Send Email_-EmailAction-",
-            "emailAddress": "petersemkin@gmail.com"
+            "emailAddress": "[parameters('adminEmail')]"
           }
         ]
       }

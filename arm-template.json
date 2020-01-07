@@ -4,7 +4,10 @@
   "parameters": {
     "appName": {
       "type": "string"
-    }
+    },
+	"adminEmail": {
+	  "type": "string"
+	}
   },
   "variables": {
     "appServicePlan": "[concat(parameters('appName'), '-web-host')]",
@@ -28,7 +31,10 @@
         "parameters": {
           "appName": {
             "value": "[parameters('appName')]"
-          }
+          },
+		  "adminEmail": {
+            "value": "[parameters('adminEmail')]"
+          },
         }
       }
     },
