@@ -15,7 +15,7 @@
     "insights": "[concat(parameters('appName'), '-insights')]",
     "location": "northeurope",
     "appInsightsTemplateName": "appInsightsTemplate",
-    "appInsightsTemplateLink": "https://raw.githubusercontent.com/psfinaki/CheckYourCzech/master/arm-template-appinsights.json"
+    "appInsightsTemplateLink": "https://raw.githubusercontent.com/psfinaki/CheckYourCzech/arm/arm-template-appinsights.json"
   },
   "resources": [
     {
