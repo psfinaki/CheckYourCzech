@@ -34,7 +34,7 @@
           },
 		  "adminEmail": {
             "value": "[parameters('adminEmail')]"
-          },
+          }
         }
       }
     },
