@@ -54,11 +54,6 @@ let getVerbParticiplesTask next (ctx: HttpContext) =
         return! Successful.OK task next ctx
     }
 
-[<AllowNullLiteral>]
-type ConjugationTask(word, answers, pronoun) = 
-    inherit Task(word, answers)
-    member this.Pronoun: string = pronoun
-
 let getVerbConjugationTask next (ctx: HttpContext) =
     task {
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
@@ -74,7 +69,8 @@ let getVerbConjugationTask next (ctx: HttpContext) =
             let infinitive = getAs<string> verb.Infinitive
             let answers = getAs<string[]> (verb.Conjugation pronoun)
             let pn = pronounToString pronoun
-            ConjugationTask(infinitive, answers, pn)
+            let word = sprintf "(%s) %s _____" infinitive pn 
+            Task(word, answers)
 
         let task = verb |> Option.map getTask |> Option.toObj 
         return! Successful.OK task next ctx

@@ -26,6 +26,7 @@ type PageModel =
     | AdjectiveComparatives of AdjectiveComparatives.Model
     | VerbImperatives of VerbImperatives.Model
     | VerbParticiples of VerbParticiples.Model
+    | VerbConjugation of VerbConjugation.Model
 
 type Model = {
     CurrentPage: PageModel
@@ -39,6 +40,7 @@ type Msg =
     | AdjectiveComparativesMsg of AdjectiveComparatives.Msg
     | VerbImperativesMsg of VerbImperatives.Msg
     | VerbParticiplesMsg of VerbParticiples.Msg
+    | VerbConjugationMsg of VerbConjugation.Msg
     | NavbarMsg of Navbar.Types.Msg
 
 let viewPage model dispatch =
@@ -57,6 +59,8 @@ let viewPage model dispatch =
         VerbImperatives.view m (VerbImperativesMsg >> dispatch)
     | VerbParticiples m ->
         VerbParticiples.view m (VerbParticiplesMsg >> dispatch)
+    | VerbConjugation m ->
+        VerbConjugation.view m (VerbConjugationMsg >> dispatch)
 
 let updateModelPage model newPage = 
     let resetNavbar = {model.Navbar with isBurgerOpen = false}
@@ -89,6 +93,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.VerbParticiples ->
         let m, cmd = VerbParticiples.init()
         updateModelPage model (VerbParticiples m), Cmd.map VerbParticiplesMsg cmd
+    | Some Page.VerbConjugation ->
+        let m, cmd = VerbConjugation.init()
+        updateModelPage model (VerbConjugation m), Cmd.map VerbConjugationMsg cmd    
 
 let init result = 
     Logger.setup()
@@ -115,6 +122,9 @@ let update msg model =
     | VerbParticiplesMsg msg, VerbParticiples m ->
         let m, cmd = VerbParticiples.update msg m
         updateModelPage model (VerbParticiples m), Cmd.map VerbParticiplesMsg cmd
+    | VerbConjugationMsg msg, VerbConjugation m ->
+        let m, cmd = VerbConjugation.update msg m
+        updateModelPage model (VerbConjugation m), Cmd.map VerbConjugationMsg cmd    
     | NavbarMsg msg, _ ->
         let m, cmd = Navbar.State.update msg model.Navbar
         updateModelNavbar model m, Cmd.map NavbarMsg cmd

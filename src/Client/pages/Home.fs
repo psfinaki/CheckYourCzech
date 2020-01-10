@@ -29,6 +29,7 @@ let view () =
                             Markup.wordsCentered "home-column-heading" "Verbs"
                             Markup.viewLinkCentered "home-column-links" Page.VerbImperatives "Make imperative"
                             Markup.viewLinkCentered "home-column-links" Page.VerbParticiples "Make participle"
+                            Markup.viewLinkCentered "home-column-links" Page.VerbConjugation "Make conjugation"
                         ]
                     ]      
             ]
