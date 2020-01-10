@@ -91,7 +91,5 @@ let view model dispatch =
                     ]
                     
                 Task.view model.Task (Task >> dispatch)
-
-                Rule.view Rules.participles
             ]
     ]

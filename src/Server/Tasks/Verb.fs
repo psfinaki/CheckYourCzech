@@ -71,7 +71,7 @@ let getVerbConjugationTask next (ctx: HttpContext) =
             let infinitive = getAs<string> verb.Infinitive
             let answers = getAs<string[]> (verb.Conjugation pronoun)
             let pn = pronounToString pronoun
-            let word = sprintf "%s _____ (%s)" pn infinitive
+            let word = sprintf "(%s) %s _____" infinitive pn 
             Task(word, answers)
 
         let task = verb |> Option.map getTask |> Option.toObj 
