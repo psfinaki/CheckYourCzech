@@ -44,6 +44,8 @@ let private navbarStart dispatch =
                     [ Markup.viewLink Page.VerbImperatives "Imperatives" ]
                   Navbar.Item.a [ ]
                     [ Markup.viewLink Page.VerbParticiples "Participles" ] 
+                  Navbar.Item.a [ ]
+                    [ Markup.viewLink Page.VerbConjugation "Conjugation" ]
                 ] 
             ] 
         ]

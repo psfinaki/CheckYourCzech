@@ -4,8 +4,7 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Genders
+open GrammarCategories
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model
@@ -22,9 +21,9 @@ type Msg =
 
 let patterns =
     dict [ (MasculineAnimate, ["pán"; "muž"; "předseda"; "soudce"])
-           (MasculineInanimate, ["hrad"; "stroj"])
+           (MasculineInanimate, ["hrad"; "stroj"; "rytmus"])
            (Feminine, ["žena"; "růže"; "píseň"; "kost"])
-           (Neuter, ["město"; "kuře"; "moře"; "stavení"; "drama"]) ]
+           (Neuter, ["město"; "kuře"; "moře"; "stavení"; "drama"; "muzeum"]) ]
 
 let getPatterns gender = patterns.[gender]
 

@@ -2,8 +2,7 @@
 
 open Xunit
 open VerbArticle
-
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
+open Conjugation
 
 [<Fact>]
 let ``Gets imperatives - single option``() =
@@ -28,3 +27,15 @@ let ``Gets participle from the third table``() =
     "myslet"
     |> getParticiples
     |> equals [|"myslel"|]
+
+[<Fact>]
+let ``Gets all conjugations``() =
+    let verb =  "myslet"
+    
+    getConjugation FirstSingular verb  |> equals [|"myslím"|]
+    getConjugation SecondSingular verb |> equals [|"myslíš"|]
+    getConjugation ThirdSingular verb  |> equals [|"myslí"|]
+
+    getConjugation FirstPlural verb    |> equals [|"myslíme"|]
+    getConjugation SecondPlural verb   |> equals [|"myslíte"|]
+    getConjugation ThirdPlural verb    |> equals [| "myslí"; "myslejí"|]

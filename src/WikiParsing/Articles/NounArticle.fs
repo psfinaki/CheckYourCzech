@@ -1,23 +1,21 @@
 ﻿module NounArticle
 
 open FSharp.Data
-open StringHelper
 open GrammarCategories
 open WikiString
 open Article
+open Common.Utils
+open GenderTranslations
 
 type EditableArticleOneDeclension = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type EditableArticleTwoDeclensions = HtmlProvider<"https://cs.wiktionary.org/wiki/čtvrt">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
 
-let getNoun =
-    getContent
-    >> getChildPart "čeština"
-    >> getChildPart "podstatné jméno"
-
 let getNumberOfDeclensions =
-    getNoun
-    >> getChildrenPartsWhen (starts "skloňování")
+    matches [
+        Is "podstatné jméno"
+        Starts "skloňování"
+    ]
     >> Seq.length
 
 let getEditable case number word =
@@ -53,13 +51,17 @@ let getLocked case number word =
 
 let getDeclinability word = 
     let hasIndeclinabilityMarkInNounSection = 
-        getNoun
-        >> hasInfo "nesklonné"
+        ``match`` [
+            Is "podstatné jméno"
+        ] 
+        >> Option.exists (hasInfo (Is "nesklonné"))
 
     let hasIndeclinabilityMarkInDeclensionSections =
-        getNoun
-        >> getChildrenPartsWhen (starts "skloňování")
-        >> Seq.forall (hasInfo "nesklonné")
+        matches [
+            Is "podstatné jméno"
+            Starts "skloňování"
+        ]
+        >> Seq.exists (hasInfo (Is "nesklonné"))
 
     if
         word |> hasIndeclinabilityMarkInNounSection || 
@@ -84,5 +86,9 @@ let getDeclension case number =
     >> Seq.distinct
 
 let getGender =
-    getNoun
-    >> getInfo "rod "
+    ``match`` [
+        Is "podstatné jméno"
+    ] 
+    >> Option.map (getInfos (OneOf (getAllUnion<Gender> |> Seq.map toString)))
+    >> Option.filter Seq.hasOneElement
+    >> Option.map Seq.exactlyOne

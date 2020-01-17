@@ -2,7 +2,7 @@
 
 let getGender = 
     NounArticle.getGender
-    >> Genders.translateGender
+    >> Option.map GenderTranslations.fromString
 
 let getPatterns = 
     NounPatterns.getPatterns 

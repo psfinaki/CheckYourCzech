@@ -90,4 +90,4 @@ let getPattern verb =
     |> Seq.tryExactlyOne
     |> Option.map removeReflexive
     |> Option.map getClassByThirdPersonSingular
-    |> Option.bind (getPatternByClass verb)
+    |> Option.bind (getPatternByClass (verb |> removeReflexive))

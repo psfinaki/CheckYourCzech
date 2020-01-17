@@ -18,7 +18,8 @@ module.exports = merge(commonConfiguration, {
     devServer: {
         proxy: {
             '/api/*': {
-                target: 'http://localhost:8085'
+                target: 'https://localhost:8085',
+                secure: false
             }
         },
         hot: true,

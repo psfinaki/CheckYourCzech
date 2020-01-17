@@ -5,7 +5,7 @@ open NounValidation
 
 [<Theory>]
 [<InlineData "láska">]
-[<InlineData "krtek">]
+[<InlineData "kachna">]
 let ``Detects valid word for plurals`` word =
     word
     |> isPluralValid
@@ -21,7 +21,7 @@ let ``Detects invalid word for plurals`` word =
 
 [<Theory>]
 [<InlineData "láska">]
-[<InlineData "krtek">]
+[<InlineData "kachna">]
 let ``Detects valid word for accusatives`` word =
     word
     |> isAccusativeValid

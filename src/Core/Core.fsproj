@@ -1,4 +1,3 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -12,11 +11,14 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.fsproj" />
+    <ProjectReference Include="..\WikiParsing\WikiParsing.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Letters.fs" />
     <Compile Include="Stem.fs" />
     <Compile Include="Storage.fs" />
     <Compile Include="Reflexives.fs" />
-    <Compile Include="Nouns\Genders.fs" />
     <Compile Include="Nouns\Nominalization.fs" />
     <Compile Include="Nouns\FeminineNounPatternDetector.fs" />
     <Compile Include="Nouns\NeuterNounPatternDetector.fs" />
@@ -32,20 +34,17 @@
     <Compile Include="Verbs\VerbPatternDetector.fs" />
     <Compile Include="Verbs\ParticiplePatternDetector.fs" />
     <Compile Include="Verbs\ParticipleBuilder.fs" />
+    <Compile Include="Verbs\Verb.fs" />
     <Compile Include="Validation\NounValidation.fs" />
     <Compile Include="Validation\AdjectiveValidation.fs" />
     <Compile Include="Validation\VerbValidation.fs" />
-    <Compile Include="Verbs\Verb.fs" />
     <Compile Include="ExerciseModels\NounPlural.fs" />
     <Compile Include="ExerciseModels\NounAccusative.fs" />
     <Compile Include="ExerciseModels\AdjectivePlural.fs" />
     <Compile Include="ExerciseModels\AdjectiveComparative.fs" />
     <Compile Include="ExerciseModels\VerbParticiple.fs" />
     <Compile Include="ExerciseModels\VerbImperative.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.fsproj" />
-    <ProjectReference Include="..\WikiParsing\WikiParsing.fsproj" />
+    <Compile Include="ExerciseModels\VerbConjugation.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

@@ -1,12 +1,5 @@
-#r "paket: groupref build //"
+#r "paket: groupref Build //"
 #load "./.fake/build.fsx/intellisense.fsx"
-
-#if !FAKE
-#r "netstandard"
-#r "Facades/netstandard" // https://github.com/ionide/ionide-vscode-fsharp/issues/839#issuecomment-396296095
-#endif
-
-#load @"paket-files/build/CompositionalIT/fshelpers/src/FsHelpers/ArmHelper/ArmHelper.fs"
 
 open Fake.Core
 open Fake.Core.TargetOperators

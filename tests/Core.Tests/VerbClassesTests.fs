@@ -4,8 +4,6 @@ open System
 open Xunit
 open VerbClasses
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Fact>]
 let ``Gets E class by third person singular``() =
     "nése"

@@ -4,9 +4,6 @@ open Xunit
 open NounArticle
 open GrammarCategories
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-let seqEquals (expected: 'T list) (actual: seq<'T>) = Assert.Equal<'T>(expected, Seq.toList actual)
-
 [<Fact>]
 let ``Gets number of declensions``() =
     "starost"
@@ -75,8 +72,11 @@ let ``Detects declinable``() =
     |> getDeclinability
     |> equals Declinable
 
-[<Fact>]
-let ``Gets gender``() =
-    "panda"
+[<Theory>]
+[<InlineData "panda">]
+[<InlineData "lipnice">]
+[<InlineData "krajta">]
+let ``Gets gender`` word =
+    word
     |> getGender
-    |> equals "rod ženský"
+    |> equals (Some "rod ženský")

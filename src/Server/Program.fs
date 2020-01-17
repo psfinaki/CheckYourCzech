@@ -17,6 +17,7 @@ let port = 8085us
 
 let configureSerialization (services:IServiceCollection) =
     services.AddSingleton<IJsonSerializer>(ThothSerializer())
+    
 
 let configureAzure (services:IServiceCollection) =
     GetEnvVar "APPINSIGHTS_INSTRUMENTATIONKEY"
@@ -24,7 +25,8 @@ let configureAzure (services:IServiceCollection) =
     |> Option.defaultValue services
 
 let app = application {
-    url ("http://0.0.0.0:" + port.ToString() + "/")
+    url ("https://0.0.0.0:" + port.ToString() + "/")
+    force_ssl
     use_router WebServer.webApp
     memory_cache
     use_static publicPath

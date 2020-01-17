@@ -17,7 +17,6 @@
 		<Compile Include="Pages.fs" />
 		<Compile Include="Markup.fs" />
 		<Compile Include="Styles.fs" />
-		<Compile Include="views\Menu.fs" />
 		<Compile Include="views\Rule.fs" />
 		<Compile Include="widgets\Navbar\Types.fs" />
 		<Compile Include="widgets\Navbar\State.fs" />
@@ -35,6 +34,7 @@
 		<Compile Include="widgets\Task.fs" />
 		<Compile Include="pages\NounAccusatives.fs" />
 		<Compile Include="pages\VerbParticiples.fs" />
+		<Compile Include="pages\VerbConjugation.fs" />
 		<Compile Include="pages\Home.fs" />
 		<Compile Include="pages\NounPlurals.fs" />
 		<Compile Include="pages\AdjectivePlurals.fs" />

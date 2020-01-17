@@ -4,8 +4,6 @@ open Xunit
 open Reflexives
 open System
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Theory>]
 [<InlineData "starat se">]
 [<InlineData "vážit si">]

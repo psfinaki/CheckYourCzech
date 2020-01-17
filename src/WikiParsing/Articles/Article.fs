@@ -4,6 +4,8 @@ open System
 open FSharp.Data
 open Html
 open System.Collections.Generic
+open System.Net
+open StringHelper
 
 type Article = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
@@ -14,6 +16,18 @@ let contentClass = "mw-parser-output"
 let headerClass = "mw-headline"
 let tableElementName = "table"
 let tableNameElementName = "caption"
+
+type MatchCondition =
+    | Any
+    | Is of string
+    | Starts of string
+    | OneOf of seq<string>
+
+let getCondition = function
+    | Any -> fun _ -> true
+    | Is partName -> (=) partName
+    | Starts partName -> starts partName
+    | OneOf partNames -> fun x -> partNames |> Seq.contains x
 
 let getUrl = (+) wikiUrl
 
@@ -30,9 +44,9 @@ let getContent =
 
 let tryGetContent word =
     try 
-        getContent word   
+        getContent word 
         |> Some 
-    with | :? KeyNotFoundException | :? ArgumentException -> 
+    with | :? KeyNotFoundException | :? ArgumentException | :? WebException -> 
         None
 
 let getTables nodes =
@@ -58,14 +72,7 @@ let getHeaderName (header: HtmlNode) =
     |> getNodeByClass headerClass
     |> fun node -> node.DirectInnerText()
 
-let getParts name =
-    Seq.skipWhile (not << isHeader)
-    >> Seq.splitBy isHeader
-    >> Seq.map Seq.behead
-    >> Seq.map (fun (header, nodes) -> (getHeaderName header, nodes))
-    >> Seq.where (fun (header, _) -> header = name)
-
-let getChildrenParts elements =
+let getParts elements =
     let biggestHeader = 
         elements
         |> Seq.filter isHeader
@@ -83,45 +90,34 @@ let getChildrenParts elements =
         |> Seq.where (fun group -> group |> Seq.head |> isBiggestHeader)
         |> Seq.map Seq.behead
         |> Seq.map (fun (header, nodes) -> (getHeaderName header, nodes))
-    | None -> 
+    | None ->
         Seq.empty
 
-let getChildrenPartsWhen filter =
-    getChildrenParts
+let getPartsWhen filter =
+    getParts
     >> Seq.where (fun (header, _) -> filter header)
     >> Seq.map snd
 
-let getChildPart name =
-    getChildrenParts
+let getPart name =
+    getParts
     >> Seq.where (fun (header, _) -> header = name)
-    >> Seq.exactlyOne
-    >> snd
+    >> Seq.tryExactlyOne
+    >> Option.map snd
 
-let hasChildPart name elements = 
+let hasPartsWhen filter elements = 
     try 
-        getChildPart name elements |> ignore
-        true
-    with | :? KeyNotFoundException | :? ArgumentException ->
-        false
-
-let hasChildrenPartsWhen filter elements = 
-    try 
-        getChildrenPartsWhen filter elements
+        getPartsWhen filter elements
         |> (not << Seq.isEmpty)
     with | :? KeyNotFoundException | :? ArgumentException -> 
         false
 
-let getInfo text nodes =
-    nodes
-    |> getNodeByInnerText text
-    |> getInnerText
+let getInfos filter =
+    getNodesByInnerText (getCondition filter)
+    >> Seq.map getInnerText
 
-let hasInfo info elements = 
-    try 
-        getInfo info elements |> ignore
-        true
-    with | :? KeyNotFoundException | :? ArgumentException ->
-        false
+let hasInfo info = 
+    getInfos info
+    >> (not << Seq.isEmpty)
 
 let isLocked word = 
     let getLockInfo = 
@@ -137,20 +133,14 @@ let isLocked word =
 
 let isEditable = not << isLocked
 
-let getPartsOfSpeech word =
+let getPartsOfSpeech =
     let partsOfSpeech = [ "podstatné jméno"; "přídavné jméno"; "sloveso" ]
     let isPartOfSpeech s = partsOfSpeech |> Seq.contains s
 
-    let content = getContent word
-    if content |> hasChildPart "čeština"
-    then
-        content
-        |> getChildPart "čeština"
-        |> getChildrenParts
-        |> Seq.map fst
-        |> Seq.filter isPartOfSpeech
-    else
-        Seq.empty
+    getContent
+    >> getPart "čeština"
+    >> Option.map (getParts >> Seq.map fst >> Seq.filter isPartOfSpeech)
+    >> Option.defaultValue Seq.empty
 
 let getArticleName = 
     let isTitleTag (node: HtmlNode) = node.Name() = "title"
@@ -160,3 +150,49 @@ let getArticleName =
     >> Seq.filter isTitleTag
     >> Seq.exactlyOne
     >> extractName
+
+let rec private getPartMatch parts nodes = 
+    if parts |> Seq.isEmpty
+    then 
+        Some nodes
+    else
+        let (head, tail) = parts |> Seq.behead
+        let partCondition = getCondition head
+        if nodes |> hasPartsWhen partCondition
+        then 
+            nodes
+            |> getPartsWhen partCondition
+            |> Seq.exactlyOne
+            |> getPartMatch tail
+        else 
+            None
+
+let rec private getPartMatches parts (nodes: seq<HtmlNode>) = 
+    if parts |> Seq.isEmpty
+    then 
+        seq { nodes }
+    else
+        let (head, tail) = parts |> Seq.behead
+        let partCondition = getCondition head
+        if nodes |> hasPartsWhen partCondition
+        then
+            nodes
+            |> getPartsWhen partCondition
+            |> Seq.collect (getPartMatches tail)
+        else 
+            Seq.empty
+
+let getCzechContent = 
+    tryGetContent
+    >> Option.bind (getPart "čeština")
+
+let ``match`` parts =
+    getCzechContent
+    >> Option.bind (getPartMatch parts)
+
+let matches parts =
+    getCzechContent
+    >> Option.map (getPartMatches parts)
+    >> Option.defaultValue Seq.empty
+
+let isMatch parts = matches parts >> (not << Seq.isEmpty)

@@ -3,8 +3,6 @@
 open Xunit
 open NeuterNounPatternDetector
 
-let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
-
 [<Theory>]
 [<InlineData "okno">]
 [<InlineData "slovo">]
@@ -21,6 +19,7 @@ let ``Detects pattern město`` word =
 [<InlineData "studio">]
 [<InlineData "kakao">]
 [<InlineData "adjuvans">]
+[<InlineData "muzeum">]
 let ``Detects not pattern město`` word =
     word
     |> isPatternMěsto
@@ -42,6 +41,7 @@ let ``Detects pattern moře`` word =
 [<InlineData "slůně">]
 [<InlineData "vémě">]
 [<InlineData "medvídě">]
+[<InlineData "muzeum">]
 let ``Detects not pattern moře`` word =
     word
     |> isPatternMoře
@@ -101,6 +101,25 @@ let ``Detects pattern drama`` word =
 let ``Detects not pattern drama`` word =
     word
     |> isPatternDrama
+    |> Assert.False
+
+[<Theory>]
+[<InlineData "koloseum">]
+[<InlineData "studium">]
+[<InlineData "baryum">]
+[<InlineData "vakuum">]
+let ``Detects pattern muzeum`` word =
+    word
+    |> isPatternMuzeum
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "pole">]
+[<InlineData "okno">]
+[<InlineData "centrum">]
+let ``Detects not pattern muzeum`` word =
+    word
+    |> isPatternMuzeum
     |> Assert.False
 
 [<Theory>]

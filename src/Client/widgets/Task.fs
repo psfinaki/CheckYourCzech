@@ -8,12 +8,13 @@ open Fable.Import.React
 open Fable.Core
 open Fable.Core.JsInterop
 open Fable.FontAwesome
-open Fable.FontAwesome.Free
 
 open Fulma
 open System
 open Markup
 open ImprovedInput.Types
+
+let loadingImage : string = import "*" "../images/loading.gif"
 
 [<Emit("/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)")>]
 let isMobile : bool = jsNative
@@ -156,7 +157,7 @@ let inputView model dispatch handleKeyDown =
     let inputViewState = 
         match model.State with
         | Fetching -> 
-            let imageSource = "images/loading.gif"
+            let imageSource = loadingImage
             let altText = "Loading..."
             let wordDisplay = icon imageSource 25 altText
             { Word = wordDisplay; InputClass = defaultInputClass; InputText = defaultInputText }
