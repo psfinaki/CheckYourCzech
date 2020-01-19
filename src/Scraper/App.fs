@@ -1,14 +1,11 @@
 ﻿module App
 
 open Logging
+open System.IO
 
-let getRandomWord() = 
-    "Speciální:Náhodná_stránka"
-    |> Article.getArticleName
+let getRandomWord() = File.ReadLines "slovník.txt"
 
 let run log =
-    let iterator _ = getRandomWord()
-
     let recordWithLog word = 
         try
             log (Trace ("Processing word: " + word))
@@ -18,7 +15,6 @@ let run log =
             log (Exception (e, ("word", word)))
             reraise()
 
-    iterator
-    |> Seq.initInfinite
+    getRandomWord()
     |> Seq.iter recordWithLog
 

@@ -4,7 +4,7 @@ open System
 open FSharp.Data
 open Html
 open System.Collections.Generic
-open System.Net
+open System.Net.Http
 open StringHelper
 
 type Article = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
@@ -29,25 +29,29 @@ let getCondition = function
     | Starts partName -> starts partName
     | OneOf partNames -> fun x -> partNames |> Seq.contains x
 
+let isReachable (url: string) = 
+    (new HttpClient()).GetAsync(url) 
+    |> Async.AwaitTask 
+    |> Async.RunSynchronously
+    |> fun response -> response.IsSuccessStatusCode
+
 let getUrl = (+) wikiUrl
 
-let getHtml = 
-    Uri.EscapeDataString
-    >> getUrl
-    >> Article.Load
-    >> fun data -> data.Html.Descendants()
+let getArticle entry = 
+    let url = entry |> getUrl
+    if url |> isReachable
+    then 
+        url
+        |> Article.Load
+        |> fun data -> data.Html.Descendants()
+        |> Some
+    else
+        None
 
 let getContent =
-    getHtml
-    >> getNodeByClass contentClass
-    >> fun node -> node.Elements()
-
-let tryGetContent word =
-    try 
-        getContent word 
-        |> Some 
-    with | :? KeyNotFoundException | :? ArgumentException | :? WebException -> 
-        None
+    getArticle
+    >> Option.map (getNodeByClass contentClass)
+    >> Option.map (fun node -> node.Elements())
 
 let getTables nodes =
     let isTable     (node: HtmlNode) = node.HasName tableElementName
@@ -120,15 +124,17 @@ let hasInfo info =
     >> (not << Seq.isEmpty)
 
 let isLocked word = 
+    let getLockIndicator (node: HtmlNode) =
+        (node.GetInnermostAttributeWithText lockInfoIndicator).Value()
+
     let getLockInfo = 
-        getHtml
-        >> getNodeById navigationId
-        >> fun node -> node.GetInnermostAttributeWithText lockInfoIndicator
-        >> fun attribute -> attribute.Value()
+        getArticle
+        >> Option.map (getNodeById navigationId)
+        >> Option.map getLockIndicator
 
     match getLockInfo word with
-    | s when s.Contains "Tato stránka je zamčena" -> true
-    | s when s.Contains "Editovat tuto stránku" -> false
+    | Some s when s.Contains "Tato stránka je zamčena" -> true
+    | Some s when s.Contains "Editovat tuto stránku" -> false
     | _ -> invalidArg word "odd article"
 
 let isEditable = not << isLocked
@@ -138,18 +144,9 @@ let getPartsOfSpeech =
     let isPartOfSpeech s = partsOfSpeech |> Seq.contains s
 
     getContent
-    >> getPart "čeština"
+    >> Option.bind (getPart "čeština")
     >> Option.map (getParts >> Seq.map fst >> Seq.filter isPartOfSpeech)
     >> Option.defaultValue Seq.empty
-
-let getArticleName = 
-    let isTitleTag (node: HtmlNode) = node.Name() = "title"
-    let extractName (title: HtmlNode) = title.InnerText().Replace(" – Wikislovník", "")
-
-    getHtml
-    >> Seq.filter isTitleTag
-    >> Seq.exactlyOne
-    >> extractName
 
 let rec private getPartMatch parts nodes = 
     if parts |> Seq.isEmpty
@@ -183,7 +180,7 @@ let rec private getPartMatches parts (nodes: seq<HtmlNode>) =
             Seq.empty
 
 let getCzechContent = 
-    tryGetContent
+    getContent
     >> Option.bind (getPart "čeština")
 
 let ``match`` parts =
