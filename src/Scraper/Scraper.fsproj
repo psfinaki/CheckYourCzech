@@ -13,6 +13,9 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="slovník.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="run.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

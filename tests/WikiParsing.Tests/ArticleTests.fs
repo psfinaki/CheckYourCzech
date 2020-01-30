@@ -3,21 +3,10 @@
 open Xunit
 open Article
 
-[<Theory>]
-[<InlineData "panda">]
-[<InlineData "mnoho myslivců – zajícova smrt">]
-[<InlineData "הַהֶרְגֵּל – טֶבַע שֵׁנִי">]
-[<InlineData "lengyel, magyar – két jó barát, együtt harcol, s issza borát">]
-[<InlineData "El cielo está enladrillado. ¿Quién lo desenladrillará? El desenladrillador que lo desenladrille, buen desenladrillador será.">]
-let ``Gets name`` title =
-    title
-    |> getArticleName
-    |> equals title
-
 [<Fact>]
 let ``Detects content``() =
     "panda"
-    |> tryGetContent
+    |> getContent
     |> Option.isSome
     |> Assert.True
 
@@ -25,7 +14,7 @@ let ``Detects content``() =
 let ``Gets children parts``() =
     "ananas"
     |> getContent
-    |> getPart "čeština"
+    |> Option.bind (getPart "čeština")
     |> Option.map getParts
     |> Option.map (Seq.map fst >> Seq.toList)
     |> equals (Some [ "výslovnost"; "dělení"; "podstatné jméno" ])
@@ -34,15 +23,15 @@ let ``Gets children parts``() =
 let ``Detects no children parts``() =
     "provozovat"
     |> getContent
-    |> getParts
-    |> Seq.map fst
-    |> seqEquals []
+    |> Option.map getParts
+    |> Option.map (Seq.map fst)
+    |> Option.contains Seq.empty
 
 [<Fact>]
 let ``Detects child part``() =
     "panda"
     |> getContent
-    |> getPart "čeština"
+    |> Option.bind (getPart "čeština")
     |> Option.isSome
     |> Assert.True
 
@@ -50,7 +39,7 @@ let ``Detects child part``() =
 let ``Detects no child part``() =
     "panda"
     |> getContent
-    |> getPart "ruština"
+    |> Option.bind (getPart "ruština")
     |> Option.isSome
     |> Assert.False
 
@@ -58,21 +47,21 @@ let ``Detects no child part``() =
 let ``Detects children parts - filter``() =
     "panda"
     |> getContent
-    |> hasPartsWhen ((=) "čeština")
+    |> Option.exists (hasPartsWhen ((=) "čeština"))
     |> Assert.True
 
 [<Fact>]
 let ``Detects no children parts - filter``() =
     "panda"
     |> getContent
-    |> hasPartsWhen ((=) "ruština")
+    |> Option.exists (hasPartsWhen ((=) "ruština"))
     |> Assert.False
 
 [<Fact>]
 let ``Gets infos``() = 
     "panda"
     |> getContent
-    |> getPart "čeština"
+    |> Option.bind (getPart "čeština")
     |> Option.map (getInfos (Starts "rod") >> Seq.toList)
     |> equals (Some ["rod ženský"])
 
@@ -80,21 +69,21 @@ let ``Gets infos``() =
 let ``Detects info``() = 
     "mozek"
     |> getContent
-    |> hasInfo (Is "chytrý")
+    |> Option.exists (hasInfo (Is "chytrý"))
     |> Assert.True
 
 [<Fact>]
 let ``Detects no info``() = 
     "panda"
     |> getContent
-    |> hasInfo (Is "evil")
+    |> Option.exists (hasInfo (Is "evil"))
     |> Assert.False
 
 [<Fact>]
 let ``Gets tables``() =
     "musit"
     |> getContent
-    |> getPart "čeština"
+    |> Option.bind (getPart "čeština")
     |> Option.bind (getPart "sloveso")
     |> Option.bind (getPart "časování")
     |> Option.map getTables
@@ -105,7 +94,7 @@ let ``Gets tables``() =
 let ``Detects no tables``() =
     "musit"
     |> getContent
-    |> getPart "čeština"
+    |> Option.bind (getPart "čeština")
     |> Option.bind (getPart "sloveso")
     |> Option.bind (getPart "význam")
     |> Option.map getTables
