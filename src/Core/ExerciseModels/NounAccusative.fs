@@ -10,7 +10,7 @@ type NounAccusative(word) =
 
     let getNominative = map id serializeObject ""
     let getAccusatives = map (getDeclension Case.Accusative Number.Singular) serializeObject ""
-    let getGender = map getGender serializeString ""
+    let getGender = map getGender serializeOption<Gender> ""
     let getPatterns = map getPatterns serializeObject ""
 
     new() = NounAccusative null
