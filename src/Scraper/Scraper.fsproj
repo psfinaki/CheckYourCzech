@@ -13,7 +13,7 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="slovník.txt">
+    <Content Include="dictionary.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="run.cmd">
