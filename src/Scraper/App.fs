@@ -3,7 +3,7 @@
 open Logging
 open System.IO
 
-let getRandomWord() = File.ReadLines "slovník.txt"
+let getRandomWord() = File.ReadLines "dictionary.txt"
 
 let run log =
     let recordWithLog word = 
