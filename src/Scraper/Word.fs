@@ -1,34 +1,33 @@
 ﻿module Word
 
 open Article
-open Storage
 
 let recordCzechPartOfSpeech word = function
     | "podstatné jméno" -> [
         if word |> NounValidation.isPluralValid
-        then word |> NounPlural.NounPlural |> upsert "nounplurals"
+        then word |> NounRegistration.registerNounPlural
 
         if word |> NounValidation.isAccusativeValid
-        then word |> NounAccusative.NounAccusative |> upsert "nounaccusatives"
+        then word |> NounRegistration.registerNounAccusative
       ]
 
     | "přídavné jméno" -> [
         if word |> AdjectiveValidation.isPluralValid
-        then word |> AdjectivePlural.AdjectivePlural |> upsert "adjectiveplurals"
+        then word |> AdjectiveRegistration.registerAdjectivePlural
 
         if word |> AdjectiveValidation.isComparativeValid
-        then word |> AdjectiveComparative.AdjectiveComparative |> upsert "adjectivecomparatives"
+        then word |> AdjectiveRegistration.registerAdjectiveComparative
       ]
             
     | "sloveso" -> [
         if word |> VerbValidation.isImperativeValid
-        then word |> VerbImperative.VerbImperative |> upsert "verbimperatives"
+        then word |> VerbRegistration.registerVerbImperative
 
         if word |> VerbValidation.isParticipleValid
-        then word |> VerbParticiple.VerbParticiple |> upsert "verbparticiples"
+        then word |> VerbRegistration.registerVerbParticiple
 
         if word |> VerbValidation.isConjugationValid
-        then word |> VerbConjugation.VerbConjugation |> upsert "verbconjugation"
+        then word |> VerbRegistration.registerVerbConjugation
       ]
 
     | _ -> []
@@ -40,4 +39,3 @@ let record word =
     |> Async.Parallel
     |> Async.Ignore
     |> Async.RunSynchronously
-

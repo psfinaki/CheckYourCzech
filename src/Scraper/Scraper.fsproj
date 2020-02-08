@@ -19,6 +19,9 @@
     <None Include="run.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="WordRegistration\VerbRegistration.fs" />
+    <Compile Include="WordRegistration\AdjectiveRegistration.fs" />
+    <Compile Include="WordRegistration\NounRegistration.fs" />
     <Compile Include="ApplicationInsightsLogger.fs" />
     <Compile Include="ConsoleLogger.fs" />
     <Compile Include="Logging.fs" />
@@ -28,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.fsproj" />
+    <ProjectReference Include="..\Storage\Storage.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
