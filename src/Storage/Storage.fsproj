@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Storage.fs" />
+    <Compile Include="ExerciseModels\VerbConjugation.fs" />
+    <Compile Include="ExerciseModels\VerbImperative.fs" />
+    <Compile Include="ExerciseModels\VerbParticiple.fs" />
+    <Compile Include="ExerciseModels\AdjectiveComparative.fs" />
+    <Compile Include="ExerciseModels\AdjectivePlural.fs" />
+    <Compile Include="ExerciseModels\NounAccusative.fs" />
+    <Compile Include="ExerciseModels\NounPlural.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.fsproj" />
+  </ItemGroup>
+
+</Project>

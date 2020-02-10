@@ -6,7 +6,7 @@ open Storage
 open Microsoft.AspNetCore.Http
 open Tasks.Utils
 open Conjugation
-open Verb
+open Common.Utils
 
 let getVerbImperativesTask next (ctx : HttpContext) =
     task {
@@ -63,11 +63,19 @@ let getVerbConjugationTask next (ctx: HttpContext) =
             [ patternFilter ] 
             |> Seq.choose id
         
+        let getConjugation (conjugation: VerbConjugation.VerbConjugation) = function
+            | FirstSingular  -> conjugation.FirstSingular
+            | SecondSingular -> conjugation.SecondSingular
+            | ThirdSingular  -> conjugation.ThirdSingular
+            | FirstPlural    -> conjugation.FirstPlural
+            | SecondPlural   -> conjugation.SecondPlural
+            | ThirdPlural    -> conjugation.ThirdPlural
+
         let! verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
         let getTask (verb: VerbConjugation.VerbConjugation) =
-            let pronoun = getRandomPronoun()
+            let pronoun = getRandomUnion<Pronoun>
             let infinitive = getAs<string> verb.Infinitive
-            let answers = getAs<string[]> (verb.Conjugation pronoun)
+            let answers = getAs<string[]> (getConjugation verb pronoun)
             let pn = pronounToString pronoun
             let word = sprintf "(%s) %s _____" infinitive pn 
             Task(word, answers)

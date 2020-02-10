@@ -17,7 +17,6 @@
   <ItemGroup>
     <Compile Include="Letters.fs" />
     <Compile Include="Stem.fs" />
-    <Compile Include="Storage.fs" />
     <Compile Include="Reflexives.fs" />
     <Compile Include="Nouns\Nominalization.fs" />
     <Compile Include="Nouns\FeminineNounPatternDetector.fs" />
@@ -38,13 +37,6 @@
     <Compile Include="Validation\NounValidation.fs" />
     <Compile Include="Validation\AdjectiveValidation.fs" />
     <Compile Include="Validation\VerbValidation.fs" />
-    <Compile Include="ExerciseModels\NounPlural.fs" />
-    <Compile Include="ExerciseModels\NounAccusative.fs" />
-    <Compile Include="ExerciseModels\AdjectivePlural.fs" />
-    <Compile Include="ExerciseModels\AdjectiveComparative.fs" />
-    <Compile Include="ExerciseModels\VerbParticiple.fs" />
-    <Compile Include="ExerciseModels\VerbImperative.fs" />
-    <Compile Include="ExerciseModels\VerbConjugation.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
