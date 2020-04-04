@@ -17,7 +17,8 @@
         "webpack-cli": "^3.3.5",
         "webpack-dev-server": "^3.1.11",
         "whatwg-fetch": "^3.0.0",
-		"minimist": "^1.2.2"
+		"minimist": "^1.2.2",
+		"kind-of": "^6.0.3"
     },
     "dependencies": {
         "bulma": "^0.7.5",
