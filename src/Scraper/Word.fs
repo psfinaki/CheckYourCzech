@@ -2,40 +2,60 @@
 
 open Article
 
-let recordCzechPartOfSpeech word = function
+let recordCzechPartOfSpeech article = function
     | "podstatné jméno" -> [
-        if word |> NounValidation.isPluralValid
-        then word |> NounRegistration.registerNounPlural
+        article
+        |> NounValidation.parseNounPlural
+        |> Option.map NounRegistration.registerNounPlural
+        |> Option.defaultValue (async { return () })
 
-        if word |> NounValidation.isAccusativeValid
-        then word |> NounRegistration.registerNounAccusative
+        article
+        |> NounValidation.parseNounAccusative
+        |> Option.map NounRegistration.registerNounAccusative
+        |> Option.defaultValue (async { return () })
       ]
 
     | "přídavné jméno" -> [
-        if word |> AdjectiveValidation.isPluralValid
-        then word |> AdjectiveRegistration.registerAdjectivePlural
+        article 
+        |> AdjectiveValidation.parseAdjectivePlural
+        |> Option.map AdjectiveRegistration.registerAdjectivePlural
+        |> Option.defaultValue (async { return () })
 
-        if word |> AdjectiveValidation.isComparativeValid
-        then word |> AdjectiveRegistration.registerAdjectiveComparative
+        article 
+        |> AdjectiveValidation.parseAdjectiveComparative
+        |> Option.map AdjectiveRegistration.registerAdjectiveComparative
+        |> Option.defaultValue (async { return () })
       ]
             
     | "sloveso" -> [
-        if word |> VerbValidation.isImperativeValid
-        then word |> VerbRegistration.registerVerbImperative
+        article
+        |> VerbValidation.parseVerbImperative
+        |> Option.map VerbRegistration.registerVerbImperative
+        |> Option.defaultValue (async { return () })
 
-        if word |> VerbValidation.isParticipleValid
-        then word |> VerbRegistration.registerVerbParticiple
+        article
+        |> VerbValidation.parseVerbParticiple
+        |> Option.map VerbRegistration.registerVerbParticiple
+        |> Option.defaultValue (async { return () })
 
-        if word |> VerbValidation.isConjugationValid
-        then word |> VerbRegistration.registerVerbConjugation
+        article
+        |> VerbValidation.parseVerbConjugation
+        |> Option.map VerbRegistration.registerVerbConjugation
+        |> Option.defaultValue (async { return () })
       ]
 
     | _ -> []
     
+let getTasks article = 
+    article 
+    |> getPartsOfSpeech 
+    |> Seq.collect (recordCzechPartOfSpeech article)
+
 let record word =
     word
-    |> getPartsOfSpeech
-    |> Seq.collect (recordCzechPartOfSpeech word)
+    |> getArticle
+    |> Option.map getTasks
+    |> Option.defaultValue Seq.empty
     |> Async.Parallel
     |> Async.Ignore
     |> Async.RunSynchronously

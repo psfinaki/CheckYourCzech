@@ -8,9 +8,9 @@ let isPatternPán =
     getDeclension Case.Genitive Number.Singular
     >> Seq.exists (ends "a")
 
-let isPatternMuž noun =
-    let nominatives = noun |> getDeclension Case.Nominative Number.Singular
-    let genitives = noun |> getDeclension Case.Genitive Number.Singular
+let isPatternMuž article =
+    let nominatives = article |> getDeclension Case.Nominative Number.Singular
+    let genitives = article |> getDeclension Case.Genitive Number.Singular
 
     nominatives |> Seq.exists (Stem.endsSoft) &&
     genitives |> Seq.exists (endsOneOf ["e"; "ě"])
@@ -30,9 +30,9 @@ let patternDetectors = [
     (isPatternSoudce, "soudce")
 ]
 
-let isPattern word patternDetector = fst patternDetector word
+let isPattern article patternDetector = fst patternDetector article
 
-let getPatterns word = 
+let getPatterns article = 
     patternDetectors
-    |> Seq.where (isPattern word)
+    |> Seq.where (isPattern article)
     |> Seq.map snd

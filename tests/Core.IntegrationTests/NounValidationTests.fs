@@ -3,12 +3,18 @@
 open Xunit
 open NounValidation
 
+let getArticle = 
+    Article.getArticle
+    >> Option.get
+
 [<Theory>]
 [<InlineData "láska">]
 [<InlineData "kachna">]
 let ``Detects valid word for plurals`` word =
     word
-    |> isPluralValid
+    |> getArticle
+    |> parseNounPlural
+    |> Option.isSome
     |> Assert.True
 
 [<Theory>]
@@ -16,7 +22,9 @@ let ``Detects valid word for plurals`` word =
 [<InlineData "nový">]
 let ``Detects invalid word for plurals`` word =
     word
-    |> isPluralValid
+    |> getArticle
+    |> parseNounPlural
+    |> Option.isSome
     |> Assert.False
 
 [<Theory>]
@@ -24,7 +32,9 @@ let ``Detects invalid word for plurals`` word =
 [<InlineData "kachna">]
 let ``Detects valid word for accusatives`` word =
     word
-    |> isAccusativeValid
+    |> getArticle
+    |> parseNounAccusative
+    |> Option.isSome
     |> Assert.True
 
 [<Theory>]
@@ -32,5 +42,7 @@ let ``Detects valid word for accusatives`` word =
 [<InlineData "nový">]
 let ``Detects invalid word for accusatives`` word =
     word
-    |> isAccusativeValid
+    |> getArticle
+    |> parseNounAccusative
+    |> Option.isSome
     |> Assert.False

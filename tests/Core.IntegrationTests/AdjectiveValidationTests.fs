@@ -3,12 +3,18 @@
 open Xunit
 open AdjectiveValidation
 
+let getArticle =
+    Article.getArticle
+    >> Option.get
+
 [<Theory>]
 [<InlineData "nový">]
 [<InlineData "starý">]
 let ``Detects valid word for plurals`` word =
     word
-    |> isPluralValid
+    |> getArticle 
+    |> parseAdjectivePlural
+    |> Option.isSome
     |> Assert.True
 
 [<Theory>]
@@ -16,7 +22,9 @@ let ``Detects valid word for plurals`` word =
 [<InlineData "láska">]
 let ``Detects invalid word for plurals`` word =
     word
-    |> isPluralValid
+    |> getArticle 
+    |> parseAdjectivePlural
+    |> Option.isSome
     |> Assert.False
 
 [<Theory>]
@@ -24,7 +32,9 @@ let ``Detects invalid word for plurals`` word =
 [<InlineData "starý">]
 let ``Detects valid word for comparatives`` word =
     word
-    |> isComparativeValid
+    |> getArticle 
+    |> parseAdjectiveComparative
+    |> Option.isSome
     |> Assert.True
 
 [<Theory>]
@@ -32,5 +42,7 @@ let ``Detects valid word for comparatives`` word =
 [<InlineData "láska">]
 let ``Detects invalid word for comparatives`` word =
     word
-    |> isComparativeValid
+    |> getArticle 
+    |> parseAdjectiveComparative
+    |> Option.isSome
     |> Assert.False

@@ -6,6 +6,7 @@ open Stem
 open Reflexives
 open VerbClasses
 open VerbArticle
+open WikiArticles
 
 let isPatternTisknoutNonReflexive word = 
     let getStem = removeLast 4
@@ -84,8 +85,10 @@ let patternClassMap =
 
 let getPatternByClass verb verbClass = patternClassMap.[verbClass] verb
 
-let getPattern verb = 
-    verb
+let getPattern article = 
+    let (VerbArticle { Title = verb }) = article
+
+    article
     |> getThirdPersonSingular
     |> Seq.tryExactlyOne
     |> Option.map removeReflexive

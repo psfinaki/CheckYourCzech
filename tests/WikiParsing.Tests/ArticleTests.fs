@@ -6,23 +6,28 @@ open Article
 [<Fact>]
 let ``Detects content``() =
     "panda"
-    |> getContent
+    |> getArticle
     |> Option.isSome
     |> Assert.True
 
 [<Fact>]
 let ``Gets children parts``() =
     "ananas"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.bind (getPart "čeština")
+    |> getPart "čeština"
     |> Option.map getParts
     |> Option.map (Seq.map fst >> Seq.toList)
     |> equals (Some [ "výslovnost"; "dělení"; "podstatné jméno" ])
 
 [<Fact>]
 let ``Detects no children parts``() =
-    "provozovat"
+    "ananas"
+    |> getArticle
+    |> Option.get
     |> getContent
+    |> getPart "poznámky"
     |> Option.map getParts
     |> Option.map (Seq.map fst)
     |> Option.contains Seq.empty
@@ -30,60 +35,76 @@ let ``Detects no children parts``() =
 [<Fact>]
 let ``Detects child part``() =
     "panda"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.bind (getPart "čeština")
+    |> getPart "čeština"
     |> Option.isSome
     |> Assert.True
 
 [<Fact>]
 let ``Detects no child part``() =
     "panda"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.bind (getPart "ruština")
+    |> getPart "ruština"
     |> Option.isSome
     |> Assert.False
 
 [<Fact>]
 let ``Detects children parts - filter``() =
     "panda"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.exists (hasPartsWhen ((=) "čeština"))
+    |> hasPartsWhen ((=) "čeština")
     |> Assert.True
 
 [<Fact>]
 let ``Detects no children parts - filter``() =
     "panda"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.exists (hasPartsWhen ((=) "ruština"))
+    |> hasPartsWhen ((=) "ruština")
     |> Assert.False
 
 [<Fact>]
 let ``Gets infos``() = 
     "panda"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.bind (getPart "čeština")
+    |> getPart "čeština"
     |> Option.map (getInfos (Starts "rod") >> Seq.toList)
     |> equals (Some ["rod ženský"])
 
 [<Fact>]
 let ``Detects info``() = 
     "mozek"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.exists (hasInfo (Is "chytrý"))
+    |> hasInfo (Is "chytrý")
     |> Assert.True
 
 [<Fact>]
 let ``Detects no info``() = 
     "panda"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.exists (hasInfo (Is "evil"))
+    |> hasInfo (Is "evil")
     |> Assert.False
 
 [<Fact>]
 let ``Gets tables``() =
     "musit"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.bind (getPart "čeština")
+    |> getPart "čeština"
     |> Option.bind (getPart "sloveso")
     |> Option.bind (getPart "časování")
     |> Option.map getTables
@@ -93,8 +114,10 @@ let ``Gets tables``() =
 [<Fact>]
 let ``Detects no tables``() =
     "musit"
+    |> getArticle
+    |> Option.get
     |> getContent
-    |> Option.bind (getPart "čeština")
+    |> getPart "čeština"
     |> Option.bind (getPart "sloveso")
     |> Option.bind (getPart "význam")
     |> Option.map getTables
@@ -104,30 +127,40 @@ let ``Detects no tables``() =
 [<Fact>]
 let ``Detects non-locked article``() =
     "hudba"
+    |> Article.getArticle 
+    |> Option.get
     |> isLocked
     |> Assert.False
 
 [<Fact>]
 let ``Detects locked article``() =
     "debil"
+    |> Article.getArticle 
+    |> Option.get
     |> isLocked
     |> Assert.True
 
 [<Fact>]
 let ``Gets parts of speech``() =
     "starý"
+    |> Article.getArticle 
+    |> Option.get
     |> getPartsOfSpeech
     |> seqEquals [ "podstatné jméno"; "přídavné jméno" ]
 
 [<Fact>]
 let ``Detects no parts of speech``() =
     "hello"
+    |> Article.getArticle
+    |> Option.get
     |> getPartsOfSpeech
     |> seqEquals []
 
 [<Fact>]
 let ``Gets match``() =
     "panda"
+    |> Article.getArticle
+    |> Option.get
     |> ``match`` [
         Is "podstatné jméno"
         Is "skloňování"
@@ -138,6 +171,8 @@ let ``Gets match``() =
 [<Fact>]
 let ``Gets no match``() =
     "panda"
+    |> Article.getArticle
+    |> Option.get
     |> ``match`` [
         Is "přídavné jméno"
         Is "skloňování"
@@ -147,6 +182,8 @@ let ``Gets no match``() =
 [<Fact>]
 let ``Gets matches``() =
     "bus"
+    |> Article.getArticle
+    |> Option.get
     |> matches [
         Starts "podstatné jméno"
     ]
@@ -156,6 +193,8 @@ let ``Gets matches``() =
 [<Fact>]
 let ``Gets no matches``() =
     "panda"
+    |> Article.getArticle
+    |> Option.get
     |> matches [
         Is "přídavné jméno"
         Is "skloňování"
@@ -165,6 +204,8 @@ let ``Gets no matches``() =
 [<Fact>]
 let ``Detects match``() =
     "čtvrt"
+    |> Article.getArticle
+    |> Option.get
     |> isMatch [
         Is "podstatné jméno"
         Starts "skloňování"
@@ -174,6 +215,8 @@ let ``Detects match``() =
 [<Fact>]
 let ``Detects no match``() =
     "bus"
+    |> Article.getArticle
+    |> Option.get
     |> isMatch [
         Is "přídavné jméno"
         Is "skloňování"

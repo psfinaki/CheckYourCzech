@@ -4,52 +4,56 @@ open FSharp.Data
 open WikiString
 open Conjugation
 open Article
+open WikiArticles
 
 type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
 type WikiParticiplesTable3 = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 
-let getVerbProvider =
-    getUrl
-    >> WikiVerb.Load
+let getVerbProvider (VerbArticle { Text = text }) =
+    text
+    |> WikiVerb.Parse
 
-let getParticiplesTable2 = 
-    (+) "https://cs.wiktionary.org/wiki/"
-    >> WikiParticiplesTable2.Load
-    >> fun data -> data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
+let getParticiplesTable2 (VerbArticleWithParticiple (VerbArticle { Text = text })) = 
+    text
+    |> WikiParticiplesTable2.Parse
+    |> fun data -> data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
 
-let getParticiplesTable3 =
-    (+) "https://cs.wiktionary.org/wiki/"
-    >> WikiParticiplesTable3.Load
-    >> fun data -> data.Tables.``Časování[editovat]3``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
+let getParticiplesTable3 (VerbArticleWithParticiple (VerbArticle { Text = text })) =
+    text
+    |> WikiParticiplesTable3.Parse
+    |> fun data -> data.Tables.``Časování[editovat]3``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
 
-let getParticipleByTableIndex word n = 
+let getParticipleByTableIndex article n = 
     let participleExtraction = dict[ 
         1, getParticiplesTable2
         2, getParticiplesTable3 ]
 
-    participleExtraction.Item n word
+    participleExtraction.Item n article
 
-let getWikiParticiples word =
-    word
+let getWikiParticiples verbParticipleArticle =
+    let (VerbArticleWithParticiple (VerbArticle article)) = verbParticipleArticle
+
+    article
     |> ``match`` [
         Is "sloveso"
     ]
     |> Option.map getTables
     |> Option.map (Seq.map fst)
     |> Option.map (Seq.findIndex ((=) "Příčestí"))
-    |> Option.map (getParticipleByTableIndex word)
+    |> Option.map (getParticipleByTableIndex verbParticipleArticle)
 
 let getParticiples = getWikiParticiples >> Option.map getForms >> Option.defaultValue Array.empty
-    
-let getImperatives verb =
-    let data = getVerbProvider verb
-    let answer = data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
-    getForms answer
 
-let getConjugation p verb = 
-    let data = getVerbProvider verb
-    let answer = 
+let getImperatives (VerbArticleWithImperative article) =
+    article
+    |> getVerbProvider
+    |> fun data -> data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
+    |> getForms 
+
+let getConjugation p (VerbArticleWithConjugation article) = 
+    let data = getVerbProvider article
+    let answer =
         match p with
         | FirstSingular  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 1.``
         | SecondSingular -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 2.``
@@ -60,7 +64,7 @@ let getConjugation p verb =
 
     getForms answer
 
-let getThirdPersonSingular verb = 
-    let data = getVerbProvider verb
-    let answer = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
-    getForms answer
+let getThirdPersonSingular = 
+    getVerbProvider
+    >> fun data -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
+    >> getForms

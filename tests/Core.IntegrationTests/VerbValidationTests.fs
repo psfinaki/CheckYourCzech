@@ -3,12 +3,18 @@
 open Xunit
 open VerbValidation
 
+let getArticle = 
+    Article.getArticle
+    >> Option.get
+
 [<Theory>]
 [<InlineData "spát">]
 [<InlineData "milovat">]
 let ``Detects valid word for participles`` word =
     word
-    |> isParticipleValid
+    |> getArticle
+    |> parseVerbParticiple
+    |> Option.isSome
     |> Assert.True
 
 [<Theory>]
@@ -16,7 +22,9 @@ let ``Detects valid word for participles`` word =
 [<InlineData "nový">]
 let ``Detects invalid word for participles`` word =
     word
-    |> isParticipleValid
+    |> getArticle
+    |> parseVerbParticiple
+    |> Option.isSome
     |> Assert.False
 
 [<Theory>]
@@ -24,7 +32,9 @@ let ``Detects invalid word for participles`` word =
 [<InlineData "milovat">]
 let ``Detects valid word for imperatives`` word =
     word
-    |> isImperativeValid
+    |> getArticle
+    |> parseVerbImperative
+    |> Option.isSome
     |> Assert.True
 
 [<Theory>]
@@ -32,7 +42,9 @@ let ``Detects valid word for imperatives`` word =
 [<InlineData "nový">]
 let ``Detects invalid word for imperatives`` word =
     word
-    |> isImperativeValid
+    |> getArticle
+    |> parseVerbImperative
+    |> Option.isSome
     |> Assert.False
 
 [<Theory>]
@@ -40,7 +52,9 @@ let ``Detects invalid word for imperatives`` word =
 [<InlineData "milovat">]
 let ``Detects valid word for conjugations`` word =
     word
-    |> isConjugationValid
+    |> getArticle
+    |> parseVerbConjugation
+    |> Option.isSome
     |> Assert.True
 
 [<Theory>]
@@ -48,5 +62,7 @@ let ``Detects valid word for conjugations`` word =
 [<InlineData "nový">]
 let ``Detects invalid word for conjugations`` word =
     word
-    |> isConjugationValid
+    |> getArticle
+    |> parseVerbConjugation
+    |> Option.isSome
     |> Assert.False

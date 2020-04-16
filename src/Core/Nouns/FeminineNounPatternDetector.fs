@@ -4,30 +4,30 @@ open NounArticle
 open StringHelper
 open GrammarCategories
 
-let isPatternŽena word = 
-    let nominatives = word |> getDeclension Case.Nominative Number.Singular
-    let genitives = word |> getDeclension Case.Genitive Number.Singular
+let isPatternŽena article = 
+    let nominatives = article |> getDeclension Case.Nominative Number.Singular
+    let genitives = article |> getDeclension Case.Genitive Number.Singular
 
     nominatives |> Seq.exists (ends "a") && 
     genitives |> Seq.exists (endsOneOf ["y"; "i"])
 
-let isPatternRůže word =
-    let nominatives = word |> getDeclension Case.Nominative Number.Singular
-    let genitives = word |> getDeclension Case.Genitive Number.Singular
+let isPatternRůže article =
+    let nominatives = article |> getDeclension Case.Nominative Number.Singular
+    let genitives = article |> getDeclension Case.Genitive Number.Singular
 
     nominatives |> Seq.exists (endsOneOf ["e"; "ě"; "a"]) && 
     genitives |> Seq.exists (endsOneOf ["e"; "ě"])
 
-let isPatternPíseň word =
-    let nominatives = word |> getDeclension Case.Nominative Number.Singular
-    let genitives = word |> getDeclension Case.Genitive Number.Singular
+let isPatternPíseň article =
+    let nominatives = article |> getDeclension Case.Nominative Number.Singular
+    let genitives = article |> getDeclension Case.Genitive Number.Singular
 
     nominatives |> Seq.exists Stem.endsConsonant &&
     genitives |> Seq.exists (endsOneOf ["e"; "ě"])
 
-let isPatternKost word =
-    let datives = word |> getDeclension Case.Dative Number.Plural
-    let instrumentals = word |> getDeclension Case.Instrumental Number.Plural
+let isPatternKost article =
+    let datives = article |> getDeclension Case.Dative Number.Plural
+    let instrumentals = article |> getDeclension Case.Instrumental Number.Plural
 
     datives |> Seq.exists (ends "em") &&
     instrumentals |> Seq.exists (not << endsOneOf ["emi"; "ěmi"])
@@ -39,9 +39,9 @@ let patternDetectors = [
     (isPatternKost, "kost")
 ]
 
-let isPattern word patternDetector = fst patternDetector word
+let isPattern article patternDetector = fst patternDetector article
 
-let getPatterns word = 
+let getPatterns article = 
     patternDetectors
-    |> Seq.where (isPattern word)
+    |> Seq.where (isPattern article)
     |> Seq.map snd

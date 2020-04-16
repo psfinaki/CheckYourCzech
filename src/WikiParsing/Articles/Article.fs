@@ -6,6 +6,7 @@ open Html
 open System.Collections.Generic
 open System.Net.Http
 open StringHelper
+open WikiArticles
 
 type Article = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
@@ -29,29 +30,34 @@ let getCondition = function
     | Starts partName -> starts partName
     | OneOf partNames -> fun x -> partNames |> Seq.contains x
 
-let isReachable (url: string) = 
-    (new HttpClient()).GetAsync(url) 
+let getResponse (client: HttpClient) (url: string) = 
+    url
+    |> client.GetAsync 
     |> Async.AwaitTask 
     |> Async.RunSynchronously
-    |> fun response -> response.IsSuccessStatusCode
 
 let getUrl = (+) wikiUrl
 
 let getArticle entry = 
+    let client = new HttpClient()
     let url = entry |> getUrl
-    if url |> isReachable
-    then 
-        url
-        |> Article.Load
-        |> fun data -> data.Html.Descendants()
+    let response = url |> getResponse client
+    if response.IsSuccessStatusCode
+    then
+        response.Content.ReadAsStringAsync()
+        |> Async.AwaitTask
+        |> Async.RunSynchronously
+        |> fun text -> { Title = entry; Text = text }
         |> Some
     else
         None
 
-let getContent =
-    getArticle
-    >> Option.map (getNodeByClass contentClass)
-    >> Option.map (fun node -> node.Elements())
+let getContent { Text = text } =
+    text
+    |> Article.Parse
+    |> fun data -> data.Html.Descendants()
+    |> getNodeByClass contentClass
+    |> fun node -> node.Elements()
 
 let getTables nodes =
     let isTable     (node: HtmlNode) = node.HasName tableElementName
@@ -123,18 +129,19 @@ let hasInfo info =
     getInfos info
     >> (not << Seq.isEmpty)
 
-let isLocked word = 
+let isLocked { Title = word; Text = text } = 
     let getLockIndicator (node: HtmlNode) =
         (node.GetInnermostAttributeWithText lockInfoIndicator).Value()
 
     let getLockInfo = 
-        getArticle
-        >> Option.map (getNodeById navigationId)
-        >> Option.map getLockIndicator
+        Article.Parse
+        >> fun data -> data.Html.Descendants()
+        >> getNodeById navigationId
+        >> getLockIndicator
 
-    match getLockInfo word with
-    | Some s when s.Contains "Tato stránka je zamčena" -> true
-    | Some s when s.Contains "Editovat tuto stránku" -> false
+    match getLockInfo text with
+    | s when s.Contains "Tato stránka je zamčena" -> true
+    | s when s.Contains "Editovat tuto stránku" -> false
     | _ -> invalidArg word "odd article"
 
 let isEditable = not << isLocked
@@ -144,7 +151,7 @@ let getPartsOfSpeech =
     let isPartOfSpeech s = partsOfSpeech |> Seq.contains s
 
     getContent
-    >> Option.bind (getPart "čeština")
+    >> getPart "čeština"
     >> Option.map (getParts >> Seq.map fst >> Seq.filter isPartOfSpeech)
     >> Option.defaultValue Seq.empty
 
@@ -181,7 +188,7 @@ let rec private getPartMatches parts (nodes: seq<HtmlNode>) =
 
 let getCzechContent = 
     getContent
-    >> Option.bind (getPart "čeština")
+    >> getPart "čeština"
 
 let ``match`` parts =
     getCzechContent
