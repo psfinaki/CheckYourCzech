@@ -1,4 +1,4 @@
-﻿module AjdectiveArticleTests
+﻿module AdjectiveArticleTests
 
 open Xunit
 open AdjectiveArticle
