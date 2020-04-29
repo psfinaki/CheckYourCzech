@@ -4,36 +4,47 @@ open Storage
 open Verb
 open VerbClasses
 open Conjugation
+open WikiArticles
 
-let registerVerbImperative word =
-    let indicative = word |> map id serializeObject ""
-    let imperatives = word |> map getImperatives serializeObject ""
-    let ``class`` = word |> map getClass serializeOption<VerbClass> ""
-    let pattern = word |> map getImperativePattern serializeOption<string> ""
+let registerVerbImperative verbArticleWithImperative =
+    let (VerbArticleWithImperative verbArticle) = verbArticleWithImperative
+    let (VerbArticle { Title = word }) = verbArticle
+
+    let indicative = word |> serializeObject
+    let imperatives = verbArticleWithImperative |> getImperatives |> serializeObject
+    let ``class`` = verbArticle |> getClass |> serializeOption<VerbClass>
+    let pattern = verbArticle |> getImperativePattern |> serializeOption<string>
 
     VerbImperative.VerbImperative(word, indicative, imperatives, ``class``, pattern)
     |> upsert "verbimperatives"
 
-let registerVerbParticiple word = 
-    let infinitive = word |> map id serializeObject ""
-    let participles = word |> map getParticiples serializeObject ""
-    let pattern = word |> map getParticiplePattern serializeString ""
-    let isRegular = word |> map hasRegularParticiple id false
+let registerVerbParticiple verbArticleWithParticiple = 
+    let (VerbArticleWithParticiple verbArticle) = verbArticleWithParticiple
+    let (VerbArticle { Title = word }) = verbArticle
+
+    let wordId = word
+    let infinitive = word |> serializeObject
+    let participles = verbArticleWithParticiple |> getParticiples |> serializeObject
+    let pattern = verbArticle |> getParticiplePattern |> serializeString
+    let isRegular = verbArticleWithParticiple |> hasRegularParticiple
 
     VerbParticiple.VerbParticiple(word, infinitive, participles, pattern, isRegular)
     |> upsert "verbparticiples"
 
-let registerVerbConjugation word =
-    let infinitive = word |> map id serializeObject ""
-    let pattern = word |> map getParticiplePattern serializeString ""
+let registerVerbConjugation verbConjugationArticle =
+    let (VerbArticleWithConjugation verbArticle) = verbConjugationArticle
+    let (VerbArticle { Title = word }) = verbArticle
 
-    let getConjugation case = map (getConjugation case) serializeObject ""
-    let firstSingular = word |> getConjugation FirstSingular
-    let secondSingular = word |> getConjugation SecondSingular
-    let thirdSingular = word |> getConjugation ThirdSingular
-    let firstPlural = word |> getConjugation FirstPlural
-    let secondPlural = word |> getConjugation SecondPlural
-    let thirdPlural = word |> getConjugation ThirdPlural
+    let infinitive = word |> serializeObject
+    let pattern = verbArticle |> getParticiplePattern |> serializeString
+
+    let getConjugation case = getConjugation case >> serializeObject
+    let firstSingular = verbConjugationArticle |> getConjugation FirstSingular
+    let secondSingular = verbConjugationArticle |> getConjugation SecondSingular
+    let thirdSingular = verbConjugationArticle |> getConjugation ThirdSingular
+    let firstPlural = verbConjugationArticle |> getConjugation FirstPlural
+    let secondPlural = verbConjugationArticle |> getConjugation SecondPlural
+    let thirdPlural = verbConjugationArticle |> getConjugation ThirdPlural
 
     VerbConjugation.VerbConjugation(
         word, infinitive, pattern, 

@@ -7,6 +7,7 @@ open NounArticle
 open GenderTranslations
 open Nominalization
 open Common.Utils
+open WikiArticles
 
 let hasSingleDeclension case number = 
     getDeclension case number
@@ -16,8 +17,8 @@ let hasDeclension case number =
     getDeclension case number
     >> Seq.any
 
-let hasRequiredInfo word =
-    word
+let hasRequiredInfo article =
+    article
     |> isMatch [
         Is "podstatné jméno"
         Starts "skloňování"
@@ -25,23 +26,27 @@ let hasRequiredInfo word =
 
     &&
 
-    word
+    article
     |> ``match`` [
         Is "podstatné jméno"
     ] 
     |> Option.exists (hasInfo (OneOf (getAllUnion<Gender> |> Seq.map toString)))
 
-let isValidNoun word =
-    word |> hasRequiredInfo &&
-    word |> (not << isNominalization) &&
-    word |> (not << isReflexive) &&
-    word |> hasSingleDeclension Case.Nominative Number.Singular 
+let parseNoun article = 
+    if article |> hasRequiredInfo &&
+       article.Title |> (not << isNominalization) &&
+       article.Title |> (not << isReflexive) &&
+       NounArticle article |> hasSingleDeclension Case.Nominative Number.Singular
+    
+    then Some (NounArticle article)
+    else None
 
-let isPluralValid word = 
-    word |> isValidNoun &&
-    word |> hasDeclension Case.Nominative Number.Plural
+let parseNounPlural =
+    parseNoun
+    >> Option.filter (hasDeclension Case.Nominative Number.Plural)
+    >> Option.map NounArticleWithPlural
 
-let isAccusativeValid word = 
-    word |> isValidNoun &&
-    word |> hasDeclension Case.Accusative Number.Singular
-
+let parseNounAccusative =
+    parseNoun
+    >> Option.filter (hasDeclension Case.Accusative Number.Singular)
+    >> Option.map NounArticleWithAccusative

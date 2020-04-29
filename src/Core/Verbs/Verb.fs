@@ -1,5 +1,7 @@
 ﻿module Verb
 
+open WikiArticles
+
 let getClass = 
     VerbArticle.getThirdPersonSingular
     >> Seq.tryExactlyOne
@@ -18,10 +20,12 @@ let getParticiples =
 let getConjugation = 
     VerbArticle.getConjugation
 
-let hasRegularParticiple word = 
-    let theoretical = ParticipleBuilder.buildParticiple word
-    let practical = getParticiples word
+let hasRegularParticiple article = 
+    let (VerbArticleWithParticiple (VerbArticle { Title = verb })) = article
+
+    let theoretical = ParticipleBuilder.buildParticiple verb
+    let practical = getParticiples article
     practical |> Array.contains theoretical
 
-let getParticiplePattern = 
-    ParticiplePatternDetector.getPattern
+let getParticiplePattern (VerbArticle ({ Title = verb })) = 
+    ParticiplePatternDetector.getPattern verb

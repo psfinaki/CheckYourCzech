@@ -2,6 +2,12 @@
 
 open Xunit
 open MasculineAnimateNounPatternDetector
+open WikiArticles
+
+let getArticle =
+    Article.getArticle
+    >> Option.get
+    >> NounArticle
 
 [<Theory>]
 [<InlineData "syn">]
@@ -11,6 +17,7 @@ open MasculineAnimateNounPatternDetector
 [<InlineData "geolog">]
 let ``Detects pattern pán`` word =
     word
+    |> getArticle
     |> isPatternPán
     |> Assert.True
 
@@ -21,6 +28,7 @@ let ``Detects pattern pán`` word =
 [<InlineData "dárce">]
 let ``Detects not pattern pán`` word =
     word
+    |> getArticle
     |> isPatternPán
     |> Assert.False
 
@@ -34,6 +42,7 @@ let ``Detects not pattern pán`` word =
 [<InlineData "Felix">]
 let ``Detects pattern muž`` word =
     word
+    |> getArticle
     |> isPatternMuž
     |> Assert.True
 
@@ -44,6 +53,7 @@ let ``Detects pattern muž`` word =
 [<InlineData "vůdce">]
 let ``Detects not pattern muž`` word =
     word
+    |> getArticle
     |> isPatternMuž
     |> Assert.False
 
@@ -56,6 +66,7 @@ let ``Detects not pattern muž`` word =
 [<InlineData "Honza">]
 let ``Detects pattern předseda`` word =
     word
+    |> getArticle
     |> isPatternPředseda
     |> Assert.True
     
@@ -65,6 +76,7 @@ let ``Detects pattern předseda`` word =
 [<InlineData "vůdce">]
 let ``Detects not pattern předseda`` word =
     word
+    |> getArticle
     |> isPatternPředseda
     |> Assert.False
     
@@ -73,6 +85,7 @@ let ``Detects not pattern předseda`` word =
 [<InlineData "dárce">]
 let ``Detects pattern soudce`` word =
     word
+    |> getArticle
     |> isPatternSoudce
     |> Assert.True
 
@@ -82,6 +95,7 @@ let ``Detects pattern soudce`` word =
 [<InlineData "kolega">]
 let ``Detects not pattern soudce`` word =
     word
+    |> getArticle
     |> isPatternSoudce
     |> Assert.False
 
@@ -91,6 +105,7 @@ let ``Detects not pattern soudce`` word =
 [<InlineData "boss">]
 let ``Detects multiple patterns`` word =
     word
+    |> getArticle
     |> getPatterns
     |> Seq.containsMultiple
     |> Assert.True
@@ -100,6 +115,7 @@ let ``Detects multiple patterns`` word =
 [<InlineData "George">]
 let ``Detects no patterns`` word =
     word
+    |> getArticle
     |> getPatterns
     |> Seq.isEmpty
     |> Assert.True

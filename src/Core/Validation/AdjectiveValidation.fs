@@ -4,9 +4,10 @@ open Article
 open AdjectiveArticle
 open Comparison
 open ComparativeBuilder
+open WikiArticles
 
 let hasMorphologicalComparatives = 
-    getComparatives 
+    getComparatives
     >> Array.filter isMorphologicalComparison
     >> (not << Seq.isEmpty)
 
@@ -24,12 +25,19 @@ let hasRequiredInfoPlural =
 
 let isValidAdjective = isPositive
 
-let isComparativeValid word = 
-    word |> isValidAdjective &&
-    word |> hasRequiredInfoComparative &&
-    word |> hasMorphologicalComparatives &&
-    word |> canBuildComparative
+let parseAdjective article = 
+    if article.Title |> isValidAdjective
+    then Some (AdjectiveArticle article)
+    else None
 
-let isPluralValid word = 
-    word |> isValidAdjective &&
-    word |> hasRequiredInfoPlural
+let parseAdjectiveComparative =
+    parseAdjective
+    >> Option.filter (fun (AdjectiveArticle article) -> hasRequiredInfoComparative article)
+    >> Option.filter (AdjectiveArticleWithComparative >> hasMorphologicalComparatives)
+    >> Option.filter (fun (AdjectiveArticle { Title = title }) -> canBuildComparative title)
+    >> Option.map AdjectiveArticleWithComparative
+
+let parseAdjectivePlural =
+    parseAdjective
+    >> Option.filter (fun (AdjectiveArticle article) -> hasRequiredInfoPlural article)
+    >> Option.map AdjectiveArticleWithPlural

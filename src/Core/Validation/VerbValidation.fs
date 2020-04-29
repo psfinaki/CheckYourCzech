@@ -2,6 +2,7 @@
 
 open Article
 open Archaisms
+open WikiArticles
 
 let hasRequiredInfoParticiple = 
     isMatch [
@@ -27,14 +28,22 @@ let hasRequiredInfoConjugation =
 
 let isValidVerb = isModern
 
-let isParticipleValid word = 
-    word |> isValidVerb &&
-    word |> hasRequiredInfoParticiple
+let parseVerb article =
+   if article.Title |> isValidVerb
+   then Some (VerbArticle article)
+   else None
 
-let isImperativeValid word =
-    word |> isValidVerb &&
-    word |> hasRequiredInfoImperative
+let parseVerbImperative =
+    parseVerb
+    >> Option.filter (fun (VerbArticle article) -> hasRequiredInfoImperative article)
+    >> Option.map VerbArticleWithImperative
 
-let isConjugationValid word =
-    word |> isValidVerb &&
-    word |> hasRequiredInfoConjugation
+let parseVerbParticiple =
+    parseVerb
+    >> Option.filter (fun (VerbArticle article) -> hasRequiredInfoParticiple article)
+    >> Option.map VerbArticleWithParticiple
+
+let parseVerbConjugation = 
+    parseVerb
+    >> Option.filter (fun (VerbArticle article) -> hasRequiredInfoConjugation article)
+    >> Option.map VerbArticleWithConjugation
