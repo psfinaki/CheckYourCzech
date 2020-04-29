@@ -2,46 +2,28 @@
 
 open Article
 
+let noOperationAsync = async { return () }
+
+let registerIfValid parse register = 
+    parse
+    >> Option.map register 
+    >> Option.defaultValue noOperationAsync
+
 let recordCzechPartOfSpeech article = function
     | "podstatné jméno" -> [
-        article
-        |> NounValidation.parseNounPlural
-        |> Option.map NounRegistration.registerNounPlural
-        |> Option.defaultValue (async { return () })
-
-        article
-        |> NounValidation.parseNounAccusative
-        |> Option.map NounRegistration.registerNounAccusative
-        |> Option.defaultValue (async { return () })
+        article |> registerIfValid NounValidation.parseNounPlural NounRegistration.registerNounPlural
+        article |> registerIfValid NounValidation.parseNounAccusative NounRegistration.registerNounAccusative
       ]
 
     | "přídavné jméno" -> [
-        article 
-        |> AdjectiveValidation.parseAdjectivePlural
-        |> Option.map AdjectiveRegistration.registerAdjectivePlural
-        |> Option.defaultValue (async { return () })
-
-        article 
-        |> AdjectiveValidation.parseAdjectiveComparative
-        |> Option.map AdjectiveRegistration.registerAdjectiveComparative
-        |> Option.defaultValue (async { return () })
+        article |> registerIfValid AdjectiveValidation.parseAdjectivePlural AdjectiveRegistration.registerAdjectivePlural
+        article |> registerIfValid AdjectiveValidation.parseAdjectiveComparative AdjectiveRegistration.registerAdjectiveComparative
       ]
             
     | "sloveso" -> [
-        article
-        |> VerbValidation.parseVerbImperative
-        |> Option.map VerbRegistration.registerVerbImperative
-        |> Option.defaultValue (async { return () })
-
-        article
-        |> VerbValidation.parseVerbParticiple
-        |> Option.map VerbRegistration.registerVerbParticiple
-        |> Option.defaultValue (async { return () })
-
-        article
-        |> VerbValidation.parseVerbConjugation
-        |> Option.map VerbRegistration.registerVerbConjugation
-        |> Option.defaultValue (async { return () })
+        article |> registerIfValid VerbValidation.parseVerbImperative VerbRegistration.registerVerbImperative
+        article |> registerIfValid VerbValidation.parseVerbParticiple VerbRegistration.registerVerbParticiple
+        article |> registerIfValid VerbValidation.parseVerbConjugation VerbRegistration.registerVerbConjugation
       ]
 
     | _ -> []
