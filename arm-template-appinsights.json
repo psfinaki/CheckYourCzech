@@ -13,7 +13,7 @@
     "insights": "[concat(parameters('appName'), '-insights')]",
     "queryDataSource": "[resourceId('microsoft.insights/components', variables('insights'))]",
     "odataType": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
-    "actionGroups": "[array(concat('/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourceGroups/', parameters('appName'), '/providers/microsoft.insights/actiongroups/Email'))]",
+    "actionGroups": "[array(concat('/subscriptions/a7b6f428-0ed2-4721-9548-d17c361d9b77/resourceGroups/', parameters('appName'), '/providers/microsoft.insights/actiongroups/Email'))]",
     "northEuropeLocation": "northeurope",
     "brazilLocation": "latam-br-gru-edge",
     "pingTestName": "Ping",
@@ -54,7 +54,7 @@
       "apiVersion": "2018-04-16",
       "location": "[variables('northEuropeLocation')]",
       "tags": {
-        "[concat('hidden-link:/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
+        "[concat('hidden-link:/subscriptions/a7b6f428-0ed2-4721-9548-d17c361d9b77/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
       },
       "properties": {
         "description": "Any exceptions happening in the app",
@@ -92,7 +92,7 @@
       "apiVersion": "2018-04-16",
       "location": "[variables('northEuropeLocation')]",
       "tags": {
-        "[concat('hidden-link:/subscriptions/f400689a-038c-49be-a6ee-2d98e5000d90/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
+        "[concat('hidden-link:/subscriptions/a7b6f428-0ed2-4721-9548-d17c361d9b77/resourcegroups/', parameters('appName'), '/providers/microsoft.insights/components/', variables('insights'))]": "Resource"
       },
       "properties": {
         "description": "All the requests sent to the service",
