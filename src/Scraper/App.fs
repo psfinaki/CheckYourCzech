@@ -16,5 +16,6 @@ let run log =
             reraise()
 
     getRandomWord()
+    |> Seq.randomize
     |> Seq.iter recordWithLog
 
