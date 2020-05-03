@@ -52,7 +52,7 @@
     {
       "type": "Microsoft.Web/serverfarms",
       "sku": {
-        "name": "F1"
+        "name": "B1"
       },
       "name": "[variables('appServicePlan')]",
       "apiVersion": "2016-09-01",
@@ -71,6 +71,7 @@
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlan'))]",
         "siteConfig": {
+          "alwaysOn": true,
           "appSettings": [
             {
               "name": "public_path",
