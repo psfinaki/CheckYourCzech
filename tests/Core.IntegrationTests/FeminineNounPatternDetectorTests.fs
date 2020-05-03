@@ -5,8 +5,7 @@ open FeminineNounPatternDetector
 open WikiArticles
 
 let getArticle =
-    Article.getArticle
-    >> Option.get
+    getArticle
     >> NounArticle
 
 [<Theory>]

@@ -6,8 +6,7 @@ open Conjugation
 open WikiArticles
 
 let getArticle =
-    Article.getArticle
-    >> Option.get
+    getArticle
     >> VerbArticle
 
 [<Fact>]

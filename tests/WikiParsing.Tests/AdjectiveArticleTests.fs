@@ -5,8 +5,7 @@ open AdjectiveArticle
 open WikiArticles
 
 let getArticle = 
-    Article.getArticle
-    >> Option.get
+    getArticle
     >> AdjectiveArticle
 
 [<Fact>]

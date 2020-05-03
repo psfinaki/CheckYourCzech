@@ -3,10 +3,6 @@
 open Xunit
 open NounValidation
 
-let getArticle = 
-    Article.getArticle
-    >> Option.get
-
 [<Theory>]
 [<InlineData "láska">]
 [<InlineData "kachna">]

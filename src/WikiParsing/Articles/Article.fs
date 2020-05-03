@@ -38,8 +38,7 @@ let getResponse (client: HttpClient) (url: string) =
 
 let getUrl = (+) wikiUrl
 
-let getArticle entry = 
-    let client = new HttpClient()
+let getArticle client entry = 
     let url = entry |> getUrl
     let response = url |> getResponse client
     if response.IsSuccessStatusCode
