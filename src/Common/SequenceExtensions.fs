@@ -17,9 +17,13 @@ let splitBy func input =
     |> Seq.groupBy projection
     |> Seq.map snd
 
-let random (seq: seq<'T>) = 
+let randomize seq = 
     seq
     |> Seq.sortBy (fun _ -> Guid.NewGuid())
+
+let random seq = 
+    seq
+    |> randomize
     |> Seq.take 1
     |> Seq.exactlyOne
 
