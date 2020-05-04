@@ -3,10 +3,6 @@
 open Xunit
 open AdjectiveValidation
 
-let getArticle =
-    Article.getArticle
-    >> Option.get
-
 [<Theory>]
 [<InlineData "nový">]
 [<InlineData "starý">]

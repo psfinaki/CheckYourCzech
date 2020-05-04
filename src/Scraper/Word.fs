@@ -33,11 +33,10 @@ let getTasks article =
     |> getPartsOfSpeech 
     |> Seq.collect (recordCzechPartOfSpeech article)
 
-let record word =
-    word
-    |> getArticle
-    |> Option.map getTasks
-    |> Option.defaultValue Seq.empty
-    |> Async.Parallel
-    |> Async.Ignore
-    |> Async.RunSynchronously
+let record client =
+    getArticle client
+    >> Option.map getTasks
+    >> Option.defaultValue Seq.empty
+    >> Async.Parallel
+    >> Async.Ignore
+    >> Async.RunSynchronously

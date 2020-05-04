@@ -3,10 +3,6 @@
 open Xunit
 open VerbValidation
 
-let getArticle = 
-    Article.getArticle
-    >> Option.get
-
 [<Theory>]
 [<InlineData "spát">]
 [<InlineData "milovat">]
