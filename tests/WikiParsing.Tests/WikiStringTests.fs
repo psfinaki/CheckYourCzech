@@ -3,108 +3,105 @@
 open WikiString
 open Xunit
 
-let equals expected actual = Assert.Equal(expected, actual)
-let equalsMany (x: string[]) (y: string[]) = Assert.Equal<string []>(x, y)
-
-[<Fact>]
-let ``Gets forms - one form``() = 
-    "pastila"
-    |> getForms
-    |> equalsMany [|"pastila"|]
-
 [<Theory>]
-[<InlineData("Edáčci/Edáčkové")>]
-[<InlineData("Edáčci,Edáčkové")>]
-let ``Gets forms - multiple forms`` s = 
+[<InlineData "">]
+[<InlineData "—">]
+[<InlineData "-">]
+let ``Ignores blank field`` s = 
     s
     |> getForms
-    |> equalsMany [|"Edáčci"; "Edáčkové"|]
-
-[<Theory>]
-[<InlineData("")>]
-[<InlineData("—")>]
-[<InlineData("-")>]
-let ``Detects blank string`` s = 
-    s
-    |> isBlank
-    |> Assert.True
+    |> seqEquals []
 
 [<Fact>]
-let ``Detects word``() = 
-    "Brussels"
-    |> isBlank
-    |> Assert.False
+let ``Ignores unused form``() = 
+    "znalečná*"
+    |> getForms
+    |> seqEquals []
 
 [<Fact>]
-let ``Detects official form``() = 
+let ``Gets simple form``() = 
     "poslouchat"
-    |> isOfficial
-    |> Assert.True
+    |> getForm
+    |> equals "poslouchat"
+
+[<Fact>]
+let ``Gets simple form - with space``() = 
+    "divím se"
+    |> getForm
+    |> equals "divím se"
+
+[<Fact>]
+let ``Gets simple form - with dash``() = 
+    "Tchaj-wan"
+    |> getForm
+    |> equals "Tchaj-wan"
+
+[<Theory>]
+[<InlineData " poslouchat">]
+[<InlineData "poslouchat ">]
+[<InlineData " poslouchat ">]
+let ``Gets form when spaced`` s = 
+    s
+    |> getForm
+    |> equals "poslouchat"
+
+[<Fact>]
+let ``Gets form with reference - only number``() =
+    "rci[1]"
+    |> getForm
+    |> equals "rci"
+
+[<Fact>]
+let ``Gets form with reference - number and letter 'p'``() =
+    "budiž[p 3]"
+    |> getForm
+    |> equals "budiž"
+
+[<Fact>]
+let ``Gets form with appropriate label - bookish``() =
+    "(knižně) prohrej"
+    |> getForm
+    |> equals "prohrej"
+
+[<Fact>]
+let ``Gets form with appropriate label - rarer - 1``() =
+    "(řidč.) pohaněj"
+    |> getForm
+    |> equals "pohaněj"
+
+[<Fact>]
+let ``Gets form with appropriate label - rarer - 2``() =
+    "(zřídka) plazové"
+    |> getForm
+    |> equals "plazové"
 
 [<Theory>]
 [<InlineData "(zastarale) pec">]
 [<InlineData "(archaicky) sloul">]
-let ``Detects unofficial form - archaic`` form = 
-    form
-    |> isOfficial
-    |> Assert.False
-    
-[<Fact>]
-let ``Detects unofficial form - colloquial``() = 
-    "(hovorově) slz"
-    |> isOfficial
-    |> Assert.False
-
-[<Fact>]
-let ``Detects unofficial form - informal``() = 
-    "(v obecném jazyce) zab"
-    |> isOfficial
-    |> Assert.False
-
-[<Fact>]
-let ``Detects unofficial form - poetic``() = 
-    "(básnicky) Zéva"
-    |> isOfficial
-    |> Assert.False
-
-[<Fact>]
-let ``Detects unofficial form - not used``() = 
-    "znalečná*"
-    |> isOfficial
-    |> Assert.False
-
-[<Fact>]
-let ``Detects unofficial form - dialect``() = 
-    "(nářečně) noce"
-    |> isOfficial
-    |> Assert.False
-
-[<Theory>]
-[<InlineData ("(řidč.) pohaněj", "pohaněj")>]
-[<InlineData ("(zřídka) plazové", "plazové")>]
-let ``Removes allowed labels - rarer`` labeledForm form =
-    labeledForm
-    |> removeLabels
-    |> equals form
-    
-[<Fact>]
-let ``Removes allowed labels - bookish``() =
-    "(knižně) prohrej"
-    |> removeLabels
-    |> equals "prohrej"
-
-[<Theory>]
-[<InlineData("rci[1]")>]
-[<InlineData("rci[2]")>]
-[<InlineData("rci[12]")>]
-[<InlineData("rci[1][2]")>]
-let ``Removes references - numbers`` s =
+[<InlineData "(hovorově) slz">]
+[<InlineData "(zastarale) pec">]
+[<InlineData "(v obecném jazyce) zab">]
+[<InlineData "(básnicky) Zéva">]
+[<InlineData "(nářečně) noce">]
+let ``Ignores form with inappropriate label`` s =
     s
-    |> removeReferences
-    |> equals "rci"
+    |> getForms
+    |> seqEquals []
 
 [<Fact>]
-let ``Removes references - letter 'p'``() =
-    "budiž[p 3]"
-    |> removeReferences
-    |> equals "budiž"
+let ``Gets form when second form is after colon``() =
+    "abdikuji (hovorově: abdikuju)"
+    |> getForm
+    |> equals "abdikuji" 
+
+[<Fact>]
+let ``Gets single form when split``() =
+    "produkuji / (hovorově) produkuju"
+    |> getForm
+    |> equals "produkuji"
+
+[<Fact>]
+let ``Gets multiple forms when split``() = 
+    "Edáčci/Edáčkové"
+    |> getForms
+    |> seqEquals ["Edáčci"; "Edáčkové"]

@@ -12,8 +12,8 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="WikiStringTests.fs" />
     <Compile Include="Helper.fs" />
+    <Compile Include="WikiStringTests.fs" />
     <Compile Include="ArticleTests.fs" />
     <Compile Include="NounArticleTests.fs" />
     <Compile Include="AdjectiveArticleTests.fs" />

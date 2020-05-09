@@ -29,4 +29,10 @@ let containsAny (values: seq<string>) (s: string) =
     let containsOne = s.Contains
     values |> Seq.exists containsOne
 
+let contains (s: string) = containsAny (seq { yield s })
+
 let takeLast n (s: string) = s.Substring (s.Length - n)
+
+let isMatch pattern string = Regex.IsMatch(string, pattern)
+
+let ``match`` pattern string = Regex.Match(string, pattern)
