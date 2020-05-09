@@ -25,7 +25,7 @@ let hasRegularParticiple article =
 
     let theoretical = ParticipleBuilder.buildParticiple verb
     let practical = getParticiples article
-    practical |> Array.contains theoretical
+    practical |> Seq.contains theoretical
 
 let getParticiplePattern (VerbArticle ({ Title = verb })) = 
     ParticiplePatternDetector.getPattern verb

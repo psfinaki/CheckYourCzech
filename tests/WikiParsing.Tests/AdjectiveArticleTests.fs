@@ -38,7 +38,7 @@ let ``Gets comparatives``() =
     |> getArticle 
     |> AdjectiveArticleWithComparative
     |> getComparatives
-    |> equals [| "lepší" |]
+    |> seqEquals [ "lepší" ]
 
 [<Fact>]
 let ``Gets number of declensions``() = 

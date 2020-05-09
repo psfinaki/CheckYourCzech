@@ -43,7 +43,7 @@ let getWikiParticiples verbParticipleArticle =
     |> Option.map (Seq.findIndex ((=) "Příčestí"))
     |> Option.map (getParticipleByTableIndex verbParticipleArticle)
 
-let getParticiples = getWikiParticiples >> Option.map getForms >> Option.defaultValue Array.empty
+let getParticiples = getWikiParticiples >> Option.map getForms >> Option.defaultValue Seq.empty
 
 let getImperatives (VerbArticleWithImperative article) =
     article
