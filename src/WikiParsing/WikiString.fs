@@ -34,7 +34,7 @@ let private getLabeledForm =
 
 let private getFormsWhenColon =
     ``match`` "^(?<word1>\w*) \((?<label>\w*): (?<word2>\w*)\)$"
-    >> fun m -> [|
+    >> fun m -> [
     { 
       Word = m.Groups.["word1"].Value
       Label = None
@@ -42,17 +42,17 @@ let private getFormsWhenColon =
     {   
       Word = m.Groups.["word2"].Value
       Label = Some m.Groups.["label"].Value
-    } |]
+    } ]
 
 let rec private getFormsInner = function
     | string when string |> isBlank ->
-        [||]
+        []
 
     | string when string |> meansUnused ->
-        [||]
+        []
 
     | string when string |> isPlainWord ->
-        [|{ Word = string; Label = None }|]
+        [{ Word = string; Label = None }]
 
     | string when string |> isSpaced ->
         string
@@ -65,7 +65,7 @@ let rec private getFormsInner = function
         |> getFormsInner
 
     | string when string |> hasLabel ->
-        [| getLabeledForm string |]
+        [ getLabeledForm string ]
 
     | string when string |> hasSecondFormAfterColon ->
         getFormsWhenColon string
@@ -73,7 +73,7 @@ let rec private getFormsInner = function
     | string when string |> hasSplitForms ->
         string 
         |> split formSeparators
-        |> Array.collect getFormsInner
+        |> List.collect getFormsInner
 
     | string ->
         invalidOp ("odd string: " + string)
@@ -85,8 +85,8 @@ let private isFormAppropriate form =
 
 let getForms =
     getFormsInner
-    >> Array.filter isFormAppropriate
-    >> Array.map (fun form -> form.Word)
+    >> Seq.filter isFormAppropriate
+    >> Seq.map (fun form -> form.Word)
 
 let getForm =
     getForms

@@ -8,7 +8,7 @@ open WikiArticles
 
 let hasMorphologicalComparatives = 
     getComparatives
-    >> Array.filter isMorphologicalComparison
+    >> Seq.filter isMorphologicalComparison
     >> (not << Seq.isEmpty)
 
 let hasRequiredInfoComparative =

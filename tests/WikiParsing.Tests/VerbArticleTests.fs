@@ -15,7 +15,7 @@ let ``Gets imperatives - single option``() =
     |> getArticle 
     |> VerbArticleWithImperative
     |> getImperatives
-    |> equals [|"miluj"|]
+    |> seqEquals ["miluj"]
 
 [<Fact>]
 let ``Gets imperatives - multiple options``() =
@@ -23,7 +23,7 @@ let ``Gets imperatives - multiple options``() =
     |> getArticle
     |> VerbArticleWithImperative
     |> getImperatives
-    |> equals [|"oř"; "orej"|]
+    |> seqEquals ["oř"; "orej"]
 
 [<Fact>]
 let ``Gets participle from the second table``() = 
@@ -31,7 +31,7 @@ let ``Gets participle from the second table``() =
     |> getArticle
     |> VerbArticleWithParticiple
     |> getParticiples
-    |> equals [|"uviděl"|]
+    |> seqEquals ["uviděl"]
 
 [<Fact>]
 let ``Gets participle from the third table``() = 
@@ -39,17 +39,17 @@ let ``Gets participle from the third table``() =
     |> getArticle
     |> VerbArticleWithParticiple
     |> getParticiples
-    |> equals [|"myslel"|]
+    |> seqEquals ["myslel"]
 
 [<Fact>]
 let ``Gets all conjugations``() =
     let verb = "myslet"
     let article = verb |> getArticle |> VerbArticleWithConjugation
     
-    getConjugation FirstSingular article  |> equals [|"myslím"|]
-    getConjugation SecondSingular article |> equals [|"myslíš"|]
-    getConjugation ThirdSingular article  |> equals [|"myslí"|]
+    getConjugation FirstSingular article  |> seqEquals ["myslím"]
+    getConjugation SecondSingular article |> seqEquals ["myslíš"]
+    getConjugation ThirdSingular article  |> seqEquals ["myslí"]
 
-    getConjugation FirstPlural article    |> equals [|"myslíme"|]
-    getConjugation SecondPlural article   |> equals [|"myslíte"|]
-    getConjugation ThirdPlural article    |> equals [| "myslí"; "myslejí"|]
+    getConjugation FirstPlural article    |> seqEquals ["myslíme"]
+    getConjugation SecondPlural article   |> seqEquals ["myslíte"]
+    getConjugation ThirdPlural article    |> seqEquals [ "myslí"; "myslejí"]

@@ -13,4 +13,4 @@ let hasRegularComparative article =
 
     let theoretical = ComparativeBuilder.buildComparative word
     let practical = getComparatives article
-    practical |> Array.contains theoretical
+    practical |> Seq.contains theoretical
