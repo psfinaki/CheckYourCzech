@@ -29,7 +29,7 @@ let containsAny (values: seq<string>) (s: string) =
     let containsOne = s.Contains
     values |> Seq.exists containsOne
 
-let contains (s: string) = containsAny (seq { s })
+let contains (s: string) = containsAny (seq { yield s })
 
 let takeLast n (s: string) = s.Substring (s.Length - n)
 
