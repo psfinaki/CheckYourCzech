@@ -94,7 +94,7 @@
         "description": "All the requests sent to the service",
         "enabled": "true",
         "source": {
-          "query": "requests | where (operation_Name != 'GET /' and operation_Name != 'GET /favicon.ico' and operation_Name != 'GET /index.html' and operation_Name != 'GET /robots.txt' and operation_Name != 'GET /js/vendors.js' and operation_Name != 'GET /js/app.js' and operation_Name != 'GET /sitemap.xml')",
+          "query": "requests | where operation_Name startswith 'GET /api/'",
           "authorizedResources": [],
           "dataSourceId": "[variables('queryDataSource')]",
           "queryType": "ResultCount"
