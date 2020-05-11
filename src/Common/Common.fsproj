@@ -19,5 +19,6 @@
     <Compile Include="Utils.fs" />
     <Compile Include="StringHelper.fs" />
     <Compile Include="GenderTranslations.fs" />
+    <Compile Include="Exercises.fs" />
   </ItemGroup>
 </Project>

@@ -1,18 +1,16 @@
 ﻿module VerbParticiple
 
-open Microsoft.WindowsAzure.Storage.Table
+open Exercises
+open Storage
+open Defaults
 
-type VerbParticiple(word: string,
-                    infinitive: string,
-                    participles: string,
-                    pattern: string,
-                    isRegular: bool) =
+type VerbParticiple(model: Exercises.VerbParticiple) =
 
-    inherit TableEntity(word, word)
+    inherit BaseEntity.BaseEntity(model.Id)
 
-    new() =  VerbParticiple(null, null, null, null, false)
+    new() = VerbParticiple(VerbParticiple.Default)
 
-    member val Infinitive = infinitive with get, set
-    member val Participles = participles with get, set
-    member val Pattern = pattern with get, set
-    member val IsRegular = isRegular with get, set
+    [<SerializeObject>] member val Infinitive = model.Infinitive with get, set
+    [<SerializeObject>] member val Participles = model.Participles with get, set
+    [<SerializeString>] member val Pattern = model.Pattern with get, set
+                        member val IsRegular = model.IsRegular with get, set

@@ -1,14 +1,14 @@
 ﻿module AdjectivePlural
 
-open Microsoft.WindowsAzure.Storage.Table
+open Exercises
+open Storage
+open Defaults
 
-type AdjectivePlural(word: string,
-                     singular: string,
-                     plural: string) =
+type AdjectivePlural(model: Exercises.AdjectivePlural) =
 
-    inherit TableEntity(word, word)
+    inherit BaseEntity.BaseEntity(model.Id)
     
-    new() = AdjectivePlural(null, null, null)
+    new() = AdjectivePlural(AdjectivePlural.Default)
 
-    member val Singular = singular with get, set
-    member val Plural = plural with get, set
+    [<SerializeObject>] member val Singular = model.Singular with get, set
+    [<SerializeObject>] member val Plural = model.Plural with get, set

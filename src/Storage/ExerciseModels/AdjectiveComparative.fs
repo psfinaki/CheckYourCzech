@@ -1,16 +1,15 @@
 ﻿module AdjectiveComparative
 
-open Microsoft.WindowsAzure.Storage.Table
+open Exercises
+open Storage
+open Defaults
 
-type AdjectiveComparative(word: string,
-                          positive: string,
-                          comparatives: string,
-                          isRegular: bool) =
+type AdjectiveComparative(model: Exercises.AdjectiveComparative) =
 
-    inherit TableEntity(word, word)
+    inherit BaseEntity.BaseEntity(model.Id)
     
-    new() = AdjectiveComparative(null, null, null, false)
+    new() = AdjectiveComparative(AdjectiveComparative.Default)
 
-    member val Positive = positive with get, set
-    member val Comparatives = comparatives with get, set
-    member val IsRegular = isRegular with get, set
+    [<SerializeObject>] member val Positive = model.Positive with get, set
+    [<SerializeObject>] member val Comparatives = model.Comparatives with get, set
+                        member val IsRegular = model.IsRegular with get, set

@@ -11,8 +11,8 @@ let getAdjectivePluralsTask next (ctx : HttpContext) =
         let! adjective = tryGetRandom<AdjectivePlural.AdjectivePlural> "adjectiveplurals" []
     
         let getTask (adjective: AdjectivePlural.AdjectivePlural) = 
-            let singular = getAs<string> adjective.Singular
-            let plural = getAs<string> adjective.Plural
+            let singular = adjective.Singular
+            let plural = adjective.Plural
             Task(singular, [| plural |])
 
         let task = adjective |> Option.map getTask |> Option.toObj 
@@ -28,8 +28,8 @@ let getAdjectiveComparativesTask next (ctx : HttpContext) =
         let! adjective = tryGetRandom<AdjectiveComparative.AdjectiveComparative> "adjectivecomparatives" filters
     
         let getTask (adjective: AdjectiveComparative.AdjectiveComparative) = 
-            let positive = getAs<string> adjective.Positive
-            let comparatives = getAs<string []> adjective.Comparatives
+            let positive = adjective.Positive
+            let comparatives = adjective.Comparatives
             Task(positive, comparatives)
     
         let task = adjective |> Option.map getTask |> Option.toObj 

@@ -10,7 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Defaults.fs" />
+    <Compile Include="Reflection.fs" />
     <Compile Include="Storage.fs" />
+    <Compile Include="ExerciseModels\BaseEntity.fs" />
     <Compile Include="ExerciseModels\VerbConjugation.fs" />
     <Compile Include="ExerciseModels\VerbImperative.fs" />
     <Compile Include="ExerciseModels\VerbParticiple.fs" />

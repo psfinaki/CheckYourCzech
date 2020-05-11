@@ -1,18 +1,16 @@
 ﻿module NounPlural
 
-open Microsoft.WindowsAzure.Storage.Table
+open Exercises
+open Storage
+open Defaults
 
-type NounPlural(word: string, 
-                singular: string,
-                plurals: string, 
-                gender: string, 
-                patterns: string) =
+type NounPlural(model: Exercises.NounPlural) =
 
-    inherit TableEntity(word, word)
+    inherit BaseEntity.BaseEntity(model.Id)
     
-    new() = NounPlural(null, null, null, null, null)
+    new() = NounPlural(NounPlural.Default)
 
-    member val Singular = singular with get, set
-    member val Plurals = plurals with get, set
-    member val Gender = gender with get, set
-    member val Patterns = patterns with get, set
+    [<SerializeObject>] member val Singular = model.Singular with get, set
+    [<SerializeObject>] member val Plurals = model.Plurals with get, set
+    [<SerializeOption>] member val Gender = model.Gender with get, set
+    [<SerializeObject>] member val Patterns = model.Patterns with get, set

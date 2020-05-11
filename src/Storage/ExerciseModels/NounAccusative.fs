@@ -1,18 +1,16 @@
 ﻿module NounAccusative
 
-open Microsoft.WindowsAzure.Storage.Table
+open Exercises
+open Storage
+open Defaults
 
-type NounAccusative(word: string,
-                    nominative: string,
-                    accusatives: string,
-                    gender: string,
-                    patterns: string) =
+type NounAccusative(model: Exercises.NounAccusative) =
 
-    inherit TableEntity(word, word)
+    inherit BaseEntity.BaseEntity(model.Id)
 
-    new() = NounAccusative(null, null, null, null, null)
+    new() = NounAccusative(NounAccusative.Default)
 
-    member val Nominative = nominative with get, set
-    member val Accusatives = accusatives with get, set
-    member val Gender = gender with get, set
-    member val Patterns = patterns with get, set
+    [<SerializeObject>] member val Nominative = model.Nominative with get, set
+    [<SerializeObject>] member val Accusatives = model.Accusatives with get, set
+    [<SerializeOption>] member val Gender = model.Gender with get, set
+    [<SerializeObject>] member val Patterns = model.Patterns with get, set

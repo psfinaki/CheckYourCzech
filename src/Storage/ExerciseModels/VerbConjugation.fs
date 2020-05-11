@@ -1,27 +1,21 @@
 module VerbConjugation
 
-open Microsoft.WindowsAzure.Storage.Table
+open Exercises
+open Storage
+open Defaults
 
-type VerbConjugation(word: string,
-                     infinitive: string,
-                     pattern: string,
-                     firstSingular: string,
-                     secondSingular: string,
-                     thirdSingular: string,
-                     firstPlural: string,
-                     secondPlural: string,
-                     thirdPlural: string) =
+type VerbConjugation(model: Exercises.VerbConjugation) =
 
-    inherit TableEntity(word, word)
-     
-    new() =  VerbConjugation(null, null, null, null, null, null, null, null, null)
-
-    member val Infinitive = infinitive with get, set
-    member val Pattern = pattern with get, set
+    inherit BaseEntity.BaseEntity(model.Id)
     
-    member val FirstSingular = firstSingular with get, set
-    member val SecondSingular = secondSingular with get, set
-    member val ThirdSingular = thirdSingular with get, set
-    member val FirstPlural = firstPlural with get, set
-    member val SecondPlural = secondPlural with get, set
-    member val ThirdPlural = thirdPlural with get, set
+    new() = VerbConjugation(VerbConjugation.Default)
+
+    [<SerializeObject>] member val Infinitive = model.Infinitive with get, set
+    [<SerializeString>] member val Pattern = model.Pattern with get, set
+    
+    [<SerializeObject>] member val FirstSingular = model.Conjugation.FirstSingular with get, set
+    [<SerializeObject>] member val SecondSingular = model.Conjugation.SecondSingular with get, set
+    [<SerializeObject>] member val ThirdSingular = model.Conjugation.ThirdSingular with get, set
+    [<SerializeObject>] member val FirstPlural = model.Conjugation.FirstPlural with get, set
+    [<SerializeObject>] member val SecondPlural = model.Conjugation.SecondPlural with get, set
+    [<SerializeObject>] member val ThirdPlural = model.Conjugation.ThirdPlural with get, set

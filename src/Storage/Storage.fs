@@ -32,11 +32,9 @@ type QueryCondition =
     | Int
     | String
 
-let serializeObject = JsonConvert.SerializeObject
-let serializeString = string
-let serializeOption<'T> : ('T option -> string) = function | Some v -> v.ToString() | None -> ""
-
-let getAs<'T> = JsonConvert.DeserializeObject<'T>
+type SerializeObject() = inherit Attribute()
+type SerializeString() = inherit Attribute()
+type SerializeOption() = inherit Attribute()
 
 let getTable name =
     async {

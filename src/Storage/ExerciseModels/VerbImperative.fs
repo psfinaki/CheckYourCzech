@@ -1,18 +1,16 @@
 ﻿module VerbImperative
 
-open Microsoft.WindowsAzure.Storage.Table
+open Exercises
+open Storage
+open Defaults
 
-type VerbImperative(word: string,
-                    indicative: string,
-                    imperatives: string,
-                    ``class``: string,
-                    pattern: string) =
+type VerbImperative(model: Exercises.VerbImperative) =
 
-    inherit TableEntity(word, word)
+    inherit BaseEntity.BaseEntity(model.Id)
 
-    new() = VerbImperative(null, null, null, null, null)
+    new() = VerbImperative(VerbImperative.Default)
 
-    member val Indicative = indicative with get, set
-    member val Imperatives = imperatives with get, set
-    member val Class = ``class`` with get, set
-    member val Pattern = pattern with get, set
+    [<SerializeObject>] member val Indicative = model.Indicative with get, set
+    [<SerializeObject>] member val Imperatives = model.Imperatives with get, set
+    [<SerializeOption>] member val Class = model.Class with get, set
+    [<SerializeOption>] member val Pattern = model.Pattern with get, set
