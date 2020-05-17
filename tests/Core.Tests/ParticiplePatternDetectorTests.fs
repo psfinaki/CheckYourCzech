@@ -2,6 +2,7 @@
 
 open Xunit
 open ParticiplePatternDetector
+open Verbs
 
 [<Fact>]
 let ``Detects pattern tisknout``() =

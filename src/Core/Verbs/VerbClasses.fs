@@ -1,22 +1,7 @@
 ﻿module VerbClasses
 
 open StringHelper
-
-type VerbClass = 
-    | E
-    | NE
-    | JE
-    | Í
-    | Á
-
-let translations = 
-    dict [ ("E",  E) 
-           ("NE", NE) 
-           ("JE", JE) 
-           ("Í",  Í) 
-           ("Á",  Á) ]   
-
-let fromString verbClass = translations.[verbClass]
+open Verbs
 
 let getClassByThirdPersonSingular = function
     | form when form |> ends "á"  -> Á

@@ -4,7 +4,7 @@ open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
-open VerbClasses
+open Verbs
 
 type Model = { 
     FilterBlock : FilterBlock.Types.Model

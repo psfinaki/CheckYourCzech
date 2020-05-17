@@ -7,6 +7,7 @@ open Reflexives
 open VerbClasses
 open VerbArticle
 open WikiArticles
+open Verbs
 
 let isPatternTisknoutNonReflexive word = 
     let getStem = removeLast 4

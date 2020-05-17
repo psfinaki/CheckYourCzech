@@ -3,6 +3,7 @@
 open System
 open Xunit
 open VerbClasses
+open Verbs
 
 [<Fact>]
 let ``Gets E class by third person singular``() =
