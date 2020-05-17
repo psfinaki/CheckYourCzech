@@ -2,7 +2,7 @@
 
 open Storage
 open Verb
-open VerbClasses
+open Verbs
 open Conjugation
 open WikiArticles
 
