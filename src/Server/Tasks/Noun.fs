@@ -12,7 +12,7 @@ let getNounPluralsTask next (ctx: HttpContext) =
         let genderFilter = getAzureFilter "Gender" String genderFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilterCondition (pattern: string) (noun: NounPlural.NounPlural) = noun.Patterns.Contains(pattern)
+        let patternFilterCondition (pattern: string) (noun: NounPlural.NounPlural) = noun.Patterns |> Seq.contains pattern
         let patternFilter = getPostFilter patternFilterCondition patternFromQuery
 
         let azureFilters = [ genderFilter ] |> Seq.choose id
@@ -20,8 +20,8 @@ let getNounPluralsTask next (ctx: HttpContext) =
         
         let! noun = tryGetRandomWithFilters<NounPlural.NounPlural> "nounplurals" azureFilters postFilters
         let getTask (noun: NounPlural.NounPlural) = 
-            let singular = getAs<string> noun.Singular
-            let plurals = getAs<string []> noun.Plurals
+            let singular = noun.Singular
+            let plurals = noun.Plurals
             Task(singular, plurals)
         
         let task = noun |> Option.map getTask |> Option.toObj
@@ -34,7 +34,7 @@ let getNounAccusativesTask next (ctx : HttpContext) =
         let genderFilter = getAzureFilter "Gender" String genderFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilterCondition (pattern: string) (noun: NounAccusative.NounAccusative) = noun.Patterns.Contains(pattern)
+        let patternFilterCondition (pattern: string) (noun: NounAccusative.NounAccusative) = noun.Patterns |> Seq.contains pattern
         let patternFilter = getPostFilter patternFilterCondition patternFromQuery
 
         let azureFilters = [ genderFilter ] |> Seq.choose id
@@ -42,8 +42,8 @@ let getNounAccusativesTask next (ctx : HttpContext) =
 
         let! noun = tryGetRandomWithFilters<NounAccusative.NounAccusative> "nounaccusatives" azureFilters postFilters
         let getTask (noun: NounAccusative.NounAccusative) = 
-            let singular = getAs<string> noun.Nominative 
-            let accusatives = getAs<string []> noun.Accusatives
+            let singular = noun.Nominative 
+            let accusatives = noun.Accusatives
             Task(singular, accusatives)
 
         let task = noun |> Option.map getTask |> Option.toObj

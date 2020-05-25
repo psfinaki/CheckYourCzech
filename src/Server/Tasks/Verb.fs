@@ -23,8 +23,8 @@ let getVerbImperativesTask next (ctx : HttpContext) =
         let! verb = tryGetRandom<VerbImperative.VerbImperative> "verbimperatives" filters
 
         let getTask (verb: VerbImperative.VerbImperative) = 
-            let indicative = getAs<string> verb.Indicative
-            let imperatives = getAs<string []> verb.Imperatives
+            let indicative = verb.Indicative
+            let imperatives = verb.Imperatives
             Task(indicative, imperatives)
 
         let task = verb |> Option.map getTask |> Option.toObj 
@@ -46,8 +46,8 @@ let getVerbParticiplesTask next (ctx: HttpContext) =
         let! verb = tryGetRandom<VerbParticiple.VerbParticiple> "verbparticiples" filters
 
         let getTask (verb: VerbParticiple.VerbParticiple) = 
-            let infinitive = getAs<string> verb.Infinitive
-            let participles = getAs<string []> verb.Participles
+            let infinitive = verb.Infinitive
+            let participles = verb.Participles
             Task(infinitive, participles)
 
         let task = verb |> Option.map getTask |> Option.toObj 
@@ -74,8 +74,8 @@ let getVerbConjugationTask next (ctx: HttpContext) =
         let! verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
         let getTask (verb: VerbConjugation.VerbConjugation) =
             let pronoun = getRandomUnion<Pronoun>
-            let infinitive = getAs<string> verb.Infinitive
-            let answers = getAs<string[]> (getConjugation verb pronoun)
+            let infinitive = verb.Infinitive
+            let answers = getConjugation verb pronoun
             let pn = pronounToString pronoun
             let word = sprintf "(%s) %s _____" infinitive pn 
             Task(word, answers)

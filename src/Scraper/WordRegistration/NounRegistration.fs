@@ -4,27 +4,28 @@ open Storage
 open Noun
 open GrammarCategories
 open WikiArticles
+open Exercises
 
 let registerNounPlural nounArticleWithPlural =
     let (NounArticleWithPlural nounArticle) = nounArticleWithPlural
     let (NounArticle { Title = word }) = nounArticle
 
-    let singular = word |> serializeObject
-    let plurals = nounArticle |> getDeclension Case.Nominative Number.Plural |> serializeObject
-    let gender = nounArticle |> getGender |> serializeOption<Gender>
-    let patterns = nounArticle |> getPatterns |> serializeObject
-
-    NounPlural.NounPlural(word, singular, plurals, gender, patterns)
-    |> upsert "nounplurals"
+    upsert "nounplurals" (NounPlural.NounPlural {
+        Id = word
+        Singular = word
+        Plurals = nounArticle |> getDeclension Case.Nominative Number.Plural
+        Gender = nounArticle |> getGender
+        Patterns = nounArticle |> getPatterns
+    })
 
 let registerNounAccusative nounArticleWithAccusative =
     let (NounArticleWithAccusative nounArticle) = nounArticleWithAccusative
     let (NounArticle { Title = word }) = nounArticle
 
-    let nominative = word |> serializeObject
-    let accusatives = nounArticle |> getDeclension Case.Accusative Number.Singular |> serializeObject
-    let gender = nounArticle |> getGender |> serializeOption<Gender>
-    let patterns = nounArticle |> getPatterns |> serializeObject
-
-    NounAccusative.NounAccusative(word, nominative, accusatives, gender, patterns)
-    |> upsert "nounaccusatives"
+    upsert "nounaccusatives" (NounAccusative.NounAccusative {   
+        Id = word
+        Nominative = word
+        Accusatives = nounArticle |> getDeclension Case.Accusative Number.Singular
+        Gender = nounArticle |> getGender
+        Patterns = nounArticle |> getPatterns 
+    })
