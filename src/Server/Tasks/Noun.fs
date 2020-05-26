@@ -12,16 +12,20 @@ let getNounPluralsTask next (ctx: HttpContext) =
         let genderFilter = getAzureFilter "Gender" String genderFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilterCondition (pattern: string) (noun: NounPlural.NounPlural) = noun.Patterns |> Seq.contains pattern
+        let patternFilterCondition (pattern: string) (noun: Noun.Noun) = noun.Patterns |> Seq.contains pattern
         let patternFilter = getPostFilter patternFilterCondition patternFromQuery
 
+        let caseFilter (noun: Noun.Noun) = 
+            noun.SingularNominative |> Seq.any &&
+            noun.PluralNominative |> Seq.any
+
         let azureFilters = [ genderFilter ] |> Seq.choose id
-        let postFilters = [ patternFilter ] |> Seq.choose id
+        let postFilters = [ patternFilter; Some caseFilter ] |> Seq.choose id
         
-        let! noun = tryGetRandomWithFilters<NounPlural.NounPlural> "nounplurals" azureFilters postFilters
-        let getTask (noun: NounPlural.NounPlural) = 
-            let singular = noun.Singular
-            let plurals = noun.Plurals
+        let! noun = tryGetRandomWithFilters<Noun.Noun> "nouns" azureFilters postFilters
+        let getTask (noun: Noun.Noun) = 
+            let singular = noun.SingularNominative |> Seq.random
+            let plurals = noun.PluralNominative
             Task(singular, plurals)
         
         let task = noun |> Option.map getTask |> Option.toObj
@@ -34,16 +38,20 @@ let getNounAccusativesTask next (ctx : HttpContext) =
         let genderFilter = getAzureFilter "Gender" String genderFromQuery
 
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
-        let patternFilterCondition (pattern: string) (noun: NounAccusative.NounAccusative) = noun.Patterns |> Seq.contains pattern
+        let patternFilterCondition (pattern: string) (noun: Noun.Noun) = noun.Patterns |> Seq.contains pattern
         let patternFilter = getPostFilter patternFilterCondition patternFromQuery
 
-        let azureFilters = [ genderFilter ] |> Seq.choose id
-        let postFilters = [ patternFilter ] |> Seq.choose id
+        let caseFilter (noun: Noun.Noun) = 
+            noun.SingularNominative |> Seq.any &&
+            noun.SingularAccusative |> Seq.any
 
-        let! noun = tryGetRandomWithFilters<NounAccusative.NounAccusative> "nounaccusatives" azureFilters postFilters
-        let getTask (noun: NounAccusative.NounAccusative) = 
-            let singular = noun.Nominative 
-            let accusatives = noun.Accusatives
+        let azureFilters = [ genderFilter ] |> Seq.choose id
+        let postFilters = [ patternFilter; Some caseFilter ] |> Seq.choose id
+
+        let! noun = tryGetRandomWithFilters<Noun.Noun> "nouns" azureFilters postFilters
+        let getTask (noun: Noun.Noun) = 
+            let singular = noun.SingularNominative |> Seq.random
+            let accusatives = noun.SingularAccusative
             Task(singular, accusatives)
 
         let task = noun |> Option.map getTask |> Option.toObj

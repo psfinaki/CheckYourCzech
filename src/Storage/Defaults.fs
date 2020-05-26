@@ -2,6 +2,29 @@
 
 open Exercises
 
+type Noun with 
+    static member Default = {
+        Id = null
+        Gender = None
+        Patterns = null
+        Declension = {
+            SingularNominative = null
+            SingularGenitive = null
+            SingularDative = null
+            SingularAccusative = null
+            SingularVocative = null
+            SingularLocative = null
+            SingularInstrumental = null
+            PluralNominative = null
+            PluralGenitive = null
+            PluralDative = null
+            PluralAccusative = null
+            PluralVocative = null
+            PluralLocative = null
+            PluralInstrumental = null
+        }
+    }
+
 type NounPlural with 
     static member Default = {
         Id = null

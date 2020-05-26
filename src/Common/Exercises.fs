@@ -2,6 +2,13 @@
 
 open GrammarCategories
 
+type Noun = {
+    Id: string
+    Gender: Gender option
+    Patterns: seq<string>
+    Declension: Declension
+}
+
 type NounPlural = {
     Id: string
     Singular: string

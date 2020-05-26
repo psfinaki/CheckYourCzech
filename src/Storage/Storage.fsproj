@@ -19,6 +19,7 @@
     <Compile Include="ExerciseModels\VerbParticiple.fs" />
     <Compile Include="ExerciseModels\AdjectiveComparative.fs" />
     <Compile Include="ExerciseModels\AdjectivePlural.fs" />
+    <Compile Include="ExerciseModels\Noun.fs" />
     <Compile Include="ExerciseModels\NounAccusative.fs" />
     <Compile Include="ExerciseModels\NounPlural.fs" />
   </ItemGroup>
