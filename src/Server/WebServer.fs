@@ -4,6 +4,7 @@ open Saturn
 open Tasks
 
 let webApp = router {
+    get "/api/nouns/declension" Noun.getNounDeclensionTask
     get "/api/nouns/plurals" Noun.getNounPluralsTask
     get "/api/nouns/accusatives" Noun.getNounAccusativesTask
     get "/api/adjectives/plurals" Adjective.getAdjectivePluralsTask
