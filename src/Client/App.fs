@@ -20,6 +20,7 @@ let urlParser location = parseHash pageParser location
 
 type PageModel =
     | Home
+    | NounDeclension of NounDeclension.Model
     | NounPlurals of NounPlurals.Model
     | NounAccusatives of NounAccusatives.Model
     | AdjectivePlurals of AdjectivePlurals.Model
@@ -34,6 +35,7 @@ type Model = {
 }
 
 type Msg = 
+    | NounDeclensionMsg of NounDeclension.Msg
     | NounPluralsMsg of NounPlurals.Msg
     | NounAccusativesMsg of NounAccusatives.Msg
     | AdjectivePluralsMsg of AdjectivePlurals.Msg
@@ -47,6 +49,8 @@ let viewPage model dispatch =
     match model.CurrentPage with
     | Home ->
         Home.view ()
+    | NounDeclension m ->
+        NounDeclension.view m (NounDeclensionMsg >> dispatch)
     | NounPlurals m ->
         NounPlurals.view m (NounPluralsMsg >> dispatch)
     | NounAccusatives m ->
@@ -75,6 +79,9 @@ let urlUpdate (result:Page option) model =
         ( model, Navigation.modifyUrl (Pages.toHash Page.Home) )
     | Some Page.Home ->
         updateModelPage model Home, Cmd.none
+    | Some Page.NounDeclension ->
+        let m, cmd = NounDeclension.init()
+        updateModelPage model (NounDeclension m), Cmd.map NounDeclensionMsg cmd
     | Some Page.NounPlurals ->
         let m, cmd = NounPlurals.init()
         updateModelPage model (NounPlurals m), Cmd.map NounPluralsMsg cmd
@@ -107,6 +114,9 @@ let update msg model =
     | NounPluralsMsg msg, NounPlurals m ->
         let m, cmd = NounPlurals.update msg m
         updateModelPage model (NounPlurals m), Cmd.map NounPluralsMsg cmd
+    | NounDeclensionMsg msg, NounDeclension m ->
+        let m, cmd = NounDeclension.update msg m
+        updateModelPage model (NounDeclension m), Cmd.map NounDeclensionMsg cmd
     | NounAccusativesMsg msg, NounAccusatives m ->
         let m, cmd = NounAccusatives.update msg m
         updateModelPage model (NounAccusatives m), Cmd.map NounAccusativesMsg cmd
