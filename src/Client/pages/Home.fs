@@ -17,6 +17,7 @@ let view () =
                     [
                         Column.column [ ] [
                             Markup.wordsCentered "home-column-heading" "Nouns"
+                            Markup.viewLinkCentered "home-column-links" Page.NounDeclension "Make declension (beta)"
                             Markup.viewLinkCentered "home-column-links" Page.NounPlurals "Make plural"
                             Markup.viewLinkCentered "home-column-links" Page.NounAccusatives "Make accusative"
                         ]

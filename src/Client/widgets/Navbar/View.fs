@@ -18,6 +18,8 @@ let private navbarStart dispatch =
                 [ str "Noun" ]
               Navbar.Dropdown.div [ ]
                 [ Navbar.Item.a [ ]
+                    [ Markup.viewLink Page.NounDeclension "Declension (beta)" ]
+                  Navbar.Item.a [ ]
                     [ Markup.viewLink Page.NounPlurals "Plurals" ]
                   Navbar.Item.a [ ]
                     [ Markup.viewLink Page.NounAccusatives "Accusatives" ] 

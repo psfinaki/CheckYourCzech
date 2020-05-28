@@ -5,6 +5,7 @@ open Elmish.Browser.UrlParser
 [<RequireQualifiedAccess>]
 type Page = 
     | Home
+    | NounDeclension
     | NounPlurals
     | NounAccusatives
     | AdjectivePlurals
@@ -16,6 +17,7 @@ type Page =
 let toHash =
     function
     | Page.Home -> "#home"
+    | Page.NounDeclension -> "#nouns-declension"
     | Page.NounPlurals -> "#nouns-plurals"
     | Page.NounAccusatives -> "#nouns-accusatives"
     | Page.AdjectivePlurals -> "#adjectives-plurals"
@@ -27,6 +29,7 @@ let toHash =
 let pageParser : Parser<Page -> Page,_> =
     oneOf
         [ map Page.Home (s "home") 
+          map Page.NounDeclension (s "nouns-declension")
           map Page.NounPlurals (s "nouns-plurals")
           map Page.NounAccusatives (s "nouns-accusatives")
           map Page.AdjectivePlurals (s "adjectives-plurals")
