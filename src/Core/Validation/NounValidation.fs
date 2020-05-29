@@ -35,18 +35,19 @@ let hasRequiredInfo article =
 let parseNoun article = 
     if article |> hasRequiredInfo &&
        article.Title |> (not << isNominalization) &&
-       article.Title |> (not << isReflexive) &&
-       NounArticle article |> hasSingleDeclension Case.Nominative Number.Singular
+       article.Title |> (not << isReflexive)
     
     then Some (NounArticle article)
     else None
 
 let parseNounPlural =
     parseNoun
+    >> Option.filter (hasSingleDeclension Case.Nominative Number.Singular)
     >> Option.filter (hasDeclension Case.Nominative Number.Plural)
     >> Option.map NounArticleWithPlural
 
 let parseNounAccusative =
     parseNoun
+    >> Option.filter (hasSingleDeclension Case.Nominative Number.Singular)
     >> Option.filter (hasDeclension Case.Accusative Number.Singular)
     >> Option.map NounArticleWithAccusative
