@@ -12,8 +12,6 @@ let registerIfValid parse register =
 let recordCzechPartOfSpeech article = function
     | "podstatné jméno" -> [
         article |> registerIfValid NounValidation.parseNoun NounRegistration.registerNoun
-        article |> registerIfValid NounValidation.parseNounPlural NounRegistration.registerNounPlural
-        article |> registerIfValid NounValidation.parseNounAccusative NounRegistration.registerNounAccusative
       ]
 
     | "přídavné jméno" -> [

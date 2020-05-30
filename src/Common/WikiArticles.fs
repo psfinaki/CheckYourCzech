@@ -6,8 +6,6 @@ type Article = {
 }
 
 type NounArticle = NounArticle of Article
-type NounArticleWithPlural = NounArticleWithPlural of NounArticle
-type NounArticleWithAccusative = NounArticleWithAccusative of NounArticle
 
 type AdjectiveArticle = AdjectiveArticle of Article
 type AdjectiveArticleWithPlural = AdjectiveArticleWithPlural of AdjectiveArticle

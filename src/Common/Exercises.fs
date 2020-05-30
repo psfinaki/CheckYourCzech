@@ -9,22 +9,6 @@ type Noun = {
     Declension: Declension
 }
 
-type NounPlural = {
-    Id: string
-    Singular: string
-    Plurals: seq<string>
-    Gender: Gender option
-    Patterns: seq<string>
-}
-
-type NounAccusative = {
-    Id: string
-    Nominative: string
-    Accusatives: seq<string>
-    Gender: Gender option
-    Patterns: seq<string>
-}
-
 type AdjectivePlural = {
     Id: string
     Singular: string

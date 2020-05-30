@@ -3,19 +3,10 @@
 open Reflexives
 open GrammarCategories
 open Article
-open NounArticle
 open GenderTranslations
 open Nominalization
 open Common.Utils
 open WikiArticles
-
-let hasSingleDeclension case number = 
-    getDeclension case number
-    >> Seq.hasOneElement
-
-let hasDeclension case number = 
-    getDeclension case number
-    >> Seq.any
 
 let hasRequiredInfo article =
     article
@@ -39,15 +30,3 @@ let parseNoun article =
     
     then Some (NounArticle article)
     else None
-
-let parseNounPlural =
-    parseNoun
-    >> Option.filter (hasSingleDeclension Case.Nominative Number.Singular)
-    >> Option.filter (hasDeclension Case.Nominative Number.Plural)
-    >> Option.map NounArticleWithPlural
-
-let parseNounAccusative =
-    parseNoun
-    >> Option.filter (hasSingleDeclension Case.Nominative Number.Singular)
-    >> Option.filter (hasDeclension Case.Accusative Number.Singular)
-    >> Option.map NounArticleWithAccusative

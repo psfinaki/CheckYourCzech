@@ -25,24 +25,6 @@ type Noun with
         }
     }
 
-type NounPlural with 
-    static member Default = {
-        Id = null
-        Singular = null
-        Plurals = null
-        Gender = None
-        Patterns = null
-    }
-
-type NounAccusative with 
-    static member Default = {
-        Id = null
-        Nominative = null
-        Accusatives = null
-        Gender = None
-        Patterns = null
-    }
-
 type AdjectivePlural with 
     static member Default = {
         Id = null
