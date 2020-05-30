@@ -43,7 +43,11 @@ let getNounDeclensionTask next (ctx: HttpContext) =
         
         let! noun = tryGetRandomWithFilters<Noun.Noun> "nouns" azureFilters postFilters
         let getTask (noun: Noun.Noun) = 
-            let canonicalForm = noun.SingularNominative |> Seq.random
+            let canonicalForm = 
+                if noun.SingularNominative |> Seq.any
+                then noun.SingularNominative |> Seq.random
+                else noun.PluralNominative |> Seq.random
+
             let answers = noun |> getDeclensionProp (case, number)
             let declension = case.ToString() + " " + number.ToString()
             let word = sprintf "(%s) %s" declension canonicalForm
