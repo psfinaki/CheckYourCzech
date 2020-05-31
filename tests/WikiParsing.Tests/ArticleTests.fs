@@ -1,7 +1,8 @@
-﻿module ArticleTests
+﻿module WikiParsing.Tests.ArticleTests
 
 open Xunit
-open Article
+
+open WikiParsing.Articles.Article
 
 [<Fact>]
 let ``Detects content``() =

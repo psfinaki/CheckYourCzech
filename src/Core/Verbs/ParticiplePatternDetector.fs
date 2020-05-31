@@ -1,7 +1,7 @@
-﻿module ParticiplePatternDetector
+﻿module Core.Verbs.ParticiplePatternDetector
 
 open VerbPatternDetector
-open Verbs
+open Common.Verbs
 
 let getPattern = function
     | verb when verb |> isPatternMinout -> Minout

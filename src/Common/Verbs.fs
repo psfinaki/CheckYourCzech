@@ -1,4 +1,4 @@
-﻿module Verbs
+﻿module Common.Verbs
 
 type VerbClass = E | NE | JE | Í | Á with 
     static member parse = function

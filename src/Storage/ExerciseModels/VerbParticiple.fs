@@ -1,14 +1,15 @@
-﻿module VerbParticiple
+﻿module Storage.ExerciseModels.VerbParticiple
 
-open Exercises
-open Storage
-open Defaults
+open Common
+open Storage.Defaults
+open Storage.Storage
+open BaseEntity
 
 type VerbParticiple(model: Exercises.VerbParticiple) =
 
-    inherit BaseEntity.BaseEntity(model.Id)
+    inherit BaseEntity(model.Id)
 
-    new() = VerbParticiple(VerbParticiple.Default)
+    new() = VerbParticiple(Exercises.VerbParticiple.Default)
 
     [<SerializeObject>] member val Infinitive = model.Infinitive with get, set
     [<SerializeObject>] member val Participles = model.Participles with get, set

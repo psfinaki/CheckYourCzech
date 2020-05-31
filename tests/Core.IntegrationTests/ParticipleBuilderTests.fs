@@ -1,8 +1,9 @@
-﻿module ParticipleBuilderTests
+﻿module Core.IntegrationTests.ParticipleBuilderTests
 
 open Xunit
-open ParticipleBuilder
 open System
+
+open Core.Verbs.ParticipleBuilder
 
 [<Theory>]
 [<InlineData("dělat", "dělal")>]

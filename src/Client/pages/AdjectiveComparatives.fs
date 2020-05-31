@@ -1,10 +1,13 @@
-﻿module AdjectiveComparatives
+﻿module Client.Pages.AdjectiveComparatives
 
 open Elmish
 open Fable.PowerPack.Fetch
 open Fable.Helpers.React
-open Fable.Helpers.React.Props
 open Thoth.Json
+
+open Client
+open Client.Views
+open Client.Widgets
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model

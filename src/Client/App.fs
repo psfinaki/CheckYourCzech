@@ -1,15 +1,17 @@
-module App
+module Client.App
 
 open Elmish
 open Elmish.React
 open Elmish.Browser.UrlParser
 open Elmish.Browser.Navigation
-open Pages
 open Fulma
-open Fable.FontAwesome
-open Fable.FontAwesome.Free
 open Fable.Helpers.React
-open Fable.Helpers.React.Props
+
+open Client
+open Client.AppPages
+open Client.Styles
+open Client.Widgets
+open Client.Pages
 
 #if DEBUG
 open Elmish.Debug
@@ -76,7 +78,7 @@ let updateModelNavbar model newNavbar =
 let urlUpdate (result:Page option) model =
     match result with
     | None ->
-        ( model, Navigation.modifyUrl (Pages.toHash Page.Home) )
+        ( model, Navigation.modifyUrl (toHash Page.Home) )
     | Some Page.Home ->
         updateModelPage model Home, Cmd.none
     | Some Page.NounDeclension ->
@@ -146,7 +148,7 @@ let update msg model =
 let view model dispatch =
     div [] [ 
         Navbar.View.root model.Navbar (NavbarMsg >> dispatch)
-        div [ Styles.center "column" ] (viewPage model dispatch)
+        div [ center "column" ] (viewPage model dispatch)
     ]
 
 Program.mkProgram init update view

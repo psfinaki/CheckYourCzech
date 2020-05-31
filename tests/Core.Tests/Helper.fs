@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Helper
+module Core.Tests.Helper
 
 open Xunit
 

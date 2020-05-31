@@ -1,4 +1,4 @@
-module ImprovedInput.View
+module Client.Widgets.ImprovedInput.View
 
 open Fable.Import.React
 open Fable.Helpers.React

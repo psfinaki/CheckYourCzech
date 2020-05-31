@@ -1,6 +1,6 @@
-﻿module WikiString
+﻿module WikiParsing.WikiString
 
-open StringHelper
+open Common.StringHelper
 
 type private Form = {
     Label: string option

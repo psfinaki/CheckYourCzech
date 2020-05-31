@@ -1,4 +1,4 @@
-﻿module Task
+﻿module Client.Widgets.Task
 
 open Elmish
 open Fable.Helpers.React
@@ -8,11 +8,13 @@ open Fable.Import.React
 open Fable.Core
 open Fable.Core.JsInterop
 open Fable.FontAwesome
-
 open Fulma
 open System
-open Markup
-open ImprovedInput.Types
+
+open Client
+open Client.Markup
+open Client.Widgets.ImprovedInput.Types
+open Client.Widgets
 
 let loadingImage : string = import "*" "../images/loading.gif"
 

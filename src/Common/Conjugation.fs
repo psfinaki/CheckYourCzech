@@ -1,4 +1,4 @@
-module Conjugation
+module Common.Conjugation
 
 type Pronoun =
     | FirstSingular 

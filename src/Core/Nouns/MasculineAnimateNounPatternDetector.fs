@@ -1,8 +1,9 @@
-﻿module MasculineAnimateNounPatternDetector
+﻿module Core.Nouns.MasculineAnimateNounPatternDetector
 
-open NounArticle
-open StringHelper
-open GrammarCategories
+open WikiParsing.Articles.NounArticle
+open Common.StringHelper
+open Common.GrammarCategories
+open Core.Stem
 
 let isPatternPán = 
     getDeclension Case.Genitive Number.Singular
@@ -12,7 +13,7 @@ let isPatternMuž article =
     let nominatives = article |> getDeclension Case.Nominative Number.Singular
     let genitives = article |> getDeclension Case.Genitive Number.Singular
 
-    nominatives |> Seq.exists (Stem.endsSoft) &&
+    nominatives |> Seq.exists (endsSoft) &&
     genitives |> Seq.exists (endsOneOf ["e"; "ě"])
 
 let isPatternPředseda =

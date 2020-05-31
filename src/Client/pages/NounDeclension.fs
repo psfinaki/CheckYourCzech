@@ -1,10 +1,14 @@
-﻿module NounDeclension
+﻿module Client.Pages.NounDeclension
 
 open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
-open GrammarCategories
+
+open Common.GrammarCategories
+open Client.Markup
+open Client.Styles
+open Client.Widgets
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model
@@ -80,9 +84,9 @@ let update msg model =
         
 let view model dispatch =    
     [ 
-        Markup.words "task-heading" "Write corresponding declension for the noun"
+        words "task-heading" "Write corresponding declension for the noun"
 
-        div [ Styles.middle ]
+        div [ middle ]
             [
                 FilterBlock.View.root model.FilterBlock (FilterBlock >> dispatch) 
                     [

@@ -1,8 +1,9 @@
-﻿module AdjectiveArticleTests
+﻿module WikiParsing.Tests.AdjectiveArticleTests
 
 open Xunit
-open AdjectiveArticle
-open WikiArticles
+
+open WikiParsing.Articles.AdjectiveArticle
+open Common.WikiArticles
 
 let getArticle = 
     getArticle

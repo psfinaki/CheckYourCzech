@@ -1,10 +1,15 @@
-﻿module VerbParticiples
+﻿module Client.Pages.VerbParticiples
 
 open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
-open Fable.Helpers.React.Props
+
+open Client
+open Client.Views
+open Client.Markup
+open Client.Styles
+open Client.Widgets
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model
@@ -73,9 +78,9 @@ let update msg model =
 
 let view model dispatch =          
     [ 
-        Markup.words "task-heading" "Write active participle for the verb"
+        words "task-heading" "Write active participle for the verb"
 
-        div [ Styles.middle ]
+        div [ middle ]
             [
                 FilterBlock.View.root model.FilterBlock (FilterBlock >> dispatch) 
                     [

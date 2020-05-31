@@ -1,12 +1,14 @@
-module Tasks.Verb
+module Server.Tasks.Verb
 
 open FSharp.Control.Tasks.V2
 open Giraffe
-open Storage
 open Microsoft.AspNetCore.Http
-open Tasks.Utils
-open Conjugation
+
+open Common.Conjugation
 open Common.Utils
+open Server.Tasks.Utils
+open Storage.ExerciseModels
+open Storage.Storage
 
 let getVerbImperativesTask next (ctx : HttpContext) =
     task {

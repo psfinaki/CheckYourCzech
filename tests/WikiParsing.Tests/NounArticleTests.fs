@@ -1,9 +1,10 @@
-﻿module NounArticleTests
+﻿module WikiParsing.Tests.NounArticleTests
 
 open Xunit
-open NounArticle
-open GrammarCategories
-open WikiArticles
+
+open WikiParsing.Articles.NounArticle
+open Common.GrammarCategories
+open Common.WikiArticles
 
 let getArticle =
     getArticle

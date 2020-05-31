@@ -1,12 +1,12 @@
-﻿module NounValidation
+﻿module Core.Validation.NounValidation
 
-open Reflexives
-open GrammarCategories
-open Article
-open GenderTranslations
-open Nominalization
+open Core.Reflexives
+open Core.Nouns.Nominalization
+open WikiParsing.Articles.Article
+open Common.GenderTranslations
+open Common.GrammarCategories
 open Common.Utils
-open WikiArticles
+open Common.WikiArticles
 
 let hasRequiredInfo article =
     article

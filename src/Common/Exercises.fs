@@ -1,4 +1,4 @@
-﻿module Exercises
+﻿module Common.Exercises
 
 open GrammarCategories
 

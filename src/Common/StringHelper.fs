@@ -1,4 +1,4 @@
-﻿module StringHelper
+﻿module Common.StringHelper
 
 open System.Text.RegularExpressions
 

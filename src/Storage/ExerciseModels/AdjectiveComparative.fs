@@ -1,14 +1,15 @@
-﻿module AdjectiveComparative
+﻿module Storage.ExerciseModels.AdjectiveComparative
 
-open Exercises
-open Storage
-open Defaults
+open Common
+open Storage.Defaults
+open Storage.Storage
+open BaseEntity
 
 type AdjectiveComparative(model: Exercises.AdjectiveComparative) =
 
-    inherit BaseEntity.BaseEntity(model.Id)
+    inherit BaseEntity(model.Id)
     
-    new() = AdjectiveComparative(AdjectiveComparative.Default)
+    new() = AdjectiveComparative(Exercises.AdjectiveComparative.Default)
 
     [<SerializeObject>] member val Positive = model.Positive with get, set
     [<SerializeObject>] member val Comparatives = model.Comparatives with get, set

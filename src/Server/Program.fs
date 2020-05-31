@@ -1,4 +1,4 @@
-module Program
+module Server.Program
 
 open System
 open System.IO

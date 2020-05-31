@@ -1,8 +1,9 @@
-﻿module ReflexivesTests
+﻿module Core.Tests.ReflexivesTests
 
 open Xunit
-open Reflexives
 open System
+
+open Core.Reflexives
 
 [<Theory>]
 [<InlineData "starat se">]

@@ -1,7 +1,8 @@
-﻿module ComparisonTests
+﻿module Core.Tests.ComparisonTests
 
 open Xunit
-open Comparison
+
+open Core.Adjectives.Comparison
 
 [<Fact>]
 let ``Detects syntactic comparison``() = 

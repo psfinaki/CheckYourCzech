@@ -1,10 +1,12 @@
-﻿module Class
+﻿module Client.Widgets.Class
 
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
-open Verbs
+
+open Common.Verbs
+open Client
 
 [<Literal>]
 let ClassUnset = ""

@@ -1,7 +1,8 @@
-﻿module WikiStringTests
+﻿module WikiParsing.Tests.WikiStringTests
 
-open WikiString
 open Xunit
+
+open WikiParsing.WikiString
 
 [<Theory>]
 [<InlineData "">]

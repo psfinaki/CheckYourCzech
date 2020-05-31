@@ -1,12 +1,14 @@
-﻿module NounArticle
+﻿module WikiParsing.Articles.NounArticle
 
 open FSharp.Data
-open GrammarCategories
-open WikiString
+
+open WikiParsing.WikiString
 open Article
+open Common
+open Common.GrammarCategories
 open Common.Utils
-open GenderTranslations
-open WikiArticles
+open Common.GenderTranslations
+open Common.WikiArticles
 
 type EditableArticleOneDeclension = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type EditableArticleTwoDeclensions = HtmlProvider<"https://cs.wiktionary.org/wiki/čtvrt">

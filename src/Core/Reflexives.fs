@@ -1,6 +1,6 @@
-﻿module Reflexives
+﻿module Core.Reflexives
 
-open StringHelper
+open Common.StringHelper
 
 let removeReflexive = remove " se" >> remove " si"
 

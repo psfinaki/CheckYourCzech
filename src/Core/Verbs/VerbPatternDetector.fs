@@ -1,13 +1,13 @@
-﻿module VerbPatternDetector
+﻿module Core.Verbs.VerbPatternDetector
 
-open StringHelper
-open Letters
-open Stem
-open Reflexives
+open Common.StringHelper
+open Common.WikiArticles
+open Common.Verbs
+open Core.Letters
+open Core.Stem
+open Core.Reflexives
 open VerbClasses
-open VerbArticle
-open WikiArticles
-open Verbs
+open WikiParsing.Articles.VerbArticle
 
 let isPatternTisknoutNonReflexive word = 
     let getStem = removeLast 4

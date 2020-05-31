@@ -1,7 +1,8 @@
-﻿module VerbValidationTests
+﻿module Core.IntegrationTests.VerbValidationTests
 
 open Xunit
-open VerbValidation
+
+open Core.Validation.VerbValidation
 
 [<Theory>]
 [<InlineData "spát">]

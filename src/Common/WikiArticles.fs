@@ -1,4 +1,4 @@
-﻿module WikiArticles
+﻿module Common.WikiArticles
 
 type Article = {
     Title: string

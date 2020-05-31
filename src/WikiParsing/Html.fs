@@ -1,4 +1,4 @@
-﻿module Html
+﻿module WikiParsing.Html
 
 open FSharp.Data
 

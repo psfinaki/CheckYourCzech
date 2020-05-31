@@ -1,4 +1,4 @@
-module FilterBlock.View
+module Client.Widgets.FilterBlock.View
 
 open Fable.Helpers.React
 open Fable.Helpers.React.Props

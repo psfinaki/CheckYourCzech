@@ -1,7 +1,8 @@
-﻿module ComparativeBuilderTests
+﻿module Core.Tests.ComparativeBuilderTests
 
 open Xunit
-open ComparativeBuilder
+
+open Core.Adjectives.ComparativeBuilder
 
 [<Theory>]
 [<InlineData("nový", "nov")>]

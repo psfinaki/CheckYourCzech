@@ -1,15 +1,16 @@
-﻿module NounRegistration
+﻿module Scraper.WordRegistration.NounRegistration
 
-open Storage
-open Noun
-open GrammarCategories
-open WikiArticles
-open Exercises
+open Storage.Storage
+open Storage.ExerciseModels.Noun
+open Core.Nouns.Noun
+open Common.GrammarCategories
+open Common.WikiArticles
+open Common.Exercises
 
 let registerNoun nounArticle =
     let (NounArticle { Title = word }) = nounArticle
 
-    upsert "nouns" (Noun.Noun {
+    upsert "nouns" (Noun {
         Id = word
         Gender = nounArticle |> getGender
         Patterns = nounArticle |> getPatterns

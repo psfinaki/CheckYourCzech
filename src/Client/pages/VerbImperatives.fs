@@ -1,10 +1,14 @@
-﻿module VerbImperatives
+﻿module Client.Pages.VerbImperatives
 
 open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
-open Verbs
+
+open Common.Verbs
+open Client.Markup
+open Client.Styles
+open Client.Widgets
 
 type Model = { 
     FilterBlock : FilterBlock.Types.Model
@@ -81,9 +85,9 @@ let update msg model =
 
 let view model dispatch = 
     [ 
-        Markup.words "task-heading" "Write imperative for the verb"
+        words "task-heading" "Write imperative for the verb"
 
-        div [ Styles.middle ]
+        div [ middle ]
             [
                 FilterBlock.View.root model.FilterBlock (FilterBlock >> dispatch) 
                     [

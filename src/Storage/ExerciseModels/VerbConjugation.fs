@@ -1,14 +1,15 @@
-module VerbConjugation
+module Storage.ExerciseModels.VerbConjugation
 
-open Exercises
-open Storage
-open Defaults
+open Common
+open Storage.Defaults
+open Storage.Storage
+open BaseEntity
 
 type VerbConjugation(model: Exercises.VerbConjugation) =
 
-    inherit BaseEntity.BaseEntity(model.Id)
+    inherit BaseEntity(model.Id)
     
-    new() = VerbConjugation(VerbConjugation.Default)
+    new() = VerbConjugation(Exercises.VerbConjugation.Default)
 
     [<SerializeObject>] member val Infinitive = model.Infinitive with get, set
     [<SerializeString>] member val Pattern = model.Pattern with get, set

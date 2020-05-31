@@ -1,9 +1,12 @@
-﻿module AdjectivePlurals
+﻿module Client.Pages.AdjectivePlurals
 
 open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
+
+open Client
+open Client.Widgets
 
 type Model = {
     Task : Task.Model

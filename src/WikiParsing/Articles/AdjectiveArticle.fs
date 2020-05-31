@@ -1,9 +1,10 @@
-﻿module AdjectiveArticle
+﻿module WikiParsing.Articles.AdjectiveArticle
 
 open FSharp.Data
-open WikiString
+
+open WikiParsing.WikiString
 open Article
-open WikiArticles
+open Common.WikiArticles
 
 type WikiAdjective = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
 type WikiAdjectiveNový = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">

@@ -1,9 +1,11 @@
-﻿module Storage
+﻿module Storage.Storage
 
 open System
 open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Table
 open Newtonsoft.Json
+
+open Common
 
 type CloudTable with
     member this.ExecuteQuery (query : TableQuery<'T>) =

@@ -1,4 +1,4 @@
-﻿module Seq 
+﻿module Common.Seq 
 
 open System
 

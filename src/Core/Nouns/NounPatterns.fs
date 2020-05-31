@@ -1,8 +1,8 @@
-﻿module NounPatterns
+﻿module Core.Nouns.NounPatterns
 
-open GenderTranslations
-open NounArticle
-open GrammarCategories
+open Common.GenderTranslations
+open Common.GrammarCategories
+open WikiParsing.Articles.NounArticle
 
 let patternsGenderMap =
     dict [ (MasculineAnimate, MasculineAnimateNounPatternDetector.getPatterns)

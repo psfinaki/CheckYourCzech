@@ -1,8 +1,9 @@
-﻿module NeuterNounPatternDetectorTests
+﻿module Core.IntegrationTests.NeuterNounPatternDetectorTests
 
 open Xunit
-open NeuterNounPatternDetector
-open WikiArticles
+
+open Core.Nouns.NeuterNounPatternDetector
+open Common.WikiArticles
 
 let getArticle =
     getArticle

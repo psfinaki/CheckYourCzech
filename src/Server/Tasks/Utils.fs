@@ -1,4 +1,4 @@
-module Tasks.Utils
+module Server.Tasks.Utils
 
 let getAzureFilter columnName queryCondition = function
     | Ok parameterValue -> Some (columnName, queryCondition, box parameterValue)

@@ -1,4 +1,4 @@
-module Pages
+module Client.AppPages
 
 open Elmish.Browser.UrlParser
 

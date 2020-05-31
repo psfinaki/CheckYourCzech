@@ -1,12 +1,14 @@
-﻿module Article
+﻿module WikiParsing.Articles.Article
 
 open System
 open FSharp.Data
-open Html
 open System.Collections.Generic
 open System.Net.Http
-open StringHelper
-open WikiArticles
+
+open Common
+open Common.StringHelper
+open Common.WikiArticles
+open WikiParsing.Html
 
 type Article = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
