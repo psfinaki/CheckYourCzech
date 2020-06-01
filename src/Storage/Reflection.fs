@@ -1,7 +1,9 @@
-﻿module Reflection
+﻿module Storage.Reflection
 
 open System
 open System.Reflection
+
+open Common
 
 let hasAttribute (attributeType: Type) (prop: PropertyInfo) = 
     prop.GetCustomAttributes(attributeType) |> Seq.any

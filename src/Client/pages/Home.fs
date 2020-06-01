@@ -1,10 +1,11 @@
-module Home
+module Client.Pages.Home
 
-open Fable.Helpers.React
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fulma
-open Pages
+
+open Client
+open Client.AppPages
 
 let view () =
     [

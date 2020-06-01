@@ -1,16 +1,17 @@
-﻿module NeuterNounPatternDetector
+﻿module Core.Nouns.NeuterNounPatternDetector
 
-open NounArticle
-open StringHelper
-open GrammarCategories
-open Letters
+open WikiParsing.Articles.NounArticle
+open Common.StringHelper
+open Common.GrammarCategories
+open Core.Letters
+open Core.Stem
 
 let isPatternMěsto article = 
     let nominatives = article |> getDeclension Case.Nominative Number.Singular
     let genitives = article |> getDeclension Case.Genitive Number.Plural
     
     nominatives |> Seq.exists (ends "o") &&
-    genitives |> Seq.exists (Stem.endsConsonant)
+    genitives |> Seq.exists (endsConsonant)
 
 let isPatternMoře article =
     let singulars = article |> getDeclension Case.Nominative Number.Singular

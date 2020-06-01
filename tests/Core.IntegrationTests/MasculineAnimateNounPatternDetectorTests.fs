@@ -1,8 +1,10 @@
-﻿module MasculineAnimateNounPatternDetectorTests
+﻿module Core.IntegrationTests.MasculineAnimateNounPatternDetectorTests
 
 open Xunit
-open MasculineAnimateNounPatternDetector
-open WikiArticles
+
+open Core.Nouns.MasculineAnimateNounPatternDetector
+open Common.WikiArticles
+open Common
 
 let getArticle =
     getArticle

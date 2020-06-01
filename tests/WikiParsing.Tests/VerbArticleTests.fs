@@ -1,9 +1,10 @@
-﻿module VerbArticleTests
+﻿module WikiParsing.Tests.VerbArticleTests
 
 open Xunit
-open VerbArticle
-open Conjugation
-open WikiArticles
+
+open WikiParsing.Articles.VerbArticle
+open Common.Conjugation
+open Common.WikiArticles
 
 let getArticle =
     getArticle

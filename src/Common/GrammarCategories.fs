@@ -1,4 +1,4 @@
-﻿module GrammarCategories
+﻿module Common.GrammarCategories
 
 type Case = 
     | Nominative

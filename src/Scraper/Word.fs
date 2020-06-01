@@ -1,6 +1,12 @@
-﻿module Word
+﻿module Scraper.Word
 
-open Article
+open Core.Validation.NounValidation
+open Core.Validation.AdjectiveValidation
+open Core.Validation.VerbValidation
+open WikiParsing.Articles.Article
+open WordRegistration.NounRegistration
+open WordRegistration.AdjectiveRegistration
+open WordRegistration.VerbRegistration
 
 let noOperationAsync = async { return () }
 
@@ -11,18 +17,18 @@ let registerIfValid parse register =
 
 let recordCzechPartOfSpeech article = function
     | "podstatné jméno" -> [
-        article |> registerIfValid NounValidation.parseNoun NounRegistration.registerNoun
+        article |> registerIfValid parseNoun registerNoun
       ]
 
     | "přídavné jméno" -> [
-        article |> registerIfValid AdjectiveValidation.parseAdjectivePlural AdjectiveRegistration.registerAdjectivePlural
-        article |> registerIfValid AdjectiveValidation.parseAdjectiveComparative AdjectiveRegistration.registerAdjectiveComparative
+        article |> registerIfValid parseAdjectivePlural registerAdjectivePlural
+        article |> registerIfValid parseAdjectiveComparative registerAdjectiveComparative
       ]
             
     | "sloveso" -> [
-        article |> registerIfValid VerbValidation.parseVerbImperative VerbRegistration.registerVerbImperative
-        article |> registerIfValid VerbValidation.parseVerbParticiple VerbRegistration.registerVerbParticiple
-        article |> registerIfValid VerbValidation.parseVerbConjugation VerbRegistration.registerVerbConjugation
+        article |> registerIfValid parseVerbImperative registerVerbImperative
+        article |> registerIfValid parseVerbParticiple registerVerbParticiple
+        article |> registerIfValid parseVerbConjugation registerVerbConjugation
       ]
 
     | _ -> []

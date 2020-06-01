@@ -1,8 +1,8 @@
-﻿module VerbValidation
+﻿module Core.Validation.VerbValidation
 
-open Article
-open Archaisms
-open WikiArticles
+open WikiParsing.Articles.Article
+open Core.Verbs.Archaisms
+open Common.WikiArticles
 
 let hasRequiredInfoParticiple = 
     isMatch [

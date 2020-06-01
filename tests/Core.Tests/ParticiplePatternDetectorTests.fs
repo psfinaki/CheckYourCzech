@@ -1,8 +1,9 @@
-﻿module ParticiplePatternDetectorTests
+﻿module Core.Tests.ParticiplePatternDetectorTests
 
 open Xunit
-open ParticiplePatternDetector
-open Verbs
+
+open Core.Verbs.ParticiplePatternDetector
+open Common.Verbs
 
 [<Fact>]
 let ``Detects pattern tisknout``() =

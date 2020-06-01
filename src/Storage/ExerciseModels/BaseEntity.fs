@@ -1,12 +1,12 @@
-﻿module BaseEntity
+﻿module Storage.ExerciseModels.BaseEntity
 
 open Microsoft.WindowsAzure.Storage.Table
-open Storage
 open Newtonsoft.Json
-open StringHelper
 open System.Reflection
-open System
-open Reflection
+
+open Common.StringHelper
+open Storage.Storage
+open Storage.Reflection
 
 let private serializeObject = JsonConvert.SerializeObject
 let private serializeString = string

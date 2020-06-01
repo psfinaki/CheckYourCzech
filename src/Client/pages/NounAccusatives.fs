@@ -1,10 +1,13 @@
-﻿module NounAccusatives
+﻿module Client.Pages.NounAccusatives
 
 open Elmish
 open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
-open GrammarCategories
+
+open Common.GrammarCategories
+open Client
+open Client.Widgets
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model

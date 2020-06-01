@@ -1,14 +1,15 @@
-﻿module VerbImperative
+﻿module Storage.ExerciseModels.VerbImperative
 
-open Exercises
-open Storage
-open Defaults
+open Common
+open Storage.Defaults
+open Storage.Storage
+open BaseEntity
 
 type VerbImperative(model: Exercises.VerbImperative) =
 
-    inherit BaseEntity.BaseEntity(model.Id)
+    inherit BaseEntity(model.Id)
 
-    new() = VerbImperative(VerbImperative.Default)
+    new() = VerbImperative(Exercises.VerbImperative.Default)
 
     [<SerializeObject>] member val Indicative = model.Indicative with get, set
     [<SerializeObject>] member val Imperatives = model.Imperatives with get, set

@@ -1,4 +1,4 @@
-﻿module ApplicationInsightsLogger
+﻿module Scraper.ApplicationInsightsLogger
 
 open System
 open Microsoft.ApplicationInsights

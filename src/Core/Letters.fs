@@ -1,4 +1,4 @@
-﻿module Letters 
+﻿module Core.Letters 
 
 let syllabicConsonants = ['l';'r']
 let hardConsonants = ['d';'t';'n']

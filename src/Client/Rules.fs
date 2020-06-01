@@ -1,4 +1,4 @@
-﻿module Rules
+﻿module Client.Rules
 
 let participles = 
     """

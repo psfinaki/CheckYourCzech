@@ -1,7 +1,8 @@
-﻿module VerbPatternDetectorTests
+﻿module Core.Tests.VerbPatternDetectorTests
 
 open Xunit
-open VerbPatternDetector
+
+open Core.Verbs.VerbPatternDetector
 
 [<Fact>]
 let ``Detects pattern tisknout``() =

@@ -1,9 +1,10 @@
-﻿module VerbClassesTests
+﻿module Core.Tests.VerbClassesTests
 
 open System
 open Xunit
-open VerbClasses
-open Verbs
+
+open Core.Verbs.VerbClasses
+open Common.Verbs
 
 [<Fact>]
 let ``Gets E class by third person singular``() =

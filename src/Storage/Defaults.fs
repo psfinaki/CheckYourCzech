@@ -1,6 +1,7 @@
-﻿module Defaults
+﻿module Storage.Defaults
 
-open Exercises
+open Common
+open Common.Exercises
 
 type Noun with 
     static member Default = {

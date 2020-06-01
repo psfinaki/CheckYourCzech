@@ -1,8 +1,9 @@
-﻿module FeminineNounPatternDetectorTests
+﻿module Core.IntegrationTests.FeminineNounPatternDetectorTests
 
 open Xunit
-open FeminineNounPatternDetector
-open WikiArticles
+
+open Core.Nouns.FeminineNounPatternDetector
+open Common.WikiArticles
 
 let getArticle =
     getArticle

@@ -1,9 +1,11 @@
-﻿module Pattern
+﻿module Client.Widgets.Pattern
 
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
+
+open Client
 
 [<Literal>]
 let PatternUnset = ""

@@ -1,9 +1,9 @@
-﻿module MasculineInanimateNounPatternDetector
+﻿module Core.Nouns.MasculineInanimateNounPatternDetector
 
-open NounArticle
-open StringHelper
-open GrammarCategories
-open WikiArticles
+open WikiParsing.Articles.NounArticle
+open Common.StringHelper
+open Common.GrammarCategories
+open Common.WikiArticles
 
 let canBeLoanword = endsOneOf ["us"; "es"; "os"]
 

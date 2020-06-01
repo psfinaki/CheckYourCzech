@@ -1,10 +1,10 @@
-﻿module AdjectiveValidation
+﻿module Core.Validation.AdjectiveValidation
 
-open Article
-open AdjectiveArticle
-open Comparison
-open ComparativeBuilder
-open WikiArticles
+open WikiParsing.Articles.Article
+open WikiParsing.Articles.AdjectiveArticle
+open Core.Adjectives.Comparison
+open Core.Adjectives.ComparativeBuilder
+open Common.WikiArticles
 
 let hasMorphologicalComparatives = 
     getComparatives

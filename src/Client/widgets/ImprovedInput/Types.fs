@@ -1,4 +1,5 @@
-module ImprovedInput.Types
+module Client.Widgets.ImprovedInput.Types
+
 open Fable.Import.React
 
 type Model = { 

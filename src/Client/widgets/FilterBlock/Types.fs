@@ -1,4 +1,4 @@
-module FilterBlock.Types
+module Client.Widgets.FilterBlock.Types
 
 type Model = 
     { IsHidden: bool }

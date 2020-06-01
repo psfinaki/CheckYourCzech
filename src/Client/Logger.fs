@@ -1,4 +1,4 @@
-﻿module Logger
+﻿module Client.Logger
 
 open Fable.Core.JsInterop
 open Fable.Import.Browser

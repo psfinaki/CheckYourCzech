@@ -1,10 +1,11 @@
-﻿module VerbArticle
+﻿module WikiParsing.Articles.VerbArticle
 
 open FSharp.Data
-open WikiString
-open Conjugation
+
+open WikiParsing.WikiString
+open Common.Conjugation
+open Common.WikiArticles
 open Article
-open WikiArticles
 
 type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">

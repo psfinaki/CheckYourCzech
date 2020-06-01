@@ -1,14 +1,15 @@
-﻿module Noun
+﻿module Storage.ExerciseModels.Noun
 
-open Exercises
-open Storage
-open Defaults
+open Common
+open Storage.Defaults
+open Storage.Storage
+open BaseEntity
 
 type Noun(model: Exercises.Noun) = 
     
-    inherit BaseEntity.BaseEntity(model.Id)
+    inherit BaseEntity(model.Id)
 
-    new() = Noun(Noun.Default)
+    new() = Noun(Exercises.Noun.Default)
 
     [<SerializeOption>] member val Gender = model.Gender with get, set
     [<SerializeObject>] member val Patterns = model.Patterns with get, set

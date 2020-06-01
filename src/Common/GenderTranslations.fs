@@ -1,4 +1,4 @@
-﻿module GenderTranslations
+﻿module Common.GenderTranslations
 
 open GrammarCategories
 

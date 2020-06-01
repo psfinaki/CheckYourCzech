@@ -1,4 +1,4 @@
-﻿module BoolExtensioins
+﻿module Client.BoolExtensioins
 
 open System
 

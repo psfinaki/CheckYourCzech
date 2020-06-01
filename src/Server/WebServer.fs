@@ -1,7 +1,8 @@
-module WebServer
+module Server.WebServer
 
 open Saturn
-open Tasks
+
+open Server.Tasks
 
 let webApp = router {
     get "/api/nouns/declension" Noun.getNounDeclensionTask

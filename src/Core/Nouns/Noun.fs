@@ -1,8 +1,11 @@
-﻿module Noun
+﻿module Core.Nouns.Noun
+
+open WikiParsing.Articles
+open Common.GenderTranslations
 
 let getGender = 
     NounArticle.getGender
-    >> Option.map GenderTranslations.fromString
+    >> Option.map fromString
 
 let getPatterns = 
     NounPatterns.getPatterns 

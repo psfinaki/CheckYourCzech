@@ -1,8 +1,10 @@
 ﻿[<AutoOpen>]
-module Helper
+module Core.IntegrationTests.Helper
 
 open System.Net.Http
 open Xunit
+
+open WikiParsing.Articles
 
 let equals (expected: 'T) (actual: 'T) = Assert.Equal<'T>(expected, actual)
 

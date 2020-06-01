@@ -1,4 +1,4 @@
-﻿module Nominalization
+﻿module Core.Nouns.Nominalization
 
 let isNominalization noun =
     let adjectiveEndings = ['ý'; 'á'; 'é'; 'í']

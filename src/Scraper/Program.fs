@@ -1,4 +1,7 @@
-﻿open System
+﻿module Scraper.Program
+
+open System
+
 open Logging
 
 let getEnvironment = 

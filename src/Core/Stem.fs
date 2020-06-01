@@ -1,7 +1,8 @@
-﻿module Stem
+﻿module Core.Stem
 
 open System
-open Letters 
+
+open Letters
 
 type String with
     member this.EndsWith (values: seq<char>) = 

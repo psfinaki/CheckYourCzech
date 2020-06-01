@@ -1,7 +1,8 @@
-﻿module AdjectiveValidationTests
+﻿module Core.IntegrationTests.AdjectiveValidationTests
 
 open Xunit
-open AdjectiveValidation
+
+open Core.Validation.AdjectiveValidation
 
 [<Theory>]
 [<InlineData "nový">]

@@ -1,7 +1,8 @@
-﻿module NounValidationTests
+﻿module Core.IntegrationTests.NounValidationTests
 
 open Xunit
-open NounValidation
+
+open Core.Validation.NounValidation
 
 [<Theory>]
 [<InlineData "láska">]

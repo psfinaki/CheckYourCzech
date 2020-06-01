@@ -1,8 +1,9 @@
-﻿module FeminineNounPatternDetector
+﻿module Core.Nouns.FeminineNounPatternDetector
 
-open NounArticle
-open StringHelper
-open GrammarCategories
+open WikiParsing.Articles.NounArticle
+open Common.StringHelper
+open Common.GrammarCategories
+open Core.Stem
 
 let isPatternŽena article = 
     let nominatives = article |> getDeclension Case.Nominative Number.Singular
@@ -22,7 +23,7 @@ let isPatternPíseň article =
     let nominatives = article |> getDeclension Case.Nominative Number.Singular
     let genitives = article |> getDeclension Case.Genitive Number.Singular
 
-    nominatives |> Seq.exists Stem.endsConsonant &&
+    nominatives |> Seq.exists endsConsonant &&
     genitives |> Seq.exists (endsOneOf ["e"; "ě"])
 
 let isPatternKost article =

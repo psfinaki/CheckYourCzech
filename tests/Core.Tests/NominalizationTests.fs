@@ -1,7 +1,8 @@
-﻿module NominalizationTests
+﻿module Core.Tests.NominalizationTests
 
 open Xunit
-open Nominalization
+
+open Core.Nouns.Nominalization
 
 [<Theory>]
 [<InlineData "Hrabovský">]

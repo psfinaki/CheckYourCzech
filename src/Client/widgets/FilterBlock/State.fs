@@ -1,6 +1,7 @@
-module FilterBlock.State
+module Client.Widgets.FilterBlock.State
 
 open Elmish
+
 open Types
 
 let init () =

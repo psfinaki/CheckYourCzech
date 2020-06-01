@@ -1,7 +1,8 @@
-﻿module ParticipleBuilder
+﻿module Core.Verbs.ParticipleBuilder
 
-open StringHelper
+open Common.StringHelper
 open VerbPatternDetector
+open Core.Reflexives
 
 let buildParticipleTisknout = removeLast 4 >> append "l"
 let buildParticipleMinout = removeLast 4 >> append "nul"
@@ -13,16 +14,16 @@ let buildParticipleNonReflexive = function
     | verb -> buildParticipleCommon verb
 
 let buildParticipleReflexive verb =
-    let reflexive = Reflexives.getReflexive verb
+    let reflexive = getReflexive verb
     
     verb
-    |> Reflexives.removeReflexive
+    |> removeReflexive
     |> buildParticipleNonReflexive
     |> append (" " + reflexive)
 
 let buildParticiple verb =
     if 
-        verb |> Reflexives.isReflexive
+        verb |> isReflexive
     then 
         verb |> buildParticipleReflexive
     else 
