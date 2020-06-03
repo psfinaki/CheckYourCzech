@@ -15,3 +15,19 @@ type VerbArticle = VerbArticle of Article
 type VerbArticleWithImperative = VerbArticleWithImperative of VerbArticle
 type VerbArticleWithParticiple = VerbArticleWithParticiple of VerbArticle
 type VerbArticleWithConjugation = VerbArticleWithConjugation of VerbArticle
+
+type AdjectiveDeclension = {
+    Singular: string
+    Plural: string
+}
+
+type AdjectiveComparison = {
+    Positive: string
+    Comparatives: seq<string>
+}
+
+type Adjective = {
+    CanonicalForm: string
+    Declension: AdjectiveDeclension option
+    Comparison: AdjectiveComparison option
+}
