@@ -3,7 +3,7 @@
 open FSharp.Data
 
 open WikiParsing.WikiString
-open Article
+open WikiParsing.Articles.Article
 open Common.WikiArticles
 
 type WikiAdjective = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
@@ -43,6 +43,18 @@ let getNumberOfDeclensions (AdjectiveArticleWithPlural (AdjectiveArticle article
     ]
     |> Seq.length
 
+let private hasRequiredInfoPlural (AdjectiveArticle article) = 
+    article |> isMatch [
+        Is "přídavné jméno"
+        Is "skloňování"
+    ]
+
+let private hasRequiredInfoComparative (AdjectiveArticle article) =
+    article |> isMatch [
+        Is "přídavné jméno"
+        Is "stupňování"
+    ]
+
 let getPlural article =
     article
     |> getNumberOfDeclensions
@@ -53,3 +65,33 @@ let getComparatives (AdjectiveArticleWithComparative article) =
     |> getAdjectiveProvider
     |> fun data -> data.Tables.``Stupňování[editovat]``.Rows.[1].tvar
     |> getForms
+
+let parseAdjectivePlural article = 
+    if article |> hasRequiredInfoPlural
+    then Some (AdjectiveArticleWithPlural article)
+    else None
+
+let parseAdjectiveComparative article =
+    if article |> hasRequiredInfoComparative
+    then Some (AdjectiveArticleWithComparative article)
+    else None
+
+let parseAdjectiveArticle article =
+    let (AdjectiveArticle { Title = title }) = article
+    {
+        CanonicalForm = title
+        Declension =
+            article
+            |> parseAdjectivePlural
+            |> Option.map (fun article -> { 
+                Singular = title
+                Plural = article |> getPlural 
+            })
+        Comparison = 
+            article
+            |> parseAdjectiveComparative
+            |> Option.map (fun article -> {
+                Positive = title
+                Comparatives = article |> getComparatives
+            })
+    }

@@ -20,10 +20,11 @@ let recordCzechPartOfSpeech article = function
         article |> registerIfValid parseNoun registerNoun
       ]
 
-    | "přídavné jméno" -> [
-        article |> registerIfValid parseAdjectivePlural registerAdjectivePlural
-        article |> registerIfValid parseAdjectiveComparative registerAdjectiveComparative
-      ]
+    | "přídavné jméno" -> 
+        article
+        |> parseAdjective
+        |> Option.map registerAdjective
+        |> Option.defaultValue [ noOperationAsync ]
             
     | "sloveso" -> [
         article |> registerIfValid parseVerbImperative registerVerbImperative
