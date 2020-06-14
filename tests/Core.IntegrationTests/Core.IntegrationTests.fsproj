@@ -14,7 +14,6 @@
   <ItemGroup>
     <Compile Include="Helper.fs" />
     <Compile Include="NounValidationTests.fs" />
-    <Compile Include="VerbValidationTests.fs" />
     <Compile Include="MasculineInanimateNounPatternDetectorTests.fs" />
     <Compile Include="FeminineNounPatternDetectorTests.fs" />
     <Compile Include="NeuterNounPatternDetectorTests.fs" />

@@ -19,7 +19,8 @@
     <None Include="run.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Compile Include="ExerciseCreation.fs" />
+    <Compile Include="ExerciseCreation\Adjectives.fs" />
+    <Compile Include="ExerciseCreation\Verbs.fs" />
     <Compile Include="WordRegistration\VerbRegistration.fs" />
     <Compile Include="WordRegistration\AdjectiveRegistration.fs" />
     <Compile Include="WordRegistration\NounRegistration.fs" />

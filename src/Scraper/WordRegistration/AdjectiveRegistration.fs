@@ -2,7 +2,7 @@
 
 open Common.Exercises
 open Common.WikiArticles
-open Scraper.ExerciseCreation
+open Scraper.ExerciseCreation.Adjectives
 open Storage.Storage
 open Storage.ExerciseModels.AdjectiveComparative
 open Storage.ExerciseModels.AdjectivePlural

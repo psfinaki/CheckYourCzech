@@ -1,13 +1,11 @@
 ﻿module Core.Verbs.VerbPatternDetector
 
 open Common.StringHelper
-open Common.WikiArticles
 open Common.Verbs
 open Core.Letters
 open Core.Stem
 open Core.Reflexives
 open VerbClasses
-open WikiParsing.Articles.VerbArticle
 
 let isPatternTisknoutNonReflexive word = 
     let getStem = removeLast 4
@@ -86,12 +84,7 @@ let patternClassMap =
 
 let getPatternByClass verb verbClass = patternClassMap.[verbClass] verb
 
-let getPattern article = 
-    let (VerbArticle { Title = verb }) = article
-
-    article
-    |> getThirdPersonSingular
-    |> Seq.tryExactlyOne
-    |> Option.map removeReflexive
-    |> Option.map getClassByThirdPersonSingular
-    |> Option.bind (getPatternByClass (verb |> removeReflexive))
+let getPattern verb = 
+    removeReflexive
+    >> getClassByThirdPersonSingular
+    >> getPatternByClass (verb |> removeReflexive)

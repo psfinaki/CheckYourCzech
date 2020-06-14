@@ -44,13 +44,76 @@ let ``Gets participle from the third table``() =
 
 [<Fact>]
 let ``Gets all conjugations``() =
-    let verb = "myslet"
-    let article = verb |> getArticle |> VerbArticleWithConjugation
+    let conjugation = 
+        "myslet" 
+        |> getArticle 
+        |> VerbArticleWithConjugation 
+        |> getConjugation
     
-    getConjugation FirstSingular article  |> seqEquals ["myslím"]
-    getConjugation SecondSingular article |> seqEquals ["myslíš"]
-    getConjugation ThirdSingular article  |> seqEquals ["myslí"]
+    conjugation.FirstSingular |> seqEquals ["myslím"]
+    conjugation.SecondSingular |> seqEquals ["myslíš"]
+    conjugation.ThirdSingular |> seqEquals ["myslí"]
 
-    getConjugation FirstPlural article    |> seqEquals ["myslíme"]
-    getConjugation SecondPlural article   |> seqEquals ["myslíte"]
-    getConjugation ThirdPlural article    |> seqEquals [ "myslí"; "myslejí"]
+    conjugation.FirstPlural |> seqEquals ["myslíme"]
+    conjugation.SecondPlural |> seqEquals ["myslíte"]
+    conjugation.ThirdPlural |> seqEquals [ "myslí"; "myslejí"]
+
+[<Theory>]
+[<InlineData "spát">]
+[<InlineData "milovat">]
+let ``Detects valid word for conjugations`` word =
+    word
+    |> getArticle
+    |> parseVerbConjugation
+    |> Option.isSome
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "hello">]
+[<InlineData "nový">]
+let ``Detects invalid word for conjugations`` word =
+    word
+    |> getArticle
+    |> parseVerbConjugation
+    |> Option.isSome
+    |> Assert.False
+
+[<Theory>]
+[<InlineData "spát">]
+[<InlineData "milovat">]
+let ``Detects valid word for imperatives`` word =
+    word
+    |> getArticle
+    |> parseVerbImperative
+    |> Option.isSome
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "hello">]
+[<InlineData "nový">]
+let ``Detects invalid word for imperatives`` word =
+    word
+    |> getArticle
+    |> parseVerbImperative
+    |> Option.isSome
+    |> Assert.False
+
+[<Theory>]
+[<InlineData "spát">]
+[<InlineData "milovat">]
+let ``Detects valid word for participles`` word =
+    word
+    |> getArticle
+    |> parseVerbParticiple
+    |> Option.isSome
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "hello">]
+[<InlineData "nový">]
+let ``Detects invalid word for participles`` word =
+    word
+    |> getArticle
+    |> parseVerbParticiple
+    |> Option.isSome
+    |> Assert.False

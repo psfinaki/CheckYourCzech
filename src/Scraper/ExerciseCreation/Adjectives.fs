@@ -1,4 +1,4 @@
-﻿module Scraper.ExerciseCreation
+﻿module Scraper.ExerciseCreation.Adjectives
 
 open Common
 open Common.Exercises
