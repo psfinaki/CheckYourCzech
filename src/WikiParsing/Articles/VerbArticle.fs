@@ -11,6 +11,28 @@ type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
 type WikiParticiplesTable3 = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 
+let private hasRequiredInfoConjugation (VerbArticle article) = 
+    article |> isMatch [
+        Is "sloveso"
+        Is "časování"
+    ]
+
+let private hasRequiredInfoImperative (VerbArticle article) = 
+    article |> ``match`` [
+        Is "sloveso"
+        Is "časování"
+    ]
+    |> Option.map getTables
+    |> Option.map (Seq.map fst)
+    |> Option.map (Seq.contains "Rozkazovací způsob")
+    |> Option.contains true
+
+let private hasRequiredInfoParticiple (VerbArticle article) = 
+    article |> isMatch [
+        Is "sloveso"
+        Is "časování"
+    ]
+
 let getVerbProvider (VerbArticle { Text = text }) =
     text
     |> WikiVerb.Parse
@@ -52,20 +74,60 @@ let getImperatives (VerbArticleWithImperative article) =
     |> fun data -> data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
     |> getForms 
 
-let getConjugation p (VerbArticleWithConjugation article) = 
+let getConjugation (VerbArticleWithConjugation article) = 
     let data = getVerbProvider article
-    let answer =
-        match p with
-        | FirstSingular  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 1.``
-        | SecondSingular -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 2.``
-        | ThirdSingular  -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
-        | FirstPlural    -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 1.``
-        | SecondPlural   -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 2.``
-        | ThirdPlural    -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 3.``
-
-    getForms answer
+    {
+        FirstSingular  = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 1.`` |> getForms
+        SecondSingular = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 2.`` |> getForms
+        ThirdSingular  = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.`` |> getForms
+        FirstPlural    = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 1.`` |> getForms
+        SecondPlural   = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 2.`` |> getForms
+        ThirdPlural    = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 3.`` |> getForms
+    }
 
 let getThirdPersonSingular = 
     getVerbProvider
     >> fun data -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
     >> getForms
+
+let parseVerbConjugation article = 
+    if article |> hasRequiredInfoConjugation
+    then Some (VerbArticleWithConjugation article)
+    else None
+
+let parseVerbImperative article =
+    if article |> hasRequiredInfoImperative
+    then Some (VerbArticleWithImperative article)
+    else None
+
+let parseVerbParticiple article =
+    if article |> hasRequiredInfoParticiple
+    then Some (VerbArticleWithParticiple article)
+    else None
+
+let parseVerbArticle article = 
+    let (VerbArticle { Title = title }) = article
+    {
+        CanonicalForm = title
+        Conjugation =
+            article
+            |> parseVerbConjugation
+            |> Option.map (fun article -> {
+                Infinitive = title
+                Conjugation = article |> getConjugation
+            })
+        Imperative = 
+            article
+            |> parseVerbImperative
+            |> Option.map (fun article -> {
+                Indicative = title
+                Imperatives = article |> getImperatives
+            })
+        Participle =
+            article
+            |> parseVerbParticiple
+            |> Option.map (fun article -> {
+                Infinitive = title
+                Participles = article |> getParticiples
+            })
+    }

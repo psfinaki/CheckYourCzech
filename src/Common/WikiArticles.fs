@@ -1,5 +1,7 @@
 ﻿module Common.WikiArticles
 
+open Conjugation
+
 type Article = {
     Title: string
     Text: string 
@@ -30,4 +32,26 @@ type Adjective = {
     CanonicalForm: string
     Declension: AdjectiveDeclension option
     Comparison: AdjectiveComparison option
+}
+
+type VerbConjugation = {
+    Infinitive: string
+    Conjugation: Conjugation
+}
+
+type VerbImperative = {
+    Indicative: string
+    Imperatives: seq<string>
+}
+
+type VerbParticiple = {
+    Infinitive: string
+    Participles: seq<string>
+}
+
+type Verb = {
+    CanonicalForm: string
+    Conjugation: VerbConjugation option
+    Imperative: VerbImperative option
+    Participle: VerbParticiple option
 }

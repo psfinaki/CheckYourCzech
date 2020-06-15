@@ -26,11 +26,11 @@ let recordCzechPartOfSpeech article = function
         |> Option.map registerAdjective
         |> Option.defaultValue [ noOperationAsync ]
             
-    | "sloveso" -> [
-        article |> registerIfValid parseVerbImperative registerVerbImperative
-        article |> registerIfValid parseVerbParticiple registerVerbParticiple
-        article |> registerIfValid parseVerbConjugation registerVerbConjugation
-      ]
+    | "sloveso" ->
+        article
+        |> parseVerb
+        |> Option.map registerVerb
+        |> Option.defaultValue [ noOperationAsync ]
 
     | _ -> []
     

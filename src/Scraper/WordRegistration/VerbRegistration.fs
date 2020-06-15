@@ -1,52 +1,34 @@
 ﻿module Scraper.WordRegistration.VerbRegistration
 
-open Common.Conjugation
-open Common.Exercises
 open Common.WikiArticles
-open Core.Verbs.Verb
+open Scraper.ExerciseCreation.Verbs
 open Storage.Storage
 open Storage.ExerciseModels.VerbImperative
 open Storage.ExerciseModels.VerbParticiple
 open Storage.ExerciseModels.VerbConjugation
+open WikiParsing.Articles.VerbArticle
 
-let registerVerbImperative verbArticleWithImperative =
-    let (VerbArticleWithImperative verbArticle) = verbArticleWithImperative
-    let (VerbArticle { Title = word }) = verbArticle
+let registerVerbConjugation = VerbConjugation >> upsert "verbconjugation"
+let registerVerbImperative = VerbImperative >> upsert "verbimperatives"
+let registerVerbParticiple = VerbParticiple >> upsert "verbparticiples"
 
-    upsert "verbimperatives" (VerbImperative {
-        Id = word
-        Indicative = word
-        Imperatives = verbArticleWithImperative |> getImperatives
-        Class = verbArticle |> getClass
-        Pattern = verbArticle |> getImperativePattern
-    })
+let registerVerb verbArticle =
+    let verb = parseVerbArticle verbArticle
 
-let registerVerbParticiple verbArticleWithParticiple = 
-    let (VerbArticleWithParticiple verbArticle) = verbArticleWithParticiple
-    let (VerbArticle { Title = word }) = verbArticle
+    let conjugationRegistration = 
+        verb
+        |> VerbConjugation.Create verb.CanonicalForm
+        |> Option.map registerVerbConjugation
 
-    upsert "verbparticiples" (VerbParticiple {
-        Id = word
-        Infinitive = word
-        Participles = verbArticleWithParticiple |> getParticiples
-        Pattern = verbArticle |> getParticiplePattern
-        IsRegular =  verbArticleWithParticiple |> hasRegularParticiple
-    })
+    let imperativeRegistration = 
+        verb
+        |> VerbImperative.Create verb.CanonicalForm
+        |> Option.map registerVerbImperative
 
-let registerVerbConjugation verbConjugationArticle =
-    let (VerbArticleWithConjugation verbArticle) = verbConjugationArticle
-    let (VerbArticle { Title = word }) = verbArticle
+    let participleRegistration = 
+        verb
+        |> VerbParticiple.Create verb.CanonicalForm
+        |> Option.map registerVerbParticiple
 
-    upsert "verbconjugation" (VerbConjugation {
-        Id = word
-        Infinitive = word
-        Pattern =  verbArticle |> getParticiplePattern
-        Conjugation = {
-            FirstSingular = verbConjugationArticle |> getConjugation FirstSingular
-            SecondSingular = verbConjugationArticle |> getConjugation SecondSingular
-            ThirdSingular = verbConjugationArticle |> getConjugation ThirdSingular
-            FirstPlural = verbConjugationArticle |> getConjugation FirstPlural
-            SecondPlural = verbConjugationArticle |> getConjugation SecondPlural
-            ThirdPlural = verbConjugationArticle |> getConjugation ThirdPlural
-        }
-    })
+    [ conjugationRegistration; imperativeRegistration; participleRegistration ] 
+    |> List.choose id
