@@ -1,10 +1,10 @@
-﻿module StringHelper
+﻿module Common.StringHelper
 
 open System.Text.RegularExpressions
 
 let trim (s: string) = s.Trim()
 
-let split (separators: char[]) (s: string) = s.Split separators
+let split (separators: char[]) (s: string) = s.Split separators |> Seq.toList
 
 let starts (value: string) (s: string) = s.StartsWith value
 
@@ -29,4 +29,10 @@ let containsAny (values: seq<string>) (s: string) =
     let containsOne = s.Contains
     values |> Seq.exists containsOne
 
+let contains (s: string) = containsAny [s]
+
 let takeLast n (s: string) = s.Substring (s.Length - n)
+
+let isMatch pattern string = Regex.IsMatch(string, pattern)
+
+let ``match`` pattern string = Regex.Match(string, pattern)

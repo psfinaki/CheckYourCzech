@@ -1,7 +1,8 @@
-﻿module ArchaismsTests
+﻿module Core.Tests.ArchaismsTests
 
 open Xunit
-open Archaisms
+
+open Core.Verbs.Archaisms
 
 [<Theory>]
 [<InlineData "housti">]

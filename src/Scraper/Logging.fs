@@ -1,4 +1,4 @@
-﻿module Logging
+﻿module Scraper.Logging
 
 type LogMessage = 
     | Trace of string

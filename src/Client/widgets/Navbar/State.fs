@@ -1,6 +1,7 @@
-module Navbar.State
+module Client.Widgets.Navbar.State
 
 open Elmish
+
 open Types
 
 let init () =

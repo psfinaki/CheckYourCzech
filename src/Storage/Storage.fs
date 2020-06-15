@@ -1,9 +1,11 @@
-﻿module Storage
+﻿module Storage.Storage
 
 open System
 open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Table
 open Newtonsoft.Json
+
+open Common
 
 type CloudTable with
     member this.ExecuteQuery (query : TableQuery<'T>) =
@@ -32,16 +34,9 @@ type QueryCondition =
     | Int
     | String
 
-let map func serialization defaultValue = 
-    Option.ofObj 
-    >> Option.map (func >> serialization) 
-    >> Option.defaultValue defaultValue
-    
-let serializeObject = JsonConvert.SerializeObject
-let serializeString = string
-let serializeOption<'T> : ('T option -> string) = function | Some v -> v.ToString() | None -> ""
-
-let getAs<'T> = JsonConvert.DeserializeObject<'T>
+type SerializeObject() = inherit Attribute()
+type SerializeString() = inherit Attribute()
+type SerializeOption() = inherit Attribute()
 
 let getTable name =
     async {

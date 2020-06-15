@@ -1,4 +1,4 @@
-module Conjugation
+module Common.Conjugation
 
 type Pronoun =
     | FirstSingular 
@@ -15,3 +15,12 @@ let pronounToString = function
     | FirstPlural     -> "my"
     | SecondPlural    -> "vy"
     | ThirdPlural     -> "oni"
+
+type Conjugation = {
+    FirstSingular: seq<string>
+    SecondSingular: seq<string>
+    ThirdSingular: seq<string>
+    FirstPlural: seq<string>
+    SecondPlural: seq<string>
+    ThirdPlural: seq<string>
+}

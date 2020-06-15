@@ -1,11 +1,12 @@
-﻿module Archaisms
+﻿module Core.Verbs.Archaisms
 
-open StringHelper
+open Common.StringHelper
+open Core.Reflexives
 
 let hasArchaicEnding verb = 
     verb |> ends "ti" || 
     verb |> ends "ci"
 
-let isArchaic = Reflexives.removeReflexive >> hasArchaicEnding
+let isArchaic = removeReflexive >> hasArchaicEnding
 
 let isModern = not << isArchaic

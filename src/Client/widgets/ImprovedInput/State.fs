@@ -1,9 +1,10 @@
-module ImprovedInput.State
+module Client.Widgets.ImprovedInput.State
 
 open Elmish
-open Types
 open Fable.Core.JsInterop
 open Fable.Import.Browser
+
+open Types
 
 let init inputId = { 
     Value = "" 

@@ -1,23 +1,15 @@
-﻿module NounValidation
+﻿module Core.Validation.NounValidation
 
-open Reflexives
-open GrammarCategories
-open Article
-open NounArticle
-open GenderTranslations
-open Nominalization
+open Core.Reflexives
+open Core.Nouns.Nominalization
+open WikiParsing.Articles.Article
+open Common.GenderTranslations
+open Common.GrammarCategories
 open Common.Utils
+open Common.WikiArticles
 
-let hasSingleDeclension case number = 
-    getDeclension case number
-    >> Seq.hasOneElement
-
-let hasDeclension case number = 
-    getDeclension case number
-    >> Seq.any
-
-let hasRequiredInfo word =
-    word
+let hasRequiredInfo article =
+    article
     |> isMatch [
         Is "podstatné jméno"
         Starts "skloňování"
@@ -25,23 +17,16 @@ let hasRequiredInfo word =
 
     &&
 
-    word
+    article
     |> ``match`` [
         Is "podstatné jméno"
     ] 
     |> Option.exists (hasInfo (OneOf (getAllUnion<Gender> |> Seq.map toString)))
 
-let isValidNoun word =
-    word |> hasRequiredInfo &&
-    word |> (not << isNominalization) &&
-    word |> (not << isReflexive) &&
-    word |> hasSingleDeclension Case.Nominative Number.Singular 
-
-let isPluralValid word = 
-    word |> isValidNoun &&
-    word |> hasDeclension Case.Nominative Number.Plural
-
-let isAccusativeValid word = 
-    word |> isValidNoun &&
-    word |> hasDeclension Case.Accusative Number.Singular
-
+let parseNoun article = 
+    if article |> hasRequiredInfo &&
+       article.Title |> (not << isNominalization) &&
+       article.Title |> (not << isReflexive)
+    
+    then Some (NounArticle article)
+    else None

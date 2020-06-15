@@ -1,11 +1,14 @@
-﻿module Article
+﻿module WikiParsing.Articles.Article
 
 open System
 open FSharp.Data
-open Html
 open System.Collections.Generic
-open System.Net
-open StringHelper
+open System.Net.Http
+
+open Common
+open Common.StringHelper
+open Common.WikiArticles
+open WikiParsing.Html
 
 type Article = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 
@@ -29,25 +32,33 @@ let getCondition = function
     | Starts partName -> starts partName
     | OneOf partNames -> fun x -> partNames |> Seq.contains x
 
+let getResponse (client: HttpClient) (url: string) = 
+    url
+    |> client.GetAsync 
+    |> Async.AwaitTask 
+    |> Async.RunSynchronously
+
 let getUrl = (+) wikiUrl
 
-let getHtml = 
-    Uri.EscapeDataString
-    >> getUrl
-    >> Article.Load
-    >> fun data -> data.Html.Descendants()
-
-let getContent =
-    getHtml
-    >> getNodeByClass contentClass
-    >> fun node -> node.Elements()
-
-let tryGetContent word =
-    try 
-        getContent word 
-        |> Some 
-    with | :? KeyNotFoundException | :? ArgumentException | :? WebException -> 
+let getArticle client entry = 
+    let url = entry |> getUrl
+    let response = url |> getResponse client
+    if response.IsSuccessStatusCode
+    then
+        response.Content.ReadAsStringAsync()
+        |> Async.AwaitTask
+        |> Async.RunSynchronously
+        |> fun text -> { Title = entry; Text = text }
+        |> Some
+    else
         None
+
+let getContent { Text = text } =
+    text
+    |> Article.Parse
+    |> fun data -> data.Html.Descendants()
+    |> getNodeByClass contentClass
+    |> fun node -> node.Elements()
 
 let getTables nodes =
     let isTable     (node: HtmlNode) = node.HasName tableElementName
@@ -119,14 +130,17 @@ let hasInfo info =
     getInfos info
     >> (not << Seq.isEmpty)
 
-let isLocked word = 
-    let getLockInfo = 
-        getHtml
-        >> getNodeById navigationId
-        >> fun node -> node.GetInnermostAttributeWithText lockInfoIndicator
-        >> fun attribute -> attribute.Value()
+let isLocked { Title = word; Text = text } = 
+    let getLockIndicator (node: HtmlNode) =
+        (node.GetInnermostAttributeWithText lockInfoIndicator).Value()
 
-    match getLockInfo word with
+    let getLockInfo = 
+        Article.Parse
+        >> fun data -> data.Html.Descendants()
+        >> getNodeById navigationId
+        >> getLockIndicator
+
+    match getLockInfo text with
     | s when s.Contains "Tato stránka je zamčena" -> true
     | s when s.Contains "Editovat tuto stránku" -> false
     | _ -> invalidArg word "odd article"
@@ -141,15 +155,6 @@ let getPartsOfSpeech =
     >> getPart "čeština"
     >> Option.map (getParts >> Seq.map fst >> Seq.filter isPartOfSpeech)
     >> Option.defaultValue Seq.empty
-
-let getArticleName = 
-    let isTitleTag (node: HtmlNode) = node.Name() = "title"
-    let extractName (title: HtmlNode) = title.InnerText().Replace(" – Wikislovník", "")
-
-    getHtml
-    >> Seq.filter isTitleTag
-    >> Seq.exactlyOne
-    >> extractName
 
 let rec private getPartMatch parts nodes = 
     if parts |> Seq.isEmpty
@@ -183,8 +188,8 @@ let rec private getPartMatches parts (nodes: seq<HtmlNode>) =
             Seq.empty
 
 let getCzechContent = 
-    tryGetContent
-    >> Option.bind (getPart "čeština")
+    getContent
+    >> getPart "čeština"
 
 let ``match`` parts =
     getCzechContent

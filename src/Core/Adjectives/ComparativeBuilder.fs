@@ -1,7 +1,7 @@
-﻿module ComparativeBuilder
+﻿module Core.Adjectives.ComparativeBuilder
 
-open Stem
-open StringHelper
+open Core.Stem
+open Common.StringHelper
 
 let getStem (adjective: string) = adjective.TrimEnd('í', 'ý')
 

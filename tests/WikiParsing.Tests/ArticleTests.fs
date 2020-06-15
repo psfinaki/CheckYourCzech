@@ -1,29 +1,18 @@
-﻿module ArticleTests
+﻿module WikiParsing.Tests.ArticleTests
 
 open Xunit
-open Article
 
-[<Theory>]
-[<InlineData "panda">]
-[<InlineData "mnoho myslivců – zajícova smrt">]
-[<InlineData "הַהֶרְגֵּל – טֶבַע שֵׁנִי">]
-[<InlineData "lengyel, magyar – két jó barát, együtt harcol, s issza borát">]
-[<InlineData "El cielo está enladrillado. ¿Quién lo desenladrillará? El desenladrillador que lo desenladrille, buen desenladrillador será.">]
-let ``Gets name`` title =
-    title
-    |> getArticleName
-    |> equals title
+open WikiParsing.Articles.Article
 
 [<Fact>]
 let ``Detects content``() =
     "panda"
-    |> tryGetContent
-    |> Option.isSome
-    |> Assert.True
+    |> Helper.getArticle
 
 [<Fact>]
 let ``Gets children parts``() =
     "ananas"
+    |> Helper.getArticle
     |> getContent
     |> getPart "čeština"
     |> Option.map getParts
@@ -32,15 +21,18 @@ let ``Gets children parts``() =
 
 [<Fact>]
 let ``Detects no children parts``() =
-    "provozovat"
+    "ananas"
+    |> Helper.getArticle
     |> getContent
-    |> getParts
-    |> Seq.map fst
-    |> seqEquals []
+    |> getPart "poznámky"
+    |> Option.map getParts
+    |> Option.map (Seq.map fst)
+    |> Option.contains Seq.empty
 
 [<Fact>]
 let ``Detects child part``() =
     "panda"
+    |> Helper.getArticle
     |> getContent
     |> getPart "čeština"
     |> Option.isSome
@@ -49,6 +41,7 @@ let ``Detects child part``() =
 [<Fact>]
 let ``Detects no child part``() =
     "panda"
+    |> Helper.getArticle
     |> getContent
     |> getPart "ruština"
     |> Option.isSome
@@ -57,6 +50,7 @@ let ``Detects no child part``() =
 [<Fact>]
 let ``Detects children parts - filter``() =
     "panda"
+    |> Helper.getArticle
     |> getContent
     |> hasPartsWhen ((=) "čeština")
     |> Assert.True
@@ -64,6 +58,7 @@ let ``Detects children parts - filter``() =
 [<Fact>]
 let ``Detects no children parts - filter``() =
     "panda"
+    |> Helper.getArticle
     |> getContent
     |> hasPartsWhen ((=) "ruština")
     |> Assert.False
@@ -71,6 +66,7 @@ let ``Detects no children parts - filter``() =
 [<Fact>]
 let ``Gets infos``() = 
     "panda"
+    |> Helper.getArticle
     |> getContent
     |> getPart "čeština"
     |> Option.map (getInfos (Starts "rod") >> Seq.toList)
@@ -79,6 +75,7 @@ let ``Gets infos``() =
 [<Fact>]
 let ``Detects info``() = 
     "mozek"
+    |> Helper.getArticle
     |> getContent
     |> hasInfo (Is "chytrý")
     |> Assert.True
@@ -86,6 +83,7 @@ let ``Detects info``() =
 [<Fact>]
 let ``Detects no info``() = 
     "panda"
+    |> Helper.getArticle
     |> getContent
     |> hasInfo (Is "evil")
     |> Assert.False
@@ -93,6 +91,7 @@ let ``Detects no info``() =
 [<Fact>]
 let ``Gets tables``() =
     "musit"
+    |> Helper.getArticle
     |> getContent
     |> getPart "čeština"
     |> Option.bind (getPart "sloveso")
@@ -104,6 +103,7 @@ let ``Gets tables``() =
 [<Fact>]
 let ``Detects no tables``() =
     "musit"
+    |> Helper.getArticle
     |> getContent
     |> getPart "čeština"
     |> Option.bind (getPart "sloveso")
@@ -115,30 +115,35 @@ let ``Detects no tables``() =
 [<Fact>]
 let ``Detects non-locked article``() =
     "hudba"
+    |> Helper.getArticle 
     |> isLocked
     |> Assert.False
 
 [<Fact>]
 let ``Detects locked article``() =
     "debil"
+    |> Helper.getArticle 
     |> isLocked
     |> Assert.True
 
 [<Fact>]
 let ``Gets parts of speech``() =
     "starý"
+    |> Helper.getArticle 
     |> getPartsOfSpeech
     |> seqEquals [ "podstatné jméno"; "přídavné jméno" ]
 
 [<Fact>]
 let ``Detects no parts of speech``() =
     "hello"
+    |> Helper.getArticle
     |> getPartsOfSpeech
     |> seqEquals []
 
 [<Fact>]
 let ``Gets match``() =
     "panda"
+    |> Helper.getArticle
     |> ``match`` [
         Is "podstatné jméno"
         Is "skloňování"
@@ -149,6 +154,7 @@ let ``Gets match``() =
 [<Fact>]
 let ``Gets no match``() =
     "panda"
+    |> Helper.getArticle
     |> ``match`` [
         Is "přídavné jméno"
         Is "skloňování"
@@ -158,6 +164,7 @@ let ``Gets no match``() =
 [<Fact>]
 let ``Gets matches``() =
     "bus"
+    |> Helper.getArticle
     |> matches [
         Starts "podstatné jméno"
     ]
@@ -167,6 +174,7 @@ let ``Gets matches``() =
 [<Fact>]
 let ``Gets no matches``() =
     "panda"
+    |> Helper.getArticle
     |> matches [
         Is "přídavné jméno"
         Is "skloňování"
@@ -176,6 +184,7 @@ let ``Gets no matches``() =
 [<Fact>]
 let ``Detects match``() =
     "čtvrt"
+    |> Helper.getArticle
     |> isMatch [
         Is "podstatné jméno"
         Starts "skloňování"
@@ -185,6 +194,7 @@ let ``Detects match``() =
 [<Fact>]
 let ``Detects no match``() =
     "bus"
+    |> Helper.getArticle
     |> isMatch [
         Is "přídavné jméno"
         Is "skloňování"

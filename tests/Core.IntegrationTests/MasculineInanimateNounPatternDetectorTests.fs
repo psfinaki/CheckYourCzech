@@ -1,7 +1,14 @@
-﻿module MasculineInanimateNounPatternDetectorTests
+﻿module Core.IntegrationTests.MasculineInanimateNounPatternDetectorTests
 
 open Xunit
-open MasculineInanimateNounPatternDetector
+
+open Core.Nouns.MasculineInanimateNounPatternDetector
+open Common.WikiArticles
+open Common
+
+let getArticle =
+    getArticle
+    >> NounArticle
 
 [<Theory>]
 [<InlineData "strom">]
@@ -15,6 +22,7 @@ open MasculineInanimateNounPatternDetector
 [<InlineData "týl">]
 let ``Detects pattern hrad`` word =
     word
+    |> getArticle
     |> isPatternHrad
     |> Assert.True
 
@@ -25,6 +33,7 @@ let ``Detects pattern hrad`` word =
 [<InlineData "kosmos">]
 let ``Detects not pattern hrad`` word =
     word
+    |> getArticle
     |> isPatternHrad
     |> Assert.False
 
@@ -33,6 +42,7 @@ let ``Detects not pattern hrad`` word =
 [<InlineData "déšť">]
 let ``Detects pattern stroj`` word =
     word
+    |> getArticle
     |> isPatternStroj
     |> Assert.True
 
@@ -45,6 +55,7 @@ let ``Detects pattern stroj`` word =
 [<InlineData "kosmos">]
 let ``Detects not pattern stroj`` word =
     word
+    |> getArticle
     |> isPatternStroj
     |> Assert.False
 
@@ -54,6 +65,7 @@ let ``Detects not pattern stroj`` word =
 [<InlineData "kosmos">]
 let ``Detects pattern rytmus`` word =
     word
+    |> getArticle
     |> isPatternRytmus
     |> Assert.True
 
@@ -65,6 +77,7 @@ let ``Detects pattern rytmus`` word =
 [<InlineData "stroj">]
 let ``Detects not pattern rytmus`` word =
     word
+    |> getArticle
     |> isPatternRytmus
     |> Assert.False
 
@@ -75,6 +88,7 @@ let ``Detects not pattern rytmus`` word =
 [<InlineData "glóbus">]
 let ``Detects multiple patterns`` word =
     word
+    |> getArticle
     |> getPatterns
     |> Seq.containsMultiple
     |> Assert.True

@@ -1,10 +1,12 @@
-﻿module Gender
+﻿module Client.Widgets.Gender
 
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
-open GrammarCategories
+
+open Common.GrammarCategories
+open Client
 
 let translateGender = function
     | "MasculineAnimate" -> MasculineAnimate

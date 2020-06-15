@@ -1,10 +1,11 @@
-﻿module Regularity
+﻿module Client.Widgets.Regularity
 
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
-open BoolExtensioins
+open Client
+open Client.BoolExtensioins
 
 [<Literal>]
 let RegularityUnset = ""

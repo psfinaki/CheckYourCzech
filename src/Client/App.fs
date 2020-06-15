@@ -1,15 +1,17 @@
-module App
+module Client.App
 
 open Elmish
 open Elmish.React
 open Elmish.Browser.UrlParser
 open Elmish.Browser.Navigation
-open Pages
 open Fulma
-open Fable.FontAwesome
-open Fable.FontAwesome.Free
 open Fable.Helpers.React
-open Fable.Helpers.React.Props
+
+open Client
+open Client.AppPages
+open Client.Styles
+open Client.Widgets
+open Client.Pages
 
 #if DEBUG
 open Elmish.Debug
@@ -20,6 +22,7 @@ let urlParser location = parseHash pageParser location
 
 type PageModel =
     | Home
+    | NounDeclension of NounDeclension.Model
     | NounPlurals of NounPlurals.Model
     | NounAccusatives of NounAccusatives.Model
     | AdjectivePlurals of AdjectivePlurals.Model
@@ -34,6 +37,7 @@ type Model = {
 }
 
 type Msg = 
+    | NounDeclensionMsg of NounDeclension.Msg
     | NounPluralsMsg of NounPlurals.Msg
     | NounAccusativesMsg of NounAccusatives.Msg
     | AdjectivePluralsMsg of AdjectivePlurals.Msg
@@ -47,6 +51,8 @@ let viewPage model dispatch =
     match model.CurrentPage with
     | Home ->
         Home.view ()
+    | NounDeclension m ->
+        NounDeclension.view m (NounDeclensionMsg >> dispatch)
     | NounPlurals m ->
         NounPlurals.view m (NounPluralsMsg >> dispatch)
     | NounAccusatives m ->
@@ -72,9 +78,12 @@ let updateModelNavbar model newNavbar =
 let urlUpdate (result:Page option) model =
     match result with
     | None ->
-        ( model, Navigation.modifyUrl (Pages.toHash Page.Home) )
+        ( model, Navigation.modifyUrl (toHash Page.Home) )
     | Some Page.Home ->
         updateModelPage model Home, Cmd.none
+    | Some Page.NounDeclension ->
+        let m, cmd = NounDeclension.init()
+        updateModelPage model (NounDeclension m), Cmd.map NounDeclensionMsg cmd
     | Some Page.NounPlurals ->
         let m, cmd = NounPlurals.init()
         updateModelPage model (NounPlurals m), Cmd.map NounPluralsMsg cmd
@@ -107,6 +116,9 @@ let update msg model =
     | NounPluralsMsg msg, NounPlurals m ->
         let m, cmd = NounPlurals.update msg m
         updateModelPage model (NounPlurals m), Cmd.map NounPluralsMsg cmd
+    | NounDeclensionMsg msg, NounDeclension m ->
+        let m, cmd = NounDeclension.update msg m
+        updateModelPage model (NounDeclension m), Cmd.map NounDeclensionMsg cmd
     | NounAccusativesMsg msg, NounAccusatives m ->
         let m, cmd = NounAccusatives.update msg m
         updateModelPage model (NounAccusatives m), Cmd.map NounAccusativesMsg cmd
@@ -136,7 +148,7 @@ let update msg model =
 let view model dispatch =
     div [] [ 
         Navbar.View.root model.Navbar (NavbarMsg >> dispatch)
-        div [ Styles.center "column" ] (viewPage model dispatch)
+        div [ center "column" ] (viewPage model dispatch)
     ]
 
 Program.mkProgram init update view

@@ -1,9 +1,11 @@
-module WebServer
+module Server.WebServer
 
 open Saturn
-open Tasks
+
+open Server.Tasks
 
 let webApp = router {
+    get "/api/nouns/declension" Noun.getNounDeclensionTask
     get "/api/nouns/plurals" Noun.getNounPluralsTask
     get "/api/nouns/accusatives" Noun.getNounAccusativesTask
     get "/api/adjectives/plurals" Adjective.getAdjectivePluralsTask

@@ -14,7 +14,7 @@
 		<Compile Include="Logger.fs" />
 		<Compile Include="BoolExtensions.fs" />
 		<Compile Include="Rules.fs" />
-		<Compile Include="Pages.fs" />
+		<Compile Include="AppPages.fs" />
 		<Compile Include="Markup.fs" />
 		<Compile Include="Styles.fs" />
 		<Compile Include="views\Rule.fs" />
@@ -32,6 +32,7 @@
 		<Compile Include="widgets\Class.fs" />
 		<Compile Include="widgets\Regularity.fs" />
 		<Compile Include="widgets\Task.fs" />
+		<Compile Include="pages\NounDeclension.fs" />
 		<Compile Include="pages\NounAccusatives.fs" />
 		<Compile Include="pages\VerbParticiples.fs" />
 		<Compile Include="pages\VerbConjugation.fs" />

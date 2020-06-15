@@ -1,13 +1,20 @@
-﻿module FeminineNounPatternDetectorTests
+﻿module Core.IntegrationTests.FeminineNounPatternDetectorTests
 
 open Xunit
-open FeminineNounPatternDetector
+
+open Core.Nouns.FeminineNounPatternDetector
+open Common.WikiArticles
+
+let getArticle =
+    getArticle
+    >> NounArticle
 
 [<Theory>]
 [<InlineData "holka">]
 [<InlineData "dača">]
 let ``Detects pattern žena`` word =
     word
+    |> getArticle 
     |> isPatternŽena
     |> Assert.True
 
@@ -19,6 +26,7 @@ let ``Detects pattern žena`` word =
 [<InlineData "micve">]
 let ``Detects not pattern žena`` word =
     word
+    |> getArticle 
     |> isPatternŽena
     |> Assert.False
 
@@ -31,6 +39,7 @@ let ``Detects not pattern žena`` word =
 [<InlineData "paranoia">]
 let ``Detects pattern růže`` word =
     word
+    |> getArticle
     |> isPatternRůže
     |> Assert.True
 
@@ -41,6 +50,7 @@ let ``Detects pattern růže`` word =
 [<InlineData "noc">]
 let ``Detects not pattern růže`` word =
     word
+    |> getArticle
     |> isPatternRůže
     |> Assert.False
 
@@ -54,6 +64,7 @@ let ``Detects not pattern růže`` word =
 [<InlineData "pouť">]
 let ``Detects pattern píseň`` word =
     word
+    |> getArticle
     |> isPatternPíseň
     |> Assert.True
     
@@ -68,6 +79,7 @@ let ``Detects pattern píseň`` word =
 [<InlineData "lest">]
 let ``Detects not pattern píseň`` word =
     word
+    |> getArticle
     |> isPatternPíseň
     |> Assert.False
     
@@ -81,6 +93,7 @@ let ``Detects not pattern píseň`` word =
 [<InlineData "paměť">]
 let ``Detects pattern kost`` word =
     word
+    |> getArticle
     |> isPatternKost
     |> Assert.True
 
@@ -95,6 +108,7 @@ let ``Detects pattern kost`` word =
 [<InlineData "myš">]
 let ``Detects not pattern kost`` word =
     word
+    |> getArticle
     |> isPatternKost
     |> Assert.False
 
@@ -106,6 +120,7 @@ let ``Detects not pattern kost`` word =
 [<InlineData "noc">]
 let ``Detects no patterns`` word =
     word
+    |> getArticle
     |> getPatterns
     |> Seq.isEmpty
     |> Assert.True

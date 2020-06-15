@@ -13,9 +13,17 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="dictionary.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="run.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="ExerciseCreation\Adjectives.fs" />
+    <Compile Include="ExerciseCreation\Verbs.fs" />
+    <Compile Include="WordRegistration\VerbRegistration.fs" />
+    <Compile Include="WordRegistration\AdjectiveRegistration.fs" />
+    <Compile Include="WordRegistration\NounRegistration.fs" />
     <Compile Include="ApplicationInsightsLogger.fs" />
     <Compile Include="ConsoleLogger.fs" />
     <Compile Include="Logging.fs" />
@@ -25,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.fsproj" />
+    <ProjectReference Include="..\Storage\Storage.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

@@ -1,12 +1,18 @@
-﻿module Adjective
+﻿module Core.Adjectives.Adjective
 
-let getPlural = 
+open Common.WikiArticles
+open WikiParsing.Articles
+open ComparativeBuilder
+
+let getPlural =
     AdjectiveArticle.getPlural
 
 let getComparatives = 
     AdjectiveArticle.getComparatives
 
-let hasRegularComparative word =
-    let theoretical = ComparativeBuilder.buildComparative word
-    let practical = getComparatives word
-    practical |> Array.contains theoretical
+let hasRegularComparative article =
+    let (AdjectiveArticleWithComparative (AdjectiveArticle { Title = word })) = article
+
+    let theoretical = buildComparative word
+    let practical = getComparatives article
+    practical |> Seq.contains theoretical

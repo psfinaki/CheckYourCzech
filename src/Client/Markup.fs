@@ -1,4 +1,4 @@
-module Markup
+module Client.Markup
 
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
@@ -6,6 +6,8 @@ open Fable.Core.JsInterop
 open Fable.Import
 open Elmish.Browser.Navigation
 open Fulma
+
+open Client.AppPages
 
 type Clickability =
     | Clickable
@@ -19,7 +21,7 @@ let goToUrl (e: React.MouseEvent) =
 let viewLinkCentered className page description =
     a [ 
         ClassName className
-        Href (Pages.toHash page)
+        Href (toHash page)
         OnClick goToUrl 
     ] [ 
         str description
@@ -28,7 +30,7 @@ let viewLinkCentered className page description =
 let viewLink page description =
     a [ 
         Style [ Padding "0 20px" ]
-        Href (Pages.toHash page)
+        Href (toHash page)
         OnClick goToUrl 
     ] [ 
         str description

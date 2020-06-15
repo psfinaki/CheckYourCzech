@@ -1,18 +1,21 @@
-module Tasks.Adjective
+module Server.Tasks.Adjective
 
 open FSharp.Control.Tasks.V2
 open Giraffe
-open Storage
 open Microsoft.AspNetCore.Http
-open Tasks.Utils
+
+open Server.Tasks.Utils
+open Storage.Storage
+open Storage.ExerciseModels.AdjectivePlural
+open Storage.ExerciseModels.AdjectiveComparative
 
 let getAdjectivePluralsTask next (ctx : HttpContext) =
     task { 
-        let! adjective = tryGetRandom<AdjectivePlural.AdjectivePlural> "adjectiveplurals" []
+        let! adjective = tryGetRandom<AdjectivePlural> "adjectiveplurals" []
     
-        let getTask (adjective: AdjectivePlural.AdjectivePlural) = 
-            let singular = getAs<string> adjective.Singular
-            let plural = getAs<string> adjective.Plural
+        let getTask (adjective: AdjectivePlural) = 
+            let singular = adjective.Singular
+            let plural = adjective.Plural
             Task(singular, [| plural |])
 
         let task = adjective |> Option.map getTask |> Option.toObj 
@@ -25,11 +28,11 @@ let getAdjectiveComparativesTask next (ctx : HttpContext) =
         let regularityFilter = getAzureFilter "IsRegular" Bool regularityFromQuery
     
         let filters = [ regularityFilter ] |> Seq.choose id
-        let! adjective = tryGetRandom<AdjectiveComparative.AdjectiveComparative> "adjectivecomparatives" filters
+        let! adjective = tryGetRandom<AdjectiveComparative> "adjectivecomparatives" filters
     
-        let getTask (adjective: AdjectiveComparative.AdjectiveComparative) = 
-            let positive = getAs<string> adjective.Positive
-            let comparatives = getAs<string []> adjective.Comparatives
+        let getTask (adjective: AdjectiveComparative) = 
+            let positive = adjective.Positive
+            let comparatives = adjective.Comparatives
             Task(positive, comparatives)
     
         let task = adjective |> Option.map getTask |> Option.toObj 

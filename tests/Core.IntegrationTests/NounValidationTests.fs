@@ -1,36 +1,27 @@
-﻿module NounValidationTests
+﻿module Core.IntegrationTests.NounValidationTests
 
 open Xunit
-open NounValidation
+
+open Core.Validation.NounValidation
 
 [<Theory>]
 [<InlineData "láska">]
 [<InlineData "kachna">]
-let ``Detects valid word for plurals`` word =
+[<InlineData "nůžky">]
+let ``Detects valid word for declension`` word =
     word
-    |> isPluralValid
+    |> getArticle
+    |> parseNoun
+    |> Option.isSome
     |> Assert.True
 
 [<Theory>]
 [<InlineData "hello">]
 [<InlineData "nový">]
-let ``Detects invalid word for plurals`` word =
+[<InlineData "vrchní">]
+let ``Detects invalid word for declension`` word =
     word
-    |> isPluralValid
-    |> Assert.False
-
-[<Theory>]
-[<InlineData "láska">]
-[<InlineData "kachna">]
-let ``Detects valid word for accusatives`` word =
-    word
-    |> isAccusativeValid
-    |> Assert.True
-
-[<Theory>]
-[<InlineData "hello">]
-[<InlineData "nový">]
-let ``Detects invalid word for accusatives`` word =
-    word
-    |> isAccusativeValid
+    |> getArticle
+    |> parseNoun
+    |> Option.isSome
     |> Assert.False

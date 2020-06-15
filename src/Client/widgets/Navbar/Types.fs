@@ -1,4 +1,4 @@
-module Navbar.Types
+module Client.Widgets.Navbar.Types
 
 type Model = 
     { isBurgerOpen: bool }

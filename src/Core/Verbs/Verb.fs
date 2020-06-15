@@ -1,13 +1,16 @@
-﻿module Verb
+﻿module Core.Verbs.Verb
 
-open Conjugation
-open Common.Utils
+open Common.WikiArticles
+open WikiParsing.Articles
+open VerbClasses
+open Core.Reflexives
+open ParticipleBuilder
 
 let getClass = 
     VerbArticle.getThirdPersonSingular
     >> Seq.tryExactlyOne
-    >> Option.map Reflexives.removeReflexive
-    >> Option.map VerbClasses.getClassByThirdPersonSingular
+    >> Option.map removeReflexive
+    >> Option.map getClassByThirdPersonSingular
 
 let getImperatives = 
     VerbArticle.getImperatives
@@ -21,13 +24,12 @@ let getParticiples =
 let getConjugation = 
     VerbArticle.getConjugation
 
-let hasRegularParticiple word = 
-    let theoretical = ParticipleBuilder.buildParticiple word
-    let practical = getParticiples word
-    practical |> Array.contains theoretical
+let hasRegularParticiple article = 
+    let (VerbArticleWithParticiple (VerbArticle { Title = verb })) = article
 
-let getParticiplePattern = 
-    ParticiplePatternDetector.getPattern
+    let theoretical = buildParticiple verb
+    let practical = getParticiples article
+    practical |> Seq.contains theoretical
 
-let getRandomPronoun () = 
-     getRandomUnion<Pronoun>
+let getParticiplePattern (VerbArticle ({ Title = verb })) = 
+    ParticiplePatternDetector.getPattern verb

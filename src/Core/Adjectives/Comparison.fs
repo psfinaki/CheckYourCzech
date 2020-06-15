@@ -1,6 +1,6 @@
-﻿module Comparison
+﻿module Core.Adjectives.Comparison
 
-open StringHelper
+open Common.StringHelper
 
 let isHardPositive = endsOneOf ["ý"; "á"; "é"]
 

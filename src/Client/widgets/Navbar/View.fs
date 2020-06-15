@@ -1,12 +1,12 @@
-module Navbar.View
+module Client.Widgets.Navbar.View
 
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fulma
-open Fable.FontAwesome
 
+open Client
+open Client.AppPages
 open Types
-open Pages
 
 let private navbarStart dispatch =
     Navbar.Start.div [ ]
@@ -18,6 +18,8 @@ let private navbarStart dispatch =
                 [ str "Noun" ]
               Navbar.Dropdown.div [ ]
                 [ Navbar.Item.a [ ]
+                    [ Markup.viewLink Page.NounDeclension "Declension (beta)" ]
+                  Navbar.Item.a [ ]
                     [ Markup.viewLink Page.NounPlurals "Plurals" ]
                   Navbar.Item.a [ ]
                     [ Markup.viewLink Page.NounAccusatives "Accusatives" ] 

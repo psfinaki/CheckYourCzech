@@ -1,12 +1,14 @@
-module Tasks.Verb
+module Server.Tasks.Verb
 
 open FSharp.Control.Tasks.V2
 open Giraffe
-open Storage
 open Microsoft.AspNetCore.Http
-open Tasks.Utils
-open Conjugation
-open Verb
+
+open Common.Conjugation
+open Common.Utils
+open Server.Tasks.Utils
+open Storage.ExerciseModels
+open Storage.Storage
 
 let getVerbImperativesTask next (ctx : HttpContext) =
     task {
@@ -23,8 +25,8 @@ let getVerbImperativesTask next (ctx : HttpContext) =
         let! verb = tryGetRandom<VerbImperative.VerbImperative> "verbimperatives" filters
 
         let getTask (verb: VerbImperative.VerbImperative) = 
-            let indicative = getAs<string> verb.Indicative
-            let imperatives = getAs<string []> verb.Imperatives
+            let indicative = verb.Indicative
+            let imperatives = verb.Imperatives
             Task(indicative, imperatives)
 
         let task = verb |> Option.map getTask |> Option.toObj 
@@ -46,8 +48,8 @@ let getVerbParticiplesTask next (ctx: HttpContext) =
         let! verb = tryGetRandom<VerbParticiple.VerbParticiple> "verbparticiples" filters
 
         let getTask (verb: VerbParticiple.VerbParticiple) = 
-            let infinitive = getAs<string> verb.Infinitive
-            let participles = getAs<string []> verb.Participles
+            let infinitive = verb.Infinitive
+            let participles = verb.Participles
             Task(infinitive, participles)
 
         let task = verb |> Option.map getTask |> Option.toObj 
@@ -63,11 +65,19 @@ let getVerbConjugationTask next (ctx: HttpContext) =
             [ patternFilter ] 
             |> Seq.choose id
         
+        let getConjugation (conjugation: VerbConjugation.VerbConjugation) = function
+            | FirstSingular  -> conjugation.FirstSingular
+            | SecondSingular -> conjugation.SecondSingular
+            | ThirdSingular  -> conjugation.ThirdSingular
+            | FirstPlural    -> conjugation.FirstPlural
+            | SecondPlural   -> conjugation.SecondPlural
+            | ThirdPlural    -> conjugation.ThirdPlural
+
         let! verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
         let getTask (verb: VerbConjugation.VerbConjugation) =
-            let pronoun = getRandomPronoun()
-            let infinitive = getAs<string> verb.Infinitive
-            let answers = getAs<string[]> (verb.Conjugation pronoun)
+            let pronoun = getRandomUnion<Pronoun>
+            let infinitive = verb.Infinitive
+            let answers = getConjugation verb pronoun
             let pn = pronounToString pronoun
             let word = sprintf "(%s) %s _____" infinitive pn 
             Task(word, answers)

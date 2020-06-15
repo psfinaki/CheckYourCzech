@@ -13,9 +13,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helper.fs" />
+    <Compile Include="WikiStringTests.fs" />
     <Compile Include="ArticleTests.fs" />
     <Compile Include="NounArticleTests.fs" />
-    <Compile Include="AdjecitveArticleTests.fs" />
+    <Compile Include="AdjectiveArticleTests.fs" />
     <Compile Include="VerbArticleTests.fs" />
   </ItemGroup>
   <ItemGroup>

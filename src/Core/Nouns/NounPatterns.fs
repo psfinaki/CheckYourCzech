@@ -1,8 +1,8 @@
-﻿module NounPatterns
+﻿module Core.Nouns.NounPatterns
 
-open GenderTranslations
-open NounArticle
-open GrammarCategories
+open Common.GenderTranslations
+open Common.GrammarCategories
+open WikiParsing.Articles.NounArticle
 
 let patternsGenderMap =
     dict [ (MasculineAnimate, MasculineAnimateNounPatternDetector.getPatterns)
@@ -12,13 +12,13 @@ let patternsGenderMap =
 
 let getPatternsByGender word gender = patternsGenderMap.[gender] word
 
-let getPatterns noun = 
-    match noun |> getDeclinability with
+let getPatterns article = 
+    match article |> getDeclinability with
     | Indeclinable ->
         Seq.empty
     | Declinable ->
-        noun
+        article
         |> getGender
         |> Option.map fromString
-        |> Option.map (getPatternsByGender noun)
+        |> Option.map (getPatternsByGender article)
         |> Option.defaultValue Seq.empty

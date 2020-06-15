@@ -1,43 +1,48 @@
-﻿module Word
+﻿module Scraper.Word
 
-open Article
-open Storage
+open Core.Validation.NounValidation
+open Core.Validation.AdjectiveValidation
+open Core.Validation.VerbValidation
+open WikiParsing.Articles.Article
+open WordRegistration.NounRegistration
+open WordRegistration.AdjectiveRegistration
+open WordRegistration.VerbRegistration
 
-let recordCzechPartOfSpeech word = function
+let noOperationAsync = async { return () }
+
+let registerIfValid parse register = 
+    parse
+    >> Option.map register 
+    >> Option.defaultValue noOperationAsync
+
+let recordCzechPartOfSpeech article = function
     | "podstatné jméno" -> [
-        if word |> NounValidation.isPluralValid
-        then word |> NounPlural.NounPlural |> upsert "nounplurals"
-
-        if word |> NounValidation.isAccusativeValid
-        then word |> NounAccusative.NounAccusative |> upsert "nounaccusatives"
+        article |> registerIfValid parseNoun registerNoun
       ]
 
-    | "přídavné jméno" -> [
-        if word |> AdjectiveValidation.isPluralValid
-        then word |> AdjectivePlural.AdjectivePlural |> upsert "adjectiveplurals"
-
-        if word |> AdjectiveValidation.isComparativeValid
-        then word |> AdjectiveComparative.AdjectiveComparative |> upsert "adjectivecomparatives"
-      ]
+    | "přídavné jméno" -> 
+        article
+        |> parseAdjective
+        |> Option.map registerAdjective
+        |> Option.defaultValue [ noOperationAsync ]
             
-    | "sloveso" -> [
-        if word |> VerbValidation.isImperativeValid
-        then word |> VerbImperative.VerbImperative |> upsert "verbimperatives"
-
-        if word |> VerbValidation.isParticipleValid
-        then word |> VerbParticiple.VerbParticiple |> upsert "verbparticiples"
-
-        if word |> VerbValidation.isConjugationValid
-        then word |> VerbConjugation.VerbConjugation |> upsert "verbconjugation"
-      ]
+    | "sloveso" ->
+        article
+        |> parseVerb
+        |> Option.map registerVerb
+        |> Option.defaultValue [ noOperationAsync ]
 
     | _ -> []
     
-let record word =
-    word
-    |> getPartsOfSpeech
-    |> Seq.collect (recordCzechPartOfSpeech word)
-    |> Async.Parallel
-    |> Async.Ignore
-    |> Async.RunSynchronously
+let getTasks article = 
+    article 
+    |> getPartsOfSpeech 
+    |> Seq.collect (recordCzechPartOfSpeech article)
 
+let record client =
+    getArticle client
+    >> Option.map getTasks
+    >> Option.defaultValue Seq.empty
+    >> Async.Parallel
+    >> Async.Ignore
+    >> Async.RunSynchronously

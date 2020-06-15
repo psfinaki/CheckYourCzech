@@ -1,22 +1,25 @@
-﻿module MasculineInanimateNounPatternDetector
+﻿module Core.Nouns.MasculineInanimateNounPatternDetector
 
-open NounArticle
-open StringHelper
-open GrammarCategories
+open WikiParsing.Articles.NounArticle
+open Common.StringHelper
+open Common.GrammarCategories
+open Common.WikiArticles
 
 let canBeLoanword = endsOneOf ["us"; "es"; "os"]
 
-let isPatternHrad = function
-    | noun when noun |> canBeLoanword -> 
-        let singulars = noun |> getDeclension Case.Nominative Number.Singular
-        let plurals = noun |> getDeclension Case.Nominative Number.Plural
+let isPatternHrad article = 
+    let (NounArticle { Title = noun }) = article
+    match article with
+    | article when noun |> canBeLoanword -> 
+        let singulars = article |> getDeclension Case.Nominative Number.Singular
+        let plurals = article |> getDeclension Case.Nominative Number.Plural
         
         let isPluralPatternHrad (singular, plural) = 
             singular |> append "y" = plural
 
         Seq.allPairs singulars plurals |> Seq.exists isPluralPatternHrad
-    | noun ->
-        noun
+    | article ->
+        article
         |> getDeclension Case.Genitive Number.Singular
         |> Seq.exists (endsOneOf ["u"; "a"])
 
@@ -24,11 +27,13 @@ let isPatternStroj =
     getDeclension Case.Nominative Number.Plural
     >> Seq.exists (endsOneOf ["e"; "ě"])
 
-let isPatternRytmus noun =
+let isPatternRytmus article =
+    let (NounArticle { Title = noun }) = article
+
     noun |> canBeLoanword && 
 
-    let singulars = noun |> getDeclension Case.Nominative Number.Singular
-    let plurals = noun |> getDeclension Case.Nominative Number.Plural
+    let singulars = article |> getDeclension Case.Nominative Number.Singular
+    let plurals = article |> getDeclension Case.Nominative Number.Plural
 
     let isPluralPatternRytmus (singular, plural) = 
         singular |> removeLast 2 |> append "y" = plural
@@ -41,9 +46,9 @@ let patternDetectors = [
     (isPatternRytmus, "rytmus")
 ]
 
-let isPattern word patternDetector = fst patternDetector word
+let isPattern article patternDetector = fst patternDetector article
 
-let getPatterns word = 
+let getPatterns article = 
     patternDetectors
-    |> Seq.where (isPattern word)
+    |> Seq.where (isPattern article)
     |> Seq.map snd

@@ -1,59 +1,75 @@
-﻿module NounArticle
+﻿module WikiParsing.Articles.NounArticle
 
 open FSharp.Data
-open GrammarCategories
-open WikiString
+
+open WikiParsing.WikiString
 open Article
+open Common
+open Common.GrammarCategories
 open Common.Utils
-open GenderTranslations
+open Common.GenderTranslations
+open Common.WikiArticles
 
 type EditableArticleOneDeclension = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
 type EditableArticleTwoDeclensions = HtmlProvider<"https://cs.wiktionary.org/wiki/čtvrt">
 type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
 
-let getNumberOfDeclensions =
-    matches [
+let caseColumns = 
+    dict [ Case.Nominative, 0
+           Case.Genitive, 1
+           Case.Dative, 2
+           Case.Accusative, 3
+           Case.Vocative, 4
+           Case.Locative, 5
+           Case.Instrumental, 6 ]
+
+let getNumberOfDeclensions (NounArticle article) =
+    article
+    |> matches [
         Is "podstatné jméno"
         Starts "skloňování"
     ]
-    >> Seq.length
+    |> Seq.length
 
-let getEditable case number word =
-    let numberOfDeclensions = getNumberOfDeclensions word
-    let url = getUrl word
+let getEditable (case: Case) number article =
+    let numberOfDeclensions = getNumberOfDeclensions article
+    let (NounArticle {Title = word; Text = text}) = article
+
+    let caseColumn = caseColumns.[case]
     match numberOfDeclensions with
     | 1 ->
-        let data = EditableArticleOneDeclension.Load url
+        let data = EditableArticleOneDeclension.Parse text
         match number with
         | Singular ->
-            [ data.Tables.``Skloňování[editovat]``.Rows.[case].singulár ]
+            [ data.Tables.``Skloňování[editovat]``.Rows.[caseColumn].singulár ]
         | Plural -> 
-            [ data.Tables.``Skloňování[editovat]``.Rows.[case].plurál ]
+            [ data.Tables.``Skloňování[editovat]``.Rows.[caseColumn].plurál ]
     | 2 ->
-        let data = EditableArticleTwoDeclensions.Load url
+        let data = EditableArticleTwoDeclensions.Parse text
         match number with
         | Singular ->
-            [ data.Tables.``Skloňování (1)[editovat]``.Rows.[case].singulár 
-              data.Tables.``Skloňování (2)[editovat]``.Rows.[case].singulár ]
+            [ data.Tables.``Skloňování (1)[editovat]``.Rows.[caseColumn].singulár 
+              data.Tables.``Skloňování (2)[editovat]``.Rows.[caseColumn].singulár ]
         | Plural -> 
-            [ data.Tables.``Skloňování (1)[editovat]``.Rows.[case].plurál 
-              data.Tables.``Skloňování (2)[editovat]``.Rows.[case].plurál ]
+            [ data.Tables.``Skloňování (1)[editovat]``.Rows.[caseColumn].plurál 
+              data.Tables.``Skloňování (2)[editovat]``.Rows.[caseColumn].plurál ]
     | _ ->
         invalidOp ("Odd word: " + word)
 
-let getLocked case number word =
-    let data = word |> getUrl |> LockedArticle.Load
+let getLocked (case: Case) number (NounArticle { Text = text }) =
+    let data = LockedArticle.Parse text
+    let caseColumn = caseColumns.[case]
     match number with
     | Singular ->
-        [ data.Tables.Skloňování.Rows.[case].singulár ]
+        [ data.Tables.Skloňování.Rows.[caseColumn].singulár ]
     | Plural -> 
-        [ data.Tables.Skloňování.Rows.[case].plurál ]
+        [ data.Tables.Skloňování.Rows.[caseColumn].plurál ]
 
-let getDeclinability word = 
+let getDeclinability (NounArticle article) =
     let hasIndeclinabilityMarkInNounSection = 
         ``match`` [
             Is "podstatné jméno"
-        ] 
+        ]
         >> Option.exists (hasInfo (Is "nesklonné"))
 
     let hasIndeclinabilityMarkInDeclensionSections =
@@ -64,19 +80,22 @@ let getDeclinability word =
         >> Seq.exists (hasInfo (Is "nesklonné"))
 
     if
-        word |> hasIndeclinabilityMarkInNounSection || 
-        word |> hasIndeclinabilityMarkInDeclensionSections
+        article |> hasIndeclinabilityMarkInNounSection || 
+        article |> hasIndeclinabilityMarkInDeclensionSections
     then Indeclinable
     else Declinable
 
-let getDeclensionWiki (case: Case) number word = 
+let getDeclensionWiki (case: Case) number nounArticle =
+    let (NounArticle article) = nounArticle
+    let word = article.Title
+
     match word with
-    | _ when getDeclinability word = Indeclinable ->
+    | _ when getDeclinability nounArticle = Indeclinable ->
         [ word ]
-    | _ when word |> isEditable ->
-        getEditable (int case) number word
-    | _ when word |> isLocked ->
-        getLocked (int case) number word
+    | _ when article |> isEditable ->
+        getEditable case number nounArticle
+    | _ when article |> isLocked ->
+        getLocked case number nounArticle
     | word -> 
         invalidOp ("Odd word: " + word)
 
@@ -85,10 +104,11 @@ let getDeclension case number =
     >> Seq.collect getForms
     >> Seq.distinct
 
-let getGender =
-    ``match`` [
+let getGender (NounArticle article) =
+    article
+    |> ``match`` [
         Is "podstatné jméno"
     ] 
-    >> Option.map (getInfos (OneOf (getAllUnion<Gender> |> Seq.map toString)))
-    >> Option.filter Seq.hasOneElement
-    >> Option.map Seq.exactlyOne
+    |> Option.map (getInfos (OneOf (getAllUnion<Gender> |> Seq.map toString)))
+    |> Option.filter Seq.hasOneElement
+    |> Option.map Seq.exactlyOne
