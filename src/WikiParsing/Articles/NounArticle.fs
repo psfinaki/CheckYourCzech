@@ -130,3 +130,32 @@ let getGender (NounArticle article) =
     |> Option.map (getInfos (OneOf (getAllUnion<Gender> |> Seq.map toString)))
     |> Option.filter Seq.hasOneElement
     |> Option.map Seq.exactlyOne
+
+let hasRequiredInfoGender (NounArticle article) = 
+    article
+    |> ``match`` [
+        Is "podstatné jméno"
+    ] 
+    |> Option.exists (hasInfo (OneOf (getAllUnion<Gender> |> Seq.map toString)))
+
+let hasRequiredInfoDeclension (NounArticle article) =
+    article
+    |> isMatch [
+        Is "podstatné jméno"
+        Starts "skloňování"
+    ]
+
+let parseNounArticle article = 
+    let (NounArticle { Title = title }) = article
+    {
+        CanonicalForm = title
+        Declinability = article |> getDeclinability
+        Gender = 
+            if article |> hasRequiredInfoGender
+            then article |> getGender |> Option.map fromString
+            else None
+        Declension = 
+            if article |> hasRequiredInfoDeclension
+            then article |> getDeclension |> Some
+            else None
+    }

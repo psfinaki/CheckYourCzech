@@ -16,9 +16,11 @@ let registerIfValid parse register =
     >> Option.defaultValue noOperationAsync
 
 let recordCzechPartOfSpeech article = function
-    | "podstatné jméno" -> [
-        article |> registerIfValid parseNoun registerNoun
-      ]
+    | "podstatné jméno" ->
+        article 
+        |> parseNoun
+        |> Option.map registerNoun
+        |> Option.defaultValue [ noOperationAsync ]
 
     | "přídavné jméno" -> 
         article
