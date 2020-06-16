@@ -141,7 +141,7 @@ let view model dispatch =
         | Home -> true
         | _ -> false
     div [] [ 
-        Widgets.Navbar.root isHome (NavbarMsg >> dispatch)
+        Navbar.root isHome dispatch
         div [ center "column" ] (viewPage model dispatch)
     ]
 
