@@ -1,0 +1,13 @@
+$primary-color: #3273dc;
+$incorrect-color: $danger;
+$incorrect-color-lightened: lighten($incorrect-color, 35%);
+$correct-color: $success;
+$correct-color-lightened: lighten($correct-color, 45%);
+$filter-block-color: #808080;
+$task-link-block-color: whitesmoke;
+$filter-arrow-animation-speed: 0.30s;
+$general-black-color: #4a4a4a;
+
+$noun-block-color: purple;
+$adjective-block-color: orange;
+$verb-block-color: green;

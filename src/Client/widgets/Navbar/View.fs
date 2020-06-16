@@ -58,16 +58,10 @@ let private navbarView isBurgerOpen dispatch =
                 [ Navbar.Brand.div [ ]
                     [ Navbar.Item.a [ Navbar.Item.Props [ Href "#" ] ]
                         [ Heading.p [ Heading.Is4 ]
-                            [ str "Check Your Czech" ] ]
-                      // Make sure to have the navbar burger as the last child of the brand
-                      Navbar.burger [ Fulma.Common.CustomClass (if isBurgerOpen then "is-active" else "")
-                                      Fulma.Common.Props [
-                                        OnClick (fun _ -> dispatch ToggleBurger) ] ]
-                        [ span [ ] [ ]
-                          span [ ] [ ]
-                          span [ ] [ ] ] ]
-                  Navbar.menu [ Navbar.Menu.IsActive isBurgerOpen ]
-                    [ navbarStart dispatch ] ] ] 
+                            [ str "Check Your Czech" ] ] 
+                    ]
+                ] 
+        ]
 
 let root model dispatch =
     navbarView model.isBurgerOpen dispatch

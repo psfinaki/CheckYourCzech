@@ -15,17 +15,15 @@ type Clickability =
 
 let goToUrl (e: React.MouseEvent) =
     e.preventDefault()
-    let href = !!e.target?href
+    let href = !!e.currentTarget?href
     Navigation.newUrl href |> List.map (fun f -> f ignore) |> ignore
 
-let viewLinkCentered className page description =
+let viewLinkCentered className page children =
     a [ 
         ClassName className
         Href (toHash page)
         OnClick goToUrl 
-    ] [ 
-        str description
-    ]
+    ] children
 
 let viewLink page description =
     a [ 

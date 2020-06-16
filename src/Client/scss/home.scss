@@ -1,0 +1,117 @@
+@import './colors.scss';
+
+@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
+    .navbar-brand {
+        float: none;
+        padding: 0px;
+    }
+
+    .navbar-item {
+        .title {
+            text-decoration: underline;
+            text-decoration-color: $primary-color;
+        }
+
+        .title::first-letter { 
+            color: $primary-color;
+        }
+    }
+
+    span.task-heading {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    span.home-subheading {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    div.home-columns {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .home-columns {
+        .column {
+            display: flex;
+            flex-direction: column;
+            margin: 0 10px;
+        }
+    }
+
+    div.home-column-heading {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .home-link-container {
+        display: flex;
+    }
+
+    a.home-column-links {
+        display: flex;
+
+        background: $task-link-block-color;
+        text-align: center;
+        font-size: 20px;
+
+        height: 110px;
+        width: 110px;
+        border-radius: 10px;
+        margin-right: 10px;
+        color: $general-black-color;
+        div {
+            font-size: 14px;
+        }
+
+        div.link-letter {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    }
+
+    .link-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: space-between;
+        flex: 1;
+    }
+
+    
+
+    .noun-color {
+        color: $noun-block-color
+    }
+
+    .adjective-color {
+        color: $adjective-block-color
+    }
+
+    .verb-color {
+        color: $verb-block-color
+    }
+}
+
+@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+    span.task-heading {
+        font-size: 60px;
+        font-weight: normal;
+        margin-bottom: 30px;
+    } 
+
+    span.home-heading {
+        font-size: 100px;
+    }
+
+    div.home-column-heading {
+        font-size: 30px;
+    }
+
+    a.home-column-links {
+        font-size: 30px;
+    }
+}
