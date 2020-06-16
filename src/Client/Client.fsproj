@@ -18,9 +18,7 @@
 		<Compile Include="Markup.fs" />
 		<Compile Include="Styles.fs" />
 		<Compile Include="views\Rule.fs" />
-		<Compile Include="widgets\Navbar\Types.fs" />
-		<Compile Include="widgets\Navbar\State.fs" />
-		<Compile Include="widgets\Navbar\View.fs" />
+		<Compile Include="widgets\Navbar.fs" />
 		<Compile Include="widgets\ImprovedInput\Types.fs" />
 		<Compile Include="widgets\ImprovedInput\State.fs" />
 		<Compile Include="widgets\ImprovedInput\View.fs" />

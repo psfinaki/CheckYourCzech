@@ -48,6 +48,9 @@
 
     .home-link-container {
         display: flex;
+        a.home-column-links:not(:last-child) {
+            margin-right: 10px;
+        }
     }
 
     a.home-column-links {
@@ -57,10 +60,10 @@
         text-align: center;
         font-size: 20px;
 
-        height: 110px;
-        width: 110px;
+        min-height: 110px;
+        min-width: 110px;
         border-radius: 10px;
-        margin-right: 10px;
+
         color: $general-black-color;
         div {
             font-size: 14px;
@@ -108,10 +111,27 @@
     }
 
     div.home-column-heading {
+        text-align: center;
         font-size: 30px;
+    }
+
+    .home-link-container {
+        flex-direction: column;
+        a.home-column-links:not(:last-child) {
+            margin-bottom: 20px;
+        }
     }
 
     a.home-column-links {
         font-size: 30px;
+        width: 100%;
+
+        div.link-letter {
+            display: none;
+        }
+        div {
+            font-size: 30px;
+            font-weight: bold;
+        }
     }
 }

@@ -11,7 +11,7 @@ let linkBlock text colorClass =
     let firstSymbol: char = Seq.head text
     [
         div [ ClassName (sprintf "link-letter %s" colorClass) ] [str (firstSymbol.ToString())]
-        div [] [str text]
+        div [ ClassName colorClass] [str text]
     ]
 
 let view () =
