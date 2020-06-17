@@ -4,7 +4,6 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fulma
 
-
 let private navbarView isHome dispatch =
     let backArrow = 
         Icon.icon [ Icon.Size IsSmall ]
