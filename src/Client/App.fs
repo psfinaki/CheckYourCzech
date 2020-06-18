@@ -33,7 +33,6 @@ type PageModel =
 
 type Model = {
     CurrentPage: PageModel
-    Navbar: Navbar.Types.Model
 }
 
 type Msg = 
@@ -45,7 +44,6 @@ type Msg =
     | VerbImperativesMsg of VerbImperatives.Msg
     | VerbParticiplesMsg of VerbParticiples.Msg
     | VerbConjugationMsg of VerbConjugation.Msg
-    | NavbarMsg of Navbar.Types.Msg
 
 let viewPage model dispatch =
     match model.CurrentPage with
@@ -69,11 +67,7 @@ let viewPage model dispatch =
         VerbConjugation.view m (VerbConjugationMsg >> dispatch)
 
 let updateModelPage model newPage = 
-    let resetNavbar = {model.Navbar with isBurgerOpen = false}
-    {model with CurrentPage = newPage; Navbar = resetNavbar}
-
-let updateModelNavbar model newNavbar = 
-    {model with Navbar = newNavbar}
+    {model with CurrentPage = newPage}
 
 let urlUpdate (result:Page option) model =
     match result with
@@ -108,8 +102,7 @@ let urlUpdate (result:Page option) model =
 
 let init result = 
     Logger.setup()
-    let m = Navbar.State.init()
-    urlUpdate result {CurrentPage = Home; Navbar = m}
+    urlUpdate result {CurrentPage = Home}
 
 let update msg model =
     match msg, model.CurrentPage with
@@ -136,18 +129,19 @@ let update msg model =
         updateModelPage model (VerbParticiples m), Cmd.map VerbParticiplesMsg cmd
     | VerbConjugationMsg msg, VerbConjugation m ->
         let m, cmd = VerbConjugation.update msg m
-        updateModelPage model (VerbConjugation m), Cmd.map VerbConjugationMsg cmd    
-    | NavbarMsg msg, _ ->
-        let m, cmd = Navbar.State.update msg model.Navbar
-        updateModelNavbar model m, Cmd.map NavbarMsg cmd
+        updateModelPage model (VerbConjugation m), Cmd.map VerbConjugationMsg cmd
     | _, _ ->
         model, Cmd.none
 
 
 
 let view model dispatch =
+    let isHome = 
+        match model.CurrentPage with 
+        | Home -> true
+        | _ -> false
     div [] [ 
-        Navbar.View.root model.Navbar (NavbarMsg >> dispatch)
+        Navbar.root isHome dispatch
         div [ center "column" ] (viewPage model dispatch)
     ]
 

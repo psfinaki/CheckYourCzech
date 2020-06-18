@@ -1,0 +1,168 @@
+@import './colors.scss';
+
+@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */
+    div.gender-filter     .gender-filter-label,
+    div.regularity-filter .regularity-filter-label,
+    div.pattern-filter    .pattern-filter-label,
+    div.class-filter      .class-filter-label {
+        height: 50%;
+    }
+
+    .task-buttons-container {
+        display: flex;
+        flex: 1;
+        width: 100%;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+
+    .task-button {
+        width: 49%;
+        height: 70px;
+        font-size: 25px;
+    }
+    
+    .task-label.tag {
+        width: 100%;
+        font-size: 25px;
+    }
+
+    .input {
+        border-width: 3px;
+    }
+
+    .task-input-correct {
+        input{
+            border-color: $correct-color !important;
+            background: $correct-color-lightened; 
+        }
+
+        i {
+            color: $correct-color;     
+        }
+    }
+
+    .task-input-incorrect {
+        input {
+            border-color: $incorrect-color !important; 
+            background: $incorrect-color-lightened;
+        }
+
+        i {
+            color: $incorrect-color;     
+        }
+    }
+
+    
+    .filter-block {
+        i {
+            color: $filter-block-color;
+            transition: $filter-arrow-animation-speed;
+            -webkit-transition: $filter-arrow-animation-speed;
+            -moz-transition: $filter-arrow-animation-speed;
+            -ms-transition: $filter-arrow-animation-speed;
+            -o-transition: $filter-arrow-animation-speed;
+        }
+
+        .filter-block-header {
+            padding-bottom: 0px;
+        }
+
+        .filter-block-text {
+            color: $filter-block-color;
+            padding-left: 10px;
+        }
+
+        &.children-hidden {
+            i {
+                transition: $filter-arrow-animation-speed;
+                -webkit-transition: $filter-arrow-animation-speed;
+                -moz-transition: $filter-arrow-animation-speed;
+                -ms-transition: $filter-arrow-animation-speed;
+                -o-transition: $filter-arrow-animation-speed;
+                -webkit-transform: rotate(-90deg);
+                -moz-transform: rotate(-90deg);
+                -o-transform: rotate(-90deg);
+                -ms-transform: rotate(-90deg);
+                transform: rotate(-90deg);
+            }
+
+            .filter-block-header {
+                padding-bottom: 10px;
+            }
+        }
+
+        div {
+            color: $general-black-color;
+        }
+
+        &.children-hidden {
+            .filter-block-children{
+                display: none;
+            }
+        }
+
+        .filter-block-children{
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        
+    }
+
+    /* override Bulma's margin, we don't need it */
+    .columns:not(last-child) {
+        margin-bottom: 0 !important;
+    }
+
+    .symbol-buttons-columns {
+        display: none;
+    }
+
+    .symbol-buttons {
+        display: none; /* hidden on mobile */
+        flex-wrap: wrap;
+        button {
+            width: 30px;
+            height: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+    }
+    
+}
+
+@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+    .filter-block {
+        .filter-block-header {
+            display: none;
+        }
+
+        &.children-hidden {
+            .filter-block-children {
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+    }
+
+    .task-filter-container {
+        margin-bottom: 30px;
+    }
+
+    .filter-block-children {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .symbol-buttons-columns {
+        display: block;
+    }
+
+    .symbol-buttons {
+        display: flex;
+    }
+}
