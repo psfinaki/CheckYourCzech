@@ -1,34 +1,33 @@
 ﻿module Core.Nouns.FeminineNounPatternDetector
 
-open WikiParsing.Articles.NounArticle
 open Common.StringHelper
 open Common.GrammarCategories
 open Core.Stem
 
-let isPatternŽena article = 
-    let nominatives = article |> getDeclension Case.Nominative Number.Singular
-    let genitives = article |> getDeclension Case.Genitive Number.Singular
+let isPatternŽena declension = 
+    let nominatives = declension.SingularNominative
+    let genitives = declension.SingularGenitive
 
     nominatives |> Seq.exists (ends "a") && 
     genitives |> Seq.exists (endsOneOf ["y"; "i"])
 
-let isPatternRůže article =
-    let nominatives = article |> getDeclension Case.Nominative Number.Singular
-    let genitives = article |> getDeclension Case.Genitive Number.Singular
+let isPatternRůže declension =
+    let nominatives = declension.SingularNominative
+    let genitives = declension.SingularGenitive
 
     nominatives |> Seq.exists (endsOneOf ["e"; "ě"; "a"]) && 
     genitives |> Seq.exists (endsOneOf ["e"; "ě"])
 
-let isPatternPíseň article =
-    let nominatives = article |> getDeclension Case.Nominative Number.Singular
-    let genitives = article |> getDeclension Case.Genitive Number.Singular
+let isPatternPíseň declension =
+    let nominatives = declension.SingularNominative
+    let genitives = declension.SingularGenitive
 
     nominatives |> Seq.exists endsConsonant &&
     genitives |> Seq.exists (endsOneOf ["e"; "ě"])
 
-let isPatternKost article =
-    let datives = article |> getDeclension Case.Dative Number.Plural
-    let instrumentals = article |> getDeclension Case.Instrumental Number.Plural
+let isPatternKost declension =
+    let datives = declension.PluralDative
+    let instrumentals = declension.PluralInstrumental
 
     datives |> Seq.exists (ends "em") &&
     instrumentals |> Seq.exists (not << endsOneOf ["emi"; "ěmi"])

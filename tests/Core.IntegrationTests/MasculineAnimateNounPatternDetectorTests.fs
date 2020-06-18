@@ -5,10 +5,12 @@ open Xunit
 open Core.Nouns.MasculineAnimateNounPatternDetector
 open Common.WikiArticles
 open Common
+open WikiParsing.Articles.NounArticle
 
-let getArticle =
+let getDeclension =
     getArticle
     >> NounArticle
+    >> getDeclension
 
 [<Theory>]
 [<InlineData "syn">]
@@ -18,7 +20,7 @@ let getArticle =
 [<InlineData "geolog">]
 let ``Detects pattern pán`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternPán
     |> Assert.True
 
@@ -29,7 +31,7 @@ let ``Detects pattern pán`` word =
 [<InlineData "dárce">]
 let ``Detects not pattern pán`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternPán
     |> Assert.False
 
@@ -43,7 +45,7 @@ let ``Detects not pattern pán`` word =
 [<InlineData "Felix">]
 let ``Detects pattern muž`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternMuž
     |> Assert.True
 
@@ -54,7 +56,7 @@ let ``Detects pattern muž`` word =
 [<InlineData "vůdce">]
 let ``Detects not pattern muž`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternMuž
     |> Assert.False
 
@@ -67,7 +69,7 @@ let ``Detects not pattern muž`` word =
 [<InlineData "Honza">]
 let ``Detects pattern předseda`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternPředseda
     |> Assert.True
     
@@ -77,7 +79,7 @@ let ``Detects pattern předseda`` word =
 [<InlineData "vůdce">]
 let ``Detects not pattern předseda`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternPředseda
     |> Assert.False
     
@@ -86,7 +88,7 @@ let ``Detects not pattern předseda`` word =
 [<InlineData "dárce">]
 let ``Detects pattern soudce`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternSoudce
     |> Assert.True
 
@@ -96,7 +98,7 @@ let ``Detects pattern soudce`` word =
 [<InlineData "kolega">]
 let ``Detects not pattern soudce`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternSoudce
     |> Assert.False
 
@@ -106,7 +108,7 @@ let ``Detects not pattern soudce`` word =
 [<InlineData "boss">]
 let ``Detects multiple patterns`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> getPatterns
     |> Seq.containsMultiple
     |> Assert.True
@@ -116,7 +118,7 @@ let ``Detects multiple patterns`` word =
 [<InlineData "George">]
 let ``Detects no patterns`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> getPatterns
     |> Seq.isEmpty
     |> Assert.True

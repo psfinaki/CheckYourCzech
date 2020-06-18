@@ -10,5 +10,5 @@ let getGender =
 let getPatterns = 
     NounPatterns.getPatterns 
 
-let getDeclension case number = 
-    NounArticle.getDeclension case number
+let getDeclension = 
+    NounArticle.getDeclension

@@ -99,10 +99,28 @@ let getDeclensionWiki (case: Case) number nounArticle =
     | word -> 
         invalidOp ("Odd word: " + word)
 
-let getDeclension case number = 
+let private getPartialDeclension case number = 
     getDeclensionWiki case number 
     >> Seq.collect getForms
     >> Seq.distinct
+
+let getDeclension article = 
+    {
+        SingularNominative = article |> getPartialDeclension Case.Nominative Number.Singular
+        SingularGenitive = article |> getPartialDeclension Case.Genitive Number.Singular
+        SingularDative = article |> getPartialDeclension Case.Dative Number.Singular
+        SingularAccusative = article |> getPartialDeclension Case.Accusative Number.Singular
+        SingularVocative = article |> getPartialDeclension Case.Vocative Number.Singular
+        SingularLocative = article |> getPartialDeclension Case.Locative Number.Singular
+        SingularInstrumental = article |> getPartialDeclension Case.Instrumental Number.Singular
+        PluralNominative = article |> getPartialDeclension Case.Nominative Number.Plural
+        PluralGenitive = article |> getPartialDeclension Case.Genitive Number.Plural
+        PluralDative = article |> getPartialDeclension Case.Dative Number.Plural
+        PluralAccusative = article |> getPartialDeclension Case.Accusative Number.Plural
+        PluralVocative = article |> getPartialDeclension Case.Vocative Number.Plural
+        PluralLocative = article |> getPartialDeclension Case.Locative Number.Plural
+        PluralInstrumental = article |> getPartialDeclension Case.Instrumental Number.Plural
+    }
 
 let getGender (NounArticle article) =
     article

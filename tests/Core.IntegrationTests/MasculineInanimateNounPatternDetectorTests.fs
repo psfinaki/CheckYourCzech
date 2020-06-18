@@ -5,10 +5,12 @@ open Xunit
 open Core.Nouns.MasculineInanimateNounPatternDetector
 open Common.WikiArticles
 open Common
+open WikiParsing.Articles.NounArticle
 
-let getArticle =
+let getDeclension =
     getArticle
     >> NounArticle
+    >> getDeclension
 
 [<Theory>]
 [<InlineData "strom">]
@@ -22,7 +24,7 @@ let getArticle =
 [<InlineData "týl">]
 let ``Detects pattern hrad`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternHrad
     |> Assert.True
 
@@ -33,7 +35,7 @@ let ``Detects pattern hrad`` word =
 [<InlineData "kosmos">]
 let ``Detects not pattern hrad`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternHrad
     |> Assert.False
 
@@ -42,7 +44,7 @@ let ``Detects not pattern hrad`` word =
 [<InlineData "déšť">]
 let ``Detects pattern stroj`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternStroj
     |> Assert.True
 
@@ -55,7 +57,7 @@ let ``Detects pattern stroj`` word =
 [<InlineData "kosmos">]
 let ``Detects not pattern stroj`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternStroj
     |> Assert.False
 
@@ -65,7 +67,7 @@ let ``Detects not pattern stroj`` word =
 [<InlineData "kosmos">]
 let ``Detects pattern rytmus`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternRytmus
     |> Assert.True
 
@@ -77,7 +79,7 @@ let ``Detects pattern rytmus`` word =
 [<InlineData "stroj">]
 let ``Detects not pattern rytmus`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternRytmus
     |> Assert.False
 
@@ -88,7 +90,7 @@ let ``Detects not pattern rytmus`` word =
 [<InlineData "glóbus">]
 let ``Detects multiple patterns`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> getPatterns
     |> Seq.containsMultiple
     |> Assert.True

@@ -1,28 +1,27 @@
 ﻿module Core.Nouns.MasculineAnimateNounPatternDetector
 
-open WikiParsing.Articles.NounArticle
 open Common.StringHelper
 open Common.GrammarCategories
 open Core.Stem
 
-let isPatternPán = 
-    getDeclension Case.Genitive Number.Singular
-    >> Seq.exists (ends "a")
+let isPatternPán declension = 
+    declension.SingularGenitive
+    |> Seq.exists (ends "a")
 
-let isPatternMuž article =
-    let nominatives = article |> getDeclension Case.Nominative Number.Singular
-    let genitives = article |> getDeclension Case.Genitive Number.Singular
+let isPatternMuž declension =
+    let nominatives = declension.SingularNominative
+    let genitives = declension.SingularGenitive
 
     nominatives |> Seq.exists (endsSoft) &&
     genitives |> Seq.exists (endsOneOf ["e"; "ě"])
 
-let isPatternPředseda =
-    getDeclension Case.Nominative Number.Singular
-    >> Seq.exists (ends "a")
+let isPatternPředseda declension =
+    declension.SingularNominative
+    |> Seq.exists (ends "a")
 
-let isPatternSoudce =
-    getDeclension Case.Nominative Number.Singular
-    >> Seq.exists (ends "ce")
+let isPatternSoudce declension =
+    declension.SingularNominative
+    |> Seq.exists (ends "ce")
 
 let patternDetectors = [
     (isPatternPán, "pán")
