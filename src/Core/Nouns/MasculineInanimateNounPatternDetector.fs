@@ -1,39 +1,33 @@
 ﻿module Core.Nouns.MasculineInanimateNounPatternDetector
 
-open WikiParsing.Articles.NounArticle
 open Common.StringHelper
 open Common.GrammarCategories
-open Common.WikiArticles
 
 let canBeLoanword = endsOneOf ["us"; "es"; "os"]
 
-let isPatternHrad article = 
-    let (NounArticle { Title = noun }) = article
-    match article with
-    | article when noun |> canBeLoanword -> 
-        let singulars = article |> getDeclension Case.Nominative Number.Singular
-        let plurals = article |> getDeclension Case.Nominative Number.Plural
-        
+let isPatternHrad declension = 
+    if declension.SingularNominative |> Seq.exists canBeLoanword
+    then
+        let singulars = declension.SingularNominative
+        let plurals = declension.PluralNominative
+
         let isPluralPatternHrad (singular, plural) = 
             singular |> append "y" = plural
 
         Seq.allPairs singulars plurals |> Seq.exists isPluralPatternHrad
-    | article ->
-        article
-        |> getDeclension Case.Genitive Number.Singular
+    else
+        declension.SingularGenitive
         |> Seq.exists (endsOneOf ["u"; "a"])
 
-let isPatternStroj =
-    getDeclension Case.Nominative Number.Plural
-    >> Seq.exists (endsOneOf ["e"; "ě"])
+let isPatternStroj declension =
+    declension.PluralNominative
+    |> Seq.exists (endsOneOf ["e"; "ě"])
 
-let isPatternRytmus article =
-    let (NounArticle { Title = noun }) = article
+let isPatternRytmus declension =
+    declension.SingularNominative |> Seq.exists canBeLoanword && 
 
-    noun |> canBeLoanword && 
-
-    let singulars = article |> getDeclension Case.Nominative Number.Singular
-    let plurals = article |> getDeclension Case.Nominative Number.Plural
+    let singulars = declension.SingularNominative
+    let plurals = declension.PluralNominative
 
     let isPluralPatternRytmus (singular, plural) = 
         singular |> removeLast 2 |> append "y" = plural

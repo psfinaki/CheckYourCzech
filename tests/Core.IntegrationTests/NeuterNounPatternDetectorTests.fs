@@ -4,17 +4,19 @@ open Xunit
 
 open Core.Nouns.NeuterNounPatternDetector
 open Common.WikiArticles
+open WikiParsing.Articles.NounArticle
 
-let getArticle =
+let getDeclension =
     getArticle
     >> NounArticle
+    >> getDeclension
 
 [<Theory>]
 [<InlineData "okno">]
 [<InlineData "slovo">]
 let ``Detects pattern město`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternMěsto
     |> Assert.True
 
@@ -29,7 +31,7 @@ let ``Detects pattern město`` word =
 [<InlineData "muzeum">]
 let ``Detects not pattern město`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternMěsto
     |> Assert.False
 
@@ -39,7 +41,7 @@ let ``Detects not pattern město`` word =
 [<InlineData "odpoledne">]
 let ``Detects pattern moře`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternMoře
     |> Assert.True
 
@@ -53,7 +55,7 @@ let ``Detects pattern moře`` word =
 [<InlineData "muzeum">]
 let ``Detects not pattern moře`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternMoře
     |> Assert.False
 
@@ -62,7 +64,7 @@ let ``Detects not pattern moře`` word =
 [<InlineData "překvapení">]
 let ``Detects pattern stavení`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternStavení
     |> Assert.True
     
@@ -72,7 +74,7 @@ let ``Detects pattern stavení`` word =
 [<InlineData "kuře">]
 let ``Detects not pattern stavení`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternStavení
     |> Assert.False
     
@@ -84,7 +86,7 @@ let ``Detects not pattern stavení`` word =
 [<InlineData "štíhle">]
 let ``Detects pattern kuře`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternKuře
     |> Assert.True
 
@@ -94,7 +96,7 @@ let ``Detects pattern kuře`` word =
 [<InlineData "okno">]
 let ``Detects not pattern kuře`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternKuře
     |> Assert.False
 
@@ -103,7 +105,7 @@ let ``Detects not pattern kuře`` word =
 [<InlineData "dilema">]
 let ``Detects pattern drama`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternDrama
     |> Assert.True
 
@@ -115,7 +117,7 @@ let ``Detects pattern drama`` word =
 [<InlineData "pyžama">]
 let ``Detects not pattern drama`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternDrama
     |> Assert.False
 
@@ -126,7 +128,7 @@ let ``Detects not pattern drama`` word =
 [<InlineData "vakuum">]
 let ``Detects pattern muzeum`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternMuzeum
     |> Assert.True
 
@@ -136,7 +138,7 @@ let ``Detects pattern muzeum`` word =
 [<InlineData "centrum">]
 let ``Detects not pattern muzeum`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> isPatternMuzeum
     |> Assert.False
 
@@ -146,7 +148,7 @@ let ``Detects not pattern muzeum`` word =
 [<InlineData "břímě">]
 let ``Detects no patterns`` word =
     word
-    |> getArticle
+    |> getDeclension
     |> getPatterns
     |> Seq.isEmpty
     |> Assert.True

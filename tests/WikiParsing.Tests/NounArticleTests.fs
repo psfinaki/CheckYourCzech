@@ -10,6 +10,8 @@ let getArticle =
     getArticle
     >> NounArticle
 
+let getDeclension = getArticle >> getDeclension
+
 [<Fact>]
 let ``Gets number of declensions``() =
     "starost"
@@ -41,36 +43,36 @@ let ``Gets wiki plural wiki - locked article``() =
 [<Fact>]
 let ``Gets declension - indeclinable``() =
     "dada"
-    |> getArticle
-    |> getDeclension Case.Nominative Number.Singular
+    |> getDeclension
+    |> fun declension -> declension.SingularNominative
     |> seqEquals ["dada"]
 
 [<Fact>]
 let ``Gets declension - single option``() =
     "hrad"
-    |> getArticle
-    |> getDeclension Case.Nominative Number.Singular
+    |> getDeclension
+    |> fun declension -> declension.SingularNominative
     |> seqEquals ["hrad"]
 
 [<Fact>]
 let ``Gets declension - no options``() =
     "záda"
-    |> getArticle
-    |> getDeclension Case.Nominative Number.Singular
+    |> getDeclension
+    |> fun declension -> declension.SingularNominative
     |> seqEquals []
 
 [<Fact>]
 let ``Gets declension - multiple declensions``() =
     "čtvrt"
-    |> getArticle
-    |> getDeclension Case.Nominative Number.Plural
+    |> getDeclension
+    |> fun declension -> declension.PluralNominative
     |> seqEquals ["čtvrtě"; "čtvrti"]
 
 [<Fact>]
 let ``Gets singulars - multiple options``() =
     "temeno"
-    |> getArticle
-    |> getDeclension Case.Nominative Number.Singular
+    |> getDeclension
+    |> fun declension -> declension.SingularNominative
     |> seqEquals ["temeno"; "témě"]
     
 [<Theory>]

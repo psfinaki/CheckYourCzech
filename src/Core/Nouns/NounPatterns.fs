@@ -10,7 +10,7 @@ let patternsGenderMap =
            (Feminine, FeminineNounPatternDetector.getPatterns)
            (Neuter, NeuterNounPatternDetector.getPatterns) ]
 
-let getPatternsByGender word gender = patternsGenderMap.[gender] word
+let getPatternsByGender declension gender = patternsGenderMap.[gender] declension
 
 let getPatterns article = 
     match article |> getDeclinability with
@@ -20,5 +20,5 @@ let getPatterns article =
         article
         |> getGender
         |> Option.map fromString
-        |> Option.map (getPatternsByGender article)
+        |> Option.map (getPatternsByGender (article |> getDeclension))
         |> Option.defaultValue Seq.empty

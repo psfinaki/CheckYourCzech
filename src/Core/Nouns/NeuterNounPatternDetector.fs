@@ -1,48 +1,47 @@
 ﻿module Core.Nouns.NeuterNounPatternDetector
 
-open WikiParsing.Articles.NounArticle
 open Common.StringHelper
 open Common.GrammarCategories
 open Core.Letters
 open Core.Stem
 
-let isPatternMěsto article = 
-    let nominatives = article |> getDeclension Case.Nominative Number.Singular
-    let genitives = article |> getDeclension Case.Genitive Number.Plural
+let isPatternMěsto declension = 
+    let nominatives = declension.SingularNominative
+    let genitives = declension.PluralGenitive
     
     nominatives |> Seq.exists (ends "o") &&
     genitives |> Seq.exists (endsConsonant)
 
-let isPatternMoře article =
-    let singulars = article |> getDeclension Case.Nominative Number.Singular
-    let plurals = article |> getDeclension Case.Nominative Number.Plural
+let isPatternMoře declension =
+    let singulars = declension.SingularNominative
+    let plurals = declension.PluralNominative
 
     singulars |> Seq.exists (endsOneOf ["e"; "ě"]) &&
     plurals |> Seq.exists (endsOneOf ["e"; "ě"])
 
-let isPatternStavení =
-    getDeclension Case.Genitive Number.Singular
-    >> Seq.exists (ends "í")
+let isPatternStavení declension =
+    declension.SingularGenitive
+    |> Seq.exists (ends "í")
 
-let isPatternKuře article =
-    let singulars = article |> getDeclension Case.Nominative Number.Singular
-    let plurals = article |> getDeclension Case.Nominative Number.Plural
+let isPatternKuře declension =
+    let singulars = declension.SingularNominative
+    let plurals = declension.PluralNominative
 
     singulars |> Seq.exists (endsOneOf ["e"; "ě"]) &&
     plurals |> Seq.exists (ends "ata")
 
-let isPatternDrama article =
-    let singulars = article |> getDeclension Case.Nominative Number.Singular
-    let plurals = article |> getDeclension Case.Nominative Number.Plural
+let isPatternDrama declension =
+    let singulars = declension.SingularNominative
+    let plurals = declension.PluralNominative
 
     singulars |> Seq.exists (ends "ma") &&
     plurals |> Seq.exists (ends "mata")
 
-let isPatternMuzeum article =
+let isPatternMuzeum declension =
     let stemEndsVowel = remove "um" >> Seq.last >> isVowel
     let rule word = word |> ends "um" && word |> stemEndsVowel
 
-    let singulars = article |> getDeclension Case.Nominative Number.Singular
+    let singulars = declension.SingularNominative
     singulars |> Seq.exists rule
 
 let patternDetectors = [
