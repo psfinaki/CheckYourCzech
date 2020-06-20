@@ -1,6 +1,7 @@
 ﻿module Common.WikiArticles
 
 open Conjugation
+open GrammarCategories
 
 type Article = {
     Title: string
@@ -17,6 +18,13 @@ type VerbArticle = VerbArticle of Article
 type VerbArticleWithImperative = VerbArticleWithImperative of VerbArticle
 type VerbArticleWithParticiple = VerbArticleWithParticiple of VerbArticle
 type VerbArticleWithConjugation = VerbArticleWithConjugation of VerbArticle
+
+type NounDeclension = {
+    CanonicalForm: string
+    Declinability: Declinability
+    Gender: Gender option
+    Declension: Declension option
+}
 
 type AdjectiveDeclension = {
     Singular: string

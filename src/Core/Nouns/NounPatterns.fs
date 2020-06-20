@@ -1,8 +1,6 @@
 ﻿module Core.Nouns.NounPatterns
 
-open Common.GenderTranslations
 open Common.GrammarCategories
-open WikiParsing.Articles.NounArticle
 
 let patternsGenderMap =
     dict [ (MasculineAnimate, MasculineAnimateNounPatternDetector.getPatterns)
@@ -12,13 +10,10 @@ let patternsGenderMap =
 
 let getPatternsByGender declension gender = patternsGenderMap.[gender] declension
 
-let getPatterns article = 
-    match article |> getDeclinability with
+let getPatterns gender declension declinability = 
+    match declinability with
     | Indeclinable ->
         Seq.empty
     | Declinable ->
-        article
-        |> getGender
-        |> Option.map fromString
-        |> Option.map (getPatternsByGender (article |> getDeclension))
-        |> Option.defaultValue Seq.empty
+        gender
+        |> getPatternsByGender declension

@@ -1,17 +1,19 @@
 ﻿module Scraper.WordRegistration.NounRegistration
 
+open Scraper.ExerciseCreation.Nouns
 open Storage.Storage
 open Storage.ExerciseModels.Noun
-open Core.Nouns.Noun
 open Common.WikiArticles
-open Common.Exercises
+open WikiParsing.Articles.NounArticle
 
-let registerNoun nounArticle =
-    let (NounArticle { Title = word }) = nounArticle
+let registerNounDeclension = Noun >> upsert "nouns"
 
-    upsert "nouns" (Noun {
-        Id = word
-        Gender = nounArticle |> getGender
-        Patterns = nounArticle |> getPatterns
-        Declension = nounArticle |> getDeclension
-    })
+let registerNoun article = 
+    let noun = parseNounArticle article
+
+    let nounDeclension = 
+        noun
+        |> NounDeclension.Create noun.CanonicalForm
+        |> Option.map registerNounDeclension
+
+    [ nounDeclension ] |> List.choose id

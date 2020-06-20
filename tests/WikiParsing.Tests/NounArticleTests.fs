@@ -100,3 +100,23 @@ let ``Gets gender`` word =
     |> getArticle
     |> getGender
     |> equals (Some "rod ženský")
+
+[<Theory>]
+[<InlineData "láska">]
+[<InlineData "kachna">]
+[<InlineData "nůžky">]
+let ``Detects valid word for declension`` word =
+    word
+    |> getArticle
+    |> hasRequiredInfoDeclension
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "hello">]
+[<InlineData "nový">]
+[<InlineData "vrchní">]
+let ``Detects invalid word for declension`` word =
+    word
+    |> getArticle
+    |> hasRequiredInfoDeclension
+    |> Assert.False
