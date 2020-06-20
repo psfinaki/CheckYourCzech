@@ -1,19 +1,12 @@
 ﻿module Scraper.Word
 
-open Core.Validation.NounValidation
-open Core.Validation.AdjectiveValidation
-open Core.Validation.VerbValidation
+open Core.Validation
 open WikiParsing.Articles.Article
 open WordRegistration.NounRegistration
 open WordRegistration.AdjectiveRegistration
 open WordRegistration.VerbRegistration
 
 let noOperationAsync = async { return () }
-
-let registerIfValid parse register = 
-    parse
-    >> Option.map register 
-    >> Option.defaultValue noOperationAsync
 
 let recordCzechPartOfSpeech article = function
     | "podstatné jméno" ->
