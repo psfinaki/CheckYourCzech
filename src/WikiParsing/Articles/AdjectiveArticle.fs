@@ -11,6 +11,9 @@ type WikiAdjectiveNový = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
 type WikiAdjectiveStarý = HtmlProvider<"https://cs.wiktionary.org/wiki/starý">
 type WikiAdjectiveVrchní = HtmlProvider<"https://cs.wiktionary.org/wiki/vrchní">
 
+type AdjectiveArticleWithPlural = AdjectiveArticleWithPlural of AdjectiveArticle
+type AdjectiveArticleWithComparative = AdjectiveArticleWithComparative of AdjectiveArticle
+
 let getAdjectiveProvider (AdjectiveArticle { Text = text }) =
     text
     |> WikiAdjective.Parse

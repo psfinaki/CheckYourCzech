@@ -11,6 +11,10 @@ type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
 type WikiParticiplesTable3 = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
 
+type VerbArticleWithImperative = VerbArticleWithImperative of VerbArticle
+type VerbArticleWithParticiple = VerbArticleWithParticiple of VerbArticle
+type VerbArticleWithConjugation = VerbArticleWithConjugation of VerbArticle
+
 let private hasRequiredInfoConjugation (VerbArticle article) = 
     article |> isMatch [
         Is "sloveso"

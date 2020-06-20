@@ -24,19 +24,14 @@
     <Compile Include="Nouns\MasculineInanimateNounPatternDetector.fs" />
     <Compile Include="Nouns\MasculineAnimateNounPatternDetector.fs" />
     <Compile Include="Nouns\NounPatterns.fs" />
-    <Compile Include="Nouns\Noun.fs" />
     <Compile Include="Adjectives\Comparison.fs" />
     <Compile Include="Adjectives\ComparativeBuilder.fs" />
-    <Compile Include="Adjectives\Adjective.fs" />
     <Compile Include="Verbs\VerbClasses.fs" />
     <Compile Include="Verbs\Archaisms.fs" />
     <Compile Include="Verbs\VerbPatternDetector.fs" />
     <Compile Include="Verbs\ParticiplePatternDetector.fs" />
     <Compile Include="Verbs\ParticipleBuilder.fs" />
-    <Compile Include="Verbs\Verb.fs" />
-    <Compile Include="Validation\NounValidation.fs" />
-    <Compile Include="Validation\AdjectiveValidation.fs" />
-    <Compile Include="Validation\VerbValidation.fs" />
+    <Compile Include="Validation.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
