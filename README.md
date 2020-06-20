@@ -6,12 +6,15 @@
 
 The service is deployed here: https://check-your-czech.azurewebsites.net/
 
-Three exercises are available now: 
-1. [Plurals](https://check-your-czech.azurewebsites.net/#plurals) - make plural number for nouns
-1. [Accusatives](https://check-your-czech.azurewebsites.net/#accusatives) - make accusative case for nouns
-2. [Comparatives](https://check-your-czech.azurewebsites.net/#comparatives) - make comparative degree for adjectives
-3. [Imperatives](https://check-your-czech.azurewebsites.net/#imperatives) - make imperative mood for verbs
-4. [Participles](https://check-your-czech.azurewebsites.net/#participles) - make active participle for verbs
+Eight exercises are available now:
+1. [Noun Declension](https://check-your-czech.azurewebsites.net/#nouns-declension)
+2. [Noun Plural](https://check-your-czech.azurewebsites.net/#nouns-plurals)
+3. [Noun Accusative](https://check-your-czech.azurewebsites.net/#nouns-accusatives)
+4. [Adjective Plural](https://check-your-czech.azurewebsites.net/#adjective-plurals)
+5. [Adjective Comparative](https://check-your-czech.azurewebsites.net/#adjecitve-comparatives)
+6. [Verb Imperative](https://check-your-czech.azurewebsites.net/#verb-imperatives)
+7. [Verb Participle](https://check-your-czech.azurewebsites.net/#verb-participles)
+8. [Verb Conjugation](https://check-your-czech.azurewebsites.net/#verb-conjugation)
 
 ## Concept
 
