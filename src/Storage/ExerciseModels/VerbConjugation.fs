@@ -5,11 +5,11 @@ open Storage.Defaults
 open Storage.Storage
 open BaseEntity
 
-type VerbConjugation(model: Exercises.VerbConjugation) =
+type VerbConjugation(id, model: Exercises.VerbConjugation) =
 
-    inherit BaseEntity(model.Id)
+    inherit BaseEntity(id)
     
-    new() = VerbConjugation(Exercises.VerbConjugation.Default)
+    new() = VerbConjugation(null, Exercises.VerbConjugation.Default)
 
     [<SerializeObject>] member val Infinitive = model.Infinitive with get, set
     [<SerializeString>] member val Pattern = model.Pattern with get, set

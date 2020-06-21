@@ -5,11 +5,11 @@ open Storage.Defaults
 open Storage.Storage
 open BaseEntity
 
-type AdjectiveComparative(model: Exercises.AdjectiveComparative) =
+type AdjectiveComparative(id, model: Exercises.AdjectiveComparative) =
 
-    inherit BaseEntity(model.Id)
+    inherit BaseEntity(id)
     
-    new() = AdjectiveComparative(Exercises.AdjectiveComparative.Default)
+    new() = AdjectiveComparative(null, Exercises.AdjectiveComparative.Default)
 
     [<SerializeObject>] member val Positive = model.Positive with get, set
     [<SerializeObject>] member val Comparatives = model.Comparatives with get, set

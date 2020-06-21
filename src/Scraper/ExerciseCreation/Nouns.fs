@@ -10,10 +10,9 @@ let private getPatterns noun =
     else Seq.empty
 
 type NounDeclension with 
-    static member Create id (noun: NounDeclension) = 
+    static member Create (noun: NounDeclension) = 
         if noun.Declension.IsSome 
         then Some {
-                Id = id
                 Gender = noun.Gender
                 Patterns = noun |> getPatterns
                 Declension = noun.Declension.Value

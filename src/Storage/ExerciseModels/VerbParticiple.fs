@@ -5,11 +5,11 @@ open Storage.Defaults
 open Storage.Storage
 open BaseEntity
 
-type VerbParticiple(model: Exercises.VerbParticiple) =
+type VerbParticiple(id, model: Exercises.VerbParticiple) =
 
-    inherit BaseEntity(model.Id)
+    inherit BaseEntity(id)
 
-    new() = VerbParticiple(Exercises.VerbParticiple.Default)
+    new() = VerbParticiple(null, Exercises.VerbParticiple.Default)
 
     [<SerializeObject>] member val Infinitive = model.Infinitive with get, set
     [<SerializeObject>] member val Participles = model.Participles with get, set
