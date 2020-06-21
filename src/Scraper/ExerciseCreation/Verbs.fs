@@ -24,20 +24,18 @@ let private getParticiplePattern = ParticiplePatternDetector.getPattern
 let private getImperativePattern = VerbPatternDetector.getPattern
 
 type VerbConjugation with 
-    static member Create id verb = 
+    static member Create verb =
         verb.Conjugation |> Option.map (fun conjugation -> 
         {
-            Id = id
             Infinitive = conjugation.Infinitive
             Pattern = verb.CanonicalForm |> getParticiplePattern
             Conjugation = conjugation.Conjugation
         })
 
 type VerbImperative with 
-    static member Create id verb =
+    static member Create verb =
         verb.Imperative |> Option.map (fun imperative -> 
         {
-            Id = id
             Indicative = imperative.Indicative
             Imperatives = imperative.Imperatives
             Class = 
@@ -51,10 +49,9 @@ type VerbImperative with
         })
 
 type VerbParticiple with 
-    static member Create id verb =
+    static member Create verb =
         verb.Participle |> Option.map (fun participle ->
         {
-            Id = id
             Infinitive = participle.Infinitive
             Participles = participle.Participles
             Pattern = verb.CanonicalForm |> getParticiplePattern

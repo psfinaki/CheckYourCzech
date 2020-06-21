@@ -5,11 +5,11 @@ open Storage.Defaults
 open Storage.Storage
 open BaseEntity
 
-type VerbImperative(model: Exercises.VerbImperative) =
+type VerbImperative(id, model: Exercises.VerbImperative) =
 
-    inherit BaseEntity(model.Id)
+    inherit BaseEntity(id)
 
-    new() = VerbImperative(Exercises.VerbImperative.Default)
+    new() = VerbImperative(null, Exercises.VerbImperative.Default)
 
     [<SerializeObject>] member val Indicative = model.Indicative with get, set
     [<SerializeObject>] member val Imperatives = model.Imperatives with get, set

@@ -5,11 +5,11 @@ open Storage.Defaults
 open Storage.Storage
 open BaseEntity
 
-type Noun(model: Exercises.Noun) = 
+type Noun(id, model: Exercises.Noun) = 
     
-    inherit BaseEntity(model.Id)
+    inherit BaseEntity(id)
 
-    new() = Noun(Exercises.Noun.Default)
+    new() = Noun(null, Exercises.Noun.Default)
 
     [<SerializeOption>] member val Gender = model.Gender with get, set
     [<SerializeObject>] member val Patterns = model.Patterns with get, set

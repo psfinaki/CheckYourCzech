@@ -5,7 +5,6 @@ open Common.Exercises
 
 type Noun with 
     static member Default = {
-        Id = null
         Gender = None
         Patterns = null
         Declension = {
@@ -28,14 +27,12 @@ type Noun with
 
 type AdjectivePlural with 
     static member Default = {
-        Id = null
         Singular = null
         Plural = null
     }
 
 type AdjectiveComparative with 
     static member Default = {
-        Id = null
         Positive = null
         Comparatives = null
         IsRegular = false
@@ -43,7 +40,6 @@ type AdjectiveComparative with
 
 type VerbImperative with 
     static member Default = {
-        Id = null
         Indicative = null
         Imperatives = null
         Class = None
@@ -52,7 +48,6 @@ type VerbImperative with
 
 type VerbParticiple with 
     static member Default = {
-        Id = null
         Infinitive = null
         Participles = null
         Pattern = Verbs.Pattern.Common
@@ -61,7 +56,6 @@ type VerbParticiple with
 
 type VerbConjugation with 
     static member Default = {
-        Id = null
         Infinitive = null
         Pattern = Verbs.Pattern.Common
         Conjugation = {

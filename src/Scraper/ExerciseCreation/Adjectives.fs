@@ -16,11 +16,10 @@ let private hasRegularComparatives comparison =
     |> Seq.contains (comparison.Positive |> buildComparative)
 
 type AdjectiveComparative with 
-    static member Create id comparison = 
+    static member Create comparison = 
         if comparison |> morphologicalComparativeExists
         then 
             Some {
-                Id = id
                 Positive = comparison.Positive
                 Comparatives = comparison.Comparatives
                 IsRegular = comparison |> hasRegularComparatives
@@ -28,8 +27,7 @@ type AdjectiveComparative with
         else None
 
 type AdjectivePlural with 
-    static member Create id declension = {
-        Id = id
+    static member Create declension : AdjectivePlural = {
         Singular = declension.Singular
         Plural = declension.Plural
     }

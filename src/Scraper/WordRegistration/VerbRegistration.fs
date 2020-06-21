@@ -8,27 +8,27 @@ open Storage.ExerciseModels.VerbParticiple
 open Storage.ExerciseModels.VerbConjugation
 open WikiParsing.Articles.VerbArticle
 
-let registerVerbConjugation = VerbConjugation >> upsert "verbconjugation"
-let registerVerbImperative = VerbImperative >> upsert "verbimperatives"
-let registerVerbParticiple = VerbParticiple >> upsert "verbparticiples"
+let registerVerbConjugation id model = VerbConjugation(id, model) |> upsert "verbconjugation"
+let registerVerbImperative id model = VerbImperative(id, model) |> upsert "verbimperatives"
+let registerVerbParticiple id model = VerbParticiple(id, model) |> upsert "verbparticiples"
 
 let registerVerb verbArticle =
     let verb = parseVerbArticle verbArticle
 
     let conjugationRegistration = 
         verb
-        |> VerbConjugation.Create verb.CanonicalForm
-        |> Option.map registerVerbConjugation
+        |> VerbConjugation.Create
+        |> Option.map (registerVerbConjugation verb.CanonicalForm)
 
     let imperativeRegistration = 
         verb
-        |> VerbImperative.Create verb.CanonicalForm
-        |> Option.map registerVerbImperative
+        |> VerbImperative.Create
+        |> Option.map (registerVerbImperative verb.CanonicalForm)
 
     let participleRegistration = 
         verb
-        |> VerbParticiple.Create verb.CanonicalForm
-        |> Option.map registerVerbParticiple
+        |> VerbParticiple.Create
+        |> Option.map (registerVerbParticiple  verb.CanonicalForm)
 
     [ conjugationRegistration; imperativeRegistration; participleRegistration ] 
     |> List.choose id
