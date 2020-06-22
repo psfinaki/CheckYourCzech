@@ -1,7 +1,7 @@
 ﻿module Core.Nouns.NeuterNounPatternDetector
 
 open Common.StringHelper
-open Common.GrammarCategories
+open Common.Declension
 open Core.Letters
 open Core.Stem
 

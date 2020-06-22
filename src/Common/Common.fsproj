@@ -13,6 +13,7 @@
   <ItemGroup>
     <Compile Include="Verbs.fs" />
     <Compile Include="GrammarCategories.fs" />
+    <Compile Include="Declension.fs" />
     <Compile Include="Conjugation.fs" />
     <Compile Include="WikiArticles.fs" />
     <Compile Include="SequenceExtensions.fs" />

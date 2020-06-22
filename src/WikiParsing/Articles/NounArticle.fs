@@ -5,6 +5,7 @@ open FSharp.Data
 open WikiParsing.WikiString
 open Article
 open Common
+open Common.Declension
 open Common.GrammarCategories
 open Common.Utils
 open Common.GenderTranslations

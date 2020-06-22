@@ -1,7 +1,7 @@
 ﻿module Core.Nouns.FeminineNounPatternDetector
 
 open Common.StringHelper
-open Common.GrammarCategories
+open Common.Declension
 open Core.Stem
 
 let isPatternŽena declension = 

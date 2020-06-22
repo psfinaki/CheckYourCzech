@@ -1,7 +1,7 @@
 ﻿module Core.Nouns.MasculineInanimateNounPatternDetector
 
 open Common.StringHelper
-open Common.GrammarCategories
+open Common.Declension
 
 let canBeLoanword = endsOneOf ["us"; "es"; "os"]
 
