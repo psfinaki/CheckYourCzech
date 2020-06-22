@@ -1,6 +1,7 @@
 ﻿module Common.WikiArticles
 
 open Conjugation
+open Declension
 open GrammarCategories
 
 type Article = {

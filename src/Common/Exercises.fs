@@ -1,5 +1,6 @@
 ﻿module Common.Exercises
 
+open Declension
 open GrammarCategories
 
 type Noun = {
