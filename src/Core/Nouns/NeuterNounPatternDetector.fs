@@ -45,12 +45,12 @@ let isPatternMuzeum declension =
     singulars |> Seq.exists rule
 
 let patternDetectors = [
-    (isPatternMěsto, "město")
-    (isPatternMoře, "moře")
-    (isPatternStavení, "stavení")
-    (isPatternKuře, "kuře")
-    (isPatternDrama, "drama")
-    (isPatternMuzeum, "muzeum")
+    (isPatternMěsto, Město)
+    (isPatternMoře, Moře)
+    (isPatternStavení, Stavení)
+    (isPatternKuře, Kuře)
+    (isPatternDrama, Drama)
+    (isPatternMuzeum, Muzeum)
 ]
 
 let isPattern article patternDetector = fst patternDetector article

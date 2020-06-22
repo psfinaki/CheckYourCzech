@@ -33,10 +33,10 @@ let isPatternKost declension =
     instrumentals |> Seq.exists (not << endsOneOf ["emi"; "ěmi"])
 
 let patternDetectors = [
-    (isPatternŽena, "žena")
-    (isPatternRůže, "růže")
-    (isPatternPíseň, "píseň")
-    (isPatternKost, "kost")
+    (isPatternŽena, Žena)
+    (isPatternRůže, Růže)
+    (isPatternPíseň, Píseň)
+    (isPatternKost, Kost)
 ]
 
 let isPattern article patternDetector = fst patternDetector article

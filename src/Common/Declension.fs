@@ -16,3 +16,34 @@ type Declension = {
     PluralLocative: seq<string>
     PluralInstrumental: seq<string>
 }
+
+type MasculineAnimateDeclensionPattern = 
+    | Pán
+    | Muž
+    | Předseda
+    | Soudce
+
+type MasculineInanimateDeclensionPattern = 
+    | Hrad
+    | Stroj
+    | Rytmus
+
+type FeminineDeclensionPattern = 
+    | Žena
+    | Růže
+    | Píseň
+    | Kost
+
+type NeuterDeclensionPattern = 
+    | Město
+    | Moře
+    | Stavení
+    | Kuře
+    | Drama
+    | Muzeum
+
+type DeclensionPattern = 
+    | MasculineAnimate of MasculineAnimateDeclensionPattern
+    | MasculineInanimate of MasculineInanimateDeclensionPattern
+    | Feminine of FeminineDeclensionPattern
+    | Neuter of NeuterDeclensionPattern

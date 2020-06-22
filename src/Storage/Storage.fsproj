@@ -12,6 +12,7 @@
   <ItemGroup>
     <Compile Include="Defaults.fs" />
     <Compile Include="Reflection.fs" />
+    <Compile Include="Serialization.fs" />
     <Compile Include="Storage.fs" />
     <Compile Include="ExerciseModels\BaseEntity.fs" />
     <Compile Include="ExerciseModels\VerbConjugation.fs" />

@@ -19,6 +19,8 @@ let removeLast n (s: string) = s.Remove(s.Length - n)
 
 let append (value: string) (s: string) = s + value
 
+let toLower (s: string) = s.ToLower()
+
 let removeMany (values: seq<string>) (s: string) = 
     let folder acc value = acc |> remove value
     values |> Seq.fold folder s

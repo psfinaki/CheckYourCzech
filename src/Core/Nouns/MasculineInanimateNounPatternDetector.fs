@@ -35,9 +35,9 @@ let isPatternRytmus declension =
     Seq.allPairs singulars plurals |> Seq.exists isPluralPatternRytmus
 
 let patternDetectors = [
-    (isPatternHrad, "hrad")
-    (isPatternStroj, "stroj")
-    (isPatternRytmus, "rytmus")
+    (isPatternHrad, Hrad)
+    (isPatternStroj, Stroj)
+    (isPatternRytmus, Rytmus)
 ]
 
 let isPattern article patternDetector = fst patternDetector article
