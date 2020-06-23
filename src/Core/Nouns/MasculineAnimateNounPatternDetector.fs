@@ -24,10 +24,10 @@ let isPatternSoudce declension =
     |> Seq.exists (ends "ce")
 
 let patternDetectors = [
-    (isPatternPán, "pán")
-    (isPatternMuž, "muž")
-    (isPatternPředseda, "předseda")
-    (isPatternSoudce, "soudce")
+    (isPatternPán, Pán)
+    (isPatternMuž, Muž)
+    (isPatternPředseda, Předseda)
+    (isPatternSoudce, Soudce)
 ]
 
 let isPattern article patternDetector = fst patternDetector article

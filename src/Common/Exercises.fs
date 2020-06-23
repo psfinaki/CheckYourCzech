@@ -5,7 +5,7 @@ open GrammarCategories
 
 type Noun = {
     Gender: Gender option
-    Patterns: seq<string>
+    Patterns: seq<DeclensionPattern>
     Declension: Declension
 }
 

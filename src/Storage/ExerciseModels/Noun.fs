@@ -1,7 +1,9 @@
 ﻿module Storage.ExerciseModels.Noun
 
 open Common
+open Common.Declension
 open Storage.Defaults
+open Storage.Serialization
 open Storage.Storage
 open BaseEntity
 
@@ -12,7 +14,7 @@ type Noun(id, model: Exercises.Noun) =
     new() = Noun(null, Exercises.Noun.Default)
 
     [<SerializeOption>] member val Gender = model.Gender with get, set
-    [<SerializeObject>] member val Patterns = model.Patterns with get, set
+    [<SerializeObject>] member val Patterns = model.Patterns |> Seq.map DeclensionPattern.toString with get, set
 
     [<SerializeObject>] member val SingularNominative = model.Declension.SingularNominative with get, set
     [<SerializeObject>] member val SingularGenitive = model.Declension.SingularGenitive with get, set
