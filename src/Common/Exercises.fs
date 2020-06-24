@@ -1,6 +1,7 @@
 ﻿module Common.Exercises
 
 open Declension
+open Conjugation
 open GrammarCategories
 
 type Noun = {
@@ -24,7 +25,7 @@ type VerbImperative = {
     Indicative: string
     Imperatives: seq<string>
     Class: Verbs.VerbClass option
-    Pattern: string option
+    Pattern: ConjugationPattern option
 }
 
 type VerbParticiple = {

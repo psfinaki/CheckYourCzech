@@ -24,3 +24,36 @@ type Conjugation = {
     SecondPlural: seq<string>
     ThirdPlural: seq<string>
 }
+
+type ConjugationPatternClassE =
+   | Nést
+   | Číst
+   | Péct
+   | Třít
+   | Brát
+   | Mazat
+
+type ConjugationPatternClassNE =
+    | Tisknout
+    | Minout
+    | Začít
+
+type ConjugationPatternClassJE =
+    | Kupovat
+    | Krýt
+
+type ConjugationPatternClassÍ =
+    | Prosit
+    | Čistit
+    | Trpět
+    | Sázet
+
+type ConjugationPatternClassÁ =
+    | Dělat
+
+type ConjugationPattern =
+    | ClassE of ConjugationPatternClassE
+    | ClassNE of ConjugationPatternClassNE
+    | ClassJE of ConjugationPatternClassJE
+    | ClassÍ of ConjugationPatternClassÍ
+    | ClassÁ of ConjugationPatternClassÁ

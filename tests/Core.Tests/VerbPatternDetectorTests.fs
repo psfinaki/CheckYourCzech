@@ -2,6 +2,7 @@
 
 open Xunit
 
+open Common.Conjugation
 open Core.Verbs.VerbPatternDetector
 
 [<Fact>]
@@ -78,7 +79,10 @@ let ``Detects pattern is not čistit`` word =
 let ``Gets pattern class E`` verb pattern =
     verb
     |> getPatternClassE
-    |> equals (Some pattern)
+    |> Option.get
+    |> string
+    |> fun s -> s.ToLower()
+    |> equals pattern
 
 [<Theory>]
 [<InlineData "krást">]
@@ -98,7 +102,10 @@ let ``Detects unknown pattern for class E`` verb =
 let ``Gets pattern class NE`` verb pattern =
     verb
     |> getPatternClassNE
-    |> equals (Some pattern)
+    |> Option.get
+    |> string
+    |> fun s -> s.ToLower()
+    |> equals pattern
 
 [<Theory>]
 [<InlineData "dostat">]
@@ -114,7 +121,10 @@ let ``Detects unknown pattern for class NE`` verb =
 let ``Gets pattern class JE`` verb pattern =
     verb
     |> getPatternClassJE
-    |> equals (Some pattern)
+    |> Option.get
+    |> string
+    |> fun s -> s.ToLower()
+    |> equals pattern
 
 [<Theory>]
 [<InlineData "zabít">]
@@ -135,7 +145,10 @@ let ``Detects unknown pattern for class JE`` verb =
 let ``Gets pattern class Í`` verb pattern =
     verb
     |> getPatternClassÍ
-    |> equals (Some pattern)
+    |> Option.get
+    |> string
+    |> fun s -> s.ToLower()
+    |> equals pattern
 
 [<Theory>]
 [<InlineData "bdít">]
@@ -150,7 +163,7 @@ let ``Detects unknown pattern for class Í`` verb =
 let ``Gets pattern class Á``() =
     "létat"
     |> getPatternClassÁ
-    |> equals (Some "dělat")
+    |> equals (Some Dělat)
 
 [<Fact>]
 let ``Detects unknown pattern for class Á``() =
