@@ -28,7 +28,7 @@
     <Compile Include="Adjectives\ComparativeBuilder.fs" />
     <Compile Include="Verbs\VerbClasses.fs" />
     <Compile Include="Verbs\Archaisms.fs" />
-    <Compile Include="Verbs\VerbPatternDetector.fs" />
+    <Compile Include="Verbs\ConjugationPatternDetector.fs" />
     <Compile Include="Verbs\ParticiplePatternDetector.fs" />
     <Compile Include="Verbs\ParticipleBuilder.fs" />
     <Compile Include="Validation.fs" />

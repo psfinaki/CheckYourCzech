@@ -16,7 +16,7 @@
     <Compile Include="ParticiplePatternDetectorTests.fs" />
     <Compile Include="ReflexivesTests.fs" />
     <Compile Include="VerbClassesTests.fs" />
-    <Compile Include="VerbPatternDetectorTests.fs" />
+    <Compile Include="ConjugationPatternDetectorTests.fs" />
     <Compile Include="ComparativeBuilderTests.fs" />
     <Compile Include="NominalizationTests.fs" />
     <Compile Include="ComparisonTests.fs" />

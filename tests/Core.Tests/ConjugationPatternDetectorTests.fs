@@ -1,9 +1,16 @@
-﻿module Core.Tests.VerbPatternDetectorTests
+﻿module Core.Tests.ConjugationPatternDetectorTests
 
 open Xunit
 
 open Common.Conjugation
-open Core.Verbs.VerbPatternDetector
+open Core.Verbs.ConjugationPatternDetector
+
+let private checkPattern<'a> (getClass: string -> 'a option) pattern =
+    getClass
+    >> Option.get
+    >> fun x -> x.ToString()
+    >> fun s -> s.ToLower()
+    >> equals pattern
 
 [<Fact>]
 let ``Detects pattern tisknout``() =
@@ -77,12 +84,7 @@ let ``Detects pattern is not čistit`` word =
 [<InlineData("prát", "brát")>]
 [<InlineData("vázat", "mazat")>]
 let ``Gets pattern class E`` verb pattern =
-    verb
-    |> getPatternClassE
-    |> Option.get
-    |> string
-    |> fun s -> s.ToLower()
-    |> equals pattern
+    checkPattern getPatternClassE pattern verb
 
 [<Theory>]
 [<InlineData "krást">]
@@ -100,12 +102,7 @@ let ``Detects unknown pattern for class E`` verb =
 [<InlineData("hynout", "minout")>]
 [<InlineData("načít", "začít")>]
 let ``Gets pattern class NE`` verb pattern =
-    verb
-    |> getPatternClassNE
-    |> Option.get
-    |> string
-    |> fun s -> s.ToLower()
-    |> equals pattern
+    checkPattern getPatternClassNE pattern verb
 
 [<Theory>]
 [<InlineData "dostat">]
@@ -119,12 +116,7 @@ let ``Detects unknown pattern for class NE`` verb =
 [<InlineData("pracovat", "kupovat")>]
 [<InlineData("výt", "krýt")>]
 let ``Gets pattern class JE`` verb pattern =
-    verb
-    |> getPatternClassJE
-    |> Option.get
-    |> string
-    |> fun s -> s.ToLower()
-    |> equals pattern
+    checkPattern getPatternClassJE pattern verb
 
 [<Theory>]
 [<InlineData "zabít">]
@@ -143,12 +135,7 @@ let ``Detects unknown pattern for class JE`` verb =
 [<InlineData("sedět", "trpět")>]
 [<InlineData("házet", "sázet")>]
 let ``Gets pattern class Í`` verb pattern =
-    verb
-    |> getPatternClassÍ
-    |> Option.get
-    |> string
-    |> fun s -> s.ToLower()
-    |> equals pattern
+    checkPattern getPatternClassÍ pattern verb
 
 [<Theory>]
 [<InlineData "bdít">]

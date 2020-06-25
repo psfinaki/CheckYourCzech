@@ -1,7 +1,7 @@
 ﻿module Core.Verbs.ParticipleBuilder
 
 open Common.StringHelper
-open VerbPatternDetector
+open ConjugationPatternDetector
 open Core.Reflexives
 
 let buildParticipleTisknout = removeLast 4 >> append "l"

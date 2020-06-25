@@ -1,4 +1,4 @@
-﻿module Core.Verbs.VerbPatternDetector
+﻿module Core.Verbs.ConjugationPatternDetector
 
 open Common.StringHelper
 open Common.Verbs
