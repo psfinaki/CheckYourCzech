@@ -24,19 +24,19 @@ type AdjectiveComparative = {
 type VerbImperative = {
     Indicative: string
     Imperatives: seq<string>
-    Class: Verbs.VerbClass option
+    Class: VerbClass option
     Pattern: ConjugationPattern option
 }
 
 type VerbParticiple = {
     Infinitive: string
     Participles: seq<string>
-    Pattern: Verbs.Pattern
+    Pattern: Verbs.ParticiplePattern
     IsRegular: bool
 }
 
 type VerbConjugation = {
     Infinitive: string
-    Pattern: Verbs.Pattern
+    Pattern: Verbs.ParticiplePattern
     Conjugation: Conjugation.Conjugation
 }

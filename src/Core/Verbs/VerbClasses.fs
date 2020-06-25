@@ -1,7 +1,7 @@
 ﻿module Core.Verbs.VerbClasses
 
 open Common.StringHelper
-open Common.Verbs
+open Common.Conjugation
 
 let getClassByThirdPersonSingular = function
     | form when form |> ends "á"  -> Á

@@ -5,7 +5,7 @@ open Fable.PowerPack.Fetch
 open Thoth.Json
 open Fable.Helpers.React
 
-open Common.Verbs
+open Common.Conjugation
 open Client.Markup
 open Client.Styles
 open Client.Widgets
