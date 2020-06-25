@@ -21,7 +21,7 @@ let private getThirdPersonSingular (conjugation: VerbConjugation) =
     |> Seq.tryExactlyOne
 
 let private getParticiplePattern = ParticiplePatternDetector.getPattern
-let private getImperativePattern = VerbPatternDetector.getPattern
+let private getImperativePattern = ConjugationPatternDetector.getPattern
 
 type VerbConjugation with 
     static member Create verb =

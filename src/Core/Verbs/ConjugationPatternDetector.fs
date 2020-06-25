@@ -1,7 +1,8 @@
-﻿module Core.Verbs.VerbPatternDetector
+﻿module Core.Verbs.ConjugationPatternDetector
 
 open Common.StringHelper
 open Common.Verbs
+open Common.Conjugation
 open Core.Letters
 open Core.Stem
 open Core.Reflexives
@@ -45,44 +46,57 @@ let invalidVerb verb verbClass =
     |> invalidArg "verb"
 
 let getPatternClassE = function
-    | verb when verb |> ends "ést" -> Some "nést"
-    | verb when verb |> ends "íst" -> Some "číst"
-    | verb when verb |> ends "ct" -> Some "péct"
-    | verb when verb |> ends "ít" -> Some "třít"
-    | verb when verb |> ends "át" -> Some "brát"
-    | verb when verb |> ends "at" -> Some "mazat"
+    | verb when verb |> ends "ést" -> Some Nést
+    | verb when verb |> ends "íst" -> Some Číst
+    | verb when verb |> ends "ct" -> Some Péct
+    | verb when verb |> ends "ít" -> Some Třít
+    | verb when verb |> ends "át" -> Some Brát
+    | verb when verb |> ends "at" -> Some Mazat
     | _ -> None
 
 let getPatternClassNE = function
-    | verb when verb |> isPatternTisknout -> Some "tisknout"
-    | verb when verb |> isPatternMinout -> Some "minout"
-    | verb when verb |> ends "ít" -> Some "začít"
+    | verb when verb |> isPatternTisknout -> Some Tisknout
+    | verb when verb |> isPatternMinout -> Some Minout
+    | verb when verb |> ends "ít" -> Some Začít
     | _ -> None
 
 let getPatternClassJE = function
-    | verb when verb |> ends "ovat" -> Some "kupovat"
-    | verb when verb |> ends "ýt" -> Some "krýt"
+    | verb when verb |> ends "ovat" -> Some Kupovat
+    | verb when verb |> ends "ýt" -> Some Krýt
     | _ -> None
 
 let getPatternClassÍ = function
-    | verb when verb |> isPatternProsit -> Some "prosit"
-    | verb when verb |> isPatternČistit -> Some "čistit"
-    | verb when verb |> ends "ět" -> Some "trpět"
-    | verb when verb |> ends "et" -> Some "sázet"
+    | verb when verb |> isPatternProsit -> Some Prosit
+    | verb when verb |> isPatternČistit -> Some Čistit
+    | verb when verb |> ends "ět" -> Some Trpět
+    | verb when verb |> ends "et" -> Some Sázet
     | _ -> None
 
 let getPatternClassÁ = function
-    | verb when verb |> ends "at" -> Some "dělat"
+    | verb when verb |> ends "at" -> Some Dělat
     | _ -> None
 
-let patternClassMap =
-    dict [ (E, getPatternClassE)
-           (NE, getPatternClassNE)
-           (JE, getPatternClassJE)
-           (Í, getPatternClassÍ)
-           (Á, getPatternClassÁ) ]
-
-let getPatternByClass verb verbClass = patternClassMap.[verbClass] verb
+let getPatternByClass verb = function
+    | VerbClass.E ->
+        verb
+        |> getPatternClassE
+        |> Option.map ConjugationPattern.ClassE
+    | VerbClass.NE ->
+        verb
+        |> getPatternClassNE
+        |> Option.map ConjugationPattern.ClassNE
+    | VerbClass.JE ->
+        verb
+        |> getPatternClassJE
+        |> Option.map ConjugationPattern.ClassJE
+    | VerbClass.Í ->
+        verb
+        |> getPatternClassÍ
+        |> Option.map ConjugationPattern.ClassÍ
+    | VerbClass.Á ->
+        verb
+        |> getPatternClassÁ
+        |> Option.map ConjugationPattern.ClassÁ
 
 let getPattern verb = 
     removeReflexive

@@ -1,6 +1,6 @@
 ﻿module Core.Verbs.ParticiplePatternDetector
 
-open VerbPatternDetector
+open ConjugationPatternDetector
 open Common.Verbs
 
 let getPattern = function
