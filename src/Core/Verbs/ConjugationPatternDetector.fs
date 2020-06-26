@@ -1,7 +1,6 @@
 ﻿module Core.Verbs.ConjugationPatternDetector
 
 open Common.StringHelper
-open Common.Verbs
 open Common.Conjugation
 open Core.Letters
 open Core.Stem

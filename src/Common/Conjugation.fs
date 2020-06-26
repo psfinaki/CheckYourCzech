@@ -25,6 +25,8 @@ type Conjugation = {
     ThirdPlural: seq<string>
 }
 
+type VerbClass = E | NE | JE | Í | Á
+
 type ConjugationPatternClassE =
    | Nést
    | Číst

@@ -5,8 +5,16 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import.React
 
-open Common.Verbs
+open Common.Conjugation
 open Client
+
+let private parseVerbClass = function
+    | "E" -> E
+    | "NE" -> NE
+    | "JE" -> JE
+    | "Í" -> Í
+    | "Á" -> Á
+    | s -> invalidOp ("odd class: " + s)
 
 [<Literal>]
 let ClassUnset = ""
@@ -28,7 +36,7 @@ let update msg model =
 
 let view model dispatch =
     let handleChangeClass (event: FormEvent) =
-        let translate = function | ClassUnset -> None | x -> Some (VerbClass.parse x)
+        let translate = function | ClassUnset -> None | x -> Some (parseVerbClass x)
         dispatch (SetClass (translate !!event.target?value))
 
     let selectedValue = model.Class |> Option.map string |> Option.defaultValue "Any"

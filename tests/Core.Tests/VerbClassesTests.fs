@@ -4,7 +4,7 @@ open System
 open Xunit
 
 open Core.Verbs.VerbClasses
-open Common.Verbs
+open Common.Conjugation
 
 [<Fact>]
 let ``Gets E class by third person singular``() =

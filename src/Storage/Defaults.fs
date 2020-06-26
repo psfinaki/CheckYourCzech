@@ -50,14 +50,14 @@ type VerbParticiple with
     static member Default = {
         Infinitive = null
         Participles = null
-        Pattern = Verbs.Pattern.Common
+        Pattern = Verbs.ParticiplePattern.Common
         IsRegular = false
     }
 
 type VerbConjugation with 
     static member Default = {
         Infinitive = null
-        Pattern = Verbs.Pattern.Common
+        Pattern = Verbs.ParticiplePattern.Common
         Conjugation = {
             FirstSingular = null
             SecondSingular = null
