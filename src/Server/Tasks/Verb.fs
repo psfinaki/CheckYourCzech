@@ -58,11 +58,14 @@ let getVerbParticiplesTask next (ctx: HttpContext) =
 
 let getVerbConjugationTask next (ctx: HttpContext) =
     task {
+        let classFromQuery = ctx.GetQueryStringValue "class"
+        let classFilter = getAzureFilter "Class" Int classFromQuery
+
         let patternFromQuery = ctx.GetQueryStringValue "pattern"
         let patternFilter = getAzureFilter "Pattern" String patternFromQuery
 
-        let filters =
-            [ patternFilter ] 
+        let filters = 
+            [ classFilter; patternFilter ]
             |> Seq.choose id
         
         let getConjugation (conjugation: VerbConjugation.VerbConjugation) = function

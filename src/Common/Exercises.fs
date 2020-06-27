@@ -37,6 +37,7 @@ type VerbParticiple = {
 
 type VerbConjugation = {
     Infinitive: string
-    Pattern: Verbs.ParticiplePattern
+    Class: VerbClass option
+    Pattern: ConjugationPattern option
     Conjugation: Conjugation.Conjugation
 }

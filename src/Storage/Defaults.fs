@@ -57,7 +57,8 @@ type VerbParticiple with
 type VerbConjugation with 
     static member Default = {
         Infinitive = null
-        Pattern = Verbs.ParticiplePattern.Common
+        Class = None
+        Pattern = None
         Conjugation = {
             FirstSingular = null
             SecondSingular = null
