@@ -21,14 +21,21 @@ let private getThirdPersonSingular (conjugation: VerbConjugation) =
     |> Seq.tryExactlyOne
 
 let private getParticiplePattern = ParticiplePatternDetector.getPattern
-let private getImperativePattern = ConjugationPatternDetector.getPattern
+let private getConjugationPattern = ConjugationPatternDetector.getPattern
 
 type VerbConjugation with 
     static member Create verb =
         verb.Conjugation |> Option.map (fun conjugation -> 
         {
             Infinitive = conjugation.Infinitive
-            Pattern = verb.CanonicalForm |> getParticiplePattern
+            Class = 
+                verb.Conjugation 
+                |> Option.bind getThirdPersonSingular
+                |> Option.map getClass
+            Pattern = 
+                verb.Conjugation
+                |> Option.bind getThirdPersonSingular
+                |> Option.bind (getConjugationPattern verb.CanonicalForm)
             Conjugation = conjugation.Conjugation
         })
 
@@ -45,7 +52,7 @@ type VerbImperative with
             Pattern = 
                 verb.Conjugation
                 |> Option.bind getThirdPersonSingular
-                |> Option.bind (getImperativePattern verb.CanonicalForm)
+                |> Option.bind (getConjugationPattern verb.CanonicalForm)
         })
 
 type VerbParticiple with 
