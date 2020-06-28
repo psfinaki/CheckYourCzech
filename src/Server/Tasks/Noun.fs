@@ -37,9 +37,9 @@ let getNounDeclensionTask next (ctx: HttpContext) =
         let patternFilterCondition (pattern: string) (noun: Noun) = noun.Patterns |> Seq.contains pattern
         let patternFilter = getPostFilter patternFilterCondition patternFromQuery
 
-        let case = getRandomUnion<Number>
-        let number = getRandomUnion<Case>
-        let declensionFilter = getDeclensionProp (case, number) >> Seq.any
+        let number = getRandomUnion<Number>
+        let case = getRandomUnion<Case>
+        let declensionFilter = getDeclensionProp (number, case) >> Seq.any
 
         let azureFilters = [ genderFilter ] |> Seq.choose id
         let postFilters = [ patternFilter; Some declensionFilter ] |> Seq.choose id
@@ -51,7 +51,7 @@ let getNounDeclensionTask next (ctx: HttpContext) =
                 then noun.SingularNominative |> Seq.random
                 else noun.PluralNominative |> Seq.random
 
-            let answers = noun |> getDeclensionProp (case, number)
+            let answers = noun |> getDeclensionProp (number, case)
             let declension = case.ToString() + " " + number.ToString()
             let word = sprintf "(%s) %s" declension canonicalForm
             Task(word, answers)
