@@ -14,6 +14,8 @@ type Model = {
     FilterBlock : FilterBlock.Types.Model
     Gender : Gender.Model
     Pattern : Pattern.Model
+    Number : Number.Model
+    Case : Case.Model
     Task : Task.Model
 }
 
@@ -21,6 +23,8 @@ type Msg =
     | FilterBlock of FilterBlock.Types.Msg
     | Gender of Gender.Msg
     | Pattern of Pattern.Msg
+    | Number of Number.Msg
+    | Case of Case.Msg
     | Task of Task.Msg
 
 let patterns =
@@ -31,12 +35,14 @@ let patterns =
 
 let getPatterns gender = patterns.[gender]
 
-let getTask gender pattern =
+let getTask gender pattern number case =
     let genderQuery = gender |> Option.map (sprintf "gender=%A")
     let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
+    let numberQuery = number |> Option.map (sprintf "number=%A")
+    let caseQuery = case |> Option.map (sprintf "case=%A")
 
     let queryString =
-        [ genderQuery; patternQuery ]
+        [ genderQuery; patternQuery; numberQuery; caseQuery ]
         |> Seq.choose id
         |> String.concat "&"
     
@@ -51,11 +57,15 @@ let init () =
     let filterBlock = FilterBlock.State.init()
     let gender = Gender.init()
     let pattern = Pattern.init None
-    let task, cmd = Task.init "Noun Declension" (getTask None None)
+    let number = Number.init()
+    let case = Case.init()
+    let task, cmd = Task.init "Noun Declension" (getTask None None None None)
 
     { FilterBlock = filterBlock
       Gender = gender
       Pattern = pattern
+      Number = number
+      Case = case
       Task = task },
     Cmd.map Task cmd
 
@@ -78,8 +88,18 @@ let update msg model =
     | Pattern msg' ->
         let pattern = Pattern.update msg' model.Pattern
         { model with Pattern = pattern }, reloadTaskCmd
+    | Number msg' ->
+        let number = Number.update msg' model.Number
+        { model with Number = number }, reloadTaskCmd
+    | Case msg' ->
+        let case = Case.update msg' model.Case
+        { model with Case = case }, reloadTaskCmd
     | Task msg' ->
-        let task, cmd = Task.update msg' model.Task (getTask model.Gender.Gender model.Pattern.SelectedPattern)
+        let gender = model.Gender.Gender
+        let pattern = model.Pattern.SelectedPattern
+        let number = model.Number.Number
+        let case = model.Case.Case
+        let task, cmd = Task.update msg' model.Task (getTask gender pattern number case)
         { model with Task = task }, Cmd.map Task cmd
         
 let view model dispatch =    
@@ -98,6 +118,16 @@ let view model dispatch =
                         div [ ]
                             [
                                 Pattern.view model.Pattern (Pattern >> dispatch)
+                            ]
+
+                        div [ ]
+                            [
+                                Number.view model.Number (Number >> dispatch)
+                            ]
+
+                        div [ ]
+                            [
+                                Case.view model.Case (Case >> dispatch)
                             ]
                     ]
 

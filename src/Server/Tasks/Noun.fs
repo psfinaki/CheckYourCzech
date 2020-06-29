@@ -37,8 +37,16 @@ let getNounDeclensionTask next (ctx: HttpContext) =
         let patternFilterCondition (pattern: string) (noun: Noun) = noun.Patterns |> Seq.contains pattern
         let patternFilter = getPostFilter patternFilterCondition patternFromQuery
 
-        let number = getRandomUnion<Number>
-        let case = getRandomUnion<Case>
+        let number =
+            ctx.TryGetQueryStringValue "number"
+            |> Option.map parseUnionCase<Number>
+            |> Option.defaultValue getRandomUnion<Number>
+
+        let case =
+            ctx.TryGetQueryStringValue "case"
+            |> Option.map parseUnionCase<Case>
+            |> Option.defaultValue getRandomUnion<Case>
+
         let declensionFilter = getDeclensionProp (number, case) >> Seq.any
 
         let azureFilters = [ genderFilter ] |> Seq.choose id
