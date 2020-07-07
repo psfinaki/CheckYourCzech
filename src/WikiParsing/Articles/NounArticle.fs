@@ -1,7 +1,5 @@
 ﻿module WikiParsing.Articles.NounArticle
 
-open FSharp.Data
-
 open WikiParsing.WikiString
 open WikiParsing.NounWikiDeclension
 open Article
@@ -11,10 +9,6 @@ open Common.GrammarCategories
 open Common.Utils
 open Common.GenderTranslations
 open Common.WikiArticles
-
-type EditableArticleOneDeclension = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
-type EditableArticleTwoDeclensions = HtmlProvider<"https://cs.wiktionary.org/wiki/čtvrt">
-type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
 
 let getNumberOfDeclensions (NounArticle article) =
     article
