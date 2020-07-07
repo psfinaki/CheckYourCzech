@@ -20,25 +20,18 @@ let ``Gets number of declensions``() =
     |> equals 1
 
 [<Fact>]
-let ``Gets declension wiki - indeclinable``() = 
-    "dada"
-    |> getArticle
-    |> getDeclensionWiki Case.Nominative Number.Plural
-    |> equals ["dada"]
-
-[<Fact>]
-let ``Gets declension wiki - editable article``() = 
+let ``Gets declension - editable article``() = 
     "panda"
-    |> getArticle
-    |> getDeclensionWiki Case.Nominative Number.Plural
-    |> equals ["pandy"]
+    |> getDeclension
+    |> fun declension -> declension.PluralNominative
+    |> seqEquals ["pandy"]
 
 [<Fact>]
-let ``Gets wiki plural wiki - locked article``() = 
+let ``Gets declension - locked article``() = 
     "debil"
-    |> getArticle
-    |> getDeclensionWiki Case.Nominative Number.Plural
-    |> equals ["debilové"]
+    |> getDeclension
+    |> fun declnesion -> declnesion.PluralNominative
+    |> seqEquals ["debilové"]
 
 [<Fact>]
 let ``Gets declension - indeclinable``() =
@@ -67,13 +60,6 @@ let ``Gets declension - multiple declensions``() =
     |> getDeclension
     |> fun declension -> declension.PluralNominative
     |> seqEquals ["čtvrtě"; "čtvrti"]
-
-[<Fact>]
-let ``Gets singulars - multiple options``() =
-    "temeno"
-    |> getDeclension
-    |> fun declension -> declension.SingularNominative
-    |> seqEquals ["temeno"; "témě"]
     
 [<Theory>]
 [<InlineData "dada">]

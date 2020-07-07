@@ -1,8 +1,7 @@
 ﻿module WikiParsing.Articles.NounArticle
 
-open FSharp.Data
-
 open WikiParsing.WikiString
+open WikiParsing.NounWikiDeclension
 open Article
 open Common
 open Common.Declension
@@ -11,19 +10,6 @@ open Common.Utils
 open Common.GenderTranslations
 open Common.WikiArticles
 
-type EditableArticleOneDeclension = HtmlProvider<"https://cs.wiktionary.org/wiki/panda">
-type EditableArticleTwoDeclensions = HtmlProvider<"https://cs.wiktionary.org/wiki/čtvrt">
-type LockedArticle = HtmlProvider<"https://cs.wiktionary.org/wiki/debil">
-
-let caseColumns = 
-    dict [ Case.Nominative, 0
-           Case.Genitive, 1
-           Case.Dative, 2
-           Case.Accusative, 3
-           Case.Vocative, 4
-           Case.Locative, 5
-           Case.Instrumental, 6 ]
-
 let getNumberOfDeclensions (NounArticle article) =
     article
     |> matches [
@@ -31,40 +17,6 @@ let getNumberOfDeclensions (NounArticle article) =
         Starts "skloňování"
     ]
     |> Seq.length
-
-let getEditable (case: Case) number article =
-    let numberOfDeclensions = getNumberOfDeclensions article
-    let (NounArticle {Title = word; Text = text}) = article
-
-    let caseColumn = caseColumns.[case]
-    match numberOfDeclensions with
-    | 1 ->
-        let data = EditableArticleOneDeclension.Parse text
-        match number with
-        | Singular ->
-            [ data.Tables.``Skloňování[editovat]``.Rows.[caseColumn].singulár ]
-        | Plural -> 
-            [ data.Tables.``Skloňování[editovat]``.Rows.[caseColumn].plurál ]
-    | 2 ->
-        let data = EditableArticleTwoDeclensions.Parse text
-        match number with
-        | Singular ->
-            [ data.Tables.``Skloňování (1)[editovat]``.Rows.[caseColumn].singulár 
-              data.Tables.``Skloňování (2)[editovat]``.Rows.[caseColumn].singulár ]
-        | Plural -> 
-            [ data.Tables.``Skloňování (1)[editovat]``.Rows.[caseColumn].plurál 
-              data.Tables.``Skloňování (2)[editovat]``.Rows.[caseColumn].plurál ]
-    | _ ->
-        invalidOp ("Odd word: " + word)
-
-let getLocked (case: Case) number (NounArticle { Text = text }) =
-    let data = LockedArticle.Parse text
-    let caseColumn = caseColumns.[case]
-    match number with
-    | Singular ->
-        [ data.Tables.Skloňování.Rows.[caseColumn].singulár ]
-    | Plural -> 
-        [ data.Tables.Skloňování.Rows.[caseColumn].plurál ]
 
 let getDeclinability (NounArticle article) =
     let hasIndeclinabilityMarkInNounSection = 
@@ -86,42 +38,64 @@ let getDeclinability (NounArticle article) =
     then Indeclinable
     else Declinable
 
-let getDeclensionWiki (case: Case) number nounArticle =
+let private getDeclensionWiki nounArticle = 
     let (NounArticle article) = nounArticle
     let word = article.Title
+    let numberOfDeclensions = nounArticle |> getNumberOfDeclensions
 
     match word with
-    | _ when getDeclinability nounArticle = Indeclinable ->
-        [ word ]
-    | _ when article |> isEditable ->
-        getEditable case number nounArticle
+    | _ when article |> isEditable && numberOfDeclensions = 1 ->
+        [ getEditable1Declension nounArticle ]
+    | _ when article |> isEditable && numberOfDeclensions = 2 ->
+          getEditable2Declensions nounArticle
     | _ when article |> isLocked ->
-        getLocked case number nounArticle
-    | word -> 
+        [ getLocked nounArticle ]
+    | _ -> 
         invalidOp ("Odd word: " + word)
 
-let private getPartialDeclension case number = 
-    getDeclensionWiki case number 
-    >> Seq.collect getForms
-    >> Seq.distinct
+let private getDeclensionForDeclinable article = 
+    let declensions = getDeclensionWiki article
+    let getForms getCase = Seq.map getCase >> Seq.collect getForms >> Seq.distinct
 
-let getDeclension article = 
     {
-        SingularNominative = article |> getPartialDeclension Case.Nominative Number.Singular
-        SingularGenitive = article |> getPartialDeclension Case.Genitive Number.Singular
-        SingularDative = article |> getPartialDeclension Case.Dative Number.Singular
-        SingularAccusative = article |> getPartialDeclension Case.Accusative Number.Singular
-        SingularVocative = article |> getPartialDeclension Case.Vocative Number.Singular
-        SingularLocative = article |> getPartialDeclension Case.Locative Number.Singular
-        SingularInstrumental = article |> getPartialDeclension Case.Instrumental Number.Singular
-        PluralNominative = article |> getPartialDeclension Case.Nominative Number.Plural
-        PluralGenitive = article |> getPartialDeclension Case.Genitive Number.Plural
-        PluralDative = article |> getPartialDeclension Case.Dative Number.Plural
-        PluralAccusative = article |> getPartialDeclension Case.Accusative Number.Plural
-        PluralVocative = article |> getPartialDeclension Case.Vocative Number.Plural
-        PluralLocative = article |> getPartialDeclension Case.Locative Number.Plural
-        PluralInstrumental = article |> getPartialDeclension Case.Instrumental Number.Plural
+        SingularNominative =   declensions |> getForms (fun d -> d.SingularNominative)
+        SingularGenitive =     declensions |> getForms (fun d -> d.SingularGenitive)
+        SingularDative =       declensions |> getForms (fun d -> d.SingularDative)
+        SingularAccusative =   declensions |> getForms (fun d -> d.SingularAccusative)
+        SingularVocative =     declensions |> getForms (fun d -> d.SingularVocative)
+        SingularLocative =     declensions |> getForms (fun d -> d.SingularLocative)
+        SingularInstrumental = declensions |> getForms (fun d -> d.SingularInstrumental)
+        PluralNominative =     declensions |> getForms (fun d -> d.PluralNominative)
+        PluralGenitive =       declensions |> getForms (fun d -> d.PluralGenitive)
+        PluralDative =         declensions |> getForms (fun d -> d.PluralDative)
+        PluralAccusative =     declensions |> getForms (fun d -> d.PluralAccusative)
+        PluralVocative =       declensions |> getForms (fun d -> d.PluralVocative)
+        PluralLocative =       declensions |> getForms (fun d -> d.PluralLocative)
+        PluralInstrumental =   declensions |> getForms (fun d -> d.PluralInstrumental)
     }
+
+let private getDeclensionForIndeclinable (NounArticle { Title = word }) = 
+    {
+        SingularNominative =   seq { word }
+        SingularGenitive =     seq { word }
+        SingularDative =       seq { word }
+        SingularVocative =     seq { word }
+        SingularAccusative =   seq { word }
+        SingularLocative =     seq { word }
+        SingularInstrumental = seq { word }
+        PluralNominative =     seq { word }
+        PluralGenitive =       seq { word }
+        PluralDative =         seq { word }
+        PluralAccusative =     seq { word }
+        PluralVocative =       seq { word }
+        PluralLocative =       seq { word }
+        PluralInstrumental =   seq { word }
+    }
+
+let getDeclension article =
+    match article |> getDeclinability with
+    | Declinability.Declinable -> getDeclensionForDeclinable article
+    | Declinability.Indeclinable -> getDeclensionForIndeclinable article
 
 let getGender (NounArticle article) =
     article

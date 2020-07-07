@@ -16,6 +16,7 @@
   <ItemGroup>
     <Compile Include="Html.fs" />
     <Compile Include="WikiString.fs" />
+    <Compile Include="NounWikiDeclension.fs" />
     <Compile Include="Articles\Article.fs" />
     <Compile Include="Articles\NounArticle.fs" />
     <Compile Include="Articles\AdjectiveArticle.fs" />
