@@ -13,6 +13,7 @@ type Noun(id, model: Exercises.Noun) =
 
     new() = Noun(null, Exercises.Noun.Default)
 
+    [<SerializeObject>] member val CanonicalForm = model.CanonicalForm with get, set
     [<SerializeOption>] member val Gender = model.Gender with get, set
     [<SerializeObject>] member val Patterns = model.Patterns |> Seq.map DeclensionPattern.toString with get, set
 

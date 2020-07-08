@@ -5,6 +5,7 @@ open Conjugation
 open GrammarCategories
 
 type Noun = {
+    CanonicalForm: string
     Gender: Gender option
     Patterns: seq<DeclensionPattern>
     Declension: Declension

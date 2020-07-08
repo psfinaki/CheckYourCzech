@@ -13,6 +13,7 @@ type NounDeclension with
     static member Create (noun: NounDeclension) = 
         if noun.Declension.IsSome 
         then Some {
+                CanonicalForm = noun.CanonicalForm
                 Gender = noun.Gender
                 Patterns = noun |> getPatterns
                 Declension = noun.Declension.Value
