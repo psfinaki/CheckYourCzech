@@ -5,6 +5,7 @@ open Common.Exercises
 
 type Noun with 
     static member Default = {
+        CanonicalForm = null
         Gender = None
         Patterns = Seq.empty
         Declension = {
