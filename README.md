@@ -65,10 +65,10 @@ To run Azure storage emulator use: `azurite`
 
 ### Running the App
 1. Open PowerShell, go to the repo root
-2. Run Scraper: `fake build target runscraper`
+2. Run Scraper: `dotnet fake build target runscraper`
 3. Let it run for a a few minutes to generate some local word database
 4. Stop Scraper
-5. Run web app: `fake build target runweb`
+5. Run web app: `dotnet fake build target runweb`
 
 ## Plan of development
 
