@@ -5,7 +5,13 @@ group WikiParsing
 
 group Core
     source https://api.nuget.org/v3/index.json
+	
+	nuget FSharp.Core
 
+group Storage
+    source https://api.nuget.org/v3/index.json
+
+	nuget FSharp.Core
 	nuget WindowsAzure.Storage
 
 group Server
@@ -20,6 +26,7 @@ group Server
 group Scraper
     source https://api.nuget.org/v3/index.json
 
+	nuget FSharp.Core
 	nuget Microsoft.ApplicationInsights
 	
 group Client
