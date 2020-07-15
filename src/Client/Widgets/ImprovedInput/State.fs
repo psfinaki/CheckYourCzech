@@ -1,8 +1,8 @@
 module Client.Widgets.ImprovedInput.State
 
+open Browser
 open Elmish
 open Fable.Core.JsInterop
-open Fable.Import.Browser
 
 open Types
 

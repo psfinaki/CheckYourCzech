@@ -1,10 +1,9 @@
 ﻿module Client.Widgets.Task
 
+open Browser.Types
 open Elmish
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Fable.PowerPack
-open Fable.Import.React
+open Fable.React
+open Fable.React.Props
 open Fable.Core
 open Fable.Core.JsInterop
 open Fable.FontAwesome
@@ -72,7 +71,7 @@ let log taskName task answer result =
     Logger.log message
 
 let loadTaskCmd getTask =
-    Cmd.ofPromise getTask [] FetchedTask FetchError
+    Cmd.OfPromise.either (fun _ -> getTask) [] FetchedTask FetchError
 
 let getStateTask s = 
     match s with 
@@ -286,8 +285,8 @@ let view model dispatch =
         match model.State with
         | Fetching -> ()
         | _ ->
-            match event.keyCode with
-            | Keyboard.Codes.enter ->
+            match event.key with
+            | "Enter" ->
                 match event.shiftKey with
                 | false -> 
                     match nextButtonDisplayed with

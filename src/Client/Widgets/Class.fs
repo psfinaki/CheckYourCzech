@@ -1,9 +1,9 @@
 ﻿module Client.Widgets.Class
 
+open Browser.Types
 open Fable.Core.JsInterop
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Fable.Import.React
+open Fable.React
+open Fable.React.Props
 
 open Common.Conjugation
 open Client
@@ -35,7 +35,7 @@ let update msg model =
         { model with Class = ``class`` }
 
 let view model dispatch =
-    let handleChangeClass (event: FormEvent) =
+    let handleChangeClass (event: Event) =
         let translate = function | ClassUnset -> None | x -> Some (parseVerbClass x)
         dispatch (SetClass (translate !!event.target?value))
 

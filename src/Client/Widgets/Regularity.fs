@@ -1,9 +1,10 @@
 ﻿module Client.Widgets.Regularity
 
+open Browser.Types
 open Fable.Core.JsInterop
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Fable.Import.React
+open Fable.React
+open Fable.React.Props
+
 open Client
 open Client.BoolExtensioins
 
@@ -26,7 +27,7 @@ let update msg model =
         { model with Regularity = regularity }
 
 let view model dispatch =
-    let handleChangeRegularity (event: FormEvent) =
+    let handleChangeRegularity (event: Event) =
         let translate = function | RegularityUnset -> None | x -> Some (bool.FromString x)
         dispatch (SetRegularity (translate !!event.target?value))
 

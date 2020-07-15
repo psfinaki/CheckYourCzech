@@ -1,9 +1,9 @@
 ﻿module Client.Pages.VerbParticiples
 
 open Elmish
-open Fable.PowerPack.Fetch
+open Thoth.Fetch
 open Thoth.Json
-open Fable.Helpers.React
+open Fable.React
 
 open Client
 open Client.Views
@@ -40,7 +40,7 @@ let getTask pattern regularity =
         then "/api/verbs/participles" 
         else sprintf "/api/verbs/participles?%s" queryString
 
-    fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
+    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
 
 let init() =
     let filterBlock = FilterBlock.State.init()

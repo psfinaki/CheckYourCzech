@@ -1,9 +1,9 @@
 ﻿module Client.Widgets.Number
 
+open Browser.Types
 open Fable.Core.JsInterop
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Fable.Import.React
+open Fable.React
+open Fable.React.Props
 
 open Client
 open Common.GrammarCategories
@@ -28,7 +28,7 @@ let update msg model =
         { model with Number = number }
 
 let view model dispatch =
-    let handleChangeNumber (event: FormEvent) =
+    let handleChangeNumber (event: Event) =
         let translate = function | NumberUnset -> None | x -> Some (parseUnionCase<Number> x)
         dispatch (SetNumber (translate !!event.target?value))
 
