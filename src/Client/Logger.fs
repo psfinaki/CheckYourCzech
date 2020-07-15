@@ -1,7 +1,7 @@
 ﻿module Client.Logger
 
 open Fable.Core.JsInterop
-open Fable.Import.Browser
+open Browser
 
 let setup() = 
     // this is okay: https://docs.microsoft.com/en-us/azure/azure-monitor/app/troubleshoot-faq#my-instrumentation-key-is-visible-in-my-web-page-source

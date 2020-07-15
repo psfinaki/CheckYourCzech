@@ -1,8 +1,7 @@
 module Client.Widgets.ImprovedInput.View
 
-open Fable.Import.React
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
+open Browser.Types
+open Fable.React.Props
 open Fulma
 
 open Types

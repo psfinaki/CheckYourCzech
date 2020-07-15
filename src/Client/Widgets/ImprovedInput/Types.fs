@@ -1,6 +1,6 @@
 module Client.Widgets.ImprovedInput.Types
 
-open Fable.Import.React
+open Browser.Types
 
 type Model = { 
     Value: string
@@ -10,7 +10,7 @@ type Model = {
 }
 
 type Msg = 
-    | ChangeInput of FormEvent
+    | ChangeInput of Event
     | SetInput of string
     | AddSymbol of char
     | FocusInput

@@ -2,10 +2,10 @@ module Client.App
 
 open Elmish
 open Elmish.React
-open Elmish.Browser.UrlParser
-open Elmish.Browser.Navigation
+open Elmish.UrlParser
+open Elmish.Navigation
 open Fulma
-open Fable.Helpers.React
+open Fable.React
 
 open Client
 open Client.AppPages
@@ -15,8 +15,11 @@ open Client.Pages
 
 #if DEBUG
 open Elmish.Debug
-open Elmish.HMR
 #endif
+
+// must be the last one in Elmish:
+// https://elmish.github.io/hmr/#Usage
+open Elmish.HMR
 
 let urlParser location = parseHash pageParser location
 
@@ -133,8 +136,6 @@ let update msg model =
     | _, _ ->
         model, Cmd.none
 
-
-
 let view model dispatch =
     let isHome = 
         match model.CurrentPage with 
@@ -149,9 +150,8 @@ Program.mkProgram init update view
 |> Program.toNavigable urlParser urlUpdate
 #if DEBUG
 |> Program.withConsoleTrace
-|> Program.withHMR
 #endif
-|> Program.withReact "elmish-app"
+|> Program.withReactSynchronous "elmish-app"
 #if DEBUG
 |> Program.withDebugger
 #endif

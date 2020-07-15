@@ -1,9 +1,9 @@
 ﻿module Client.Widgets.Gender
 
+open Browser.Types
 open Fable.Core.JsInterop
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Fable.Import.React
+open Fable.React
+open Fable.React.Props
 
 open Common.GrammarCategories
 open Client
@@ -34,7 +34,7 @@ let update msg model =
         { model with Gender = gender }
 
 let view model dispatch =
-    let handleChangeGender (event: FormEvent) =
+    let handleChangeGender (event: Event) =
         let translate = function | GenderUnset -> None | x -> Some (translateGender x)
         dispatch (SetGender (translate !!event.target?value))
 

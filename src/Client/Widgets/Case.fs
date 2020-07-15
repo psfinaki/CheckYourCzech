@@ -1,9 +1,9 @@
 ﻿module Client.Widgets.Case
 
+open Browser.Types
 open Fable.Core.JsInterop
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Fable.Import.React
+open Fable.React
+open Fable.React.Props
 
 open Client
 open Common.GrammarCategories
@@ -28,7 +28,7 @@ let update msg model =
         { model with Case = case }
 
 let view model dispatch =
-    let handleChangeCase (event: FormEvent) =
+    let handleChangeCase (event: Event) =
         let translate = function | CaseUnset -> None | x -> Some (parseUnionCase<Case> x)
         dispatch (SetCase (translate !!event.target?value))
 

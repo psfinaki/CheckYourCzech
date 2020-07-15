@@ -1,6 +1,6 @@
 module Client.AppPages
 
-open Elmish.Browser.UrlParser
+open Elmish.UrlParser
 
 [<RequireQualifiedAccess>]
 type Page = 

@@ -1,10 +1,11 @@
 module Client.Markup
 
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
+open Browser.Dom
+open Browser.Types
+open Fable.React
+open Fable.React.Props
 open Fable.Core.JsInterop
-open Fable.Import
-open Elmish.Browser.Navigation
+open Elmish.Navigation
 open Fulma
 
 open Client.AppPages
@@ -13,7 +14,7 @@ type Clickability =
     | Clickable
     | Unclickable
 
-let goToUrl (e: React.MouseEvent) =
+let goToUrl (e: MouseEvent) =
     e.preventDefault()
     let href = !!e.currentTarget?href
     Navigation.newUrl href |> List.map (fun f -> f ignore) |> ignore
@@ -58,9 +59,9 @@ let toggleLink text content =
     let id = System.Guid.NewGuid().ToString()
 
     let toggle _ = 
-        let spoiler = Browser.document.getElementById id
-        let display = if spoiler.style.display = "none" then "block" else "none"
-        spoiler.style.display <- display
+        let spoiler = document.getElementById id
+        let display = if spoiler?style?display = "none" then "block" else "none"
+        spoiler?style?display <- display
 
     div [] 
         [
@@ -69,7 +70,7 @@ let toggleLink text content =
                 OnClick toggle
                 Style [
                     FontSize "25px"
-                    Display "block"
+                    Display DisplayOptions.Block
                     Margin "0 auto"
                     Background "none"
                     Border "none"
@@ -82,7 +83,7 @@ let toggleLink text content =
                 str text
             ]
 
-            div [ Id id; Style [ Display "none" ] ]
+            div [ Id id; Style [ Display DisplayOptions.None ] ]
                 [
                     pre [] [ str content ]
                 ]
@@ -99,7 +100,7 @@ let button size color onclick text otherOptions =
 
 
 let space() =
-    div [ Style [ Width "2%"; Display "inline-block" ] ] []
+    div [ Style [ Width "2%"; Display DisplayOptions.InlineBlock ] ] []
 
 let input style value changeHandler keyDownHandler = 
     input [ 

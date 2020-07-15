@@ -1,6 +1,6 @@
 module Client.Views.Rule
 
-open Fable.Helpers.React
+open Fable.React
 
 open Client
 

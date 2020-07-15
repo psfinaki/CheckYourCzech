@@ -1,6 +1,6 @@
 module Client.Styles
 
-open Fable.Helpers.React.Props
+open Fable.React.Props
 
 let middle =
     Style [
@@ -16,22 +16,22 @@ let rowWide =
 let halfParent =
     Style [
         Width "50%"
-        Display "inline-block"
+        Display DisplayOptions.InlineBlock
     ]
 
 let thirdParent =
     Style [
         Width "33%"
-        Display "inline-block"
+        Display DisplayOptions.InlineBlock
         Height "25px"
         VerticalAlign "top"
     ]
 
 let center direction =
     Style [ 
-        Display "flex"
+        Display DisplayOptions.Flex
         FlexDirection direction
-        AlignItems "center"
+        AlignItems AlignItemsOptions.Center
         JustifyContent "center"
     ]
 
@@ -40,7 +40,7 @@ let greyLabel =
         Width "32%"
         Height "70px"
         FontSize "25px"
-        TextAlign "center"
+        TextAlign TextAlignOptions.Center
         BorderRadius "10%"
         LineHeight "2.5"
         VerticalAlign "middle"
@@ -50,8 +50,8 @@ let greyLabel =
 let whiteLabel =
     Style [ 
         FontSize "20px"
-        TextAlign "center"
-        Display "block" 
+        TextAlign TextAlignOptions.Center
+        Display DisplayOptions.Block 
     ]
 
 let input =
@@ -59,7 +59,7 @@ let input =
         Width "32%"
         Height "70px"
         FontSize "25px"
-        TextAlign "center"
+        TextAlign TextAlignOptions.Center
         MarginLeft "2%"
         MarginRight "2%" 
     ] 
@@ -79,5 +79,5 @@ let select =
         Height "50%"
         Margin "auto"
         Padding "0 2%" 
-        TextAlign "center"
+        TextAlign TextAlignOptions.Center
     ]

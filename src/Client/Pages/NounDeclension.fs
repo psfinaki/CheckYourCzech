@@ -1,9 +1,9 @@
 ﻿module Client.Pages.NounDeclension
 
 open Elmish
-open Fable.PowerPack.Fetch
+open Thoth.Fetch
 open Thoth.Json
-open Fable.Helpers.React
+open Fable.React
 
 open Common.GrammarCategories
 open Client.Markup
@@ -51,7 +51,7 @@ let getTask gender pattern number case =
         then "/api/nouns/declension" 
         else sprintf "/api/nouns/declension?%s" queryString
 
-    fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
+    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
 
 let init () =
     let filterBlock = FilterBlock.State.init()

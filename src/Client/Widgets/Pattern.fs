@@ -1,9 +1,9 @@
 ﻿module Client.Widgets.Pattern
 
+open Browser.Types
 open Fable.Core.JsInterop
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
-open Fable.Import.React
+open Fable.React
+open Fable.React.Props
 
 open Client
 
@@ -31,7 +31,7 @@ let update msg model =
         { model with SelectedPattern = pattern }
 
 let view model dispatch =
-    let handleChangePattern (event: FormEvent) =
+    let handleChangePattern (event: Event) =
         let translate = function | PatternUnset -> None | x -> Some x
         dispatch (SelectPattern (translate !!event.target?value))
         

@@ -1,9 +1,9 @@
 ﻿module Client.Pages.VerbConjugation
 
 open Elmish
-open Fable.PowerPack.Fetch
+open Thoth.Fetch
 open Thoth.Json
-open Fable.Helpers.React
+open Fable.React
 
 open Client.Markup
 open Client.Styles
@@ -46,7 +46,7 @@ let getTask ``class`` pattern =
         then "/api/verbs/conjugation" 
         else sprintf "/api/verbs/conjugation?%s" queryString
 
-    fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
+    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
 
 let init() =
     let filterBlock = FilterBlock.State.init()

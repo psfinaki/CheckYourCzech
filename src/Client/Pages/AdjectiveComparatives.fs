@@ -1,9 +1,9 @@
 ﻿module Client.Pages.AdjectiveComparatives
 
 open Elmish
-open Fable.PowerPack.Fetch
-open Fable.Helpers.React
+open Fable.React
 open Thoth.Json
+open Thoth.Fetch
 
 open Client
 open Client.Views
@@ -26,7 +26,7 @@ let getTask regularity =
         | Some r -> "/api/adjectives/comparatives?isRegular=" + r.ToString()
         | None   -> "/api/adjectives/comparatives"
 
-    fetchAs<Task.Task option> url (Decode.Auto.generateDecoder())
+    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
 
 let init() =
     let filterBlock = FilterBlock.State.init()
