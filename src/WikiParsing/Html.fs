@@ -3,7 +3,7 @@
 open FSharp.Data
 
 type HtmlNode with
-    member this.GetInnermostAttributeWithText text =
+    member this.GetInnermostAttributeWithText (text: string) =
         this.Descendants()
         |> Seq.collect (fun node -> node.Attributes())
         |> Seq.map     (fun attr -> attr, attr.Value())

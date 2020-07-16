@@ -28,8 +28,7 @@ let removeMany (values: seq<string>) (s: string) =
 let removePattern pattern s = Regex.Replace(s, pattern, "")
 
 let containsAny (values: seq<string>) (s: string) = 
-    let containsOne = s.Contains
-    values |> Seq.exists containsOne
+    values |> Seq.exists s.Contains
 
 let contains (s: string) = containsAny [s]
 
