@@ -1,13 +1,12 @@
 ﻿module Client.Pages.VerbImperatives
 
 open Elmish
-open Thoth.Fetch
-open Thoth.Json
 open Fable.React
 
 open Common.Conjugation
 open Client.Markup
 open Client.Styles
+open Client.Utils
 open Client.Widgets
 
 type Model = { 
@@ -46,7 +45,7 @@ let getTask ``class`` pattern =
         then "/api/verbs/imperatives" 
         else sprintf "/api/verbs/imperatives?%s" queryString
 
-    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
+    buildFetchTask url
 
 let init() =
     let filterBlock = FilterBlock.State.init()

@@ -1,11 +1,10 @@
 ﻿module Client.Pages.AdjectivePlurals
 
 open Elmish
-open Thoth.Fetch
-open Thoth.Json
 open Fable.React
 
 open Client
+open Client.Utils
 open Client.Widgets
 
 type Model = {
@@ -17,7 +16,7 @@ type Msg =
 
 let getTask() =
     let url = "/api/adjectives/plurals"
-    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
+    buildFetchTask url
 
 let init() =
     let task, cmd = Task.init "Adjective Plurals" (getTask())

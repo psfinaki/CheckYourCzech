@@ -1,13 +1,12 @@
 ﻿module Client.Pages.NounPlurals
 
 open Elmish
-open Thoth.Fetch
-open Thoth.Json
 open Fable.React
 
 open Common.GrammarCategories
 open Client.Markup
 open Client.Styles
+open Client.Utils
 open Client.Widgets
 
 type Model = {
@@ -45,7 +44,7 @@ let getTask gender pattern =
         then "/api/nouns/plurals" 
         else sprintf "/api/nouns/plurals?%s" queryString
 
-    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
+    buildFetchTask url
 
 let init () =
     let filterBlock = FilterBlock.State.init()
