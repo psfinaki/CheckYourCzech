@@ -2,12 +2,11 @@
 
 open Elmish
 open Fable.React
-open Thoth.Json
-open Thoth.Fetch
 
 open Client
 open Client.Views
 open Client.Widgets
+open Client.Utils
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model
@@ -26,7 +25,7 @@ let getTask regularity =
         | Some r -> "/api/adjectives/comparatives?isRegular=" + r.ToString()
         | None   -> "/api/adjectives/comparatives"
 
-    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
+    buildFetchTask url
 
 let init() =
     let filterBlock = FilterBlock.State.init()

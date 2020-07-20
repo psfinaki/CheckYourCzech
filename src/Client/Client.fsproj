@@ -34,6 +34,7 @@
 		<Compile Include="Widgets\Class.fs" />
 		<Compile Include="Widgets\Regularity.fs" />
 		<Compile Include="Widgets\Task.fs" />
+		<Compile Include="Utils.fs" />
 		<Compile Include="Pages\NounDeclension.fs" />
 		<Compile Include="Pages\NounAccusatives.fs" />
 		<Compile Include="Pages\VerbParticiples.fs" />

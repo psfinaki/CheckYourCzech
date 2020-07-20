@@ -1,13 +1,12 @@
 ﻿module Client.Pages.NounDeclension
 
 open Elmish
-open Thoth.Fetch
-open Thoth.Json
 open Fable.React
 
 open Common.GrammarCategories
 open Client.Markup
 open Client.Styles
+open Client.Utils
 open Client.Widgets
 
 type Model = {
@@ -51,7 +50,7 @@ let getTask gender pattern number case =
         then "/api/nouns/declension" 
         else sprintf "/api/nouns/declension?%s" queryString
 
-    Fetch.fetchAs(url, Decode.Auto.generateDecoder<Task.Task option>())
+    buildFetchTask url
 
 let init () =
     let filterBlock = FilterBlock.State.init()

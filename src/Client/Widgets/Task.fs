@@ -71,7 +71,7 @@ let log taskName task answer result =
     Logger.log message
 
 let loadTaskCmd getTask =
-    Cmd.OfPromise.either (fun _ -> getTask) [] FetchedTask FetchError
+    Cmd.OfPromise.either getTask [] FetchedTask FetchError
 
 let getStateTask s = 
     match s with 
