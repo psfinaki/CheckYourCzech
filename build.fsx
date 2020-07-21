@@ -78,6 +78,12 @@ Target.create "RunScraper" (fun _ ->
     runDotNet "run" scraperPath
 )
 
+Target.create "RunClient" (fun _ ->
+    let webpackConfig = Path.combine clientPath "webpack.development.js"
+    let webpackCommand = sprintf "webpack-dev-server --config %s" webpackConfig
+    yarn webpackCommand
+)
+
 "InstallClient"
     ==> "Build"
 

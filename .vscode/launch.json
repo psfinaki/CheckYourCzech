@@ -1,0 +1,44 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Server",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build Server",
+            "program": "${workspaceFolder}/src/Server/bin/Debug/netcoreapp3.1/Server.dll",
+            "console": "internalConsole",
+            "env": {
+                "STORAGE_CONNECTIONSTRING": "UseDevelopmentStorage=true"
+            },
+        },
+        {
+            "name": "Debug Client",
+            "type": "chrome",
+            "request": "launch",
+            "preLaunchTask": "Watch Client",
+            "url": "http://localhost:8080/",
+            "webRoot": "${workspaceFolder}/src/Client",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack:///*": "${workspaceFolder}/*",
+            }
+        },
+        {
+            "name": "Watch Web App",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Watch Server and Client",
+            "program": "${workspaceFolder}",
+            "env": {
+                "STORAGE_CONNECTIONSTRING": "UseDevelopmentStorage=true"
+            },
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug Web App",
+            "configurations": [ "Debug Server", "Debug Client" ],
+        }
+    ]
+}

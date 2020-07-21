@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Server",
+            "command": "dotnet",
+            "args": [ "build" ],
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/src/Server"
+            }
+        },
+        {
+            "label": "Watch Client",
+            "command": "fake",
+            "args": [ "build", "-t", "RunClient" ],
+            "type": "shell",
+            "options": { 
+                "cwd": "${workspaceFolder}" 
+            }
+        },
+        {
+            "label": "Watch Server and Client",
+            "command": "fake",
+            "args": [ "build", "-t", "RunWeb" ],
+            "type": "shell",
+            "options": { 
+                "cwd": "${workspaceFolder}" 
+            }
+        }
+    ]
+}
