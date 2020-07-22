@@ -45,7 +45,7 @@ For hosting and metrics, Microsoft [Azure](https://azure.microsoft.com/en-us/) i
 
 ## Local testing
 
-Thanks for your interest! Developing and testing locally should be possible both for Windows and Unix.
+Developing and testing locally is possible both for Windows and Unix. Full stack debugging is supported in VS Code as described [here](https://safe-stack.github.io/docs/feature-debugging/).
 
 ### Installation for Windows
 1. Install [.NET Core SDK](https://dotnet.microsoft.com/download)
