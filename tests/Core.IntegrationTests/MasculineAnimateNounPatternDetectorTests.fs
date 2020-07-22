@@ -16,7 +16,6 @@ let getDeclension =
 [<InlineData "syn">]
 [<InlineData "blb">]
 [<InlineData "Bohumil">]
-[<InlineData "bonobo">]
 [<InlineData "geolog">]
 let ``Detects pattern pán`` word =
     word
@@ -29,6 +28,7 @@ let ``Detects pattern pán`` word =
 [<InlineData "král">]
 [<InlineData "předseda">]
 [<InlineData "dárce">]
+[<InlineData "dinosaurus">]
 let ``Detects not pattern pán`` word =
     word
     |> getDeclension
@@ -54,6 +54,7 @@ let ``Detects pattern muž`` word =
 [<InlineData "debil">]
 [<InlineData "turista">]
 [<InlineData "vůdce">]
+[<InlineData "dinosaurus">]
 let ``Detects not pattern muž`` word =
     word
     |> getDeclension
@@ -77,6 +78,7 @@ let ``Detects pattern předseda`` word =
 [<InlineData "syn">]
 [<InlineData "muž">]
 [<InlineData "vůdce">]
+[<InlineData "dinosaurus">]
 let ``Detects not pattern předseda`` word =
     word
     |> getDeclension
@@ -96,10 +98,32 @@ let ``Detects pattern soudce`` word =
 [<InlineData "syn">]
 [<InlineData "učitel">]
 [<InlineData "kolega">]
+[<InlineData "dinosaurus">]
 let ``Detects not pattern soudce`` word =
     word
     |> getDeclension
     |> isPatternSoudce
+    |> Assert.False
+
+[<Theory>]
+[<InlineData "dinosaurus">]
+[<InlineData "Herkules">]
+[<InlineData "fámulus">]
+let ``Detects pattern dinosaurus`` word =
+    word
+    |> getDeclension
+    |> isPatternDinosaurus
+    |> Assert.True
+
+[<Theory>]
+[<InlineData "pán">]
+[<InlineData "muž">]
+[<InlineData "předseda">]
+[<InlineData "vůdce">]
+let ``Detects not pattern dinosaurus`` word =
+    word
+    |> getDeclension
+    |> isPatternDinosaurus
     |> Assert.False
 
 [<Theory>]

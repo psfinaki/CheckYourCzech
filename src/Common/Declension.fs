@@ -22,6 +22,7 @@ type MasculineAnimateDeclensionPattern =
     | Muž
     | Předseda
     | Soudce
+    | Dinosaurus
 
 type MasculineInanimateDeclensionPattern = 
     | Hrad

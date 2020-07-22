@@ -22,7 +22,7 @@ type Msg =
     | Task of Task.Msg
 
 let patterns =
-    dict [ (MasculineAnimate, ["pán"; "muž"; "předseda"; "soudce"])
+    dict [ (MasculineAnimate, ["pán"; "muž"; "předseda"; "soudce";"dinosaurus"])
            (MasculineInanimate, ["hrad"; "stroj"; "rytmus"])
            (Feminine, ["žena"; "růže"; "píseň"; "kost"])
            (Neuter, ["město"; "kuře"; "moře"; "stavení"; "drama"; "muzeum" ]) ]

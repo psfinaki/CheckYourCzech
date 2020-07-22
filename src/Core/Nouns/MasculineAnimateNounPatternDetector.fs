@@ -4,9 +4,13 @@ open Common.StringHelper
 open Common.Declension
 open Core.Stem
 
-let isPatternPán declension = 
-    declension.SingularGenitive
-    |> Seq.exists (ends "a")
+let isPatternPán declension =
+    let rule (nominative, genitive) = 
+        nominative |> append "a" = genitive
+    
+    let nominatives = declension.SingularNominative
+    let genitives = declension.SingularGenitive
+    Seq.allPairs nominatives genitives |> Seq.exists rule
 
 let isPatternMuž declension =
     let nominatives = declension.SingularNominative
@@ -23,11 +27,20 @@ let isPatternSoudce declension =
     declension.SingularNominative
     |> Seq.exists (ends "ce")
 
+let isPatternDinosaurus declension =    
+    let rule (nominative, genitive) = 
+        nominative |> removeLast 2 |> append "a" = genitive
+
+    let nominatives = declension.SingularNominative
+    let genitives = declension.SingularGenitive
+    Seq.allPairs nominatives genitives |> Seq.exists rule
+
 let patternDetectors = [
     (isPatternPán, Pán)
     (isPatternMuž, Muž)
     (isPatternPředseda, Předseda)
     (isPatternSoudce, Soudce)
+    (isPatternDinosaurus, Dinosaurus)
 ]
 
 let isPattern article patternDetector = fst patternDetector article
