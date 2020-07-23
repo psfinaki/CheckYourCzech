@@ -4,6 +4,9 @@
     .navbar-brand {
         float: none;
         padding: 0px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
     }
 
     .navbar-item {

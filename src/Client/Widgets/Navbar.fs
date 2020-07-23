@@ -3,6 +3,7 @@ module Client.Widgets.Navbar
 open Fable.React
 open Fable.React.Props
 open Fulma
+open Fable.FontAwesome
 
 let private navbarView isHome dispatch =
     let backArrow = 
@@ -16,18 +17,16 @@ let private navbarView isHome dispatch =
             [ Navbar.Item.Props [ 
                 Href "https://github.com/psfinaki/CheckYourCzech"
                 Target "_blank" ] ]
-            [ Heading.h5 [ ] 
-                [ str "Contact" ] ] 
+            [ Icon.icon [ Icon.Size IsMedium; Icon.IsRight ]
+                            [ Fa.i [ Fa.Brand.GithubAlt; Fa.Size Fa.Fa2x ] [] ] ] 
 
     div [ ClassName "navbar-bg" ]
         [ Navbar.navbar [ ]
                 [ Navbar.Brand.div [ ]
                     [ Navbar.Item.a [ Navbar.Item.Props [ Href "#" ] ]
                         [ (if isHome then textLink else backArrow) ] 
+                      contactLink
                     ]
-                  Navbar.menu [ ]
-                    [ Navbar.End.div [ ] 
-                        [ contactLink ] ]
                 ] 
         ]
 
