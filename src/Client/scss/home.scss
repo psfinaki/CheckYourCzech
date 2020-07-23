@@ -4,6 +4,17 @@
     .navbar-brand {
         float: none;
         padding: 0px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        .contact-text {
+           display: none; 
+        }
+
+        .contact-icon {
+            display: inline-block; 
+         }
     }
 
     .navbar-item {
@@ -100,6 +111,17 @@
 }
 
 @media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+    .navbar-brand {
+        .contact-text {
+           display: inline-block;
+           margin-bottom: 0;
+        }
+
+        .contact-icon {
+            display: none; 
+         }
+    }
+
     span.task-heading {
         font-size: 60px;
         font-weight: normal;
