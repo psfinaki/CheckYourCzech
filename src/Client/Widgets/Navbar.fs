@@ -11,12 +11,23 @@ let private navbarView isHome dispatch =
     let textLink = 
         Heading.p [ Heading.Is4 ]
             [ str "Check Your Czech" ]
+    let contactLink = 
+        Navbar.Item.a 
+            [ Navbar.Item.Props [ 
+                Href "https://github.com/psfinaki/CheckYourCzech"
+                Target "_blank" ] ]
+            [ Heading.h5 [ ] 
+                [ str "Contact" ] ] 
+
     div [ ClassName "navbar-bg" ]
         [ Navbar.navbar [ ]
                 [ Navbar.Brand.div [ ]
                     [ Navbar.Item.a [ Navbar.Item.Props [ Href "#" ] ]
                         [ (if isHome then textLink else backArrow) ] 
                     ]
+                  Navbar.menu [ ]
+                    [ Navbar.End.div [ ] 
+                        [ contactLink ] ]
                 ] 
         ]
 
