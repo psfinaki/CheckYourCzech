@@ -12,13 +12,18 @@ let private navbarView isHome dispatch =
     let textLink = 
         Heading.p [ Heading.Is4 ]
             [ str "Check Your Czech" ]
+    let contactText = 
+        Heading.h5 [ Heading.CustomClass "contact-text" ] 
+            [ str "Contact" ]
+    let contactIcon = 
+        Icon.icon [ Icon.CustomClass "contact-icon"; Icon.Size IsMedium; Icon.IsRight ]
+                    [ Fa.i [ Fa.Brand.GithubAlt; Fa.Size Fa.Fa2x ] [] ]
     let contactLink = 
         Navbar.Item.a 
             [ Navbar.Item.Props [ 
                 Href "https://github.com/psfinaki/CheckYourCzech"
                 Target "_blank" ] ]
-            [ Icon.icon [ Icon.Size IsMedium; Icon.IsRight ]
-                            [ Fa.i [ Fa.Brand.GithubAlt; Fa.Size Fa.Fa2x ] [] ] ] 
+            [ contactText; contactIcon ] 
 
     div [ ClassName "navbar-bg" ]
         [ Navbar.navbar [ ]
