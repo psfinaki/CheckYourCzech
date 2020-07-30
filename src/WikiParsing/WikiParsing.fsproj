@@ -14,8 +14,10 @@
     <NoWarn>NU1605</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ConcreteArticles.fs" />
     <Compile Include="Html.fs" />
     <Compile Include="WikiString.fs" />
+    <Compile Include="AdjectiveWikiParsing.fs" />
     <Compile Include="NounWikiDeclension.fs" />
     <Compile Include="Articles\Article.fs" />
     <Compile Include="Articles\NounArticle.fs" />
