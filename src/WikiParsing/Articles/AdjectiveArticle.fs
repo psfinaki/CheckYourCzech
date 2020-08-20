@@ -1,42 +1,10 @@
 ﻿module WikiParsing.Articles.AdjectiveArticle
 
-open FSharp.Data
-
+open Common.WikiArticles
+open WikiParsing.AdjectiveWikiParsing
 open WikiParsing.WikiString
 open WikiParsing.Articles.Article
-open Common.WikiArticles
-
-type WikiAdjective = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
-type WikiAdjectiveNový = HtmlProvider<"https://cs.wiktionary.org/wiki/nový">
-type WikiAdjectiveStarý = HtmlProvider<"https://cs.wiktionary.org/wiki/starý">
-type WikiAdjectiveVrchní = HtmlProvider<"https://cs.wiktionary.org/wiki/vrchní">
-
-type AdjectiveArticleWithPlural = AdjectiveArticleWithPlural of AdjectiveArticle
-type AdjectiveArticleWithComparative = AdjectiveArticleWithComparative of AdjectiveArticle
-
-let getAdjectiveProvider (AdjectiveArticle { Text = text }) =
-    text
-    |> WikiAdjective.Parse
-
-let getPluralDobrý (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) = 
-    text
-    |> WikiAdjectiveNový.Parse
-    |> fun data -> data.Tables.``Skloňování[editovat]``.Rows.[0].``plurál - mužský životný``
-
-let getPluralStarý (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) = 
-    text
-    |> WikiAdjectiveStarý.Parse
-    |> fun data -> data.Tables.``Skloňování[editovat]2``.Rows.[0].``plurál - mužský životný``
-
-let getPluralVrchní (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) = 
-    text
-    |> WikiAdjectiveVrchní.Parse
-    |> fun data -> data.Tables.``Skloňování[editovat]3``.Rows.[0].``plurál - mužský životný``
-
-let pluralDeclensionsMap =
-    dict [ (1, getPluralDobrý)
-           (2, getPluralStarý)
-           (3, getPluralVrchní) ]
+open WikiParsing.ConcreteArticles
 
 let getNumberOfDeclensions (AdjectiveArticleWithPlural (AdjectiveArticle article)) = 
     article
@@ -58,16 +26,28 @@ let private hasRequiredInfoComparative (AdjectiveArticle article) =
         Is "stupňování"
     ]
 
-let getPlural article =
-    article
-    |> getNumberOfDeclensions
-    |> fun n -> pluralDeclensionsMap.[n] article
+let private getWikiDeclension article = 
+    let numberOfDeclensions = article |> getNumberOfDeclensions
 
-let getComparatives (AdjectiveArticleWithComparative article) =
-    article
-    |> getAdjectiveProvider
-    |> fun data -> data.Tables.``Stupňování[editovat]``.Rows.[1].tvar
-    |> getForms
+    match numberOfDeclensions with
+    | 1 -> getFirstDeclension article
+    | 2 -> getSecondDeclension article
+    | 3 -> getThirdDeclension article
+    | _ -> invalidOp "Invalid article"
+
+let getDeclension article =
+    let declension = getWikiDeclension article
+    {
+        Singular = declension.SingularNominative
+        Plural = declension.PluralNominative
+    }
+
+let getComparison article =
+    let comparison = getComparison article
+    {
+        Positive = comparison.Positive |> getForm
+        Comparatives = comparison.Comparative |> getForms
+    }
 
 let parseAdjectivePlural article = 
     if article |> hasRequiredInfoPlural
@@ -86,15 +66,9 @@ let parseAdjectiveArticle article =
         Declension =
             article
             |> parseAdjectivePlural
-            |> Option.map (fun article -> { 
-                Singular = title
-                Plural = article |> getPlural 
-            })
+            |> Option.map getDeclension
         Comparison = 
             article
             |> parseAdjectiveComparative
-            |> Option.map (fun article -> {
-                Positive = title
-                Comparatives = article |> getComparatives
-            })
+            |> Option.map getComparison
     }

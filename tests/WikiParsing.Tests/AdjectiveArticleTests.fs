@@ -2,8 +2,9 @@
 
 open Xunit
 
-open WikiParsing.Articles.AdjectiveArticle
 open Common.WikiArticles
+open WikiParsing.Articles.AdjectiveArticle
+open WikiParsing.ConcreteArticles
 
 let getArticle = 
     getArticle
@@ -14,7 +15,8 @@ let ``Gets plural - when not nominalized``() =
     "laskavý"
     |> getArticle 
     |> AdjectiveArticleWithPlural
-    |> getPlural
+    |> getDeclension
+    |> fun d -> d.Plural
     |> equals "laskaví"
 
 [<Fact>]
@@ -22,7 +24,8 @@ let ``Gets plural - when nominalized once``() =
     "vrátný"
     |> getArticle 
     |> AdjectiveArticleWithPlural
-    |> getPlural
+    |> getDeclension
+    |> fun d -> d.Plural
     |> equals "vrátní"
 
 [<Fact>]
@@ -30,7 +33,8 @@ let ``Gets plural - when nominalized twice``() =
     "duchovní"
     |> getArticle 
     |> AdjectiveArticleWithPlural
-    |> getPlural
+    |> getDeclension
+    |> fun d -> d.Plural
     |> equals "duchovní"
 
 [<Fact>]
@@ -38,7 +42,8 @@ let ``Gets comparatives``() =
     "dobrý"
     |> getArticle 
     |> AdjectiveArticleWithComparative
-    |> getComparatives
+    |> getComparison
+    |> fun d -> d.Comparatives
     |> seqEquals [ "lepší" ]
 
 [<Fact>]
