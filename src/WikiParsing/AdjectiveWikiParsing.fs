@@ -34,68 +34,72 @@ type WikiComparison =
         Superlative: string
     }
 
-let get1Declension (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) =
+let getFirstDeclension (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) =
     let data = WikiAdjectiveNový.Parse text
+    let declensionTable = data.Tables.``Skloňování[editovat]``
     {
-        SingularNominative =   data.Tables.``Skloňování[editovat]``.Rows.[0].``singulár - mužský životný``
-        SingularGenitive =     data.Tables.``Skloňování[editovat]``.Rows.[1].``singulár - mužský životný`` 
-        SingularDative =       data.Tables.``Skloňování[editovat]``.Rows.[2].``singulár - mužský životný`` 
-        SingularVocative =     data.Tables.``Skloňování[editovat]``.Rows.[4].``singulár - mužský životný`` 
-        SingularAccusative =   data.Tables.``Skloňování[editovat]``.Rows.[3].``singulár - mužský životný`` 
-        SingularLocative =     data.Tables.``Skloňování[editovat]``.Rows.[5].``singulár - mužský životný`` 
-        SingularInstrumental = data.Tables.``Skloňování[editovat]``.Rows.[6].``singulár - mužský životný`` 
-        PluralNominative =     data.Tables.``Skloňování[editovat]``.Rows.[0].``plurál - mužský životný``  
-        PluralGenitive =       data.Tables.``Skloňování[editovat]``.Rows.[1].``plurál - mužský životný``  
-        PluralDative =         data.Tables.``Skloňování[editovat]``.Rows.[2].``plurál - mužský životný``  
-        PluralAccusative =     data.Tables.``Skloňování[editovat]``.Rows.[3].``plurál - mužský životný``  
-        PluralVocative =       data.Tables.``Skloňování[editovat]``.Rows.[4].``plurál - mužský životný``  
-        PluralLocative =       data.Tables.``Skloňování[editovat]``.Rows.[5].``plurál - mužský životný``  
-        PluralInstrumental =   data.Tables.``Skloňování[editovat]``.Rows.[6].``plurál - mužský životný``  
+        SingularNominative =   declensionTable.Rows.[0].``singulár - mužský životný``
+        SingularGenitive =     declensionTable.Rows.[1].``singulár - mužský životný`` 
+        SingularDative =       declensionTable.Rows.[2].``singulár - mužský životný`` 
+        SingularVocative =     declensionTable.Rows.[4].``singulár - mužský životný`` 
+        SingularAccusative =   declensionTable.Rows.[3].``singulár - mužský životný`` 
+        SingularLocative =     declensionTable.Rows.[5].``singulár - mužský životný`` 
+        SingularInstrumental = declensionTable.Rows.[6].``singulár - mužský životný`` 
+        PluralNominative =     declensionTable.Rows.[0].``plurál - mužský životný``  
+        PluralGenitive =       declensionTable.Rows.[1].``plurál - mužský životný``  
+        PluralDative =         declensionTable.Rows.[2].``plurál - mužský životný``  
+        PluralAccusative =     declensionTable.Rows.[3].``plurál - mužský životný``  
+        PluralVocative =       declensionTable.Rows.[4].``plurál - mužský životný``  
+        PluralLocative =       declensionTable.Rows.[5].``plurál - mužský životný``  
+        PluralInstrumental =   declensionTable.Rows.[6].``plurál - mužský životný``  
     }
 
-let get2Declension (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) =
+let getSecondDeclension (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) =
     let data = WikiAdjectiveStarý.Parse text
+    let declensionTable = data.Tables.``Skloňování[editovat]2``
     {
-        SingularNominative =   data.Tables.``Skloňování[editovat]2``.Rows.[0].``singulár - mužský životný``
-        SingularGenitive =     data.Tables.``Skloňování[editovat]2``.Rows.[1].``singulár - mužský životný`` 
-        SingularDative =       data.Tables.``Skloňování[editovat]2``.Rows.[2].``singulár - mužský životný`` 
-        SingularVocative =     data.Tables.``Skloňování[editovat]2``.Rows.[4].``singulár - mužský životný`` 
-        SingularAccusative =   data.Tables.``Skloňování[editovat]2``.Rows.[3].``singulár - mužský životný`` 
-        SingularLocative =     data.Tables.``Skloňování[editovat]2``.Rows.[5].``singulár - mužský životný`` 
-        SingularInstrumental = data.Tables.``Skloňování[editovat]2``.Rows.[6].``singulár - mužský životný`` 
-        PluralNominative =     data.Tables.``Skloňování[editovat]2``.Rows.[0].``plurál - mužský životný``  
-        PluralGenitive =       data.Tables.``Skloňování[editovat]2``.Rows.[1].``plurál - mužský životný``  
-        PluralDative =         data.Tables.``Skloňování[editovat]2``.Rows.[2].``plurál - mužský životný``  
-        PluralAccusative =     data.Tables.``Skloňování[editovat]2``.Rows.[3].``plurál - mužský životný``  
-        PluralVocative =       data.Tables.``Skloňování[editovat]2``.Rows.[4].``plurál - mužský životný``  
-        PluralLocative =       data.Tables.``Skloňování[editovat]2``.Rows.[5].``plurál - mužský životný``  
-        PluralInstrumental =   data.Tables.``Skloňování[editovat]2``.Rows.[6].``plurál - mužský životný``  
+        SingularNominative =   declensionTable.Rows.[0].``singulár - mužský životný``
+        SingularGenitive =     declensionTable.Rows.[1].``singulár - mužský životný`` 
+        SingularDative =       declensionTable.Rows.[2].``singulár - mužský životný`` 
+        SingularVocative =     declensionTable.Rows.[4].``singulár - mužský životný`` 
+        SingularAccusative =   declensionTable.Rows.[3].``singulár - mužský životný`` 
+        SingularLocative =     declensionTable.Rows.[5].``singulár - mužský životný`` 
+        SingularInstrumental = declensionTable.Rows.[6].``singulár - mužský životný`` 
+        PluralNominative =     declensionTable.Rows.[0].``plurál - mužský životný``  
+        PluralGenitive =       declensionTable.Rows.[1].``plurál - mužský životný``  
+        PluralDative =         declensionTable.Rows.[2].``plurál - mužský životný``  
+        PluralAccusative =     declensionTable.Rows.[3].``plurál - mužský životný``  
+        PluralVocative =       declensionTable.Rows.[4].``plurál - mužský životný``  
+        PluralLocative =       declensionTable.Rows.[5].``plurál - mužský životný``  
+        PluralInstrumental =   declensionTable.Rows.[6].``plurál - mužský životný``  
     }
 
-let get3Declension (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) =
+let getThirdDeclension (AdjectiveArticleWithPlural (AdjectiveArticle { Text = text })) =
     let data = WikiAdjectiveVrchní.Parse text
+    let declensionTable = data.Tables.``Skloňování[editovat]3``
     {
-        SingularNominative =   data.Tables.``Skloňování[editovat]3``.Rows.[0].``singulár - mužský životný``
-        SingularGenitive =     data.Tables.``Skloňování[editovat]3``.Rows.[1].``singulár - mužský životný`` 
-        SingularDative =       data.Tables.``Skloňování[editovat]3``.Rows.[2].``singulár - mužský životný`` 
-        SingularVocative =     data.Tables.``Skloňování[editovat]3``.Rows.[4].``singulár - mužský životný`` 
-        SingularAccusative =   data.Tables.``Skloňování[editovat]3``.Rows.[3].``singulár - mužský životný`` 
-        SingularLocative =     data.Tables.``Skloňování[editovat]3``.Rows.[5].``singulár - mužský životný`` 
-        SingularInstrumental = data.Tables.``Skloňování[editovat]3``.Rows.[6].``singulár - mužský životný`` 
-        PluralNominative =     data.Tables.``Skloňování[editovat]3``.Rows.[0].``plurál - mužský životný``  
-        PluralGenitive =       data.Tables.``Skloňování[editovat]3``.Rows.[1].``plurál - mužský životný``  
-        PluralDative =         data.Tables.``Skloňování[editovat]3``.Rows.[2].``plurál - mužský životný``  
-        PluralAccusative =     data.Tables.``Skloňování[editovat]3``.Rows.[3].``plurál - mužský životný``  
-        PluralVocative =       data.Tables.``Skloňování[editovat]3``.Rows.[4].``plurál - mužský životný``  
-        PluralLocative =       data.Tables.``Skloňování[editovat]3``.Rows.[5].``plurál - mužský životný``  
-        PluralInstrumental =   data.Tables.``Skloňování[editovat]3``.Rows.[6].``plurál - mužský životný``  
+        SingularNominative =   declensionTable.Rows.[0].``singulár - mužský životný``
+        SingularGenitive =     declensionTable.Rows.[1].``singulár - mužský životný`` 
+        SingularDative =       declensionTable.Rows.[2].``singulár - mužský životný`` 
+        SingularVocative =     declensionTable.Rows.[4].``singulár - mužský životný`` 
+        SingularAccusative =   declensionTable.Rows.[3].``singulár - mužský životný`` 
+        SingularLocative =     declensionTable.Rows.[5].``singulár - mužský životný`` 
+        SingularInstrumental = declensionTable.Rows.[6].``singulár - mužský životný`` 
+        PluralNominative =     declensionTable.Rows.[0].``plurál - mužský životný``  
+        PluralGenitive =       declensionTable.Rows.[1].``plurál - mužský životný``  
+        PluralDative =         declensionTable.Rows.[2].``plurál - mužský životný``  
+        PluralAccusative =     declensionTable.Rows.[3].``plurál - mužský životný``  
+        PluralVocative =       declensionTable.Rows.[4].``plurál - mužský životný``  
+        PluralLocative =       declensionTable.Rows.[5].``plurál - mužský životný``  
+        PluralInstrumental =   declensionTable.Rows.[6].``plurál - mužský životný``  
     }
 
 let getComparison (AdjectiveArticleWithComparative (AdjectiveArticle { Text = text })) = 
     let data = WikiAdjectiveNový.Parse text
+    let comparisonTable = data.Tables.``Stupňování[editovat]``
     {
-        Positive = data.Tables.``Stupňování[editovat]``.Rows.[0].tvar
-        Comparative = data.Tables.``Stupňování[editovat]``.Rows.[1].tvar
-        Superlative = data.Tables.``Stupňování[editovat]``.Rows.[2].tvar
+        Positive =    comparisonTable.Rows.[0].tvar
+        Comparative = comparisonTable.Rows.[1].tvar
+        Superlative = comparisonTable.Rows.[2].tvar
     }
 

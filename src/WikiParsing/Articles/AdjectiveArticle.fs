@@ -30,9 +30,9 @@ let private getWikiDeclension article =
     let numberOfDeclensions = article |> getNumberOfDeclensions
 
     match numberOfDeclensions with
-    | 1 -> get1Declension article
-    | 2 -> get2Declension article
-    | 3 -> get3Declension article
+    | 1 -> getFirstDeclension article
+    | 2 -> getSecondDeclension article
+    | 3 -> getThirdDeclension article
     | _ -> invalidOp "Invalid article"
 
 let getDeclension article =
