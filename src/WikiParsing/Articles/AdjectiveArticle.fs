@@ -35,11 +35,23 @@ let private getWikiDeclension article =
     | 3 -> getThirdDeclension article
     | _ -> invalidOp "Invalid article"
 
-let getDeclension article =
+let getDeclension article : AdjectiveDeclension =
     let declension = getWikiDeclension article
     {
-        Singular = declension.SingularNominative
-        Plural = declension.PluralNominative
+        SingularNominative = declension.SingularNominative |> getForm
+        SingularGenitive = declension.SingularGenitive
+        SingularDative = declension.SingularDative |> getForm
+        SingularAccusative = declension.SingularAccusative |> getForm
+        SingularVocative = declension.SingularVocative |> getForm
+        SingularLocative = declension.SingularLocative |> getForm
+        SingularInstrumental = declension.SingularInstrumental |> getForm
+        PluralNominative = declension.PluralNominative |> getForm
+        PluralGenitive = declension.PluralGenitive |> getForm
+        PluralDative = declension.PluralDative |> getForm
+        PluralAccusative = declension.PluralAccusative |> getForm
+        PluralVocative = declension.PluralVocative |> getForm
+        PluralLocative = declension.PluralLocative |> getForm
+        PluralInstrumental = declension.PluralInstrumental |> getForm
     }
 
 let getComparison article =

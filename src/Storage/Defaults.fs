@@ -26,6 +26,27 @@ type Noun with
         }
     }
 
+type AdjectiveDeclension with
+    static member Default = {
+        CanonicalForm = null
+        Declension = {
+            SingularNominative = null
+            SingularGenitive = null
+            SingularDative = null
+            SingularAccusative = null
+            SingularVocative = null
+            SingularLocative = null
+            SingularInstrumental = null
+            PluralNominative = null
+            PluralGenitive = null
+            PluralDative = null
+            PluralAccusative = null
+            PluralVocative = null
+            PluralLocative = null
+            PluralInstrumental = null
+        }
+    }
+
 type AdjectivePlural with 
     static member Default = {
         Singular = null

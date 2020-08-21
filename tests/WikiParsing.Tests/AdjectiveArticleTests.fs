@@ -16,7 +16,7 @@ let ``Gets plural - when not nominalized``() =
     |> getArticle 
     |> AdjectiveArticleWithPlural
     |> getDeclension
-    |> fun d -> d.Plural
+    |> fun d -> d.PluralNominative
     |> equals "laskaví"
 
 [<Fact>]
@@ -25,7 +25,7 @@ let ``Gets plural - when nominalized once``() =
     |> getArticle 
     |> AdjectiveArticleWithPlural
     |> getDeclension
-    |> fun d -> d.Plural
+    |> fun d -> d.PluralNominative
     |> equals "vrátní"
 
 [<Fact>]
@@ -34,7 +34,7 @@ let ``Gets plural - when nominalized twice``() =
     |> getArticle 
     |> AdjectiveArticleWithPlural
     |> getDeclension
-    |> fun d -> d.Plural
+    |> fun d -> d.PluralNominative
     |> equals "duchovní"
 
 [<Fact>]
