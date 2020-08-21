@@ -21,8 +21,20 @@ type NounDeclension = {
 }
 
 type AdjectiveDeclension = {
-    Singular: string
-    Plural: string
+    SingularNominative: string
+    SingularGenitive: string
+    SingularDative: string
+    SingularAccusative: string
+    SingularVocative: string
+    SingularLocative: string
+    SingularInstrumental: string
+    PluralNominative: string
+    PluralGenitive: string
+    PluralDative: string
+    PluralAccusative: string
+    PluralVocative: string
+    PluralLocative: string
+    PluralInstrumental: string
 }
 
 type AdjectiveComparison = {

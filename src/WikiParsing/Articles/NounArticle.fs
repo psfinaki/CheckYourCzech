@@ -53,7 +53,7 @@ let private getDeclensionWiki nounArticle =
     | _ -> 
         invalidOp ("Odd word: " + word)
 
-let private getDeclensionForDeclinable article = 
+let private getDeclensionForDeclinable article : Declension = 
     let declensions = getDeclensionWiki article
     let getForms getCase = Seq.map getCase >> Seq.collect getForms >> Seq.distinct
 
@@ -74,7 +74,7 @@ let private getDeclensionForDeclinable article =
         PluralInstrumental =   declensions |> getForms (fun d -> d.PluralInstrumental)
     }
 
-let private getDeclensionForIndeclinable (NounArticle { Title = word }) = 
+let private getDeclensionForIndeclinable (NounArticle { Title = word }) : Declension = 
     {
         SingularNominative =   seq { word }
         SingularGenitive =     seq { word }

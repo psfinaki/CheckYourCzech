@@ -11,6 +11,11 @@ type Noun = {
     Declension: Declension
 }
 
+type AdjectiveDeclension = {
+    CanonicalForm: string
+    Declension: Common.WikiArticles.AdjectiveDeclension
+}
+
 type AdjectivePlural = {
     Singular: string
     Plural: string

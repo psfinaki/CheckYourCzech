@@ -15,6 +15,15 @@ let private hasRegularComparatives comparison =
     comparison.Comparatives 
     |> Seq.contains (comparison.Positive |> buildComparative)
 
+type AdjectiveDeclension with 
+    static member Create adjective =
+        if adjective.Declension.IsSome 
+        then Some {
+                CanonicalForm = adjective.CanonicalForm
+                Declension = adjective.Declension.Value
+            }
+        else None
+
 type AdjectiveComparative with 
     static member Create comparison = 
         if comparison |> morphologicalComparativeExists
@@ -28,6 +37,6 @@ type AdjectiveComparative with
 
 type AdjectivePlural with 
     static member Create declension : AdjectivePlural = {
-        Singular = declension.Singular
-        Plural = declension.Plural
+        Singular = declension.SingularNominative
+        Plural = declension.PluralNominative
     }
