@@ -2,6 +2,7 @@
 
 open Common
 open Common.Exercises
+open Common.GrammarCategories.Verbs
 open Common.WikiArticles
 open Core.Reflexives
 open Core.Verbs

@@ -3,11 +3,11 @@
 open Elmish
 open Fable.React
 
-open Common.GrammarCategories
 open Client.Markup
 open Client.Styles
 open Client.Utils
 open Client.Widgets
+open Common.GrammarCategories.Nouns
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model
@@ -23,10 +23,10 @@ type Msg =
     | Task of Task.Msg
 
 let patterns =
-    dict [ (MasculineAnimate, ["pán"; "muž"; "předseda"; "soudce";"dinosaurus"])
-           (MasculineInanimate, ["hrad"; "stroj"; "rytmus"])
-           (Feminine, ["žena"; "růže"; "píseň"; "kost"])
-           (Neuter, ["město"; "kuře"; "moře"; "stavení"; "drama"; "muzeum"]) ]
+    dict [ (Gender.MasculineAnimate, ["pán"; "muž"; "předseda"; "soudce";"dinosaurus"])
+           (Gender.MasculineInanimate, ["hrad"; "stroj"; "rytmus"])
+           (Gender.Feminine, ["žena"; "růže"; "píseň"; "kost"])
+           (Gender.Neuter, ["město"; "kuře"; "moře"; "stavení"; "drama"; "muzeum"]) ]
 
 let getPatterns gender = patterns.[gender]
 

@@ -3,6 +3,7 @@
 open Scraper.ExerciseCreation.Nouns
 open Storage.Storage
 open Storage.ExerciseModels.Noun
+open Common.Exercises
 open Common.WikiArticles
 open WikiParsing.Articles.NounArticle
 
@@ -13,7 +14,7 @@ let registerNoun article =
 
     let nounDeclension = 
         noun
-        |> NounDeclension.Create
+        |> Noun.Create
         |> Option.map (registerNounDeclension noun.CanonicalForm)
 
     [ nounDeclension ] |> List.choose id

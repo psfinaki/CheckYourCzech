@@ -1,7 +1,7 @@
 ﻿module Core.Nouns.FeminineNounPatternDetector
 
 open Common.StringHelper
-open Common.Declension
+open Common.GrammarCategories.Nouns
 open Core.Stem
 
 let isPatternŽena declension = 
@@ -33,10 +33,10 @@ let isPatternKost declension =
     instrumentals |> Seq.exists (not << endsOneOf ["emi"; "ěmi"])
 
 let patternDetectors = [
-    (isPatternŽena, Žena)
-    (isPatternRůže, Růže)
-    (isPatternPíseň, Píseň)
-    (isPatternKost, Kost)
+    (isPatternŽena, FeminineDeclensionPattern.Žena)
+    (isPatternRůže, FeminineDeclensionPattern.Růže)
+    (isPatternPíseň, FeminineDeclensionPattern.Píseň)
+    (isPatternKost, FeminineDeclensionPattern.Kost)
 ]
 
 let isPattern article patternDetector = fst patternDetector article

@@ -3,7 +3,6 @@
 open Xunit
 
 open WikiParsing.Articles.VerbArticle
-open Common.Conjugation
 open Common.WikiArticles
 
 let getArticle =

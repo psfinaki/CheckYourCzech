@@ -5,14 +5,14 @@ open Fable.Core.JsInterop
 open Fable.React
 open Fable.React.Props
 
-open Common.GrammarCategories
 open Client
+open Common.GrammarCategories.Nouns
 
 let translateGender = function
-    | "MasculineAnimate" -> MasculineAnimate
-    | "MasculineInanimate" -> MasculineInanimate
-    | "Feminine" -> Feminine
-    | "Neuter" -> Neuter
+    | "MasculineAnimate" -> Gender.MasculineAnimate
+    | "MasculineInanimate" -> Gender.MasculineInanimate
+    | "Feminine" -> Gender.Feminine
+    | "Neuter" -> Gender.Neuter
     | _ -> failwith "Unknown gender"
 
 [<Literal>]
@@ -51,10 +51,10 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeGender [
                         Markup.option GenderUnset "Any"
-                        Markup.option (string MasculineAnimate) "Masculine Animate"
-                        Markup.option (string MasculineInanimate) "Masculine Inanimate"
-                        Markup.option (string Feminine) "Feminine"
-                        Markup.option (string Neuter) "Neuter"
+                        Markup.option (string Gender.MasculineAnimate) "Masculine Animate"
+                        Markup.option (string Gender.MasculineInanimate) "Masculine Inanimate"
+                        Markup.option (string Gender.Feminine) "Feminine"
+                        Markup.option (string Gender.Neuter) "Neuter"
                     ]
                 ]
         ]

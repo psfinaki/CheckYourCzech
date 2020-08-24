@@ -6,7 +6,7 @@ open Fable.React
 open Fable.React.Props
 
 open Client
-open Common.GrammarCategories
+open Common.GrammarCategories.Nouns
 open Common.Utils
 
 [<Literal>]
@@ -45,8 +45,8 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeNumber [
                         Markup.option NumberUnset "Any"
-                        Markup.option (string Singular) "Singular"
-                        Markup.option (string Plural) "Plural"
+                        Markup.option (string Number.Singular) "Singular"
+                        Markup.option (string Number.Plural) "Plural"
                     ]
                 ]
         ]

@@ -6,7 +6,7 @@ open Fable.React
 open Fable.React.Props
 
 open Client
-open Common.GrammarCategories
+open Common.GrammarCategories.Nouns
 open Common.Utils
 
 [<Literal>]
@@ -45,13 +45,13 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeCase [
                         Markup.option CaseUnset "Any"
-                        Markup.option (string Nominative) "Nominative"
-                        Markup.option (string Genitive) "Genitive"
-                        Markup.option (string Dative) "Dative"
-                        Markup.option (string Accusative) "Accusative"
-                        Markup.option (string Vocative) "Vocative"
-                        Markup.option (string Locative) "Locative"
-                        Markup.option (string Instrumental) "Instrumental"
+                        Markup.option (string Case.Nominative) "Nominative"
+                        Markup.option (string Case.Genitive) "Genitive"
+                        Markup.option (string Case.Dative) "Dative"
+                        Markup.option (string Case.Accusative) "Accusative"
+                        Markup.option (string Case.Vocative) "Vocative"
+                        Markup.option (string Case.Locative) "Locative"
+                        Markup.option (string Case.Instrumental) "Instrumental"
                     ]
                 ]
         ]

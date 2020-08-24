@@ -4,10 +4,9 @@ open WikiParsing.WikiString
 open WikiParsing.NounWikiDeclension
 open Article
 open Common
-open Common.Declension
-open Common.GrammarCategories
+open Common.GrammarCategories.Nouns
 open Common.Utils
-open Common.GenderTranslations
+open Common.Translations
 open Common.WikiArticles
 
 let getNumberOfDeclensions (NounArticle article) =
@@ -102,7 +101,7 @@ let getGender (NounArticle article) =
     |> ``match`` [
         Is "podstatné jméno"
     ] 
-    |> Option.map (getInfos (OneOf (getAllUnion<Gender> |> Seq.map toString)))
+    |> Option.map (getInfos (OneOf (getAllUnion<Gender> |> Seq.map genderToString)))
     |> Option.filter Seq.hasOneElement
     |> Option.map Seq.exactlyOne
 
@@ -111,7 +110,7 @@ let hasRequiredInfoGender (NounArticle article) =
     |> ``match`` [
         Is "podstatné jméno"
     ] 
-    |> Option.exists (hasInfo (OneOf (getAllUnion<Gender> |> Seq.map toString)))
+    |> Option.exists (hasInfo (OneOf (getAllUnion<Gender> |> Seq.map genderToString)))
 
 let hasRequiredInfoDeclension (NounArticle article) =
     article
@@ -127,7 +126,7 @@ let parseNounArticle article =
         Declinability = article |> getDeclinability
         Gender = 
             if article |> hasRequiredInfoGender
-            then article |> getGender |> Option.map fromString
+            then article |> getGender |> Option.map genderFromString
             else None
         Declension = 
             if article |> hasRequiredInfoDeclension

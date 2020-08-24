@@ -1,7 +1,7 @@
 ﻿module Storage.ExerciseModels.Noun
 
 open Common
-open Common.Declension
+open Common.GrammarCategories.Nouns
 open Storage.Defaults
 open Storage.Serialization
 open Storage.Storage

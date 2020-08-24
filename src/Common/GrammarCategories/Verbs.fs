@@ -1,4 +1,4 @@
-module Common.Conjugation
+﻿module Common.GrammarCategories.Verbs
 
 type Pronoun =
     | FirstSingular 
@@ -7,14 +7,6 @@ type Pronoun =
     | FirstPlural 
     | SecondPlural 
     | ThirdPlural
-
-let pronounToString = function
-    | FirstSingular   -> "já"
-    | SecondSingular  -> "ty"
-    | ThirdSingular   -> "ono"
-    | FirstPlural     -> "my"
-    | SecondPlural    -> "vy"
-    | ThirdPlural     -> "oni"
 
 type Conjugation = {
     FirstSingular: seq<string>
@@ -59,3 +51,18 @@ type ConjugationPattern =
     | ClassJE of ConjugationPatternClassJE
     | ClassÍ of ConjugationPatternClassÍ
     | ClassÁ of ConjugationPatternClassÁ
+
+type ParticiplePattern = 
+    | Minout
+    | Tisknout
+    | Common
+
+type Imperative = {
+    Indicative: string
+    Imperatives: seq<string>
+}
+
+type Participle = {
+    Infinitive: string
+    Participles: seq<string>
+}

@@ -5,15 +5,15 @@ open Fable.Core.JsInterop
 open Fable.React
 open Fable.React.Props
 
-open Common.Conjugation
 open Client
+open Common.GrammarCategories.Verbs
 
 let private parseVerbClass = function
-    | "E" -> E
-    | "NE" -> NE
-    | "JE" -> JE
-    | "Í" -> Í
-    | "Á" -> Á
+    | "E" -> VerbClass.E
+    | "NE" -> VerbClass.NE
+    | "JE" -> VerbClass.JE
+    | "Í" -> VerbClass.Í
+    | "Á" -> VerbClass.Á
     | s -> invalidOp ("odd class: " + s)
 
 [<Literal>]
@@ -52,11 +52,11 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeClass [
                         Markup.option ClassUnset "Any"
-                        Markup.option (string E) "E"
-                        Markup.option (string NE) "NE"
-                        Markup.option (string JE) "JE"
-                        Markup.option (string Í) "Í"
-                        Markup.option (string Á) "Á"
+                        Markup.option (string VerbClass.E) "E"
+                        Markup.option (string VerbClass.NE) "NE"
+                        Markup.option (string VerbClass.JE) "JE"
+                        Markup.option (string VerbClass.Í) "Í"
+                        Markup.option (string VerbClass.Á) "Á"
                     ]
                 ]
         ]

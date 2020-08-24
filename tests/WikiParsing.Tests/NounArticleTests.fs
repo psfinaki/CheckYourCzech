@@ -3,7 +3,7 @@
 open Xunit
 
 open WikiParsing.Articles.NounArticle
-open Common.GrammarCategories
+open Common.GrammarCategories.Nouns
 open Common.WikiArticles
 
 let getArticle =

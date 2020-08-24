@@ -3,7 +3,7 @@
 open FSharp.Data
 
 open WikiParsing.WikiString
-open Common.Conjugation
+open Common.GrammarCategories.Verbs
 open Common.WikiArticles
 open Article
 

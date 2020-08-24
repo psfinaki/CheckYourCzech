@@ -1,7 +1,7 @@
 ﻿module Core.Nouns.NeuterNounPatternDetector
 
 open Common.StringHelper
-open Common.Declension
+open Common.GrammarCategories.Nouns
 open Core.Letters
 open Core.Stem
 
@@ -45,12 +45,12 @@ let isPatternMuzeum declension =
     singulars |> Seq.exists rule
 
 let patternDetectors = [
-    (isPatternMěsto, Město)
-    (isPatternMoře, Moře)
-    (isPatternStavení, Stavení)
-    (isPatternKuře, Kuře)
-    (isPatternDrama, Drama)
-    (isPatternMuzeum, Muzeum)
+    (isPatternMěsto, NeuterDeclensionPattern.Město)
+    (isPatternMoře, NeuterDeclensionPattern.Moře)
+    (isPatternStavení, NeuterDeclensionPattern.Stavení)
+    (isPatternKuře, NeuterDeclensionPattern.Kuře)
+    (isPatternDrama, NeuterDeclensionPattern.Drama)
+    (isPatternMuzeum, NeuterDeclensionPattern.Muzeum)
 ]
 
 let isPattern article patternDetector = fst patternDetector article

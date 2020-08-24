@@ -1,7 +1,7 @@
 ﻿module Core.Nouns.MasculineInanimateNounPatternDetector
 
 open Common.StringHelper
-open Common.Declension
+open Common.GrammarCategories.Nouns
 
 let canBeLoanword = endsOneOf ["us"; "es"; "os"]
 
@@ -35,9 +35,9 @@ let isPatternRytmus declension =
     Seq.allPairs singulars plurals |> Seq.exists isPluralPatternRytmus
 
 let patternDetectors = [
-    (isPatternHrad, Hrad)
-    (isPatternStroj, Stroj)
-    (isPatternRytmus, Rytmus)
+    (isPatternHrad, MasculineInanimateDeclensionPattern.Hrad)
+    (isPatternStroj, MasculineInanimateDeclensionPattern.Stroj)
+    (isPatternRytmus, MasculineInanimateDeclensionPattern.Rytmus)
 ]
 
 let isPattern article patternDetector = fst patternDetector article

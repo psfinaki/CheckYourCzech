@@ -1,7 +1,7 @@
 ﻿module Storage.ExerciseModels.VerbImperative
 
 open Common
-open Common.Conjugation
+open Common.GrammarCategories.Verbs
 open Storage.Defaults
 open Storage.Serialization
 open Storage.Storage

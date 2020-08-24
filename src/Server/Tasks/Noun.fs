@@ -6,7 +6,7 @@ open Microsoft.AspNetCore.Http
 
 open Common
 open Common.Utils
-open Common.GrammarCategories
+open Common.GrammarCategories.Nouns
 open Server.Tasks.Utils
 open Storage.Storage
 open Storage.ExerciseModels.Noun

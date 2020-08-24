@@ -1,7 +1,6 @@
 ﻿module Core.Nouns.NounPatterns
 
-open Common.Declension
-open Common.GrammarCategories
+open Common.GrammarCategories.Nouns
 
 let getPatternsByGender declension = function
     | Gender.MasculineAnimate -> 
