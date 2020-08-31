@@ -1,4 +1,4 @@
-﻿module WikiParsing.NounWikiDeclension
+﻿module WikiParsing.Raw.Noun
 
 open FSharp.Data
 

@@ -1,4 +1,4 @@
-﻿module WikiParsing.AdjectiveWikiParsing
+﻿module WikiParsing.Raw.Adjective
 
 open FSharp.Data
 
