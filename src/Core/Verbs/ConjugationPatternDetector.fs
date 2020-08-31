@@ -1,7 +1,7 @@
 ﻿module Core.Verbs.ConjugationPatternDetector
 
 open Common.StringHelper
-open Common.Conjugation
+open Common.GrammarCategories.Verbs
 open Core.Letters
 open Core.Stem
 open Core.Reflexives
@@ -45,34 +45,34 @@ let invalidVerb verb verbClass =
     |> invalidArg "verb"
 
 let getPatternClassE = function
-    | verb when verb |> ends "ést" -> Some Nést
-    | verb when verb |> ends "íst" -> Some Číst
-    | verb when verb |> ends "ct" -> Some Péct
-    | verb when verb |> ends "ít" -> Some Třít
-    | verb when verb |> ends "át" -> Some Brát
-    | verb when verb |> ends "at" -> Some Mazat
+    | verb when verb |> ends "ést" -> Some ConjugationPatternClassE.Nést
+    | verb when verb |> ends "íst" -> Some ConjugationPatternClassE.Číst
+    | verb when verb |> ends "ct" -> Some ConjugationPatternClassE.Péct
+    | verb when verb |> ends "ít" -> Some ConjugationPatternClassE.Třít
+    | verb when verb |> ends "át" -> Some ConjugationPatternClassE.Brát
+    | verb when verb |> ends "at" -> Some ConjugationPatternClassE.Mazat
     | _ -> None
 
 let getPatternClassNE = function
-    | verb when verb |> isPatternTisknout -> Some Tisknout
-    | verb when verb |> isPatternMinout -> Some Minout
-    | verb when verb |> ends "ít" -> Some Začít
+    | verb when verb |> isPatternTisknout -> Some ConjugationPatternClassNE.Tisknout
+    | verb when verb |> isPatternMinout -> Some ConjugationPatternClassNE.Minout
+    | verb when verb |> ends "ít" -> Some ConjugationPatternClassNE.Začít
     | _ -> None
 
 let getPatternClassJE = function
-    | verb when verb |> ends "ovat" -> Some Kupovat
-    | verb when verb |> ends "ýt" -> Some Krýt
+    | verb when verb |> ends "ovat" -> Some ConjugationPatternClassJE.Kupovat
+    | verb when verb |> ends "ýt" -> Some ConjugationPatternClassJE.Krýt
     | _ -> None
 
 let getPatternClassÍ = function
-    | verb when verb |> isPatternProsit -> Some Prosit
-    | verb when verb |> isPatternČistit -> Some Čistit
-    | verb when verb |> ends "ět" -> Some Trpět
-    | verb when verb |> ends "et" -> Some Sázet
+    | verb when verb |> isPatternProsit -> Some ConjugationPatternClassÍ.Prosit
+    | verb when verb |> isPatternČistit -> Some ConjugationPatternClassÍ.Čistit
+    | verb when verb |> ends "ět" -> Some ConjugationPatternClassÍ.Trpět
+    | verb when verb |> ends "et" -> Some ConjugationPatternClassÍ.Sázet
     | _ -> None
 
 let getPatternClassÁ = function
-    | verb when verb |> ends "at" -> Some Dělat
+    | verb when verb |> ends "at" -> Some ConjugationPatternClassÁ.Dělat
     | _ -> None
 
 let getPatternByClass verb = function

@@ -1,7 +1,7 @@
 ﻿module Core.Nouns.MasculineAnimateNounPatternDetector
 
 open Common.StringHelper
-open Common.Declension
+open Common.GrammarCategories.Nouns
 open Core.Stem
 
 let isPatternPán declension =
@@ -36,11 +36,11 @@ let isPatternDinosaurus declension =
     Seq.allPairs nominatives genitives |> Seq.exists rule
 
 let patternDetectors = [
-    (isPatternPán, Pán)
-    (isPatternMuž, Muž)
-    (isPatternPředseda, Předseda)
-    (isPatternSoudce, Soudce)
-    (isPatternDinosaurus, Dinosaurus)
+    (isPatternPán, MasculineAnimateDeclensionPattern.Pán)
+    (isPatternMuž, MasculineAnimateDeclensionPattern.Muž)
+    (isPatternPředseda, MasculineAnimateDeclensionPattern.Předseda)
+    (isPatternSoudce, MasculineAnimateDeclensionPattern.Soudce)
+    (isPatternDinosaurus, MasculineAnimateDeclensionPattern.Dinosaurus)
 ]
 
 let isPattern article patternDetector = fst patternDetector article

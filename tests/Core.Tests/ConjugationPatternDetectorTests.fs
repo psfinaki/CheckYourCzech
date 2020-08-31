@@ -2,7 +2,7 @@
 
 open Xunit
 
-open Common.Conjugation
+open Common.GrammarCategories.Verbs
 open Core.Verbs.ConjugationPatternDetector
 
 [<Fact>]
@@ -73,37 +73,37 @@ let ``Detects pattern is not čistit`` word =
 let ``Class E - detects pattern Nést``() =
     "vést"
     |> getPatternClassE
-    |> equals (Some Nést)
+    |> equals (Some ConjugationPatternClassE.Nést)
 
 [<Fact>]
 let ``Class E - detects pattern Číst``() =
     "příst"
     |> getPatternClassE
-    |> equals (Some Číst)
+    |> equals (Some ConjugationPatternClassE.Číst)
 
 [<Fact>]
 let ``Class E - detects pattern Péct``() =
     "téct"
     |> getPatternClassE
-    |> equals (Some Péct)
+    |> equals (Some ConjugationPatternClassE.Péct)
 
 [<Fact>]
 let ``Class E - detects pattern Třít``() =
     "dřít"
     |> getPatternClassE
-    |> equals (Some Třít)
+    |> equals (Some ConjugationPatternClassE.Třít)
 
 [<Fact>]
 let ``Class E - detects pattern Brát``() =
     "prát"
     |> getPatternClassE
-    |> equals (Some Brát)
+    |> equals (Some ConjugationPatternClassE.Brát)
 
 [<Fact>]
 let ``Class E - detects pattern Mazat``() =
     "vázat"
     |> getPatternClassE
-    |> equals (Some Mazat)
+    |> equals (Some ConjugationPatternClassE.Mazat)
 
 [<Theory>]
 [<InlineData "krást">]
@@ -120,19 +120,19 @@ let ``Detects unknown pattern for class E`` verb =
 let ``Class NE - detects pattern Tisknout``() =
     "prasknout"
     |> getPatternClassNE
-    |> equals (Some Tisknout)
+    |> equals (Some ConjugationPatternClassNE.Tisknout)
 
 [<Fact>]
 let ``Class NE - detects pattern Minout``() =
     "hynout"
     |> getPatternClassNE
-    |> equals (Some Minout)
+    |> equals (Some ConjugationPatternClassNE.Minout)
 
 [<Fact>]
 let ``Class NE - detects pattern Začít``() =
     "načít"
     |> getPatternClassNE
-    |> equals (Some Začít)
+    |> equals (Some ConjugationPatternClassNE.Začít)
 
 [<Theory>]
 [<InlineData "dostat">]
@@ -148,13 +148,13 @@ let ``Detects unknown pattern for class NE`` verb =
 let ``Class JE - detects pattern Kupovat``() =
     "pracovat"
     |> getPatternClassJE
-    |> equals (Some Kupovat)
+    |> equals (Some ConjugationPatternClassJE.Kupovat)
 
 [<Fact>]
 let ``Class JE - detects pattern Krýt``() =
     "výt"
     |> getPatternClassJE
-    |> equals (Some Krýt)
+    |> equals (Some ConjugationPatternClassJE.Krýt)
 
 [<Theory>]
 [<InlineData "zabít">]
@@ -171,25 +171,25 @@ let ``Detects unknown pattern for class JE`` verb =
 let ``Class Í - detects pattern Prosit``() =
     "nosit"
     |> getPatternClassÍ
-    |> equals (Some Prosit)
+    |> equals (Some ConjugationPatternClassÍ.Prosit)
 
 [<Fact>]
 let ``Class Í - detects pattern Čistit``() =
     "mastit"
     |> getPatternClassÍ
-    |> equals (Some Čistit)
+    |> equals (Some ConjugationPatternClassÍ.Čistit)
 
 [<Fact>]
 let ``Class Í - detects pattern Trpět``() =
     "sedět"
     |> getPatternClassÍ
-    |> equals (Some Trpět)
+    |> equals (Some ConjugationPatternClassÍ.Trpět)
 
 [<Fact>]
 let ``Class Í - detects pattern Sázet``() =
     "házet"
     |> getPatternClassÍ
-    |> equals (Some Sázet)
+    |> equals (Some ConjugationPatternClassÍ.Sázet)
 
 [<Theory>]
 [<InlineData "bdít">]
@@ -205,7 +205,7 @@ let ``Detects unknown pattern for class Í`` verb =
 let ``Gets pattern class Á``() =
     "létat"
     |> getPatternClassÁ
-    |> equals (Some Dělat)
+    |> equals (Some ConjugationPatternClassÁ.Dělat)
 
 [<Theory>]
 [<InlineData "hlásit">]

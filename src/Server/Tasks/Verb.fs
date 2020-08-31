@@ -4,8 +4,9 @@ open FSharp.Control.Tasks.V2
 open Giraffe
 open Microsoft.AspNetCore.Http
 
-open Common.Conjugation
+open Common.Translations
 open Common.Utils
+open Common.GrammarCategories.Verbs
 open Server.Tasks.Utils
 open Storage.ExerciseModels
 open Storage.Storage

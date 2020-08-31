@@ -1,5 +1,6 @@
 ﻿module WikiParsing.Articles.AdjectiveArticle
 
+open Common.GrammarCategories.Adjectives
 open Common.WikiArticles
 open WikiParsing.AdjectiveWikiParsing
 open WikiParsing.WikiString
@@ -35,7 +36,7 @@ let private getWikiDeclension article =
     | 3 -> getThirdDeclension article
     | _ -> invalidOp "Invalid article"
 
-let getDeclension article : AdjectiveDeclension =
+let getDeclension article : Declension =
     let declension = getWikiDeclension article
     {
         SingularNominative = declension.SingularNominative |> getForm

@@ -7,7 +7,7 @@ open Client.Markup
 open Client.Styles
 open Client.Utils
 open Client.Widgets
-open Common.Conjugation
+open Common.GrammarCategories.Verbs
 
 type Model = {
     FilterBlock : FilterBlock.Types.Model
@@ -23,11 +23,11 @@ type Msg =
     | Task of Task.Msg
 
 let patterns =
-    dict [ (E, ["nést"; "číst"; "péct"; "třít"; "brát"; "mazat"])
-           (NE, ["tisknout"; "minout"; "začít"])
-           (JE, ["krýt"; "kupovat"])
-           (Í, ["prosit"; "čistit"; "trpět"; "sázet"])
-           (Á, ["dělat"]) ]
+    dict [ (VerbClass.E, ["nést"; "číst"; "péct"; "třít"; "brát"; "mazat"])
+           (VerbClass.NE, ["tisknout"; "minout"; "začít"])
+           (VerbClass.JE, ["krýt"; "kupovat"])
+           (VerbClass.Í, ["prosit"; "čistit"; "trpět"; "sázet"])
+           (VerbClass.Á, ["dělat"]) ]
 
 let getPatterns ``class`` = patterns.[``class``]
 

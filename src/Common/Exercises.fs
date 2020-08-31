@@ -1,19 +1,17 @@
 ﻿module Common.Exercises
 
-open Declension
-open Conjugation
-open GrammarCategories
+open Common.GrammarCategories
 
 type Noun = {
     CanonicalForm: string
-    Gender: Gender option
-    Patterns: seq<DeclensionPattern>
-    Declension: Declension
+    Gender: Nouns.Gender option
+    Patterns: seq<Nouns.DeclensionPattern>
+    Declension: Nouns.Declension
 }
 
 type AdjectiveDeclension = {
     CanonicalForm: string
-    Declension: Common.WikiArticles.AdjectiveDeclension
+    Declension: Adjectives.Declension
 }
 
 type AdjectivePlural = {
@@ -30,8 +28,8 @@ type AdjectiveComparative = {
 type VerbImperative = {
     Indicative: string
     Imperatives: seq<string>
-    Class: VerbClass option
-    Pattern: ConjugationPattern option
+    Class: Verbs.VerbClass option
+    Pattern: Verbs.ConjugationPattern option
 }
 
 type VerbParticiple = {
@@ -43,7 +41,7 @@ type VerbParticiple = {
 
 type VerbConjugation = {
     Infinitive: string
-    Class: VerbClass option
-    Pattern: ConjugationPattern option
-    Conjugation: Conjugation.Conjugation
+    Class: Verbs.VerbClass option
+    Pattern: Verbs.ConjugationPattern option
+    Conjugation: Verbs.Conjugation
 }

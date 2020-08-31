@@ -1,9 +1,9 @@
 ﻿module Core.Verbs.ParticiplePatternDetector
 
 open ConjugationPatternDetector
-open Common.Verbs
+open Common.GrammarCategories.Verbs
 
 let getPattern = function
-    | verb when verb |> isPatternMinout -> Minout
-    | verb when verb |> isPatternTisknout -> Tisknout
-    | _ -> Common
+    | verb when verb |> isPatternMinout -> ParticiplePattern.Minout
+    | verb when verb |> isPatternTisknout -> ParticiplePattern.Tisknout
+    | _ -> ParticiplePattern.Common

@@ -9,8 +9,8 @@ let private getPatterns noun =
     then getPatterns noun.Gender.Value noun.Declension.Value noun.Declinability 
     else Seq.empty
 
-type NounDeclension with 
-    static member Create (noun: NounDeclension) = 
+type Noun with 
+    static member Create (noun: Noun) = 
         if noun.Declension.IsSome 
         then Some {
                 CanonicalForm = noun.CanonicalForm

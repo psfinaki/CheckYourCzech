@@ -11,15 +11,14 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Verbs.fs" />
-    <Compile Include="GrammarCategories.fs" />
-    <Compile Include="Declension.fs" />
-    <Compile Include="Conjugation.fs" />
+    <Compile Include="GrammarCategories\Verbs.fs" />
+    <Compile Include="GrammarCategories\Nouns.fs" />
+    <Compile Include="GrammarCategories\Adjectives.fs" />
     <Compile Include="WikiArticles.fs" />
     <Compile Include="SequenceExtensions.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="StringHelper.fs" />
-    <Compile Include="GenderTranslations.fs" />
+    <Compile Include="Translations.fs" />
     <Compile Include="Exercises.fs" />
   </ItemGroup>
 </Project>

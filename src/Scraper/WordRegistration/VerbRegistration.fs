@@ -1,5 +1,6 @@
 ﻿module Scraper.WordRegistration.VerbRegistration
 
+open Common.Exercises
 open Common.WikiArticles
 open Scraper.ExerciseCreation.Verbs
 open Storage.Storage

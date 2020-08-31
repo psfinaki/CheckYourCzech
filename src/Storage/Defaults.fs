@@ -2,6 +2,7 @@
 
 open Common
 open Common.Exercises
+open Common.GrammarCategories
 
 type Noun with 
     static member Default = {

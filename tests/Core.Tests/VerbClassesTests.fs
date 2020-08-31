@@ -4,37 +4,37 @@ open System
 open Xunit
 
 open Core.Verbs.VerbClasses
-open Common.Conjugation
+open Common.GrammarCategories.Verbs
 
 [<Fact>]
 let ``Gets E class by third person singular``() =
     "nése"
     |> getClassByThirdPersonSingular
-    |> equals E
+    |> equals VerbClass.E
 
 [<Fact>]
 let ``Gets NE class by third person singular``() =
     "praskne"
     |> getClassByThirdPersonSingular
-    |> equals NE
+    |> equals VerbClass.NE
 
 [<Fact>]
 let ``Gets JE class by third person singular``() =
     "kupuje"
     |> getClassByThirdPersonSingular
-    |> equals JE
+    |> equals VerbClass.JE
     
 [<Fact>]
 let ``Gets Í class by third person singular``() =
     "prosí"
     |> getClassByThirdPersonSingular
-    |> equals Í
+    |> equals VerbClass.Í
     
 [<Fact>]
 let ``Gets Á class by third person singular``() =
     "dělá"
     |> getClassByThirdPersonSingular
-    |> equals Á
+    |> equals VerbClass.Á
 
 [<Fact>]
 let ``Throws for invalid third person singular``() =

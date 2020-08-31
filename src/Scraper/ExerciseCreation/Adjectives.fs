@@ -2,6 +2,7 @@
 
 open Common
 open Common.Exercises
+open Common.GrammarCategories.Adjectives
 open Common.WikiArticles
 open Core.Adjectives.ComparativeBuilder
 open Core.Adjectives.Comparison

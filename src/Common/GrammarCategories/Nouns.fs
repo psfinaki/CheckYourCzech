@@ -1,4 +1,27 @@
-﻿module Common.Declension
+﻿module Common.GrammarCategories.Nouns
+
+type Case = 
+    | Nominative
+    | Genitive
+    | Dative
+    | Accusative
+    | Vocative
+    | Locative
+    | Instrumental
+
+type Number =
+    | Singular
+    | Plural
+
+type Declinability =
+    | Declinable
+    | Indeclinable
+
+type Gender =
+    | MasculineAnimate
+    | MasculineInanimate
+    | Feminine
+    | Neuter
 
 type Declension = {
     SingularNominative: seq<string>
