@@ -2,7 +2,7 @@
 
 open Common.GrammarCategories.Adjectives
 open Common.WikiArticles
-open WikiParsing.AdjectiveWikiParsing
+open WikiParsing.Raw.Adjective
 open WikiParsing.WikiString
 open WikiParsing.Articles.Article
 open WikiParsing.ConcreteArticles

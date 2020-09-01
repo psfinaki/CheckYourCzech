@@ -1,7 +1,7 @@
 ﻿module WikiParsing.Articles.NounArticle
 
 open WikiParsing.WikiString
-open WikiParsing.NounWikiDeclension
+open WikiParsing.Raw.Noun
 open Article
 open Common
 open Common.GrammarCategories.Nouns
