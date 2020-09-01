@@ -1,18 +1,5 @@
 ﻿module Common.GrammarCategories.Nouns
 
-type Case = 
-    | Nominative
-    | Genitive
-    | Dative
-    | Accusative
-    | Vocative
-    | Locative
-    | Instrumental
-
-type Number =
-    | Singular
-    | Plural
-
 type Declinability =
     | Declinable
     | Indeclinable

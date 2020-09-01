@@ -6,7 +6,7 @@ open Fable.React
 open Fable.React.Props
 
 open Client
-open Common.GrammarCategories.Nouns
+open Common.GrammarCategories.Common
 open Common.Utils
 
 [<Literal>]
