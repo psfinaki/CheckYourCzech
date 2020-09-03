@@ -1,19 +1,11 @@
 ﻿module WikiParsing.Articles.VerbArticle
 
-open FSharp.Data
-
+open WikiParsing.ConcreteArticles
+open WikiParsing.Raw.Verb
 open WikiParsing.WikiString
 open Common.GrammarCategories.Verbs
 open Common.WikiArticles
 open Article
-
-type WikiVerb = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
-type WikiParticiplesTable2 = HtmlProvider<"https://cs.wiktionary.org/wiki/musit">
-type WikiParticiplesTable3 = HtmlProvider<"https://cs.wiktionary.org/wiki/myslet">
-
-type VerbArticleWithImperative = VerbArticleWithImperative of VerbArticle
-type VerbArticleWithParticiple = VerbArticleWithParticiple of VerbArticle
-type VerbArticleWithConjugation = VerbArticleWithConjugation of VerbArticle
 
 let private hasRequiredInfoConjugation (VerbArticle article) = 
     article |> isMatch [
@@ -37,26 +29,14 @@ let private hasRequiredInfoParticiple (VerbArticle article) =
         Is "časování"
     ]
 
-let getVerbProvider (VerbArticle { Text = text }) =
-    text
-    |> WikiVerb.Parse
+let getParticipleByTableIndex article participleTableIndex = 
+    let wikiParticiple = 
+        match participleTableIndex with
+        | 1 -> getParticipleWhenImperativeAbsent article
+        | 2 -> getParticipleWhenImperativePresent article
+        | _ -> invalidOp "Invalid article"
 
-let getParticiplesTable2 (VerbArticleWithParticiple (VerbArticle { Text = text })) = 
-    text
-    |> WikiParticiplesTable2.Parse
-    |> fun data -> data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
-
-let getParticiplesTable3 (VerbArticleWithParticiple (VerbArticle { Text = text })) =
-    text
-    |> WikiParticiplesTable3.Parse
-    |> fun data -> data.Tables.``Časování[editovat]3``.Rows.[0].``Číslo jednotné - mužský životný i neživotný``
-
-let getParticipleByTableIndex article n = 
-    let participleExtraction = dict[ 
-        1, getParticiplesTable2
-        2, getParticiplesTable3 ]
-
-    participleExtraction.Item n article
+    wikiParticiple.SingularMasculineAnimate |> getForm
 
 let getWikiParticiples verbParticipleArticle =
     let (VerbArticleWithParticiple (VerbArticle article)) = verbParticipleArticle
@@ -72,27 +52,20 @@ let getWikiParticiples verbParticipleArticle =
 
 let getParticiples = getWikiParticiples >> Option.map getForms >> Option.defaultValue Seq.empty
 
-let getImperatives (VerbArticleWithImperative article) =
-    article
-    |> getVerbProvider
-    |> fun data -> data.Tables.``Časování[editovat]2``.Rows.[0].``Číslo jednotné - 2.``
-    |> getForms 
+let getImperatives article =
+    let wikiImperative = article |> getImperative
+    wikiImperative.Singular |> getForms
 
-let getConjugation (VerbArticleWithConjugation article) = 
-    let data = getVerbProvider article
+let getConjugation article = 
+    let conjugation = getConjugation article
     {
-        FirstSingular  = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 1.`` |> getForms
-        SecondSingular = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 2.`` |> getForms
-        ThirdSingular  = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.`` |> getForms
-        FirstPlural    = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 1.`` |> getForms
-        SecondPlural   = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 2.`` |> getForms
-        ThirdPlural    = data.Tables.``Časování[editovat]``.Rows.[0].``Číslo množné - 3.`` |> getForms
+        FirstSingular  = conjugation.FirstSingular |> getForms
+        SecondSingular = conjugation.SecondSingular |> getForms
+        ThirdSingular  = conjugation.ThirdSingular |> getForms
+        FirstPlural    = conjugation.FirstPlural |> getForms
+        SecondPlural   = conjugation.SecondPlural |> getForms
+        ThirdPlural    = conjugation.ThirdPlural |> getForms
     }
-
-let getThirdPersonSingular = 
-    getVerbProvider
-    >> fun data -> data.Tables.``Časování[editovat]``.Rows.[0].``Číslo jednotné - 3.``
-    >> getForms
 
 let parseVerbConjugation article = 
     if article |> hasRequiredInfoConjugation
