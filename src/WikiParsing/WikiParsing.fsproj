@@ -17,6 +17,7 @@
     <Compile Include="ConcreteArticles.fs" />
     <Compile Include="Html.fs" />
     <Compile Include="WikiString.fs" />
+    <Compile Include="Raw\Verb.fs" />
     <Compile Include="Raw\Adjective.fs" />
     <Compile Include="Raw\Noun.fs" />
     <Compile Include="Articles\Article.fs" />

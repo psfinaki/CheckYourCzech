@@ -4,3 +4,7 @@ open Common.WikiArticles
 
 type AdjectiveArticleWithComparative = AdjectiveArticleWithComparative of AdjectiveArticle
 type AdjectiveArticleWithPlural = AdjectiveArticleWithPlural of AdjectiveArticle
+
+type VerbArticleWithConjugation = VerbArticleWithConjugation of VerbArticle
+type VerbArticleWithImperative = VerbArticleWithImperative of VerbArticle
+type VerbArticleWithParticiple = VerbArticleWithParticiple of VerbArticle
