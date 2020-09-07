@@ -36,7 +36,7 @@ let getParticipleByTableIndex article participleTableIndex =
         | 2 -> getParticipleWhenImperativePresent article
         | _ -> invalidOp "Invalid article"
 
-    wikiParticiple.SingularMasculineAnimate |> getForm
+    wikiParticiple.SingularMasculineAnimate
 
 let getWikiParticiples verbParticipleArticle =
     let (VerbArticleWithParticiple (VerbArticle article)) = verbParticipleArticle
