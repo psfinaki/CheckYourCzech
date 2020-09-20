@@ -34,6 +34,7 @@ let view () =
                         Column.column [ ] [
                             Markup.wordsCentered "home-column-heading" "Adjectives"
                             div [ ClassName "home-link-container" ] [
+                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveDeclension (linkBlock "Declension" "adjective-color")
                                 Markup.viewLinkCentered "home-column-links link-block" Page.AdjectivePlurals (linkBlock "Plural" "adjective-color")
                                 Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveComparatives (linkBlock "Comparative" "adjective-color")
                             ]
