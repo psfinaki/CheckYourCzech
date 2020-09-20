@@ -41,6 +41,7 @@
 		<Compile Include="Pages\VerbConjugation.fs" />
 		<Compile Include="Pages\Home.fs" />
 		<Compile Include="Pages\NounPlurals.fs" />
+		<Compile Include="Pages\AdjectiveDeclension.fs" />
 		<Compile Include="Pages\AdjectivePlurals.fs" />
 		<Compile Include="Pages\AdjectiveComparatives.fs" />
 		<Compile Include="Pages\VerbImperatives.fs" />

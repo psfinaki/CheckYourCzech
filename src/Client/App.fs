@@ -28,6 +28,7 @@ type PageModel =
     | NounDeclension of NounDeclension.Model
     | NounPlurals of NounPlurals.Model
     | NounAccusatives of NounAccusatives.Model
+    | AdjectiveDeclension of AdjectiveDeclension.Model
     | AdjectivePlurals of AdjectivePlurals.Model
     | AdjectiveComparatives of AdjectiveComparatives.Model
     | VerbImperatives of VerbImperatives.Model
@@ -42,6 +43,7 @@ type Msg =
     | NounDeclensionMsg of NounDeclension.Msg
     | NounPluralsMsg of NounPlurals.Msg
     | NounAccusativesMsg of NounAccusatives.Msg
+    | AdjectiveDeclensionMsg of AdjectiveDeclension.Msg
     | AdjectivePluralsMsg of AdjectivePlurals.Msg
     | AdjectiveComparativesMsg of AdjectiveComparatives.Msg
     | VerbImperativesMsg of VerbImperatives.Msg
@@ -58,6 +60,8 @@ let viewPage model dispatch =
         NounPlurals.view m (NounPluralsMsg >> dispatch)
     | NounAccusatives m ->
         NounAccusatives.view m (NounAccusativesMsg >> dispatch)
+    | AdjectiveDeclension m ->
+        AdjectiveDeclension.view m (AdjectiveDeclensionMsg >> dispatch)
     | AdjectivePlurals m ->
         AdjectivePlurals.view m (AdjectivePluralsMsg >> dispatch)
     | AdjectiveComparatives m ->
@@ -87,6 +91,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.NounAccusatives ->
         let m, cmd = NounAccusatives.init()
         updateModelPage model (NounAccusatives m), Cmd.map NounAccusativesMsg cmd
+    | Some Page.AdjectiveDeclension ->
+        let m, cmd = AdjectiveDeclension.init()
+        updateModelPage model (AdjectiveDeclension m), Cmd.map AdjectiveDeclensionMsg cmd
     | Some Page.AdjectivePlurals ->
         let m, cmd = AdjectivePlurals.init()
         updateModelPage model (AdjectivePlurals m), Cmd.map AdjectivePluralsMsg cmd
@@ -118,6 +125,9 @@ let update msg model =
     | NounAccusativesMsg msg, NounAccusatives m ->
         let m, cmd = NounAccusatives.update msg m
         updateModelPage model (NounAccusatives m), Cmd.map NounAccusativesMsg cmd
+    | AdjectiveDeclensionMsg msg, AdjectiveDeclension m ->
+        let m, cmd = AdjectiveDeclension.update msg m
+        updateModelPage model (AdjectiveDeclension m), Cmd.map AdjectiveDeclensionMsg cmd
     | AdjectivePluralsMsg msg, AdjectivePlurals m ->
         let m, cmd = AdjectivePlurals.update msg m
         updateModelPage model (AdjectivePlurals m), Cmd.map AdjectivePluralsMsg cmd
