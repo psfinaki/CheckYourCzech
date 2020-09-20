@@ -6,15 +6,16 @@
 
 The service is deployed here: https://check-your-czech.azurewebsites.net/
 
-Eight exercises are available now:
+Nine exercises are available now:
 1. [Noun Declension](https://check-your-czech.azurewebsites.net/#nouns-declension)
 2. [Noun Plural](https://check-your-czech.azurewebsites.net/#nouns-plurals)
 3. [Noun Accusative](https://check-your-czech.azurewebsites.net/#nouns-accusatives)
-4. [Adjective Plural](https://check-your-czech.azurewebsites.net/#adjectives-plurals)
-5. [Adjective Comparative](https://check-your-czech.azurewebsites.net/#adjecitves-comparatives)
-6. [Verb Imperative](https://check-your-czech.azurewebsites.net/#verbs-imperatives)
-7. [Verb Participle](https://check-your-czech.azurewebsites.net/#verbs-participles)
-8. [Verb Conjugation](https://check-your-czech.azurewebsites.net/#verbs-conjugation)
+4. [Adjective Declension](https://check-your-czech.azurewebsites.net/#adjectives-declension)
+5. [Adjective Plural](https://check-your-czech.azurewebsites.net/#adjectives-plurals)
+6. [Adjective Comparative](https://check-your-czech.azurewebsites.net/#adjecitves-comparatives)
+7. [Verb Imperative](https://check-your-czech.azurewebsites.net/#verbs-imperatives)
+8. [Verb Participle](https://check-your-czech.azurewebsites.net/#verbs-participles)
+9. [Verb Conjugation](https://check-your-czech.azurewebsites.net/#verbs-conjugation)
 
 ## Concept
 
