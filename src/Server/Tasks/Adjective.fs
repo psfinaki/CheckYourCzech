@@ -10,7 +10,6 @@ open Common.Utils
 open Server.Tasks.Utils
 open Storage.Storage
 open Storage.ExerciseModels.AdjectiveDeclension
-open Storage.ExerciseModels.AdjectivePlural
 open Storage.ExerciseModels.AdjectiveComparative
 
 let private getDeclensionProp (number, case) (adjective: AdjectiveDeclension) = 
@@ -58,11 +57,11 @@ let getAdjectiveDeclensionTask next (ctx : HttpContext) =
 
 let getAdjectivePluralsTask next (ctx : HttpContext) =
     task { 
-        let! adjective = tryGetRandom<AdjectivePlural> "adjectiveplurals" []
+        let! adjective = tryGetRandom<AdjectiveDeclension> "adjectivedeclension" []
     
-        let getTask (adjective: AdjectivePlural) = 
-            let singular = adjective.Singular
-            let plural = adjective.Plural
+        let getTask (adjective: AdjectiveDeclension) = 
+            let singular = adjective.SingularNominative
+            let plural = adjective.PluralNominative
             Task(singular, [| plural |])
 
         let task = adjective |> Option.map getTask |> Option.toObj 

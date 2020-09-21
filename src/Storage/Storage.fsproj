@@ -21,7 +21,6 @@
     <Compile Include="ExerciseModels\VerbParticiple.fs" />
     <Compile Include="ExerciseModels\AdjectiveDeclension.fs" />
     <Compile Include="ExerciseModels\AdjectiveComparative.fs" />
-    <Compile Include="ExerciseModels\AdjectivePlural.fs" />
     <Compile Include="ExerciseModels\Noun.fs" />
   </ItemGroup>
   <ItemGroup>
