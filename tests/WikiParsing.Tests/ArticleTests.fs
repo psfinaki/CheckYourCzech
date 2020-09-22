@@ -14,20 +14,20 @@ let ``Gets children parts``() =
     "ananas"
     |> Helper.getArticle
     |> getContent
-    |> getPart "čeština"
-    |> Option.map getParts
-    |> Option.map (Seq.map fst >> Seq.toList)
-    |> equals (Some [ "výslovnost"; "dělení"; "podstatné jméno" ])
+    |> (Option.get << getPart "čeština")
+    |> getParts
+    |> Seq.map fst 
+    |> seqEquals [ "výslovnost"; "dělení"; "podstatné jméno" ]
 
 [<Fact>]
 let ``Detects no children parts``() =
     "ananas"
     |> Helper.getArticle
     |> getContent
-    |> getPart "poznámky"
-    |> Option.map getParts
-    |> Option.map (Seq.map fst)
-    |> Option.contains Seq.empty
+    |> (Option.get << getPart "poznámky")
+    |> getParts
+    |> Seq.map fst
+    |> seqEquals []
 
 [<Fact>]
 let ``Detects child part``() =
@@ -68,9 +68,9 @@ let ``Gets infos``() =
     "panda"
     |> Helper.getArticle
     |> getContent
-    |> getPart "čeština"
-    |> Option.map (getInfos (Starts "rod") >> Seq.toList)
-    |> equals (Some ["rod ženský"])
+    |> (Option.get << getPart "čeština")
+    |> getInfos (Starts "rod") 
+    |> seqEquals ["rod ženský"]
 
 [<Fact>]
 let ``Detects info``() = 
@@ -93,24 +93,24 @@ let ``Gets tables``() =
     "musit"
     |> Helper.getArticle
     |> getContent
-    |> getPart "čeština"
-    |> Option.bind (getPart "sloveso")
-    |> Option.bind (getPart "časování")
-    |> Option.map getTables
-    |> Option.map (Seq.map fst >> Seq.toList)
-    |> equals (Some [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ])
+    |> (Option.get << getPart "čeština")
+    |> (Option.get << getPart "sloveso")
+    |> (Option.get << getPart "časování")
+    |> getTables
+    |> Seq.map fst 
+    |> seqEquals [ "Oznamovací způsob"; "Příčestí"; "Přechodníky" ]
 
 [<Fact>]
 let ``Detects no tables``() =
     "musit"
     |> Helper.getArticle
     |> getContent
-    |> getPart "čeština"
-    |> Option.bind (getPart "sloveso")
-    |> Option.bind (getPart "význam")
-    |> Option.map getTables
-    |> Option.map (Seq.map fst >> Seq.toList)
-    |> equals (Some [])
+    |> (Option.get << getPart "čeština")
+    |> (Option.get << getPart "sloveso")
+    |> (Option.get << getPart "význam")
+    |> getTables
+    |> Seq.map fst 
+    |> seqEquals []
 
 [<Fact>]
 let ``Detects non-locked article``() =
