@@ -14,11 +14,6 @@ type AdjectiveDeclension = {
     Declension: Adjectives.Declension
 }
 
-type AdjectivePlural = {
-    Singular: string
-    Plural: string
-}
-
 type AdjectiveComparative = {
     Positive: string
     Comparatives: seq<string>

@@ -35,9 +35,3 @@ type AdjectiveComparative with
                 IsRegular = comparison |> hasRegularComparatives
             }
         else None
-
-type AdjectivePlural with 
-    static member Create declension : AdjectivePlural = {
-        Singular = declension.SingularNominative
-        Plural = declension.PluralNominative
-    }

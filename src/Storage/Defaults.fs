@@ -48,12 +48,6 @@ type AdjectiveDeclension with
         }
     }
 
-type AdjectivePlural with 
-    static member Default = {
-        Singular = null
-        Plural = null
-    }
-
 type AdjectiveComparative with 
     static member Default = {
         Positive = null
