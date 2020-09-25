@@ -24,27 +24,17 @@ let view () =
                 Columns.columns [ Columns.IsGap (Screen.All, Columns.Is3) ]
                     [
                         Column.column [ ] [
-                            Markup.wordsCentered "home-column-heading" "Nouns"
                             div [ ClassName "home-link-container" ] [
-                                Markup.viewLinkCentered "home-column-links link-block" Page.NounDeclension (linkBlock "Declension" "noun-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.NounPlurals (linkBlock "Plural" "noun-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.NounAccusatives (linkBlock "Accusative" "noun-color")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.NounDeclension (linkBlock "Noun Declension" "noun-color")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveDeclension (linkBlock "Adjective Declension" "adjective-color")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveComparatives (linkBlock "Adjective Comparative" "adjective-color")
                             ]
                         ]
                         Column.column [ ] [
-                            Markup.wordsCentered "home-column-heading" "Adjectives"
                             div [ ClassName "home-link-container" ] [
-                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveDeclension (linkBlock "Declension" "adjective-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectivePlurals (linkBlock "Plural" "adjective-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveComparatives (linkBlock "Comparative" "adjective-color")
-                            ]
-                        ]
-                        Column.column [ ] [
-                            Markup.wordsCentered "home-column-heading" "Verbs"
-                            div [ ClassName "home-link-container" ] [
-                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbImperatives (linkBlock "Imperative" "verb-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbParticiples (linkBlock "Participle" "verb-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbConjugation (linkBlock "Conjugation" "verb-color")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbImperatives (linkBlock "Verb Imperative" "verb-color")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbParticiples (linkBlock "Verb Participle" "verb-color")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbConjugation (linkBlock "Verb Conjugation" "verb-color")
                             ]
                         ]
                     ]      
