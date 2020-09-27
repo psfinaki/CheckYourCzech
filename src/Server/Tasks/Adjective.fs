@@ -55,19 +55,6 @@ let getAdjectiveDeclensionTask next (ctx : HttpContext) =
         return! Successful.OK task next ctx
     }
 
-let getAdjectivePluralsTask next (ctx : HttpContext) =
-    task { 
-        let! adjective = tryGetRandom<AdjectiveDeclension> "adjectivedeclension" []
-    
-        let getTask (adjective: AdjectiveDeclension) = 
-            let singular = adjective.SingularNominative
-            let plural = adjective.PluralNominative
-            Task(singular, [| plural |])
-
-        let task = adjective |> Option.map getTask |> Option.toObj 
-        return! Successful.OK task next ctx
-    }
-
 let getAdjectiveComparativesTask next (ctx : HttpContext) =
     task { 
         let regularityFromQuery = ctx.GetQueryStringValue "isRegular"
