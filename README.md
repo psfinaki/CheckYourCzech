@@ -6,16 +6,13 @@
 
 The service is deployed here: https://check-your-czech.azurewebsites.net/
 
-Nine exercises are available now:
+Six exercises are available now:
 1. [Noun Declension](https://check-your-czech.azurewebsites.net/#nouns-declension)
-2. [Noun Plural](https://check-your-czech.azurewebsites.net/#nouns-plurals)
-3. [Noun Accusative](https://check-your-czech.azurewebsites.net/#nouns-accusatives)
-4. [Adjective Declension](https://check-your-czech.azurewebsites.net/#adjectives-declension)
-5. [Adjective Plural](https://check-your-czech.azurewebsites.net/#adjectives-plurals)
-6. [Adjective Comparative](https://check-your-czech.azurewebsites.net/#adjecitves-comparatives)
-7. [Verb Imperative](https://check-your-czech.azurewebsites.net/#verbs-imperatives)
-8. [Verb Participle](https://check-your-czech.azurewebsites.net/#verbs-participles)
-9. [Verb Conjugation](https://check-your-czech.azurewebsites.net/#verbs-conjugation)
+2. [Adjective Declension](https://check-your-czech.azurewebsites.net/#adjectives-declension)
+3. [Adjective Comparative](https://check-your-czech.azurewebsites.net/#adjecitves-comparatives)
+4. [Verb Imperative](https://check-your-czech.azurewebsites.net/#verbs-imperatives)
+5. [Verb Participle](https://check-your-czech.azurewebsites.net/#verbs-participles)
+6. [Verb Conjugation](https://check-your-czech.azurewebsites.net/#verbs-conjugation)
 
 ## Concept
 
@@ -27,8 +24,8 @@ This service is supposed to give exercises like *"practice all the [exceptions](
 
 ## Features
 
-- For plurals and accusatives, gender can be selected
-- For imperatives, verb class and verb pattern can be selected
+- For declension, case and number can be selected, also gender and pattern for nouns
+- For verb imperatives, verb class and verb pattern can be selected
 - For comparatives and participles, regularity can be selected
 - Automated deployment via Azure Devops
 - Alerts about requests and exceptions
@@ -61,7 +58,6 @@ First three steps are same as for Windows.
 For Azure storage emulator use [azurite](https://github.com/azure/azurite). Use V2 because the latest version supports Blobs only.
 
 To install azurite use: `npm install -g azurite@2.7.0`
-
 To run Azure storage emulator use: `azurite`
 
 ### Running the App
