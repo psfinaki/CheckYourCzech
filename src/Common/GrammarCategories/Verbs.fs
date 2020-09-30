@@ -8,15 +8,6 @@ type Pronoun =
     | SecondPlural 
     | ThirdPlural
 
-type Conjugation = {
-    FirstSingular: seq<string>
-    SecondSingular: seq<string>
-    ThirdSingular: seq<string>
-    FirstPlural: seq<string>
-    SecondPlural: seq<string>
-    ThirdPlural: seq<string>
-}
-
 type VerbClass = E | NE | JE | Í | Á
 
 type ConjugationPatternClassE =
@@ -56,6 +47,16 @@ type ParticiplePattern =
     | Minout
     | Tisknout
     | Common
+
+type Conjugation = {
+    Infinitive: string
+    FirstSingular: seq<string>
+    SecondSingular: seq<string>
+    ThirdSingular: seq<string>
+    FirstPlural: seq<string>
+    SecondPlural: seq<string>
+    ThirdPlural: seq<string>
+}
 
 type Imperative = {
     Indicative: string

@@ -17,8 +17,8 @@ let private getClass =
     removeReflexive
     >> getClassByThirdPersonSingular
 
-let private getThirdPersonSingular (conjugation: VerbConjugation) = 
-    conjugation.Conjugation.ThirdSingular
+let private getThirdPersonSingular conjugation = 
+    conjugation.ThirdSingular
     |> Seq.tryExactlyOne
 
 let private getParticiplePattern = ParticiplePatternDetector.getPattern
@@ -37,7 +37,7 @@ type VerbConjugation with
                 verb.Conjugation
                 |> Option.bind getThirdPersonSingular
                 |> Option.bind (getConjugationPattern verb.CanonicalForm)
-            Conjugation = conjugation.Conjugation
+            Conjugation = conjugation
         })
 
 type VerbImperative with 

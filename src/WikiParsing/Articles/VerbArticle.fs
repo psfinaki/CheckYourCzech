@@ -29,14 +29,10 @@ let private hasRequiredInfoParticiple (VerbArticle article) =
         Is "časování"
     ]
 
-let getParticipleByTableIndex article participleTableIndex = 
-    let wikiParticiple = 
-        match participleTableIndex with
-        | 1 -> getParticipleWhenImperativeAbsent article
-        | 2 -> getParticipleWhenImperativePresent article
-        | _ -> invalidOp "Invalid article"
-
-    wikiParticiple.SingularMasculineAnimate
+let getParticipleByTableIndex article = function
+    | 1 -> getParticipleWhenImperativeAbsent article
+    | 2 -> getParticipleWhenImperativePresent article
+    | _ -> invalidOp "Invalid article"
 
 let getWikiParticiples verbParticipleArticle =
     let (VerbArticleWithParticiple (VerbArticle article)) = verbParticipleArticle
@@ -45,26 +41,39 @@ let getWikiParticiples verbParticipleArticle =
     |> ``match`` [
         Is "sloveso"
     ]
-    |> Option.map getTables
-    |> Option.map (Seq.map fst)
-    |> Option.map (Seq.findIndex ((=) "Příčestí"))
-    |> Option.map (getParticipleByTableIndex verbParticipleArticle)
+    |> Option.get // we know it's there due to the article type
+    |> getTables
+    |> Seq.map fst
+    |> Seq.findIndex ((=) "Příčestí")
+    |> getParticipleByTableIndex verbParticipleArticle
 
-let getParticiples = getWikiParticiples >> Option.map getForms >> Option.defaultValue Seq.empty
-
-let getImperatives article =
-    let wikiImperative = article |> getImperative
-    wikiImperative.Singular |> getForms
-
-let getConjugation article = 
-    let conjugation = getConjugation article
+let getParticiple verbArticle =
+    let (VerbArticleWithParticiple (VerbArticle { Title = title })) = verbArticle
+    let wikiParticiple = verbArticle |> getWikiParticiples
     {
-        FirstSingular  = conjugation.FirstSingular |> getForms
-        SecondSingular = conjugation.SecondSingular |> getForms
-        ThirdSingular  = conjugation.ThirdSingular |> getForms
-        FirstPlural    = conjugation.FirstPlural |> getForms
-        SecondPlural   = conjugation.SecondPlural |> getForms
-        ThirdPlural    = conjugation.ThirdPlural |> getForms
+        Infinitive = title
+        Participles = wikiParticiple.SingularMasculineAnimate |> getForms
+    }
+
+let getImperative verbArticle =
+    let (VerbArticleWithImperative (VerbArticle { Title = title })) = verbArticle
+    let wikiImperative = getImperative verbArticle
+    {
+        Indicative = title
+        Imperatives = wikiImperative.Singular |> getForms
+    }
+
+let getConjugation verbArticle = 
+    let (VerbArticleWithConjugation (VerbArticle { Title = title })) = verbArticle
+    let wikiConjugation = getConjugation verbArticle
+    {
+        Infinitive = title
+        FirstSingular  = wikiConjugation.FirstSingular |> getForms
+        SecondSingular = wikiConjugation.SecondSingular |> getForms
+        ThirdSingular  = wikiConjugation.ThirdSingular |> getForms
+        FirstPlural    = wikiConjugation.FirstPlural |> getForms
+        SecondPlural   = wikiConjugation.SecondPlural |> getForms
+        ThirdPlural    = wikiConjugation.ThirdPlural |> getForms
     }
 
 let parseVerbConjugation article = 
@@ -89,22 +98,13 @@ let parseVerbArticle article =
         Conjugation =
             article
             |> parseVerbConjugation
-            |> Option.map (fun article -> {
-                Infinitive = title
-                Conjugation = article |> getConjugation
-            })
+            |> Option.map getConjugation
         Imperative = 
             article
             |> parseVerbImperative
-            |> Option.map (fun article -> {
-                Indicative = title
-                Imperatives = article |> getImperatives
-            })
+            |> Option.map getImperative
         Participle =
             article
             |> parseVerbParticiple
-            |> Option.map (fun article -> {
-                Infinitive = title
-                Participles = article |> getParticiples
-            })
+            |> Option.map getParticiple
     }

@@ -12,35 +12,43 @@ let getArticle =
 
 [<Fact>]
 let ``Gets imperatives - single option``() =
-    "milovat"
-    |> getArticle 
-    |> VerbArticleWithImperative
-    |> getImperatives
-    |> seqEquals ["miluj"]
+    let imperative = 
+        "milovat"
+        |> getArticle 
+        |> VerbArticleWithImperative
+        |> getImperative
+
+    imperative.Imperatives |> seqEquals ["miluj"]
 
 [<Fact>]
 let ``Gets imperatives - multiple options``() =
-    "orat"
-    |> getArticle
-    |> VerbArticleWithImperative
-    |> getImperatives
-    |> seqEquals ["oř"; "orej"]
+    let imperative = 
+        "orat"
+        |> getArticle
+        |> VerbArticleWithImperative
+        |> getImperative
+
+    imperative.Imperatives |> seqEquals ["oř"; "orej"]
 
 [<Fact>]
 let ``Gets participle from the second table``() = 
-    "uvidět"
-    |> getArticle
-    |> VerbArticleWithParticiple
-    |> getParticiples
-    |> seqEquals ["uviděl"]
+    let participle =
+        "uvidět"
+        |> getArticle
+        |> VerbArticleWithParticiple
+        |> getParticiple
+
+    participle.Participles |> seqEquals ["uviděl"]
 
 [<Fact>]
 let ``Gets participle from the third table``() = 
-    "myslet"
-    |> getArticle
-    |> VerbArticleWithParticiple
-    |> getParticiples
-    |> seqEquals ["myslel"]
+    let participle = 
+        "myslet"
+        |> getArticle
+        |> VerbArticleWithParticiple
+        |> getParticiple
+
+    participle.Participles |> seqEquals ["myslel"]
 
 [<Fact>]
 let ``Gets all conjugations``() =

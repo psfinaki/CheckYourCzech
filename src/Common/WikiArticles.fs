@@ -24,14 +24,9 @@ type Adjective = {
     Comparison: Adjectives.Comparison option
 }
 
-type VerbConjugation = {
-    Infinitive: string
-    Conjugation: Verbs.Conjugation
-}
-
 type Verb = {
     CanonicalForm: string
-    Conjugation: VerbConjugation option
+    Conjugation: Verbs.Conjugation option
     Imperative: Verbs.Imperative option
     Participle: Verbs.Participle option
 }

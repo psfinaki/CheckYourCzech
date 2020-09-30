@@ -77,6 +77,7 @@ type VerbConjugation with
         Class = None
         Pattern = None
         Conjugation = {
+            Infinitive = null
             FirstSingular = null
             SecondSingular = null
             ThirdSingular = null
