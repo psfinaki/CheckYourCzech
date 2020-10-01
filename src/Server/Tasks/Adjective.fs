@@ -76,6 +76,6 @@ let getAdjectiveComparativesTask next (ctx : HttpContext) =
     
             let task = adjective |> getTask
             return! Successful.OK task next ctx
-        | _ ->
+        | None ->
             return! RequestErrors.NOT_FOUND "Not Found" next ctx
     }
