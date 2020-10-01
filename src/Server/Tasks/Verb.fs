@@ -24,14 +24,17 @@ let getVerbImperativesTask next (ctx : HttpContext) =
             |> Seq.choose id
             
         let! verb = tryGetRandom<VerbImperative.VerbImperative> "verbimperatives" filters
+        match verb with
+        | Some verb ->
+            let getTask (verb: VerbImperative.VerbImperative) = 
+                let indicative = verb.Indicative
+                let imperatives = verb.Imperatives
+                { Word = indicative; Answers = imperatives |> Seq.toArray }
 
-        let getTask (verb: VerbImperative.VerbImperative) = 
-            let indicative = verb.Indicative
-            let imperatives = verb.Imperatives
-            Task(indicative, imperatives)
-
-        let task = verb |> Option.map getTask |> Option.toObj 
-        return! Successful.OK task next ctx
+            let task = verb |> getTask
+            return! Successful.OK task next ctx
+        | None ->
+            return! RequestErrors.NOT_FOUND "Not Found" next ctx
     }
 
 let getVerbParticiplesTask next (ctx: HttpContext) =
@@ -47,14 +50,17 @@ let getVerbParticiplesTask next (ctx: HttpContext) =
             |> Seq.choose id
         
         let! verb = tryGetRandom<VerbParticiple.VerbParticiple> "verbparticiples" filters
+        match verb with
+        | Some verb ->
+            let getTask (verb: VerbParticiple.VerbParticiple) = 
+                let infinitive = verb.Infinitive
+                let participles = verb.Participles
+                { Word = infinitive; Answers = participles |> Seq.toArray }
 
-        let getTask (verb: VerbParticiple.VerbParticiple) = 
-            let infinitive = verb.Infinitive
-            let participles = verb.Participles
-            Task(infinitive, participles)
-
-        let task = verb |> Option.map getTask |> Option.toObj 
-        return! Successful.OK task next ctx
+            let task = verb |> getTask
+            return! Successful.OK task next ctx
+        | None ->
+            return! RequestErrors.NOT_FOUND "Not Found" next ctx
     }
 
 let getVerbConjugationTask next (ctx: HttpContext) =
@@ -78,14 +84,18 @@ let getVerbConjugationTask next (ctx: HttpContext) =
             | ThirdPlural    -> conjugation.ThirdPlural
 
         let! verb = tryGetRandom<VerbConjugation.VerbConjugation> "verbconjugation" filters
-        let getTask (verb: VerbConjugation.VerbConjugation) =
-            let pronoun = getRandomUnion<Pronoun>
-            let infinitive = verb.Infinitive
-            let answers = getConjugation verb pronoun
-            let pn = pronounToString pronoun
-            let word = sprintf "(%s) %s _____" infinitive pn 
-            Task(word, answers)
+        match verb with
+        | Some verb ->
+            let getTask (verb: VerbConjugation.VerbConjugation) =
+                let pronoun = getRandomUnion<Pronoun>
+                let infinitive = verb.Infinitive
+                let answers = getConjugation verb pronoun
+                let pn = pronounToString pronoun
+                let word = sprintf "(%s) %s _____" infinitive pn 
+                { Word = word; Answers = answers |> Seq.toArray }
 
-        let task = verb |> Option.map getTask |> Option.toObj 
-        return! Successful.OK task next ctx
+            let task = verb |> getTask
+            return! Successful.OK task next ctx
+        | None ->
+            return! RequestErrors.NOT_FOUND "Not Found" next ctx
     }

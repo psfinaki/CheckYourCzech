@@ -8,8 +8,8 @@ let getPostFilter filterCondition = function
     | Ok parameterValue -> Some (filterCondition parameterValue)
     | Error _ -> None
 
-
-[<AllowNullLiteral>]
-type Task(word, answers) = 
-    member this.Word: string = word
-    member this.Answers: seq<string> = answers
+[<CLIMutable>]
+type Task = {
+    Word: string
+    Answers: string[]
+}

@@ -61,7 +61,7 @@ type Msg =
     | CheckAnswer
     | NextTask
     | ChangeSymbolCase
-    | FetchedTask of Task option
+    | FetchedTask of Task
     | FetchError of exn
 
 type LeftButtonState = Show | Next
@@ -112,8 +112,8 @@ let update msg model getTask =
     | FetchedTask task -> 
         { model with 
             State = InputProvided ({ 
-                        Word = task |> Option.map (fun t -> t.Word) |> Option.defaultValue DefaultWord; 
-                        Answers = task |> Option.map (fun t -> t.Answers) |> Option.defaultValue DefaultAnswers
+                        Word = task.Word 
+                        Answers = task.Answers
                     }, NoInput)
         }, Cmd.none
     | FetchError _ ->
