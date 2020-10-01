@@ -41,18 +41,22 @@ let getAdjectiveDeclensionTask next (ctx : HttpContext) =
             |> Option.map parseUnionCase<Case>
             |> Option.defaultValue getRandomUnion<Case>
 
-        let getTask (adjective: AdjectiveDeclension) = 
-            let canonicalForm = adjective.CanonicalForm
-            let answer = adjective |> getDeclensionProp (number, case)
-            let declension = case.ToString() + " " + number.ToString()
-            let word = sprintf "(%s) %s" declension canonicalForm
-            Task(word, [| answer |])
-
         let declensionFilter = getDeclensionProp (number, case) >> Seq.any
         let! adjective = tryGetRandomWithFilters<AdjectiveDeclension> "adjectivedeclension" [] [ declensionFilter ] 
 
-        let task = adjective |> Option.map getTask |> Option.toObj 
-        return! Successful.OK task next ctx
+        match adjective with
+        | Some adjective -> 
+            let getTask (adjective: AdjectiveDeclension) = 
+                let canonicalForm = adjective.CanonicalForm
+                let answer = adjective |> getDeclensionProp (number, case)
+                let declension = case.ToString() + " " + number.ToString()
+                let word = sprintf "(%s) %s" declension canonicalForm
+                { Word = word; Answers = [| answer |] }
+
+            let task = adjective |> getTask
+            return! Successful.OK task next ctx
+        | None ->
+            return! RequestErrors.NOT_FOUND "Not Found" next ctx
     }
 
 let getAdjectiveComparativesTask next (ctx : HttpContext) =
@@ -62,12 +66,16 @@ let getAdjectiveComparativesTask next (ctx : HttpContext) =
     
         let filters = [ regularityFilter ] |> Seq.choose id
         let! adjective = tryGetRandom<AdjectiveComparative> "adjectivecomparatives" filters
+
+        match adjective with
+        | Some adjective ->
+            let getTask (adjective: AdjectiveComparative) = 
+                let positive = adjective.Positive
+                let comparatives = adjective.Comparatives
+                { Word = positive; Answers = comparatives |> Seq.toArray }
     
-        let getTask (adjective: AdjectiveComparative) = 
-            let positive = adjective.Positive
-            let comparatives = adjective.Comparatives
-            Task(positive, comparatives)
-    
-        let task = adjective |> Option.map getTask |> Option.toObj 
-        return! Successful.OK task next ctx
+            let task = adjective |> getTask
+            return! Successful.OK task next ctx
+        | _ ->
+            return! RequestErrors.NOT_FOUND "Not Found" next ctx
     }

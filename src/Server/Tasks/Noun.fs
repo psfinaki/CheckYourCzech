@@ -53,13 +53,17 @@ let getNounDeclensionTask next (ctx: HttpContext) =
         let postFilters = [ patternFilter; Some declensionFilter ] |> Seq.choose id
         
         let! noun = tryGetRandomWithFilters<Noun> "nouns" azureFilters postFilters
-        let getTask (noun: Noun) = 
-            let canonicalForm = noun.CanonicalForm
-            let answers = noun |> getDeclensionProp (number, case)
-            let declension = case.ToString() + " " + number.ToString()
-            let word = sprintf "(%s) %s" declension canonicalForm
-            Task(word, answers)
+        match noun with
+        | Some noun ->
+            let getTask (noun: Noun) = 
+                let canonicalForm = noun.CanonicalForm
+                let answers = noun |> getDeclensionProp (number, case)
+                let declension = case.ToString() + " " + number.ToString()
+                let word = sprintf "(%s) %s" declension canonicalForm
+                { Word = word; Answers = answers |> Seq.toArray }
         
-        let task = noun |> Option.map getTask |> Option.toObj
-        return! Successful.OK task next ctx
+            let task = noun |> getTask
+            return! Successful. OK task next ctx
+        | None ->
+            return! RequestErrors.NOT_FOUND "Not Found" next ctx
     }

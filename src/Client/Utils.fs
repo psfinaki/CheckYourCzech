@@ -7,5 +7,5 @@ open Thoth.Json
 open Client.Widgets
 
 let buildFetchTask url = 
-    let decoder = Decode.Auto.generateDecoder<Task.Task option>()
+    let decoder = Decode.Auto.generateDecoder<Task.Task>()
     fun _ -> Fetch.fetchAs(url, decoder)
