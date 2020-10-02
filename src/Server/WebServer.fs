@@ -11,4 +11,5 @@ let webApp = router {
     get "/api/verbs/imperatives" Verb.getVerbImperativesTask
     get "/api/verbs/participles" Verb.getVerbParticiplesTask
     get "/api/verbs/conjugation" Verb.getVerbConjugationTask
+    get "/api/numerals/cardinals" Numeral.getNumeralCardinalsTask
 }

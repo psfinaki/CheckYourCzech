@@ -15,6 +15,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helper.fs" />
+    <Compile Include="Numerals\TripletToWordsTests.fs" />
+    <Compile Include="Numerals\NumberToWordsTests.fs" />
     <Compile Include="ParticiplePatternDetectorTests.fs" />
     <Compile Include="ReflexivesTests.fs" />
     <Compile Include="VerbClassesTests.fs" />

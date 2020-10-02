@@ -31,6 +31,10 @@
     <Compile Include="Verbs\ConjugationPatternDetector.fs" />
     <Compile Include="Verbs\ParticiplePatternDetector.fs" />
     <Compile Include="Verbs\ParticipleBuilder.fs" />
+    <Compile Include="Numerals\Numbers.fs" />
+    <Compile Include="Numerals\Triplet.fs" />
+    <Compile Include="Numerals\TripletToWords.fs" />
+    <Compile Include="Numerals\NumberToWords.fs" />
     <Compile Include="Validation.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
