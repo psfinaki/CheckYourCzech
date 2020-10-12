@@ -40,7 +40,7 @@ let view model dispatch =
 
     let selectedValue = model.Gender |> Option.map string |> Option.defaultValue "Any"
 
-    div [ClassName "gender-filter"] 
+    div [ClassName "filter gender-filter"] 
         [
             div [ ClassName "gender-filter-label" ] 
                 [

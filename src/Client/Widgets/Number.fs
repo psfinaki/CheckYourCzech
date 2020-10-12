@@ -34,7 +34,7 @@ let view model dispatch =
 
     let selectedValue = model.Number |> Option.map string |> Option.defaultValue "Any"
 
-    div [ClassName "number-filter"] 
+    div [ClassName "filter number-filter"] 
         [
             div [ ClassName "number`-filter-label" ] 
                 [

@@ -34,7 +34,7 @@ let view model dispatch =
 
     let selectedValue = model.Case |> Option.map string |> Option.defaultValue "Any"
 
-    div [ClassName "case-filter"] 
+    div [ClassName "filter case-filter"] 
         [
             div [ ClassName "case-filter-label" ] 
                 [
