@@ -43,7 +43,7 @@ let view model dispatch =
 
     let selectedValue = model.SelectedPattern |> Option.defaultValue "Any"
 
-    div [ ClassName "pattern-filter" ] 
+    div [ ClassName "filter pattern-filter" ] 
         [
             div [ ClassName "pattern-filter-label" ] 
                 [

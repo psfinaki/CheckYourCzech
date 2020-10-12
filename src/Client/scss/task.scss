@@ -107,10 +107,13 @@
         .filter-block-children{
             padding-bottom: 10px;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-        }
 
-        
+            .filter:not(last-child) {
+                margin-bottom: 5px;
+            }
+        }
     }
 
     /* override Bulma's margin, we don't need it */
@@ -135,6 +138,9 @@
         }
     }
     
+    select {
+        text-align-last:center;
+    }
 }
 
 @media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
@@ -146,7 +152,12 @@
         &.children-hidden {
             .filter-block-children {
                 display: flex;
+                flex-direction: row;
                 justify-content: space-around;
+
+                .filter {
+                    margin-bottom: 0;
+                }
             }
         }
     }

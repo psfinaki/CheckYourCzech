@@ -33,7 +33,7 @@ let view model dispatch =
 
     let selectedValue = model.Regularity |> Option.map bool.AsString |> Option.defaultValue "Any"
 
-    div [ ClassName "regularity-filter" ]
+    div [ ClassName "filter regularity-filter" ]
         [
             div [ ClassName "regularity-filter-label" ] 
                 [

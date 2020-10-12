@@ -109,25 +109,10 @@ let view model dispatch =
             [
                 FilterBlock.View.root model.FilterBlock (FilterBlock >> dispatch) 
                     [
-                        div [  ]
-                            [
-                                Gender.view model.Gender (Gender >> dispatch)
-                            ]
-
-                        div [ ]
-                            [
-                                Pattern.view model.Pattern (Pattern >> dispatch)
-                            ]
-
-                        div [ ]
-                            [
-                                Number.view model.Number (Number >> dispatch)
-                            ]
-
-                        div [ ]
-                            [
-                                Case.view model.Case (Case >> dispatch)
-                            ]
+                        Gender.view model.Gender (Gender >> dispatch)
+                        Pattern.view model.Pattern (Pattern >> dispatch)
+                        Number.view model.Number (Number >> dispatch)
+                        Case.view model.Case (Case >> dispatch)
                     ]
 
                 Task.view model.Task (Task >> dispatch)
