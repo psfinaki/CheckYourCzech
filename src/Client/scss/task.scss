@@ -27,6 +27,9 @@
     .task-label.tag {
         width: 100%;
         font-size: 25px;
+        white-space: pre-wrap;
+        height: auto;
+        min-height: 2em;
     }
 
     .input {
