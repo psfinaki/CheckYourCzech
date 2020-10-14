@@ -3,8 +3,8 @@
 open Common.StringHelper
 
 type Digit = Digit of int
-type Number1to999 = Number1to999 of int
-type Number1000On = Number1000On of int
+type NumberFrom1to999 = NumberFrom1to999 of int
+type NumberFrom1000 = NumberFrom1000 of int
 
 let length (number: int) = number |> string |> Seq.length
 

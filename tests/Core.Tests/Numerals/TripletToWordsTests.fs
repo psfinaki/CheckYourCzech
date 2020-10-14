@@ -22,7 +22,7 @@ open Core.Tests
 [<InlineData(999, "devět set devadesát devět")>]
 let ``Converts`` numeral words =
     numeral
-    |> Number1to999
+    |> NumberFrom1to999
     |> Triplet.create
     |> convert
     |> equals words

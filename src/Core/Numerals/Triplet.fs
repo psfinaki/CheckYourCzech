@@ -9,19 +9,19 @@ type T = {
 }
 
 let create = function
-    | Number1to999 number when number < 10 -> 
+    | NumberFrom1to999 number when number < 10 -> 
         {
             Ones = Digit number
             Tens = Digit 0
             Hundreds = Digit 0
         }
-    | Number1to999 number when number < 100 ->
+    | NumberFrom1to999 number when number < 100 ->
         {
             Ones = Digit (number % 10)
             Tens = Digit (number / 10)
             Hundreds = Digit 0
         }
-    | Number1to999 number ->
+    | NumberFrom1to999 number ->
         {
             Ones = Digit (number % 10)
             Tens = Digit (number / 10 % 10)

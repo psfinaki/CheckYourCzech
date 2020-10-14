@@ -69,7 +69,7 @@ let rec convert triplet =
 
     | (Digit ones, Digit tens, Digit hundreds) -> 
         let remainder = 10 * tens + ones
-        let toTriplet = Number1to999 >> Triplet.create
+        let toTriplet = NumberFrom1to999 >> Triplet.create
 
         let wordForHundred = ``words for hundreds``.[hundreds]
         let wordsForRemainder = remainder |> toTriplet |> convert

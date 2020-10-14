@@ -39,7 +39,7 @@ let private bigNumberBuilders =
 
 let private getFirstTriplet number = 
     let numberOfDigits = length number
-    let firstDigitsToTriplet n = take n >> Number1to999 >> Triplet.create
+    let firstDigitsToTriplet n = take n >> NumberFrom1to999 >> Triplet.create
     
     match numberOfDigits % 3 with
     | 0 -> number |> firstDigitsToTriplet 3
@@ -54,22 +54,22 @@ let private removeFirstTriplet number =
 let private hasOnlyFirstTripletSignificant = removeFirstTriplet >> (=) 0
 
 let private getBigNumber = function
-    | Number1000On number when number < 1000000 -> Thousand
-    | Number1000On number when number < 1000000000 -> Million
-    | Number1000On _ -> Billion
+    | NumberFrom1000 number when number < 1000000 -> Thousand
+    | NumberFrom1000 number when number < 1000000000 -> Million
+    | NumberFrom1000 _ -> Billion
 
 let rec convertInner = function
     | number when number < 1000 ->
-        number |> Number1to999 |> Triplet.create |> convert
+        number |> NumberFrom1to999 |> Triplet.create |> convert
 
     | number when number |> hasOnlyFirstTripletSignificant ->
         let firstTriplet = getFirstTriplet number
-        let bigNumber = getBigNumber (Number1000On number)
+        let bigNumber = getBigNumber (NumberFrom1000 number)
         bigNumberBuilders.[bigNumber] firstTriplet
 
     | number ->
         let firstTriplet = getFirstTriplet number
-        let bigNumber = getBigNumber (Number1000On number)
+        let bigNumber = getBigNumber (NumberFrom1000 number)
         let wordsForFirstTriplet = bigNumberBuilders.[bigNumber] firstTriplet
         
         let remainder = removeFirstTriplet number
