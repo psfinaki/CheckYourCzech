@@ -1,0 +1,5 @@
+group Client.UiTests
+    Canopy
+    Expecto
+    FSharp.Core
+    Selenium.WebDriver.ChromeDriver

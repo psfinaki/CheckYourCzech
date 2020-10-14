@@ -1,14 +1,23 @@
 #r "paket: groupref Build //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
+open System.Threading
+open Fake.DotNet
 open Fake.Core
 open Fake.Core.TargetOperators
-open Fake.DotNet
 open Fake.IO
 
 let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
 let scraperPath = Path.getFullName "./src/Scraper"
+let clientTests = "./tests/Client.UiTests"
+let clientTestExecutables = "bin/Debug/netcoreapp3.1/Client.UiTests.dll"
+
+let killClientServerProc = (fun _ ->
+    Process.killAllByName "dotnet"
+    Process.killAllByName "dotnet.exe"
+    Process.killAllByName "node"
+)
 
 let yarnTool =
     let tool = if Environment.isUnix then "yarn" else "yarn.cmd"
@@ -84,6 +93,38 @@ Target.create "RunClient" (fun _ ->
     yarn webpackCommand
 )
 
+Target.create "RunUiTests" (fun _ ->
+    runDotNet "build" clientTests
+
+    let server = async {
+        runDotNet "watch run" serverPath
+    }
+
+    let client = async {
+        let webpackConfig = Path.combine clientPath "webpack.development.js"
+        let webpackCommand = sprintf "webpack-dev-server --config %s" webpackConfig
+        yarn webpackCommand
+    }
+    let sleep = fun ms -> async {
+        do! Async.Sleep(ms)
+    }
+
+    let serverTask = 
+        [ server; client ] 
+        |> Async.Parallel 
+        |> Async.StartAsTask
+    sleep 15000 |> Async.RunSynchronously
+
+    runDotNet clientTestExecutables clientTests
+    killClientServerProc()
+
+    serverTask 
+    |> Async.AwaitTask 
+    |> Async.Catch
+    |> Async.Ignore
+    |> Async.RunSynchronously
+)
+
 "InstallClient"
     ==> "Build"
 
@@ -91,6 +132,11 @@ Target.create "RunClient" (fun _ ->
     ==> "InstallClient"
     ==> "RestoreServer"
     ==> "RunWeb"
+
+"SetEnvironmentVariables"
+    ==> "InstallClient"
+    ==> "RestoreServer"
+    ==> "RunUiTests"
 
 "SetEnvironmentVariables"
     ==> "RunScraper"

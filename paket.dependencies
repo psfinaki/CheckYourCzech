@@ -56,6 +56,14 @@ group Core.IntegrationTests
 	nuget xunit
 	nuget xunit.runner.visualstudio	
 
+group Client.UiTests
+	source https://nuget.org/api/v2
+
+    nuget Canopy
+    nuget Expecto
+    nuget FSharp.Core
+    nuget Selenium.WebDriver.ChromeDriver = 2.36
+
 group WikiParsing.Tests
 	source https://nuget.org/api/v2
 
@@ -66,6 +74,7 @@ group WikiParsing.Tests
 group Build
     source https://api.nuget.org/v3/index.json
 	
+    nuget Nuget.Packaging < 5.7 // https://github.com/fsprojects/Paket/issues/3907
     nuget FSharp.Core 4.3.4 // https://github.com/fsharp/FAKE/issues/2001
     nuget Fake.Core.Target
     nuget Fake.DotNet.Cli
