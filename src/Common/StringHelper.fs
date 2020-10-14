@@ -19,6 +19,12 @@ let removeLast n (s: string) = s.Remove(s.Length - n)
 
 let append (value: string) (s: string) = s + value
 
+let appendAfterSpace (value: string) (s: string) = s + " " + value
+
+let prepend (value: string) (s: string) = value + s
+
+let prependBeforeSpace (value: string) (s: string) = value + " " + s
+
 let toLower (s: string) = s.ToLower()
 
 let removeMany (values: seq<string>) (s: string) = 
@@ -32,7 +38,11 @@ let containsAny (values: seq<string>) (s: string) =
 
 let contains (s: string) = containsAny [s]
 
+let takeFirst n (s: string) = s.Substring(0, n)
+
 let takeLast n (s: string) = s.Substring (s.Length - n)
+
+let takeFrom n (s: string) = s.Substring n
 
 let isMatch pattern string = Regex.IsMatch(string, pattern)
 
