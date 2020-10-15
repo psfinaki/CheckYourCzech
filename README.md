@@ -67,6 +67,12 @@ To run Azure storage emulator use: `azurite`
 4. Stop Scraper
 5. Run web app: `dotnet fake build target runweb`
 
+**To upgrade paket dependencies**
+
+```bash
+dotnet tool run paket update
+```
+
 **Testing**
 
 ```bash

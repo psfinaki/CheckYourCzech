@@ -47,14 +47,16 @@ group Core.Tests
 
 	nuget FSharp.Core
 	nuget xunit
-	nuget xunit.runner.visualstudio	
+	nuget xunit.runner.visualstudio
+    nuget Microsoft.NET.Test.Sdk
 	
 group Core.IntegrationTests
 	source https://nuget.org/api/v2
 
 	nuget FSharp.Core
 	nuget xunit
-	nuget xunit.runner.visualstudio	
+	nuget xunit.runner.visualstudio
+    nuget Microsoft.NET.Test.Sdk
 
 group Client.UiTests
 	source https://nuget.org/api/v2
@@ -70,6 +72,7 @@ group WikiParsing.Tests
 	nuget FSharp.Core
 	nuget xunit
 	nuget xunit.runner.visualstudio
+    nuget Microsoft.NET.Test.Sdk
 	
 group Build
     source https://api.nuget.org/v3/index.json
