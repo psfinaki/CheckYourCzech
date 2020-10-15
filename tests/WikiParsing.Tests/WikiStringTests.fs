@@ -77,7 +77,6 @@ let ``Gets form with appropriate label - rarer - 2``() =
     |> equals "plazové"
 
 [<Theory>]
-[<InlineData "(zastarale) pec">]
 [<InlineData "(archaicky) sloul">]
 [<InlineData "(hovorově) slz">]
 [<InlineData "(zastarale) pec">]

@@ -7,8 +7,7 @@ open Fulma
 open Client
 open Client.AppPages
 
-let linkBlock text colorClass = 
-    let firstSymbol: char = Seq.head text
+let linkBlock text colorClass firstSymbol =
     [
         div [ ClassName (sprintf "link-letter %s" colorClass) ] [str (firstSymbol.ToString())]
         div [ ClassName colorClass] [str text]
@@ -25,16 +24,21 @@ let view () =
                     [
                         Column.column [ ] [
                             div [ ClassName "home-link-container" ] [
-                                Markup.viewLinkCentered "home-column-links link-block" Page.NounDeclension (linkBlock "Noun Declension" "noun-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveDeclension (linkBlock "Adjective Declension" "adjective-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveComparatives (linkBlock "Adjective Comparative" "adjective-color")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.NounDeclension (linkBlock "Noun Declension" "noun-color" "N")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.NumeralsCardinals (linkBlock "Numerals Cardinals" "numeral-color" "123")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveDeclension (linkBlock "Adjective Declension" "adjective-color" "A")
                             ]
                         ]
                         Column.column [ ] [
                             div [ ClassName "home-link-container" ] [
-                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbImperatives (linkBlock "Verb Imperative" "verb-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbParticiples (linkBlock "Verb Participle" "verb-color")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbConjugation (linkBlock "Verb Conjugation" "verb-color")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveComparatives (linkBlock "Adjective Comparative" "adjective-color" "A")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbImperatives (linkBlock "Verb Imperative" "verb-color" "V")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbParticiples (linkBlock "Verb Participle" "verb-color" "V")
+                            ]
+                        ]
+                        Column.column [ ] [
+                            div [ ClassName "home-link-container" ] [
+                                Markup.viewLinkCentered "home-column-links link-block" Page.VerbConjugation (linkBlock "Verb Conjugation" "verb-color" "V")
                             ]
                         ]
                     ]      
