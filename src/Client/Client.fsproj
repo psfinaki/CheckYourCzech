@@ -37,7 +37,7 @@
 		<Compile Include="Widgets\Task.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="Pages\NounDeclension.fs" />
-		<Compile Include="Pages\NumeralsCardinals.fs" />
+		<Compile Include="Pages\NumeralCardinals.fs" />
 		<Compile Include="Pages\VerbParticiples.fs" />
 		<Compile Include="Pages\VerbConjugation.fs" />
 		<Compile Include="Pages\Home.fs" />

@@ -25,7 +25,7 @@ let view () =
                         Column.column [ ] [
                             div [ ClassName "home-link-container" ] [
                                 Markup.viewLinkCentered "home-column-links link-block" Page.NounDeclension (linkBlock "Noun Declension" "noun-color" "N")
-                                Markup.viewLinkCentered "home-column-links link-block" Page.NumeralsCardinals (linkBlock "Numerals Cardinals" "numeral-color" "123")
+                                Markup.viewLinkCentered "home-column-links link-block" Page.NumeralCardinals (linkBlock "Numerals Cardinals" "numeral-color" "123")
                                 Markup.viewLinkCentered "home-column-links link-block" Page.AdjectiveDeclension (linkBlock "Adjective Declension" "adjective-color" "A")
                             ]
                         ]

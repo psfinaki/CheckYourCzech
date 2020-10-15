@@ -26,7 +26,7 @@ let urlParser location = parseHash pageParser location
 type PageModel =
     | Home
     | NounDeclension of NounDeclension.Model
-    | NumeralsCardinals of NumeralsCardinals.Model
+    | NumeralCardinals of NumeralCardinals.Model
     | AdjectiveDeclension of AdjectiveDeclension.Model
     | AdjectiveComparatives of AdjectiveComparatives.Model
     | VerbImperatives of VerbImperatives.Model
@@ -39,7 +39,7 @@ type Model = {
 
 type Msg = 
     | NounDeclensionMsg of NounDeclension.Msg
-    | NumeralsCardinalsMsg of NumeralsCardinals.Msg
+    | NumeralCardinalsMsg of NumeralCardinals.Msg
     | AdjectiveDeclensionMsg of AdjectiveDeclension.Msg
     | AdjectiveComparativesMsg of AdjectiveComparatives.Msg
     | VerbImperativesMsg of VerbImperatives.Msg
@@ -52,8 +52,8 @@ let viewPage model dispatch =
         Home.view ()
     | NounDeclension m ->
         NounDeclension.view m (NounDeclensionMsg >> dispatch)
-    | NumeralsCardinals m ->
-        NumeralsCardinals.view m (NumeralsCardinalsMsg >> dispatch)
+    | NumeralCardinals m ->
+        NumeralCardinals.view m (NumeralCardinalsMsg >> dispatch)
     | AdjectiveDeclension m ->
         AdjectiveDeclension.view m (AdjectiveDeclensionMsg >> dispatch)
     | AdjectiveComparatives m ->
@@ -77,9 +77,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.NounDeclension ->
         let m, cmd = NounDeclension.init()
         updateModelPage model (NounDeclension m), Cmd.map NounDeclensionMsg cmd
-    | Some Page.NumeralsCardinals ->
-        let m, cmd = NumeralsCardinals.init()
-        updateModelPage model (NumeralsCardinals m), Cmd.map NumeralsCardinalsMsg cmd
+    | Some Page.NumeralCardinals ->
+        let m, cmd = NumeralCardinals.init()
+        updateModelPage model (NumeralCardinals m), Cmd.map NumeralCardinalsMsg cmd
     | Some Page.AdjectiveDeclension ->
         let m, cmd = AdjectiveDeclension.init()
         updateModelPage model (AdjectiveDeclension m), Cmd.map AdjectiveDeclensionMsg cmd
@@ -100,15 +100,14 @@ let init result =
     Logger.setup()
     urlUpdate result {CurrentPage = Home}
 
-// TODO: refactor this to remove wildcard match
 let update msg model =
     match msg, model.CurrentPage with
     | NounDeclensionMsg msg, NounDeclension m ->
         let m, cmd = NounDeclension.update msg m
         updateModelPage model (NounDeclension m), Cmd.map NounDeclensionMsg cmd
-    | NumeralsCardinalsMsg msg, NumeralsCardinals m ->
-        let m, cmd = NumeralsCardinals.update msg m
-        updateModelPage model (NumeralsCardinals m), Cmd.map NumeralsCardinalsMsg cmd
+    | NumeralCardinalsMsg msg, NumeralCardinals m ->
+        let m, cmd = NumeralCardinals.update msg m
+        updateModelPage model (NumeralCardinals m), Cmd.map NumeralCardinalsMsg cmd
     | AdjectiveDeclensionMsg msg, AdjectiveDeclension m ->
         let m, cmd = AdjectiveDeclension.update msg m
         updateModelPage model (AdjectiveDeclension m), Cmd.map AdjectiveDeclensionMsg cmd

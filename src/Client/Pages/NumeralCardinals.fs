@@ -1,4 +1,4 @@
-﻿module Client.Pages.NumeralsCardinals
+﻿module Client.Pages.NumeralCardinals
 
 open Elmish
 open Fable.React
@@ -64,7 +64,7 @@ let update msg model =
         
 let view model dispatch =    
     [ 
-        words "task-heading" "Write written form for a cardinal (e.g. 1 -> jeden)"
+        words "task-heading" "Write written form for a cardinal (e.g. 42 -> čtyřicet dva)"
 
         div [ middle ]
             [
