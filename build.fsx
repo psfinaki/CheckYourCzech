@@ -1,7 +1,6 @@
 #r "paket: groupref Build //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
-open System.Threading
 open Fake.DotNet
 open Fake.Core
 open Fake.Core.TargetOperators
@@ -13,11 +12,15 @@ let scraperPath = Path.getFullName "./src/Scraper"
 let clientTests = "./tests/Client.UiTests"
 let clientTestExecutables = "bin/Debug/netcoreapp3.1/Client.UiTests.dll"
 
-let killClientServerProc = (fun _ ->
+let killClientServerProc() = 
     Process.killAllByName "dotnet"
     Process.killAllByName "dotnet.exe"
     Process.killAllByName "node"
-)
+
+let sleep ms = 
+    async {
+        do! Async.Sleep(ms)
+    }
 
 let yarnTool =
     let tool = if Environment.isUnix then "yarn" else "yarn.cmd"
@@ -42,6 +45,19 @@ let runDotNet cmd workingDir =
     let result =
         DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
     if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s" cmd workingDir
+
+let serverWatcher() = 
+    async {
+        runDotNet "watch run" serverPath
+    }
+
+let clientWatcher openBrowser = 
+    async {
+        let openFlag = if openBrowser then "--open" else ""
+        let webpackConfig = Path.combine clientPath "webpack.development.js"
+        let webpackCommand = sprintf "webpack-dev-server --config %s %s" webpackConfig openFlag
+        yarn webpackCommand
+    }
 
 Target.create "SetEnvironmentVariables" (fun _ ->
     Environment.setEnvironVar "ASPNETCORE_ENVIRONMENT" "local"
@@ -68,14 +84,8 @@ Target.create "Build" (fun _ ->
 )
 
 Target.create "RunWeb" (fun _ ->
-    let server = async {
-        runDotNet "watch run" serverPath
-    }
-    let client = async {
-        let webpackConfig = Path.combine clientPath "webpack.development.js"
-        let webpackCommand = sprintf "webpack-dev-server --config %s --open" webpackConfig
-        yarn webpackCommand
-    }
+    let server = serverWatcher()
+    let client = clientWatcher true
 
     [ server; client ]
     |> Async.Parallel
@@ -96,18 +106,8 @@ Target.create "RunClient" (fun _ ->
 Target.create "RunUiTests" (fun _ ->
     runDotNet "build" clientTests
 
-    let server = async {
-        runDotNet "watch run" serverPath
-    }
-
-    let client = async {
-        let webpackConfig = Path.combine clientPath "webpack.development.js"
-        let webpackCommand = sprintf "webpack-dev-server --config %s" webpackConfig
-        yarn webpackCommand
-    }
-    let sleep = fun ms -> async {
-        do! Async.Sleep(ms)
-    }
+    let server = serverWatcher()
+    let client = clientWatcher false
 
     let serverTask = 
         [ server; client ] 
