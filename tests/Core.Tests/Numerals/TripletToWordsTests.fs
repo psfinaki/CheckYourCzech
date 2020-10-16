@@ -13,6 +13,8 @@ open Core.Tests
 [<InlineData(6, "šest")>]
 [<InlineData(10, "deset")>]
 [<InlineData(12, "dvanáct")>]
+[<InlineData(14, "čtrnáct")>]
+[<InlineData(19, "devatenáct")>]
 [<InlineData(20, "dvacet")>]
 [<InlineData(42, "čtyřicet dva")>]
 [<InlineData(100, "sto")>]
