@@ -20,12 +20,12 @@ let private ``words for 10 to 19`` =
            1, "jedenáct"
            2, "dvanáct"
            3, "třináct"
-           4, "čtyřnáct"
+           4, "čtrnáct"
            5, "patnáct"
            6, "šestnáct"
            7, "sedmnáct"
            8, "osmnáct"
-           9, "devětnáct" ]
+           9, "devatenáct" ]
 
 let private ``words for tens`` = 
     dict [ 2, "dvacet"
