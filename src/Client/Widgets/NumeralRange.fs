@@ -8,12 +8,13 @@ open Fable.React.Props
 open Client
 open Common.Numerals
 
-let translateNumeralRange = function
-    | "From0To100" -> Range.From0To100
-    | "From100To1000" -> Range.From100To1000
-    | "From1000To1000000" -> Range.From1000To1000000
-    | "From1000000" -> Range.From1000000
-    | x -> sprintf "Unknown numeral range %s" x |> failwith 
+let private translateToNumeralRange s =
+    let translations = 
+        dict [ "From0To20",     Range.From0To20
+               "From0To100",    Range.From0To100
+               "From0To1000",   Range.From0To1000]
+
+    translations.[s]
 
 [<Literal>]
 let NumeralRangeUnset = ""
@@ -35,7 +36,7 @@ let update msg model =
 
 let view model dispatch =
     let handleChangeNumeralRange (event: Event) =
-        let translate = function | NumeralRangeUnset -> None | x -> Some (translateNumeralRange x)
+        let translate = function | NumeralRangeUnset -> None | x -> Some (translateToNumeralRange x)
         dispatch (SetNumeralRange (translate !!event.target?value))
 
     let selectedValue = model.NumeralRange |> Option.map string |> Option.defaultValue "Any"
@@ -51,10 +52,9 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeNumeralRange [
                         Markup.option NumeralRangeUnset "Any"
+                        Markup.option (string Range.From0To20) "0 - 20"
                         Markup.option (string Range.From0To100) "0 - 100"
-                        Markup.option (string Range.From100To1000) "100 - 1000"
-                        Markup.option (string Range.From1000To1000000) "1000 - 1000000"
-                        Markup.option (string Range.From1000000) "1000000+"
+                        Markup.option (string Range.From0To1000) "0 - 1000"
                     ]
                 ]
         ]

@@ -1,8 +1,7 @@
 module Common.Numerals
 
 type Range = 
-    | From0
+    | All
+    | From0To20
     | From0To100
-    | From100To1000
-    | From1000To1000000
-    | From1000000
+    | From0To1000

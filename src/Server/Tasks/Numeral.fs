@@ -10,15 +10,13 @@ open Core.Numerals
 open Common.Utils
 open Common.Numerals
 
-let getMinMaxRange = function
-    | From0         -> (0, Int32.MaxValue)
-    | From0To100    -> (0, 100)
-    | From100To1000 -> (100, 1000)
-    | From1000To1000000 -> 
-        (1000, 1000000)
-    | From1000000 -> (1000000, Int32.MaxValue)
+let private getRange = function
+    | All         -> (0, Int32.MaxValue)
+    | From0To20   -> (0, 20)
+    | From0To100  -> (0, 100)
+    | From0To1000 -> (0, 1000)
 
-let getRandomNumeral (min, max) =
+let private getRandomNumeral (min, max) =
     Random().Next(min, max)
 
 let getNumeralCardinalsTask next (ctx: HttpContext) =
@@ -26,9 +24,9 @@ let getNumeralCardinalsTask next (ctx: HttpContext) =
         let range =
             ctx.TryGetQueryStringValue "range"
             |> Option.map parseUnionCase<Range>
-            |> Option.defaultValue Range.From0
-        let minMaxRange = getMinMaxRange range
-        let number = getRandomNumeral minMaxRange
+            |> Option.defaultValue Range.All
+            |> getRange
+        let number = getRandomNumeral range
         let words = NumberToWords.convert number
         let task = { Word = string number; Answers = words |> Seq.toArray }
         return! Successful.OK task next ctx

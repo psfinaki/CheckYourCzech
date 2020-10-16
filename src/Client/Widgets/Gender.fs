@@ -8,7 +8,7 @@ open Fable.React.Props
 open Client
 open Common.GrammarCategories.Nouns
 
-let translateGender = function
+let translateToGender = function
     | "MasculineAnimate" -> Gender.MasculineAnimate
     | "MasculineInanimate" -> Gender.MasculineInanimate
     | "Feminine" -> Gender.Feminine
@@ -35,7 +35,7 @@ let update msg model =
 
 let view model dispatch =
     let handleChangeGender (event: Event) =
-        let translate = function | GenderUnset -> None | x -> Some (translateGender x)
+        let translate = function | GenderUnset -> None | x -> Some (translateToGender x)
         dispatch (SetGender (translate !!event.target?value))
 
     let selectedValue = model.Gender |> Option.map string |> Option.defaultValue "Any"

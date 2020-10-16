@@ -20,19 +20,17 @@ type Msg =
     | Task of Task.Msg
 
 
-let getTask range =
-    let rangeQuery = range |> Option.map (sprintf "range=%A")
-    let queryString =
-        [ rangeQuery ]
-        |> Seq.choose id
-        |> String.concat "&"
-    
-    let url = 
-        if queryString = "" 
-        then "/api/numerals/cardinals" 
-        else sprintf "/api/numerals/cardinals?%s" queryString
+let private getTask range =
+    let rangeQuery = 
+        range 
+        |> Option.map (sprintf "range=%A") 
+        |> Option.defaultValue ""
+    let url = sprintf "/api/numerals/cardinals?%s" rangeQuery
 
     buildFetchTask url
+
+let private reloadTaskCmd =
+    Task.NextTask |> (Cmd.ofMsg >> Cmd.map Task)
 
 let init () =
     let filterBlock = FilterBlock.State.init()
@@ -43,9 +41,6 @@ let init () =
       NumeralRange = range
       Task = task },
     Cmd.map Task cmd
-
-let reloadTaskCmd =
-    Task.NextTask |> (Cmd.ofMsg >> Cmd.map Task)
 
 let update msg model =
     match msg with
