@@ -26,6 +26,7 @@ let urlParser location = parseHash pageParser location
 type PageModel =
     | Home
     | NounDeclension of NounDeclension.Model
+    | NumeralCardinals of NumeralCardinals.Model
     | AdjectiveDeclension of AdjectiveDeclension.Model
     | AdjectiveComparatives of AdjectiveComparatives.Model
     | VerbImperatives of VerbImperatives.Model
@@ -38,6 +39,7 @@ type Model = {
 
 type Msg = 
     | NounDeclensionMsg of NounDeclension.Msg
+    | NumeralCardinalsMsg of NumeralCardinals.Msg
     | AdjectiveDeclensionMsg of AdjectiveDeclension.Msg
     | AdjectiveComparativesMsg of AdjectiveComparatives.Msg
     | VerbImperativesMsg of VerbImperatives.Msg
@@ -50,6 +52,8 @@ let viewPage model dispatch =
         Home.view ()
     | NounDeclension m ->
         NounDeclension.view m (NounDeclensionMsg >> dispatch)
+    | NumeralCardinals m ->
+        NumeralCardinals.view m (NumeralCardinalsMsg >> dispatch)
     | AdjectiveDeclension m ->
         AdjectiveDeclension.view m (AdjectiveDeclensionMsg >> dispatch)
     | AdjectiveComparatives m ->
@@ -73,6 +77,9 @@ let urlUpdate (result:Page option) model =
     | Some Page.NounDeclension ->
         let m, cmd = NounDeclension.init()
         updateModelPage model (NounDeclension m), Cmd.map NounDeclensionMsg cmd
+    | Some Page.NumeralCardinals ->
+        let m, cmd = NumeralCardinals.init()
+        updateModelPage model (NumeralCardinals m), Cmd.map NumeralCardinalsMsg cmd
     | Some Page.AdjectiveDeclension ->
         let m, cmd = AdjectiveDeclension.init()
         updateModelPage model (AdjectiveDeclension m), Cmd.map AdjectiveDeclensionMsg cmd
@@ -98,6 +105,9 @@ let update msg model =
     | NounDeclensionMsg msg, NounDeclension m ->
         let m, cmd = NounDeclension.update msg m
         updateModelPage model (NounDeclension m), Cmd.map NounDeclensionMsg cmd
+    | NumeralCardinalsMsg msg, NumeralCardinals m ->
+        let m, cmd = NumeralCardinals.update msg m
+        updateModelPage model (NumeralCardinals m), Cmd.map NumeralCardinalsMsg cmd
     | AdjectiveDeclensionMsg msg, AdjectiveDeclension m ->
         let m, cmd = AdjectiveDeclension.update msg m
         updateModelPage model (AdjectiveDeclension m), Cmd.map AdjectiveDeclensionMsg cmd

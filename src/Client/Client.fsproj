@@ -28,6 +28,7 @@
 		<Compile Include="Widgets\FilterBlock\State.fs" />
 		<Compile Include="Widgets\FilterBlock\View.fs" />
 		<Compile Include="Widgets\Number.fs" />
+		<Compile Include="Widgets\NumeralRange.fs" />
 		<Compile Include="Widgets\Case.fs" />
 		<Compile Include="Widgets\Pattern.fs" />
 		<Compile Include="Widgets\Gender.fs" />
@@ -36,6 +37,7 @@
 		<Compile Include="Widgets\Task.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="Pages\NounDeclension.fs" />
+		<Compile Include="Pages\NumeralCardinals.fs" />
 		<Compile Include="Pages\VerbParticiples.fs" />
 		<Compile Include="Pages\VerbConjugation.fs" />
 		<Compile Include="Pages\Home.fs" />

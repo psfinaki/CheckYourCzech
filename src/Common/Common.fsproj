@@ -15,6 +15,7 @@
     <Compile Include="GrammarCategories\Verbs.fs" />
     <Compile Include="GrammarCategories\Nouns.fs" />
     <Compile Include="GrammarCategories\Adjectives.fs" />
+    <Compile Include="Numerals.fs" />
     <Compile Include="WikiArticles.fs" />
     <Compile Include="SequenceExtensions.fs" />
     <Compile Include="Utils.fs" />

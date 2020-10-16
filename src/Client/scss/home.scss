@@ -94,11 +94,13 @@
         align-content: space-between;
         flex: 1;
     }
-
     
-
     .noun-color {
         color: $noun-block-color
+    }
+
+    .numeral-color {
+        color: $numeral-block-color
     }
 
     .adjective-color {
