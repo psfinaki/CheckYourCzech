@@ -2,9 +2,10 @@ module Client.UiTests.Tests
 
 open canopy.classic
 open Expecto
+open System
 open System.IO
 
-let serverUrl = "http://localhost:8080/"
+let serverUrl = Environment.GetEnvironmentVariable("SERVER_URL")
 
 type TypeInThisAssembly() =
     class end

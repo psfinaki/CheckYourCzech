@@ -63,6 +63,7 @@ let clientWatcher openBrowser =
 Target.create "SetEnvironmentVariables" (fun _ ->
     Environment.setEnvironVar "ASPNETCORE_ENVIRONMENT" "local"
     Environment.setEnvironVar "STORAGE_CONNECTIONSTRING" "UseDevelopmentStorage=true"
+    Environment.setEnvironVar "SERVER_URL" "http://localhost:8080/"
 )
 
 Target.create "InstallClient" (fun _ ->
@@ -106,6 +107,11 @@ Target.create "RunClient" (fun _ ->
 
 Target.create "RunE2ETests" (fun _ ->
     runDotNet "build" clientTestsPath
+    runDotNet clientTestExecutables clientTestsPath
+)
+
+Target.create "RunWebWithE2ETests" (fun _ ->
+    runDotNet "build" clientTestsPath
 
     let server = serverWatcher()
     let client = clientWatcher false
@@ -135,9 +141,12 @@ Target.create "RunE2ETests" (fun _ ->
     ==> "RunWeb"
 
 "SetEnvironmentVariables"
+    ==> "RunE2ETests"
+
+"SetEnvironmentVariables"
     ==> "InstallClient"
     ==> "RestoreServer"
-    ==> "RunE2ETests"
+    ==> "RunWebWithE2ETests"
 
 "SetEnvironmentVariables"
     ==> "RunScraper"
