@@ -10,8 +10,7 @@ let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
 let scraperPath = Path.getFullName "./src/Scraper"
 let clientTestsPath = Path.getFullName "./tests/Client.UiTests"
-let clientTestExecutables = "bin/Debug/netcoreapp3.1/Client.UiTests.dll"
-
+let clientTestExecutables = Path.combine clientTestsPath "bin/Debug/netcoreapp3.1/Client.UiTests.dll"
 let killClientServerProc() = 
     Process.killAllByName "dotnet"
     Process.killAllByName "dotnet.exe"
@@ -45,6 +44,11 @@ let runDotNet cmd workingDir =
     let result =
         DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
     if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s" cmd workingDir
+
+let runExe path = 
+    let result =
+        DotNet.exec (DotNet.Options.withWorkingDirectory ".") path ""
+    if result.ExitCode <> 0 then failwithf "'dotnet' failed for %s" path
 
 let serverWatcher() = 
     async {
@@ -107,7 +111,7 @@ Target.create "RunClient" (fun _ ->
 
 Target.create "RunE2ETests" (fun _ ->
     runDotNet "build" clientTestsPath
-    runDotNet clientTestExecutables clientTestsPath
+    runExe clientTestExecutables
 )
 
 Target.create "RunWebWithE2ETests" (fun _ ->
@@ -122,7 +126,7 @@ Target.create "RunWebWithE2ETests" (fun _ ->
         |> Async.StartAsTask
     sleep 15000 |> Async.RunSynchronously
 
-    runDotNet clientTestExecutables clientTestsPath
+    runExe clientTestExecutables
     killClientServerProc()
 
     serverTask 
