@@ -9,7 +9,7 @@ open Fake.IO
 let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
 let scraperPath = Path.getFullName "./src/Scraper"
-let clientTests = "./tests/Client.UiTests"
+let clientTestsPath = Path.getFullName "./tests/Client.UiTests"
 let clientTestExecutables = "bin/Debug/netcoreapp3.1/Client.UiTests.dll"
 
 let killClientServerProc() = 
@@ -53,9 +53,10 @@ let serverWatcher() =
 
 let clientWatcher openBrowser = 
     async {
-        let openFlag = if openBrowser then "--open" else ""
+        // NOTE: space in flag is left intentionally (see https://github.com/psfinaki/CheckYourCzech/pull/743#discussion_r506929335)
+        let openFlag = if openBrowser then " --open" else ""
         let webpackConfig = Path.combine clientPath "webpack.development.js"
-        let webpackCommand = sprintf "webpack-dev-server --config %s %s" webpackConfig openFlag
+        let webpackCommand = sprintf "webpack-dev-server --config %s%s" webpackConfig openFlag
         yarn webpackCommand
     }
 
@@ -103,8 +104,8 @@ Target.create "RunClient" (fun _ ->
     yarn webpackCommand
 )
 
-Target.create "RunUiTests" (fun _ ->
-    runDotNet "build" clientTests
+Target.create "RunE2ETests" (fun _ ->
+    runDotNet "build" clientTestsPath
 
     let server = serverWatcher()
     let client = clientWatcher false
@@ -115,7 +116,7 @@ Target.create "RunUiTests" (fun _ ->
         |> Async.StartAsTask
     sleep 15000 |> Async.RunSynchronously
 
-    runDotNet clientTestExecutables clientTests
+    runDotNet clientTestExecutables clientTestsPath
     killClientServerProc()
 
     serverTask 
@@ -136,7 +137,7 @@ Target.create "RunUiTests" (fun _ ->
 "SetEnvironmentVariables"
     ==> "InstallClient"
     ==> "RestoreServer"
-    ==> "RunUiTests"
+    ==> "RunE2ETests"
 
 "SetEnvironmentVariables"
     ==> "RunScraper"

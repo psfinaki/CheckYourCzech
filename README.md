@@ -81,9 +81,9 @@ dotnet test
 
 **UI Testing**
 ```bash
-fake build target runuitests
+fake build target rune2etests
 ```
-libgdiplus is required: https://github.com/dotnet/core/issues/2746 (https://formulae.brew.sh/formula/mono-libgdiplus)
+libgdiplus is required for Linux/Mac OS: https://github.com/dotnet/core/issues/2746 (https://formulae.brew.sh/formula/mono-libgdiplus)
 `sudo ln -s /usr/local/lib/libgdiplus.dylib /usr/local/share/dotnet/shared/Microsoft.NETCore.App/3.1.6`
 
 ## Plan of development
