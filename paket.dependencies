@@ -47,14 +47,26 @@ group Core.Tests
 
 	nuget FSharp.Core
 	nuget xunit
-	nuget xunit.runner.visualstudio	
+	nuget xunit.runner.visualstudio
+    nuget Microsoft.NET.Test.Sdk
 	
 group Core.IntegrationTests
 	source https://nuget.org/api/v2
 
 	nuget FSharp.Core
 	nuget xunit
-	nuget xunit.runner.visualstudio	
+	nuget xunit.runner.visualstudio
+    nuget Microsoft.NET.Test.Sdk
+
+group Client.UiTests
+	source https://nuget.org/api/v2
+
+    nuget Canopy
+	nuget xunit
+	nuget xunit.runner.visualstudio
+    nuget FSharp.Core
+    nuget Selenium.WebDriver.ChromeDriver
+	nuget Microsoft.NET.Test.Sdk
 
 group WikiParsing.Tests
 	source https://nuget.org/api/v2
@@ -62,10 +74,12 @@ group WikiParsing.Tests
 	nuget FSharp.Core
 	nuget xunit
 	nuget xunit.runner.visualstudio
+    nuget Microsoft.NET.Test.Sdk
 	
 group Build
     source https://api.nuget.org/v3/index.json
 	
+    nuget Nuget.Packaging < 5.7 // https://github.com/fsprojects/Paket/issues/3907
     nuget FSharp.Core 4.3.4 // https://github.com/fsharp/FAKE/issues/2001
     nuget Fake.Core.Target
     nuget Fake.DotNet.Cli

@@ -67,6 +67,25 @@ To run Azure storage emulator use: `azurite`
 4. Stop Scraper
 5. Run web app: `dotnet fake build target runweb`
 
+**To upgrade paket dependencies**
+
+```bash
+dotnet tool run paket update
+```
+
+**Testing**
+
+```bash
+dotnet test
+```
+
+**UI Testing**
+```bash
+fake build target rune2etests
+```
+libgdiplus is required for Linux/Mac OS: https://github.com/dotnet/core/issues/2746 (https://formulae.brew.sh/formula/mono-libgdiplus)
+`sudo ln -s /usr/local/lib/libgdiplus.dylib /usr/local/share/dotnet/shared/Microsoft.NETCore.App/3.1.6`
+
 ## Plan of development
 
 There are a lot of [issues](https://github.com/psfinaki/CheckYourCzech/issues) to address, starting from handling rear language [quirks](https://github.com/psfinaki/CheckYourCzech/issues/173) and ending with conceptual [tasks](https://github.com/psfinaki/CheckYourCzech/issues/153). 

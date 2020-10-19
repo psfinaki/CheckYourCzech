@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Client.UiTests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SERVER_URL": "http://localhost:8080/"
+      }
+    }
+  }
+}
