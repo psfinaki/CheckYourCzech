@@ -11,6 +11,10 @@ type Fixture() =
         start ChromeHeadless
         resize (1280, 960)
 
+    interface IDisposable with 
+        member _.Dispose() =
+            quit()
+
 let serverUrl = Environment.GetEnvironmentVariable("SERVER_URL")
 
 let openApp() =
