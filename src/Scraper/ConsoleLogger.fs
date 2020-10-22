@@ -1,3 +1,11 @@
 ﻿module Scraper.ConsoleLogger
 
-let log = string >> printfn "%s"
+let logTrace (message: string) = 
+    message
+    |> string 
+    |> printfn "%s"
+
+let logError (error: exn) = 
+    error
+    |> string 
+    |> printfn "%s"
