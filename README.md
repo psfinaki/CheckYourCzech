@@ -6,13 +6,14 @@
 
 The service is deployed here: https://check-your-czech.azurewebsites.net/
 
-Six exercises are available now:
+Seven exercises are available now:
 1. [Noun Declension](https://check-your-czech.azurewebsites.net/#nouns-declension)
 2. [Adjective Declension](https://check-your-czech.azurewebsites.net/#adjectives-declension)
 3. [Adjective Comparative](https://check-your-czech.azurewebsites.net/#adjecitves-comparatives)
 4. [Verb Imperative](https://check-your-czech.azurewebsites.net/#verbs-imperatives)
 5. [Verb Participle](https://check-your-czech.azurewebsites.net/#verbs-participles)
 6. [Verb Conjugation](https://check-your-czech.azurewebsites.net/#verbs-conjugation)
+7. [Numeral Cardinals](https://check-your-czech.azurewebsites.net/#numerals-cardinals)
 
 ## Concept
 
