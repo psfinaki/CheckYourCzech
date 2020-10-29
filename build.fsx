@@ -6,10 +6,16 @@ open Fake.Core
 open Fake.Core.TargetOperators
 open Fake.IO
 
+type Browser =
+    | Open
+    | DontOpen
+
 let serverPath = Path.getFullName "./src/Server"
 let clientPath = Path.getFullName "./src/Client"
 let scraperPath = Path.getFullName "./src/Scraper"
 let clientTestsPath = Path.getFullName "./tests/Client.UiTests"
+let webpackDevConfig = Path.combine clientPath "webpack.development.js"
+let webpackProdConfig = Path.combine clientPath "webpack.production.js"
 
 let killClientServerProc() = 
     Process.killAllByName "dotnet"
@@ -52,10 +58,10 @@ let serverWatcher() =
 
 let clientWatcher openBrowser = 
     async {
-        // NOTE: space in flag is left intentionally (see https://github.com/psfinaki/CheckYourCzech/pull/743#discussion_r506929335)
-        let openFlag = if openBrowser then " --open" else ""
-        let webpackConfig = Path.combine clientPath "webpack.development.js"
-        let webpackCommand = sprintf "webpack-dev-server --config %s%s" webpackConfig openFlag
+        let webpackCommand = openBrowser |> function
+            | Open -> sprintf "webpack-dev-server --config %s --open" webpackDevConfig
+            | DontOpen -> sprintf "webpack-dev-server --config %s" webpackDevConfig
+        
         yarn webpackCommand
     }
 
@@ -72,21 +78,16 @@ Target.create "InstallClient" (fun _ ->
     runDotNet "restore" clientPath
 )
 
-Target.create "RestoreServer" (fun _ ->
-    runDotNet "restore" serverPath
-)
-
 Target.create "Build" (fun _ ->
     runDotNet "build" serverPath
 
-    let webpackConfig = Path.combine clientPath "webpack.production.js"
-    let webpackCommand =  "webpack --config " + webpackConfig
+    let webpackCommand = sprintf "webpack --config %s" webpackProdConfig
     yarn webpackCommand
 )
 
 Target.create "RunWeb" (fun _ ->
     let server = serverWatcher()
-    let client = clientWatcher true
+    let client = clientWatcher Browser.Open
 
     [ server; client ]
     |> Async.Parallel
@@ -98,22 +99,13 @@ Target.create "RunScraper" (fun _ ->
     runDotNet "run" scraperPath
 )
 
-Target.create "RunClient" (fun _ ->
-    let webpackConfig = Path.combine clientPath "webpack.development.js"
-    let webpackCommand = sprintf "webpack-dev-server --config %s" webpackConfig
-    yarn webpackCommand
-)
-
 Target.create "RunE2ETests" (fun _ ->
-    runDotNet "build" clientTestsPath
     runDotNet "test" clientTestsPath
 )
 
 Target.create "RunWebWithE2ETests" (fun _ ->
-    runDotNet "build" clientTestsPath
-
     let server = serverWatcher()
-    let client = clientWatcher false
+    let client = clientWatcher Browser.DontOpen
 
     let serverTask = 
         [ server; client ] 
@@ -136,7 +128,6 @@ Target.create "RunWebWithE2ETests" (fun _ ->
 
 "SetEnvironmentVariables"
     ==> "InstallClient"
-    ==> "RestoreServer"
     ==> "RunWeb"
 
 "SetEnvironmentVariables"
@@ -144,7 +135,6 @@ Target.create "RunWebWithE2ETests" (fun _ ->
 
 "SetEnvironmentVariables"
     ==> "InstallClient"
-    ==> "RestoreServer"
     ==> "RunWebWithE2ETests"
 
 "SetEnvironmentVariables"
