@@ -88,3 +88,9 @@ group Build
     nuget Fake.Core.Trace
     nuget Fake.IO.Zip
     github CompositionalIT/fshelpers src/FsHelpers/ArmHelper/ArmHelper.fs
+
+group Deployment
+    source https://api.nuget.org/v3/index.json
+    
+    nuget FSharp.Core
+    nuget Farmer
