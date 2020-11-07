@@ -10,10 +10,6 @@
 	}
   },
   "variables": {
-    "appServicePlan": "[concat(parameters('appName'), '-web-host')]",
-    "storage": "[concat(replace(parameters('appName'),'-', ''), 'storage')]",
-    "insights": "[concat(parameters('appName'), '-insights')]",
-    "location": "northeurope",
     "appInsightsTemplateName": "appInsightsTemplate",
     "appInsightsTemplateLink": "https://raw.githubusercontent.com/psfinaki/CheckYourCzech/master/arm-template-appinsights.json"
   },
@@ -37,83 +33,6 @@
           }
         }
       }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "sku": {
-        "name": "Standard_LRS",
-        "tier": "Standard"
-      },
-      "kind": "Storage",
-      "name": "[variables('storage')]",
-      "apiVersion": "2017-10-01",
-      "location": "[variables('location')]"
-    },
-    {
-      "type": "Microsoft.Web/serverfarms",
-      "sku": {
-        "name": "B1"
-      },
-      "name": "[variables('appServicePlan')]",
-      "apiVersion": "2016-09-01",
-      "location": "[variables('location')]",
-      "properties": {
-        "name": "[variables('appserviceplan')]",
-        "perSiteScaling": false,
-        "reserved": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites",
-      "name": "[parameters('appName')]",
-      "apiVersion": "2016-08-01",
-      "location": "[variables('location')]",
-      "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlan'))]",
-        "siteConfig": {
-          "alwaysOn": true,
-          "appSettings": [
-            {
-              "name": "public_path",
-              "value": "./public"
-            },
-            {
-              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference(variables('appInsightsTemplateName')).outputs.key.value]"
-            },
-            {
-              "name": "STORAGE_CONNECTIONSTRING",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storage'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts/', variables('storage')), '2017-10-01').keys[0].value)]"
-            },
-            {
-              "name": "ASPNETCORE_ENVIRONMENT",
-              "value": "azure"
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlan'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts/', variables('storage'))]",
-        "[resourceId('Microsoft.Resources/deployments/', variables('appInsightsTemplateName'))]"
-      ],
-      "resources": [
-        {
-          "apiVersion": "2016-08-01",
-          "name": "Microsoft.ApplicationInsights.AzureWebSites",
-          "type": "siteextensions",
-          "dependsOn": [
-            "[resourceId('Microsoft.Web/sites/', parameters('appName'))]"
-          ],
-          "properties": {}
-        }
-      ]
     }
-  ],
-  "outputs": {
-    "webAppPassword": {
-      "type": "string",
-      "value": "[list(resourceId('Microsoft.Web/sites/config', parameters('appName'), 'publishingcredentials'), '2014-06-01').properties.publishingPassword]"
-    }
-  }
+  ]
 }
