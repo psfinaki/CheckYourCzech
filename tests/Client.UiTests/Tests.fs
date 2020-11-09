@@ -123,3 +123,17 @@ type Tests() =
         let iconClass = getAnswerIcon() |> getClass
 
         Assert.Contains("check", iconClass)
+
+    [<Fact>]
+    member _.``Exercise - When answer is correct and has whitespaces - Tick``() =
+        openExercise()
+
+        click (getShowButton())
+        let correctAnswer = getAnswer()
+
+        writeAnswer (sprintf "  %s " correctAnswer)
+        click (getCheckButton())
+
+        let iconClass = getAnswerIcon() |> getClass
+
+        Assert.Contains("check", iconClass)
