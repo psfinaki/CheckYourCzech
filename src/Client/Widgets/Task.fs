@@ -14,6 +14,7 @@ open Client
 open Client.Markup
 open Client.Widgets.ImprovedInput.Types
 open Client.Widgets
+open Common.StringHelper
 
 let loadingImage : string = import "*" "../images/loading.gif"
 
@@ -90,7 +91,8 @@ let checkAnswer model =
         | Fetching -> model
         | InputProvided (t, inpState) -> 
             let checkAnswer' () = 
-                let result = t.Answers |> Array.contains model.Input.Value
+                let answer = model.Input.Value |> trim
+                let result = t.Answers |> Array.contains answer
                 log model.TaskName t.Word model.Input.Value result
                 let nextState = if result then Right else Wrong
                 { model with State = InputProvided (t, nextState) }
