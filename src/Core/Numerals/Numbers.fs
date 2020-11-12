@@ -11,3 +11,5 @@ let length (number: int) = number |> string |> Seq.length
 let skip n (number: int) = number |> string |> takeFrom n |> int
 
 let take n (number: int) = number |> string |> takeFirst n |> int
+
+let isRound (number: int) = number % 10 = 0

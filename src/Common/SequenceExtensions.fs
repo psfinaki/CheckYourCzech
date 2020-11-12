@@ -6,6 +6,10 @@ let behead seq =
     seq |> Seq.head, 
     seq |> Seq.tail
 
+let edges seq =
+    seq |> Seq.head,
+    seq |> Seq.last
+
 // https://stackoverflow.com/a/6737659/3232646
 let splitBy func input =
     let i = ref 0
