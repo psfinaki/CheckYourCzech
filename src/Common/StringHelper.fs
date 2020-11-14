@@ -6,6 +6,8 @@ let trim (s: string) = s.Trim()
 
 let split (separators: char[]) (s: string) = s.Split separators |> Seq.toList
 
+let splitWords = split [|' '|] >> Seq.map trim
+
 let starts (value: string) (s: string) = s.StartsWith value
 
 let ends (value: string) (s: string) = s.EndsWith value

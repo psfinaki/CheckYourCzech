@@ -2,6 +2,7 @@
 
 open System
 
+open Common
 open Common.StringHelper
 open Core.Numerals.Numbers
 open Core.Numerals.TripletToWords
@@ -53,10 +54,21 @@ let private removeFirstTriplet number =
 
 let private hasOnlyFirstTripletSignificant = removeFirstTriplet >> (=) 0
 
+let private hasCompositeForm number =
+    number > 20 && number < 100 &&
+    number |> (not << isRound)
+
 let private getBigNumber = function
     | NumberFrom1000 number when number < 1000000 -> Thousand
     | NumberFrom1000 number when number < 1000000000 -> Million
     | NumberFrom1000 _ -> Billion
+
+let private getCompositeForm = 
+    splitWords
+    >> Seq.edges
+    >> function
+    | (tens, "jedna") -> "jedna" |> append tens
+    | (tens, ones) -> ones |> append "a" |> append tens
 
 let rec convertInner = function
     | number when number < 1000 ->
@@ -89,6 +101,10 @@ let rec convert = function
         seq { "jeden"; "jedna" }
     | 2 -> 
         seq { "dva"; "dvě" }
+    | number when number |> hasCompositeForm ->
+        let twoWordForm = number |> convertInner
+        let compositeForm = twoWordForm |> getCompositeForm 
+        seq { twoWordForm; compositeForm }
     | number -> 
         number
         |> convertInner
