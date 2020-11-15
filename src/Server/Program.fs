@@ -25,7 +25,7 @@ let configureAzure (services:IServiceCollection) =
     |> Option.defaultValue services
 
 let app = application {
-    url ("https://0.0.0.0:" + port.ToString() + "/")
+    url $"https://0.0.0.0:{port}/"
     force_ssl
     use_router WebServer.webApp
     memory_cache

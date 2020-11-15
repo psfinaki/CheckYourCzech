@@ -58,8 +58,8 @@ let getNounDeclensionTask next (ctx: HttpContext) =
             let getTask (noun: Noun) = 
                 let canonicalForm = noun.CanonicalForm
                 let answers = noun |> getDeclensionProp (number, case)
-                let declension = case.ToString() + " " + number.ToString()
-                let word = sprintf "(%s) %s" declension canonicalForm
+                let declension = $"{case} {number}"
+                let word = $"({declension}) {canonicalForm}"
                 { Word = word; Answers = answers |> Seq.toArray }
         
             let task = noun |> getTask

@@ -131,7 +131,7 @@ type Tests() =
         click (getShowButton())
         let correctAnswer = getAnswer()
 
-        writeAnswer (sprintf "  %s " correctAnswer)
+        writeAnswer $"  {correctAnswer} "
         click (getCheckButton())
 
         let iconClass = getAnswerIcon() |> getClass
