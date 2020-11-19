@@ -6,10 +6,10 @@ open Farmer.CoreTypes
 
 open Common.StringHelper
 
-let createDeployment appName = 
-    let storageName = appName |> append "-storage" |> remove "-"
-    let servicePlanName = appName |> append "-web-host"
-    let appInsightsName = appName |> append "-insights"
+let createDeployment (appName: string) = 
+    let storageName = $"{appName}-storage" |> remove "-"
+    let servicePlanName = $"{appName}-web-host"
+    let appInsightsName = $"{appName}-insights"
 
     let storage = storageAccount {
         name storageName

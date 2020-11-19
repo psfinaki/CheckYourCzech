@@ -10,7 +10,7 @@ let getEnvironment =
 let getLogger = function
     | "local" -> consoleLogger
     | "azure" -> aiLogger
-    | env -> failwithf "Unknown environment: %s" env
+    | env -> failwith $"Unknown environment: {env}"
 
 [<EntryPoint>]
 let main _ =

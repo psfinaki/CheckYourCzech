@@ -49,8 +49,8 @@ let getAdjectiveDeclensionTask next (ctx : HttpContext) =
             let getTask (adjective: AdjectiveDeclension) = 
                 let canonicalForm = adjective.CanonicalForm
                 let answer = adjective |> getDeclensionProp (number, case)
-                let declension = case.ToString() + " " + number.ToString()
-                let word = sprintf "(%s) %s" declension canonicalForm
+                let declension = $"{case} {number}"
+                let word = $"({declension}) {canonicalForm}"
                 { Word = word; Answers = [| answer |] }
 
             let task = adjective |> getTask
