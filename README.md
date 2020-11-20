@@ -63,10 +63,10 @@ To run Azure storage emulator use: `azurite`
 
 ### Running the App
 1. Open PowerShell, go to the repo root
-2. Run Scraper: `dotnet fake build target runscraper`
+2. Run Scraper: `dotnet fsi build.fsx target runscraper`
 3. Let it run for a a few minutes to generate some local word database
 4. Stop Scraper
-5. Run web app: `dotnet fake build target runweb`
+5. Run web app: `dotnet fsi build.fsx target runweb`
 
 **To upgrade paket dependencies**
 
@@ -82,7 +82,7 @@ dotnet test
 
 **UI Testing**
 ```bash
-fake build target rune2etests
+dotnet fsi build.fsx target rune2etests
 ```
 libgdiplus is required for Linux/Mac OS: https://github.com/dotnet/core/issues/2746 (https://formulae.brew.sh/formula/mono-libgdiplus)
 `sudo ln -s /usr/local/lib/libgdiplus.dylib /usr/local/share/dotnet/shared/Microsoft.NETCore.App/3.1.6`
