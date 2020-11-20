@@ -1,10 +1,19 @@
-#r "paket: groupref Build //"
-#load "./.fake/build.fsx/intellisense.fsx"
+#r "nuget: Fake.Core.Target"
+#r "nuget: Fake.DotNet.Cli"
+#r "nuget: System.Reactive" // https://github.com/fsharp/FAKE/issues/2517#issuecomment-727282959
 
 open Fake.DotNet
 open Fake.Core
 open Fake.Core.TargetOperators
 open Fake.IO
+open System
+
+Environment.GetCommandLineArgs() 
+|> Array.skip 2 // fsi.exe; build.fsx
+|> Array.toList
+|> Context.FakeExecutionContext.Create false __SOURCE_FILE__
+|> Context.RuntimeContext.Fake
+|> Context.setExecutionContext
 
 type Browser =
     | Open
@@ -22,7 +31,7 @@ let killClientServerProc() =
     Process.killAllByName "dotnet.exe"
     Process.killAllByName "node"
 
-let sleep ms = 
+let sleep (ms: int) = 
     async {
         do! Async.Sleep(ms)
     }
@@ -33,7 +42,7 @@ let yarnTool =
     | Some t -> t
     | _ ->
         let errorMsg =
-            tool + " was not found in path. " +
+            $"{tool} was not found in path. " +
             "Please install it and make sure it's available from your path. " +
             "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
         failwith errorMsg
@@ -49,7 +58,7 @@ let yarn yarnCmd =
 let runDotNet cmd workingDir =
     let result =
         DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
-    if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s" cmd workingDir
+    if result.ExitCode <> 0 then failwith $"'dotnet {cmd}' failed in {workingDir}"
 
 let serverWatcher() = 
     async {
@@ -59,8 +68,8 @@ let serverWatcher() =
 let clientWatcher openBrowser = 
     async {
         let webpackCommand = openBrowser |> function
-            | Open -> sprintf "webpack-dev-server --config %s --open" webpackDevConfig
-            | DontOpen -> sprintf "webpack-dev-server --config %s" webpackDevConfig
+            | Open -> $"webpack-dev-server --config {webpackDevConfig} --open"
+            | DontOpen -> $"webpack-dev-server --config {webpackDevConfig}"
         
         yarn webpackCommand
     }
@@ -81,7 +90,7 @@ Target.create "InstallClient" (fun _ ->
 Target.create "Build" (fun _ ->
     runDotNet "build" serverPath
 
-    let webpackCommand = sprintf "webpack --config %s" webpackProdConfig
+    let webpackCommand = $"webpack --config {webpackProdConfig}"
     yarn webpackCommand
 )
 
