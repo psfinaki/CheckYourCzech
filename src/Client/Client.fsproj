@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
     </PropertyGroup>
@@ -47,7 +47,7 @@
 		<Compile Include="App.fs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Core\Core.fsproj" />
+      <ProjectReference Include="..\Common\Common.fsproj" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project> 
