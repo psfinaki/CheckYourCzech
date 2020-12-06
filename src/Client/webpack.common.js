@@ -7,7 +7,7 @@ module.exports = {
 			"applicationinsights-js",
             "whatwg-fetch",
             "@babel/polyfill",
-            path.join(__dirname, "./Client.fsproj")
+            path.join(__dirname, "./fable/App.js")
         ],
         "resources": path.join(__dirname, './resources.js')
     },
@@ -30,10 +30,6 @@ module.exports = {
     ],
     module: {
         rules: [
-            {
-                test: /\.fs(x|proj)?$/,
-                use: "fable-loader"
-            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
