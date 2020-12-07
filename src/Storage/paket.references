@@ -1,3 +1,2 @@
 group Storage
-	FSharp.Core
 	WindowsAzure.Storage

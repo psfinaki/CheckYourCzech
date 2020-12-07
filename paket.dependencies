@@ -5,13 +5,10 @@ group WikiParsing
 
 group Core
     source https://api.nuget.org/v3/index.json
-	
-	nuget FSharp.Core
 
 group Storage
     source https://api.nuget.org/v3/index.json
 
-	nuget FSharp.Core
 	nuget WindowsAzure.Storage
 
 group Server
@@ -26,7 +23,6 @@ group Server
 group Scraper
     source https://api.nuget.org/v3/index.json
 
-	nuget FSharp.Core
 	nuget Microsoft.ApplicationInsights
 	
 group Client
@@ -45,7 +41,6 @@ group Client
 group Core.Tests
 	source https://nuget.org/api/v2
 
-	nuget FSharp.Core
 	nuget xunit
 	nuget xunit.runner.visualstudio
     nuget Microsoft.NET.Test.Sdk
@@ -53,7 +48,6 @@ group Core.Tests
 group Core.IntegrationTests
 	source https://nuget.org/api/v2
 
-	nuget FSharp.Core
 	nuget xunit
 	nuget xunit.runner.visualstudio
     nuget Microsoft.NET.Test.Sdk
@@ -64,14 +58,12 @@ group Client.UiTests
     nuget Canopy
 	nuget xunit
 	nuget xunit.runner.visualstudio
-    nuget FSharp.Core
     nuget Selenium.WebDriver.ChromeDriver
 	nuget Microsoft.NET.Test.Sdk
 
 group WikiParsing.Tests
 	source https://nuget.org/api/v2
 
-	nuget FSharp.Core
 	nuget xunit
 	nuget xunit.runner.visualstudio
     nuget Microsoft.NET.Test.Sdk
@@ -79,5 +71,4 @@ group WikiParsing.Tests
 group Deployment
     source https://api.nuget.org/v3/index.json
     
-    nuget FSharp.Core
     nuget Farmer

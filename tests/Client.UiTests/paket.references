@@ -2,6 +2,5 @@ group Client.UiTests
     Canopy
     xunit
     xunit.runner.visualstudio
-    FSharp.Core
     Selenium.WebDriver.ChromeDriver
     Microsoft.NET.Test.Sdk
