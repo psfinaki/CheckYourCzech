@@ -1,3 +1,2 @@
 group Deployment
-    FSharp.Core
     Farmer

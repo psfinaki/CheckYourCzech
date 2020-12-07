@@ -1,3 +1,2 @@
 group Scraper
-	FSharp.Core
 	Microsoft.ApplicationInsights
