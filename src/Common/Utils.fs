@@ -3,21 +3,22 @@ module Common.Utils
 open Microsoft.FSharp.Collections
 open Microsoft.FSharp.Reflection
 
+// functions here have to be inline to be used in Fable:
+// https://fable.io/docs/dotnet/compatibility.html#Reflection-and-Generics
+
 let inline private makeUnionCase<'a> case = FSharpValue.MakeUnion(case,[||]) :?> 'a
 
-let getRandomUnion<'a> =
+let inline getRandomUnion<'a> =
     typeof<'a> 
     |> FSharpType.GetUnionCases 
     |> Seq.random
     |> makeUnionCase<'a>
 
-let getAllUnion<'a> =
+let inline getAllUnion<'a> =
     typeof<'a> 
     |> FSharpType.GetUnionCases
     |> Seq.map makeUnionCase<'a>
 
-// has to be inline to be used in Fable:
-// https://fable.io/docs/dotnet/compatibility.html#Reflection-and-Generics
 let inline parseUnionCase<'a> name =
     typeof<'a>
     |> FSharpType.GetUnionCases

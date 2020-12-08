@@ -53,8 +53,9 @@ let clientWatcher openBrowser =
         let webpackCommand = openBrowser |> function
             | Open -> $"webpack-dev-server --config {webpackDevConfig} --open"
             | DontOpen -> $"webpack-dev-server --config {webpackDevConfig}"
-        
-        Yarn.exec webpackCommand id
+
+        let fableCommand = $"watch src/Client -o src/Client/fable --run {webpackCommand}"
+        DotNet.exec id "fable" fableCommand |> ignore
     }
 
 Target.create "SetEnvironmentVariables" (fun _ ->
@@ -74,7 +75,8 @@ Target.create "Build" (fun _ ->
     runDotNet "build" serverPath
 
     let webpackCommand = $"webpack --config {webpackProdConfig}"
-    Yarn.exec webpackCommand id
+    let fableCommand = $"src/Client -o src/Client/fable --run {webpackCommand}"
+    DotNet.exec id "fable" fableCommand |> ignore
 )
 
 Target.create "RunWeb" (fun _ ->
