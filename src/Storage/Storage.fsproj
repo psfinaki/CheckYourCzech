@@ -11,6 +11,7 @@
     <NoWarn>NU1605</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="paket.references" />
     <Compile Include="Defaults.fs" />
     <Compile Include="Reflection.fs" />
     <Compile Include="Serialization.fs" />

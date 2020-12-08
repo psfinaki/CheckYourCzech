@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="paket.references" />
     <Compile Include="Fixture.fs" />
     <Compile Include="WebElementHelper.fs" />
     <Compile Include="Tests.fs" />
