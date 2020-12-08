@@ -17,6 +17,7 @@
 		<NoWarn>NU1605</NoWarn>
 	</PropertyGroup>
     <ItemGroup>
+        <None Include="paket.references" />
         <Compile Include="Tasks\Utils.fs" />
         <Compile Include="Tasks\Numeral.fs" />
         <Compile Include="Tasks\Adjective.fs" />

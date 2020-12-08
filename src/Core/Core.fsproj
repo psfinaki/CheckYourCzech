@@ -15,6 +15,7 @@
     <ProjectReference Include="..\WikiParsing\WikiParsing.fsproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="paket.references" />
     <Compile Include="Letters.fs" />
     <Compile Include="Stem.fs" />
     <Compile Include="Reflexives.fs" />

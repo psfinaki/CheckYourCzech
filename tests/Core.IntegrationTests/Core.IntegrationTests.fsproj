@@ -14,6 +14,7 @@
     <NoWarn>NU1605</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="paket.references" />
     <Compile Include="Helper.fs" />
     <Compile Include="MasculineInanimateNounPatternDetectorTests.fs" />
     <Compile Include="FeminineNounPatternDetectorTests.fs" />

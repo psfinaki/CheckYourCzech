@@ -13,6 +13,7 @@
 		<NoWarn>NU1605</NoWarn>
 	</PropertyGroup>
     <ItemGroup>
+		<None Include="paket.references" />
 		<Compile Include="Logger.fs" />
 		<Compile Include="BoolExtensions.fs" />
 		<Compile Include="Rules.fs" />
