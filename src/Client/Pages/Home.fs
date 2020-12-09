@@ -9,7 +9,7 @@ open Client.AppPages
 
 let linkBlock text colorClass firstSymbol =
     [
-        div [ ClassName (sprintf "link-letter %s" colorClass) ] [str (firstSymbol.ToString())]
+        div [ ClassName $"link-letter {colorClass}" ] [str $"{firstSymbol}"]
         div [ ClassName colorClass] [str text]
     ]
 

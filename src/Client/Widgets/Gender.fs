@@ -51,10 +51,10 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeGender [
                         Markup.option GenderUnset "Any"
-                        Markup.option (string Gender.MasculineAnimate) "Masculine Animate"
-                        Markup.option (string Gender.MasculineInanimate) "Masculine Inanimate"
-                        Markup.option (string Gender.Feminine) "Feminine"
-                        Markup.option (string Gender.Neuter) "Neuter"
+                        Markup.option $"{Gender.MasculineAnimate}" "Masculine Animate"
+                        Markup.option $"{Gender.MasculineInanimate}" "Masculine Inanimate"
+                        Markup.option $"{Gender.Feminine}" "Feminine"
+                        Markup.option $"{Gender.Neuter}" "Neuter"
                     ]
                 ]
         ]

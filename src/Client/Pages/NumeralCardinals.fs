@@ -23,9 +23,9 @@ type Msg =
 let private getTask range =
     let rangeQuery = 
         range 
-        |> Option.map (sprintf "range=%A") 
+        |> Option.map (fun r -> $"range={r}") 
         |> Option.defaultValue ""
-    let url = sprintf "/api/numerals/cardinals?%s" rangeQuery
+    let url = $"/api/numerals/cardinals?{rangeQuery}"
 
     buildFetchTask url
 

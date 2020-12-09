@@ -35,10 +35,10 @@ let patterns =
 let getPatterns gender = patterns.[gender]
 
 let getTask gender pattern number case =
-    let genderQuery = gender |> Option.map (sprintf "gender=%A")
-    let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
-    let numberQuery = number |> Option.map (sprintf "number=%A")
-    let caseQuery = case |> Option.map (sprintf "case=%A")
+    let genderQuery = gender |> Option.map (fun g -> $"gender={g}")
+    let patternQuery = pattern |> Option.map (fun p -> $"pattern={p}")
+    let numberQuery = number |> Option.map (fun n -> $"number={n}")
+    let caseQuery = case |> Option.map (fun c -> $"case={c}")
 
     let queryString =
         [ genderQuery; patternQuery; numberQuery; caseQuery ]
@@ -48,7 +48,7 @@ let getTask gender pattern number case =
     let url = 
         if queryString = "" 
         then "/api/nouns/declension" 
-        else sprintf "/api/nouns/declension?%s" queryString
+        else $"/api/nouns/declension?{queryString}"
 
     buildFetchTask url
 

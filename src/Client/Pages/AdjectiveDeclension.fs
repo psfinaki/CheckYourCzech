@@ -22,8 +22,8 @@ type Msg =
     | Task of Task.Msg
 
 let getTask number case =
-    let numberQuery = number |> Option.map (sprintf "number=%A")
-    let caseQuery = case |> Option.map (sprintf "case=%A")
+    let numberQuery = number |> Option.map (fun n -> $"number={n}")
+    let caseQuery = case |> Option.map (fun c -> $"case={c}")
 
     let queryString =
         [ numberQuery; caseQuery ]
@@ -33,7 +33,7 @@ let getTask number case =
     let url = 
         if queryString = "" 
         then "/api/adjectives/declension" 
-        else sprintf "/api/adjectives/declension?%s" queryString
+        else $"/api/adjectives/declension?{queryString}"
 
     buildFetchTask url
 

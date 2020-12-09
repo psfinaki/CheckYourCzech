@@ -45,13 +45,13 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeCase [
                         Markup.option CaseUnset "Any"
-                        Markup.option (string Case.Nominative) "Nominative"
-                        Markup.option (string Case.Genitive) "Genitive"
-                        Markup.option (string Case.Dative) "Dative"
-                        Markup.option (string Case.Accusative) "Accusative"
-                        Markup.option (string Case.Vocative) "Vocative"
-                        Markup.option (string Case.Locative) "Locative"
-                        Markup.option (string Case.Instrumental) "Instrumental"
+                        Markup.option $"{Case.Nominative}" "Nominative"
+                        Markup.option $"{Case.Genitive}" "Genitive"
+                        Markup.option $"{Case.Dative}" "Dative"
+                        Markup.option $"{Case.Accusative}" "Accusative"
+                        Markup.option $"{Case.Vocative}" "Vocative"
+                        Markup.option $"{Case.Locative}" "Locative"
+                        Markup.option $"{Case.Instrumental}" "Instrumental"
                     ]
                 ]
         ]

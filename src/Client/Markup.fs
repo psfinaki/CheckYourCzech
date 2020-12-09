@@ -1,5 +1,6 @@
 module Client.Markup
 
+open System
 open Browser.Dom
 open Browser.Types
 open Fable.React
@@ -56,7 +57,7 @@ let icon source length text =
 
 // inspiration: https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
 let toggleLink text content =
-    let id = System.Guid.NewGuid().ToString()
+    let id = $"{Guid.NewGuid()}"
 
     let toggle _ = 
         let spoiler = document.getElementById id

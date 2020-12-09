@@ -45,8 +45,8 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeNumber [
                         Markup.option NumberUnset "Any"
-                        Markup.option (string Number.Singular) "Singular"
-                        Markup.option (string Number.Plural) "Plural"
+                        Markup.option $"{Number.Singular}" "Singular"
+                        Markup.option $"{Number.Plural}" "Plural"
                     ]
                 ]
         ]

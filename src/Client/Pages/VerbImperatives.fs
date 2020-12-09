@@ -32,8 +32,8 @@ let patterns =
 let getPatterns ``class`` = patterns.[``class``]
 
 let getTask ``class`` pattern =
-    let classQuery = ``class`` |> Option.map (sprintf "class=%A")
-    let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
+    let classQuery = ``class`` |> Option.map (fun c -> $"class={c}")
+    let patternQuery = pattern |> Option.map (fun p -> $"pattern={p}")
 
     let queryString =
         [ classQuery; patternQuery ]
@@ -43,7 +43,7 @@ let getTask ``class`` pattern =
     let url = 
         if queryString = "" 
         then "/api/verbs/imperatives" 
-        else sprintf "/api/verbs/imperatives?%s" queryString
+        else $"/api/verbs/imperatives?{queryString}"
 
     buildFetchTask url
 
