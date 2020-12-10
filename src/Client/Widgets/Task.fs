@@ -68,7 +68,7 @@ type Msg =
 type LeftButtonState = Show | Next
 
 let log taskName task answer result = 
-    let message = sprintf "Task name:%s; Task:%s; Answer:%s; Result:%b" taskName task answer result
+    let message = $"Task name:{taskName}; Task:{task}; Answer:{answer}; Result:{result}"
     Logger.log message
 
 let loadTaskCmd getTask =
@@ -185,7 +185,7 @@ let inputView model dispatch handleKeyDown =
         [
             Column.column [ ] [Tag.tag [ Tag.Color IsLight ; Tag.CustomClass "task-label"; ] [inputViewState.Word] ]
             Column.column [ ] [
-                div [ClassName ("control has-icons-right " + inputViewState.InputClass)]
+                div [ClassName $"control has-icons-right {inputViewState.InputClass}"]
                     [
                         ImprovedInput.View.root inputProps model.Input (ImprovedInput >> dispatch)
                         Icon.icon [ Icon.Size IsSmall; Icon.IsRight ]
@@ -210,7 +210,7 @@ let symbolButtonsView model dispatch =
                 OnClick h
                 OnFocus handleButtonOnFocus
             ]
-        ] [ str <| string s ]
+        ] [ str <| $"{s}" ]
     let createCzechSymbolButton s =
         createSymbolButton (fun _ -> (ImprovedInput >> dispatch) <| AddSymbol s) s
     let createArrowButton =

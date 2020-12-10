@@ -22,7 +22,7 @@ type Msg =
 let getTask regularity =
     let url = 
         match regularity with
-        | Some r -> "/api/adjectives/comparatives?isRegular=" + r.ToString()
+        | Some r -> $"/api/adjectives/comparatives?isRegular={r}"
         | None   -> "/api/adjectives/comparatives"
 
     buildFetchTask url

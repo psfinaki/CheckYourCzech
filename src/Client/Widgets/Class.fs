@@ -14,7 +14,7 @@ let private parseVerbClass = function
     | "JE" -> VerbClass.JE
     | "Í" -> VerbClass.Í
     | "Á" -> VerbClass.Á
-    | s -> invalidOp ("odd class: " + s)
+    | s -> invalidOp $"odd class: {s}"
 
 [<Literal>]
 let ClassUnset = ""
@@ -52,11 +52,11 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeClass [
                         Markup.option ClassUnset "Any"
-                        Markup.option (string VerbClass.E) "E"
-                        Markup.option (string VerbClass.NE) "NE"
-                        Markup.option (string VerbClass.JE) "JE"
-                        Markup.option (string VerbClass.Í) "Í"
-                        Markup.option (string VerbClass.Á) "Á"
+                        Markup.option $"{VerbClass.E}" "E"
+                        Markup.option $"{VerbClass.NE}" "NE"
+                        Markup.option $"{VerbClass.JE}" "JE"
+                        Markup.option $"{VerbClass.Í}" "Í"
+                        Markup.option $"{VerbClass.Á}" "Á"
                     ]
                 ]
         ]

@@ -52,9 +52,9 @@ let view model dispatch =
                 [
                     Markup.select selectedValue handleChangeNumeralRange [
                         Markup.option NumeralRangeUnset "Any"
-                        Markup.option (string Range.From0To20) "0 - 20"
-                        Markup.option (string Range.From0To100) "0 - 100"
-                        Markup.option (string Range.From0To1000) "0 - 1000"
+                        Markup.option $"{Range.From0To20}" "0 - 20"
+                        Markup.option $"{Range.From0To100}" "0 - 100"
+                        Markup.option $"{Range.From0To1000}" "0 - 1000"
                     ]
                 ]
         ]

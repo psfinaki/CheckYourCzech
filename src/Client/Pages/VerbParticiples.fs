@@ -26,8 +26,8 @@ type Msg =
 let patterns = ["Minout"; "Tisknout"; "Common"]
 
 let getTask pattern regularity =
-    let patternQuery = pattern |> Option.map (sprintf "pattern=%s")
-    let regularityQuery = regularity |> Option.map string |> Option.map ((+) "isRegular=")
+    let patternQuery = pattern |> Option.map (fun p -> $"pattern={p}")
+    let regularityQuery = regularity |> Option.map (fun r -> $"isRegular={r}")
 
     let queryString =
         [ patternQuery; regularityQuery ]
@@ -37,7 +37,7 @@ let getTask pattern regularity =
     let url = 
         if queryString = "" 
         then "/api/verbs/participles" 
-        else sprintf "/api/verbs/participles?%s" queryString
+        else $"/api/verbs/participles?{queryString}"
 
     buildFetchTask url
 

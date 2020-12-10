@@ -25,7 +25,7 @@ let update msg model =
         let cursorEnd = int input.selectionEnd
         let startSection = model.Value.[0..cursorStart-1]
         let endSection = model.Value.[cursorEnd..]
-        { model with Value = startSection + string c + endSection; CursorStart = cursorStart; CursorEnd = cursorEnd }, Cmd.none
+        { model with Value = $"{startSection}{c}{endSection}"; CursorStart = cursorStart; CursorEnd = cursorEnd }, Cmd.none
     | FocusInput ->
         document.getElementById(model.InputId).focus()
         model, Cmd.none
