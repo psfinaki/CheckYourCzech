@@ -8,6 +8,9 @@
         "@babel/runtime": "^7.0.0",
         "applicationinsights-js": "^1.0.20",
         "babel-loader": "^8.0.0",
+        "kind-of": "^6.0.3",
+        "minimist": "^1.2.2",
+        "node-forge": "^0.10.0",
         "react": "16.5.2",
         "react-dom": "16.5.2",
         "remotedev": "0.2.7",
@@ -16,10 +19,7 @@
         "webpack-cli": "^3.3.5",
         "webpack-dev-server": "^3.1.11",
         "whatwg-fetch": "^3.0.0",
-		"minimist": "^1.2.2",
-		"kind-of": "^6.0.3",
-		"yargs-parser": "^13.1.2",
-		"node-forge": "^0.10.0"
+        "yargs-parser": "^13.1.2"
     },
     "dependencies": {
         "bulma": "^0.7.5",
