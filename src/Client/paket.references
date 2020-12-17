@@ -1,7 +1,5 @@
 group Client
-	Fable.Elmish.Browser
 	Fable.Elmish.Debugger
-	Fable.Elmish.React
 	Fable.Elmish.HMR
 	dotnet-fable
 	Fulma

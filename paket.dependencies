@@ -28,8 +28,6 @@ group Scraper
 group Client
     source https://api.nuget.org/v3/index.json
 
-	nuget Fable.Elmish.React
-	nuget Fable.Elmish.Browser
 	nuget Fable.Elmish.Debugger
 	nuget Fable.Elmish.HMR
 	nuget Fulma
