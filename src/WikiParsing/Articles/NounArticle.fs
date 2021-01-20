@@ -50,7 +50,7 @@ let private getDeclensionWiki nounArticle =
     | _ when article |> isLocked ->
         [ getLocked nounArticle ]
     | _ -> 
-        invalidOp ("Odd word: " + word)
+        invalidOp $"Odd word: {word}"
 
 let private getDeclensionForDeclinable article : Declension = 
     let declensions = getDeclensionWiki article

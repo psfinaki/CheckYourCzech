@@ -40,10 +40,6 @@ let isPatternMinout = removeReflexive >> isPatternMinoutNonReflexive
 let isPatternProsit = removeReflexive >> isPatternPrositNonReflexive
 let isPatternČistit = removeReflexive >> isPatternČistitNonReflexive
 
-let invalidVerb verb verbClass = 
-    sprintf "The verb %s does not belong to the class %i." verb verbClass
-    |> invalidArg "verb"
-
 let getPatternClassE = function
     | verb when verb |> ends "ést" -> Some ConjugationPatternClassE.Nést
     | verb when verb |> ends "íst" -> Some ConjugationPatternClassE.Číst

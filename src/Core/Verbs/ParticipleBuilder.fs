@@ -19,7 +19,7 @@ let buildParticipleReflexive verb =
     verb
     |> removeReflexive
     |> buildParticipleNonReflexive
-    |> append (" " + reflexive)
+    |> appendAfterSpace reflexive
 
 let buildParticiple verb =
     if 

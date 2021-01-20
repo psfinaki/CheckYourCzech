@@ -12,7 +12,7 @@ let private serializeObject = JsonConvert.SerializeObject
 let private serializeString = string
 let private serializeOption = function 
     | null -> ""
-    | value -> value.ToString() |> removeMany ["Some(" ; ")"]
+    | value -> $"{value}" |> removeMany ["Some(" ; ")"]
 
 let private serializationMap = 
     dict [ (typeof<SerializeObject>, serializeObject) 
