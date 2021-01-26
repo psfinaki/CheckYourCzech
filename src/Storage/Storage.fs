@@ -56,8 +56,8 @@ let buildFilter (property, condition, value : obj) =
     | Is     -> createStringFilter (property, QueryComparisons.Equal,    JsonConvert.SerializeObject value)
     | IsNot  -> createStringFilter (property, QueryComparisons.NotEqual, JsonConvert.SerializeObject value)
     | Bool   -> createBoolFilter   (property, QueryComparisons.Equal,    Convert.ToBoolean value)
-    | Int    -> createStringFilter (property, QueryComparisons.Equal,    value.ToString())
-    | String -> createStringFilter (property, QueryComparisons.Equal,    value.ToString())
+    | Int    -> createStringFilter (property, QueryComparisons.Equal,    $"{value}")
+    | String -> createStringFilter (property, QueryComparisons.Equal,    $"{value}")
 
 let combineFilters f1 f2 = TableQuery.CombineFilters(f1, TableOperators.And, f2)
 

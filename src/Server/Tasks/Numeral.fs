@@ -28,6 +28,6 @@ let getNumeralCardinalsTask next (ctx: HttpContext) =
             |> getRange
         let number = getRandomNumeral range
         let words = NumberToWords.convert number
-        let task = { Word = string number; Answers = words |> Seq.toArray }
+        let task = { Word = $"{number}"; Answers = words |> Seq.toArray }
         return! Successful.OK task next ctx
     }

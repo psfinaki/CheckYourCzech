@@ -76,7 +76,7 @@ let rec private getFormsInner = function
         |> List.collect getFormsInner
 
     | string ->
-        invalidOp ("odd string: " + string)
+        invalidOp $"odd string: {string}"
 
 let private isFormAppropriate form = 
     match form.Label with

@@ -10,8 +10,8 @@ let canBuildComparative =
     >> (not << ends "c")
 
 let addComparativeSuffix = function
-    | stem when stem |> endsHard -> stem + "ější"
-    | stem when stem |> endsSoft -> stem + "ejší"
+    | stem when stem |> endsHard -> $"{stem}ější"
+    | stem when stem |> endsSoft -> $"{stem}ejší"
     | stem -> invalidArg stem "odd stem"
 
 let buildComparative = 
