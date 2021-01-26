@@ -38,14 +38,14 @@ let sleep (ms: int) =
         do! Async.Sleep(ms)
     }
 
-let runDotNet cmd workingDir =
-    let result =
-        DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
-    if result.ExitCode <> 0 then failwith $"'dotnet {cmd}' failed in {workingDir}"
+let runDotNetWithDir cmd workingDir =
+    DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd "" |> ignore
+
+let runDotNet cmd = runDotNetWithDir cmd "."
 
 let serverWatcher() = 
     async {
-        runDotNet "watch run" serverPath
+        runDotNetWithDir "watch run" serverPath
     }
 
 let clientWatcher openBrowser = 
@@ -58,22 +58,24 @@ let clientWatcher openBrowser =
         DotNet.exec id "fable" fableCommand |> ignore
     }
 
-Target.create "SetEnvironmentVariables" (fun _ ->
+let setEnvironmentVariables() =
     Environment.setEnvironVar "ASPNETCORE_ENVIRONMENT" "local"
     Environment.setEnvironVar "STORAGE_CONNECTIONSTRING" "UseDevelopmentStorage=true"
     Environment.setEnvironVar "SERVER_URL" "http://localhost:8080/"
-)
+    
+let restoreTools() = runDotNet "tool restore"
 
-Target.create "InstallClient" (fun _ ->
-    printfn "Yarn version:"
-    Yarn.exec "--version" id
+let restorePackages() = 
+    runDotNet "paket restore"
     Yarn.install id
-    runDotNet "restore" clientPath
-)
 
 Target.create "Build" (fun _ ->
-    runDotNet "build" serverPath
-
+    setEnvironmentVariables()
+    restoreTools()
+    restorePackages()
+    
+    runDotNet "build"
+    
     let webpackCommand = $"webpack --config {webpackProdConfig}"
     let fableCommand = $"src/Client -o src/Client/fable --run {webpackCommand}"
     DotNet.exec id "fable" fableCommand |> ignore
@@ -90,11 +92,11 @@ Target.create "RunWeb" (fun _ ->
 )
 
 Target.create "RunScraper" (fun _ ->
-    runDotNet "run" scraperPath
+    runDotNetWithDir "run" scraperPath
 )
 
 Target.create "RunE2ETests" (fun _ ->
-    runDotNet "test" clientTestsPath
+    runDotNetWithDir "test" clientTestsPath
 )
 
 Target.create "RunWebWithE2ETests" (fun _ ->
@@ -107,7 +109,7 @@ Target.create "RunWebWithE2ETests" (fun _ ->
         |> Async.StartAsTask
     sleep 15000 |> Async.RunSynchronously
 
-    runDotNet "test" clientTestsPath
+    runDotNetWithDir "test" clientTestsPath
     killClientServerProc()
 
     serverTask 
@@ -117,21 +119,9 @@ Target.create "RunWebWithE2ETests" (fun _ ->
     |> Async.RunSynchronously
 )
 
-"InstallClient"
-    ==> "Build"
-
-"SetEnvironmentVariables"
-    ==> "InstallClient"
-    ==> "RunWeb"
-
-"SetEnvironmentVariables"
-    ==> "RunE2ETests"
-
-"SetEnvironmentVariables"
-    ==> "InstallClient"
-    ==> "RunWebWithE2ETests"
-
-"SetEnvironmentVariables"
-    ==> "RunScraper"
+"Build" ==> "RunWeb"
+"Build" ==> "RunE2ETests"
+"Build" ==> "RunWebWithE2ETests"
+"Build" ==> "RunScraper"
 
 Target.runOrDefaultWithArguments "Build"
