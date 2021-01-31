@@ -1,6 +1,6 @@
 # Check Your Czech - a service to practice Czech grammar
 
-[![Build Status](https://psfinaki.visualstudio.com/Check%20Your%20Czech/_apis/build/status/Check%20Your%20Czech%20X?branchName=master)](https://psfinaki.visualstudio.com/Check%20Your%20Czech/_build/latest?definitionId=2&branchName=master)
+[![Build Status](https://dev.azure.com/psfinaki/Check%20Your%20Czech/_apis/build/status/Check%20Your%20Czech?branchName=master)](https://dev.azure.com/psfinaki/Check%20Your%20Czech/_build/latest?definitionId=10&branchName=master)
 
 ## See it in action
 
