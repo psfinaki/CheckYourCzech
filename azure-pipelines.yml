@@ -1,0 +1,78 @@
+trigger:
+  branches:
+    include:
+    - master
+    
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: master
+    
+jobs:
+- job: Job_1
+  displayName: Agent job
+  pool:
+    vmImage: windows-2019
+  steps:
+  - checkout: self
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Repo
+    inputs:
+      PathtoPublish: $(Build.SourcesDirectory)
+      ArtifactName: Repo
+  - task: DotNetCoreCLI@2
+    displayName: Restore Tools
+    inputs:
+      command: custom
+      custom: tool
+      arguments: restore
+  - task: DotNetCoreCLI@2
+    displayName: Restore Backend Packages
+    inputs:
+      command: custom
+      custom: paket
+      arguments: restore
+  - task: Yarn@2
+    displayName: Restore Frontend Packages
+    inputs:
+      Arguments: install --frozen-lockfile
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: custom
+      custom: fsi
+      arguments: build.fsx
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    inputs:
+      command: test
+      arguments: --filter FullyQualifiedName!~Client.UiTests
+  - task: DotNetCoreCLI@2
+    displayName: Publish Server
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: $(Build.SourcesDirectory)/src/Server
+      arguments: -c release -o $(Build.SourcesDirectory)/deploy -r win-x64
+      zipAfterPublish: false
+      modifyOutputPath: false
+  - task: CopyFiles@2
+    displayName: Publish Client
+    inputs:
+      SourceFolder: $(Build.SourcesDirectory)/src/Client/public
+      TargetFolder: $(Build.SourcesDirectory)/deploy/public
+  - task: DotNetCoreCLI@2
+    displayName: Publish Scraper
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: $(Build.SourcesDirectory)/src/Scraper
+      arguments: -c release -o $(Build.SourcesDirectory)/deploy/app_data/Jobs/Continuous/Scraper -r win-x64
+      zipAfterPublish: false
+      modifyOutputPath: false
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Deploy
+    inputs:
+      PathtoPublish: $(Build.SourcesDirectory)/deploy
+      ArtifactName: Deploy
