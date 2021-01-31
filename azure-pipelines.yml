@@ -2,11 +2,13 @@ trigger:
   branches:
     include:
     - master
+    
 resources:
   repositories:
   - repository: self
     type: git
     ref: master
+    
 jobs:
 - job: Job_1
   displayName: Agent job
