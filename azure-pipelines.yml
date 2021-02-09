@@ -97,7 +97,7 @@ stages:
 - stage: Experimental
   jobs:
   - deployment: Job_1
-    displayName: Experimental
+    displayName: Agent job
     pool:
       vmImage: windows-2019
     environment: Experimental
@@ -173,7 +173,7 @@ stages:
 - stage: Production
   jobs:
   - deployment: Job_1
-    displayName: Production
+    displayName: Agent job
     pool:
       vmImage: windows-2019
     environment: Production
