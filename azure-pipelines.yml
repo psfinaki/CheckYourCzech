@@ -75,8 +75,8 @@ stages:
     - task: CopyFiles@2
       displayName: Publish Client
       inputs:
-        SourceFolder: $(Build.SourcesDirectory)/src/Client/public
-        TargetFolder: $(Build.SourcesDirectory)/deploy/public
+        SourceFolder: '$(Build.SourcesDirectory)/src/Client/public'
+        TargetFolder: '$(Build.SourcesDirectory)/deploy/public'
 
     - task: DotNetCoreCLI@2
       displayName: Publish Scraper
