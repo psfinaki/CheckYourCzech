@@ -19,7 +19,7 @@ let createDeployment (appName: string) =
     let webApp = webApp {
         name appName
         service_plan_name servicePlanName
-        sku WebApp.Sku.B1
+        sku WebApp.Sku.S1
         always_on
         link_to_unmanaged_app_insights (ResourceId.create appInsightsName)
         setting "public_path" "./public"
