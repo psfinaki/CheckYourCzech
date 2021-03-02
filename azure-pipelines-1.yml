@@ -6,6 +6,10 @@
 trigger:
 - master
 
+pool:
+  demands: VisualStudio
+  vmImage: windows-2019 
+
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
