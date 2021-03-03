@@ -10,12 +10,24 @@ pool:
   demands: VisualStudio
   vmImage: windows-2019 
 
+
+
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-    echo what
-  displayName: 'Run a multi-line script'
+# Archive files
+# Compress files into .7z, .tar.gz, or .zip
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'tar'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+    sevenZipCompression: '4'
+    #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+    #archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+    #replaceExistingArchive: true 
+    #verbose: # Optional
+    #quiet: # Optional
