@@ -1,4 +1,5 @@
 # Starter pipeline
+
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
@@ -10,24 +11,10 @@ pool:
   demands: VisualStudio
   vmImage: windows-2019 
 
-
-
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-# Archive files
-# Compress files into .7z, .tar.gz, or .zip
-- task: ArchiveFiles@2
+- task: CopyFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'tar'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-    sevenZipCompression: '4'
-    #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
-    #archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
-    #replaceExistingArchive: true 
-    #verbose: # Optional
-    #quiet: # Optional
+    Contents: '**'
