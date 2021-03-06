@@ -16,5 +16,7 @@ steps:
   displayName: 'Run a one-line script'
 
 - task: CopyFiles@2
+  displayName: ""
   inputs:
     Contents: '**'
+    TargetFolder: 'test'
