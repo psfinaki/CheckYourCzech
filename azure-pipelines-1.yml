@@ -12,5 +12,10 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'build'
-    workingDirectory: '.'
+    command: 'test'
+    testRunTitle: 'RunA'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    testRunTitle: ''
