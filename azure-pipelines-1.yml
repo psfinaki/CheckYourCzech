@@ -1,21 +1,69 @@
 trigger:
-
 - master
 
-pool:
-  demands: VisualStudio
-  vmImage: windows-2019 
+#pool:
+#  demands: VisualStudio
+#  vmImage: windows-2019 
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+#steps:
+#- script: echo Hello, world!
+#  displayName: 'Run a one-line script'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    testRunTitle: 'RunA'
+resources:
+  repositories:
+  - repository: self
+    type: git
+   
+variables:
+  appName: check-your-czech
+  experimentalSlotName: exp
+  adminEmail: 'petersemkin@gmail.com'
+  subscription: Visual Studio Enterprise Subscription (a7b6f428-0ed2-4721-9548-d17c361d9b77)
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    testRunTitle: ''
+stages:
+- stage: Build
+  jobs:
+  - job: Job1
+    displayName: 'Build, Test, Publish'
+    pool:
+      vmImage: windows-2019
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore tools
+      inputs:
+        command: custom
+        custom: tool
+        arguments: restore
+
+    - task: DotNetCoreCLI@2
+      displayName: Restore backend packages
+      inputs:
+        command: custom
+        custom: paket
+        arguments: restore
+
+    - task: Yarn@2
+      displayName: Restore frontend packages
+      inputs:
+        Arguments: install --frozen-lockfile
+
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: custom
+        custom: fsi
+        arguments: build.fsx
+
+    - task: DotNetCoreCLI@2
+      displayName: TestEmpty
+      inputs:
+        command: test
+        arguments: --filter FullyQualifiedName!~Client.UiTests
+        testRunTitle: ''
+        
+    - task: DotNetCoreCLI@2
+      displayName: TestX
+      inputs:
+        command: test
+        arguments: --filter FullyQualifiedName!~Client.UiTests
+        testRunTitle: 'RunX'
