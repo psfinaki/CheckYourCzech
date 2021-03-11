@@ -48,22 +48,19 @@ stages:
         Arguments: install --frozen-lockfile
 
     - task: DotNetCoreCLI@2
-      displayName: Build
+      displayName: Build with script
       inputs:
         command: custom
         custom: fsi
         arguments: build.fsx
 
     - task: DotNetCoreCLI@2
-      displayName: TestEmpty
+      displayName: Build with .NET Core
       inputs:
-        command: test
-        arguments: --filter FullyQualifiedName!~Client.UiTests
-        testRunTitle: ''
-        
+        command: 'build'
+      
     - task: DotNetCoreCLI@2
-      displayName: TestX
+      displayName: Build with empty target
       inputs:
-        command: test
-        arguments: --filter FullyQualifiedName!~Client.UiTests
-        testRunTitle: 'RunX'
+        command: 'build'
+        projects: ''
