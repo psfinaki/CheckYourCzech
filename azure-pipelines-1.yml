@@ -1,9 +1,7 @@
 trigger:
 - master
 
-#pool:
-#  demands: VisualStudio
-#  vmImage: windows-2019 
+pool: ''
 
 #steps:
 #- script: echo Hello, world!
