@@ -1,7 +1,7 @@
 trigger:
 - master
 
-pool: ''
+pool: 'test'
 
 #steps:
 #- script: echo Hello, world!
