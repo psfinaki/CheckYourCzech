@@ -1,4 +1,5 @@
 resources:
+
   repositories:
   - repository: self
     type: git
@@ -155,10 +156,7 @@ stages:
           steps:
           - task: AzureWebApp@1
             inputs:
-              appType: webApp
-              appName: $(appName)
-              deployToSlotOrASE: true
-              resourceGroupName: $(appName)
-              slotName: $(experimentalSlotName)
-              package: $(Pipeline.Workspace)/WebApp/deploy.zip
-              deploymentMethod: zipDeploy
+              azureSubscription: 'Visual Studio Enterprise Subscription (a7b6f428-0ed2-4721-9548-d17c361d9b77)'
+              appType: 'webAppLinux'
+              appName: 'check-your-czech'
+              package: '$(System.DefaultWorkingDirectory)/**/*.zip'
