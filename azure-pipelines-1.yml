@@ -20,4 +20,4 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise Subscription (a7b6f428-0ed2-4721-9548-d17c361d9b77)'
         scriptLocation: 'inlineScript'
-        inlineScript: 'echo hello'
+        inlineScript: 'echo hi'
