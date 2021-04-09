@@ -1,5 +1,4 @@
 resources:
-
   repositories:
   - repository: self
     type: git
@@ -16,8 +15,11 @@ stages:
   - job: Job1
     displayName: 'Build, Test, Publish'
     steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: 'Visual Studio Enterprise Subscription (a7b6f428-0ed2-4721-9548-d17c361d9b77)'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'echo hi'
+    - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.BinariesDirectory)'
+      includeRootFolder: true
+      archiveType: 'tar'
+      tarCompression: 'none'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
