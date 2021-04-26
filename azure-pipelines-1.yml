@@ -12,7 +12,7 @@ variables:
 stages:
 - stage: Build
   jobs:
-  - job: Job1
+  - job:
     displayName: 'Build, Test, Publish'
     steps:
     - task: ArchiveFiles@2
