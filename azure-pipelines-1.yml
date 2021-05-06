@@ -2,30 +2,12 @@ resources:
   repositories:
   - repository: self
     type: git
-   
-variables:
-  appName: check-your-czech
-  experimentalSlotName: exp
-  adminEmail: 'petersemkin@gmail.com'
-  subscription: Visual Studio Enterprise Subscription (a7b6f428-0ed2-4721-9548-d17c361d9b77)
 
 stages:
 - stage: Build
   jobs:
   - job:
-    displayName: 'Build, Test, Publish'
-    steps:
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.BinariesDirectory)'
-        includeRootFolder: true
-        archiveType: 'tar'
-        tarCompression: 'none'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-        replaceExistingArchive: true
-
-  - job:
-    displayName: 'Build, Test, Publish'
+    displayName: Build, Test, Publish
     steps:
     - task: ArchiveFiles@2
       inputs:
