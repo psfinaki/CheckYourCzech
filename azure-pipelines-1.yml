@@ -4,7 +4,7 @@ resources:
     type: git
 
 stages:
-- stage: Bu<ild
+- stage: Bu ild
   jobs:
   - job:
     displayName: B<uild, Test, Publish
