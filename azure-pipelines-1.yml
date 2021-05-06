@@ -4,10 +4,10 @@ resources:
     type: git
 
 stages:
-- stage: Build
+- stage: Bu<ild
   jobs:
   - job:
-    displayName: Build, Test, Publish
+    displayName: B<uild, Test, Publish
     steps:
     - task: ArchiveFiles@2
       inputs:
