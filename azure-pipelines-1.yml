@@ -6,7 +6,7 @@ resources:
 stages:
 - stage: Build
   jobs:
-  - job: 1Job
+  - job: '1Job'
     steps:
     - task: ArchiveFiles@2
       inputs:
