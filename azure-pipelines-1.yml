@@ -4,7 +4,7 @@ resources:
     type: git
 
 stages:
-- stage: '1Build'
+- stage: '_Build'
   jobs:
   - job: 'Job1'
     steps:
