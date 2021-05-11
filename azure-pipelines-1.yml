@@ -4,9 +4,9 @@ resources:
     type: git
 
 stages:
-- stage: Build
+- stage: '1Build'
   jobs:
-  - job: '1Job'
+  - job: 'Job1'
     steps:
     - task: ArchiveFiles@2
       inputs:
