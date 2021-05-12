@@ -1,4 +1,5 @@
 resources:
+
   repositories:
   - repository: self
     type: git
@@ -17,3 +18,13 @@ stages:
         tarCompression: 'none'
         archiveFile: te st
         replaceExistingArchive: true
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: Create Application Insights
+      inputs:
+        azureSubscription: $(subscription)
+        resourceGroupName: $(appName)
+        location: North Europe
+        csmFile: arm-template.json
+        overrideParameters: -appName $(appName) -adminEmail $(adminEmail)
+        deploymentName: $(appName)
