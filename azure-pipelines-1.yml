@@ -20,7 +20,6 @@ stages:
         replaceExistingArchive: true
 
     - task: AzureResourceGroupDeployment@2
-      displayName: Create Application Insights
       inputs:
         azureSubscription: $(subscription)
         resourceGroupName: $(appName)
