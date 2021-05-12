@@ -10,20 +10,10 @@ stages:
   - job: 'Job1'
     displayName: 1Job
     steps:
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.BinariesDirectory)'
-        includeRootFolder: true
-        archiveType: 'tar'
-        tarCompression: 'none'
-        archiveFile: te st
-        replaceExistingArchive: true
 
     - task: AzureResourceGroupDeployment@2
       inputs:
-        azureSubscription: $(subscription)
-        resourceGroupName: $(appName)
+        azureSubscription: Visual Studio Enterprise Subscription (a7b6f428-0ed2-4721-9548-d17c361d9b77)
+        resourceGroupName: check-your-czech
         location: North Europe
         csmFile: arm-template.json
-        overrideParameters: -appName $(appName) -adminEmail $(adminEmail)
-        deploymentName: $(appName)
