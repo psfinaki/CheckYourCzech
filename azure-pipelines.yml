@@ -39,7 +39,7 @@ stages:
     - task: Yarn@2
       displayName: Restore frontend packages
       inputs:
-        Arguments: install --frozen-lockfile
+        arguments: install --frozen-lockfile
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -67,8 +67,8 @@ stages:
     - task: CopyFiles@2
       displayName: Publish Client
       inputs:
-        SourceFolder: src/Client/public
-        TargetFolder: deploy/public
+        sourceFolder: src/Client/public
+        targetFolder: deploy/public
 
     - task: DotNetCoreCLI@2
       displayName: Publish Scraper
@@ -159,6 +159,7 @@ stages:
         deploy:
           steps:
           - task: AzureWebApp@1
+            displayName: 'Deploy app'
             inputs:
               azureSubscription: $(subscription)
               appType: webApp
@@ -211,7 +212,7 @@ stages:
             displayName: Swap slots
             inputs:
               azureSubscription: $(subscription)
-              Action: Swap Slots
-              WebAppName: $(appName)
-              ResourceGroupName: $(appName)
-              SourceSlot: $(experimentalSlotName)
+              action: Swap Slots
+              webAppName: $(appName)
+              resourceGroupName: $(appName)
+              sourceSlot: $(experimentalSlotName)
