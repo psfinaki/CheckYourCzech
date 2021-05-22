@@ -14,11 +14,11 @@ stages:
         echo '##vso[task.setvariable variable=TEST]SOMEVALUE'
     
     - task: CmdLine@2
-      condition: eq('${{ variables.TEST }}', SOMEVALUE)
+      condition: eq('${{ variables.TEST }}', 'SOMEVALUE')
       inputs:
         script: 'echo $(TEST)'
 
     - task: CmdLine@2
-      condition: eq('${{ variables.TEST }}', ANOTHERVALUE)
+      condition: eq('${{ variables.TEST }}', 'ANOTHERVALUE')
       inputs:
         script: 'echo $(TEST)'
