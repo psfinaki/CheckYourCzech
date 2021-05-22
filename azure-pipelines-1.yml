@@ -10,5 +10,8 @@ stages:
   - job: 'Job1'
     displayName: 1Job
     steps:
-
-    - task: ArchiveFiles@2
+    - script: |
+        '##vso[task.setvariable variable=TEST]SOMEVALUE'
+    
+    - script: |
+        'echo $(TEST)' |
