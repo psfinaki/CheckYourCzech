@@ -11,7 +11,7 @@ stages:
     displayName: 1Job
     steps:
     - script: |
-        '##vso[task.setvariable variable=TEST]SOMEVALUE'
+        echo '##vso[task.setvariable variable=TEST]SOMEVALUE'
     
     - script: |
-        'echo $(TEST)' |
+        echo $(TEST)
