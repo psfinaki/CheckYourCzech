@@ -8,10 +8,17 @@ stages:
 - stage: '_Build'
   jobs:
   - job: 'Job1'
-    displayName: 1Job
+    displayName: Job
     steps:
     - script: |
         echo '##vso[task.setvariable variable=TEST]SOMEVALUE'
     
-    - script: |
-        echo $(TEST)
+    - task: CmdLine@2
+      condition: eq('${{ variables.TEST }}', SOMEVALUE)
+      inputs:
+        script: 'echo $(TEST)'
+
+    - task: CmdLine@2
+      condition: eq('${{ variables.TEST }}', ANOTHERVALUE)
+      inputs:
+        script: 'echo $(TEST)'
