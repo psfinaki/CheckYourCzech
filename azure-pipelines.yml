@@ -20,7 +20,7 @@ stages:
   - job: Job1
     displayName: 'Build, Test, Publish'
     pool:
-      vmImage: windows-2019
+      vmImage: 'windows-2019'
     steps:
     - task: DotNetCoreCLI@2
       displayName: Restore tools
@@ -39,44 +39,44 @@ stages:
     - task: Yarn@2
       displayName: Restore frontend packages
       inputs:
-        arguments: install --frozen-lockfile
+        arguments: 'install --frozen-lockfile'
 
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: custom
         custom: fsi
-        arguments: build.fsx
+        arguments: 'build.fsx'
 
     - task: DotNetCoreCLI@2
       displayName: Test
       inputs:
         command: test
-        arguments: --filter FullyQualifiedName!~Client.UiTests
+        arguments: '--filter FullyQualifiedName!~Client.UiTests'
 
     - task: DotNetCoreCLI@2
       displayName: Publish Server
       inputs:
         command: publish
         publishWebProjects: false
-        projects: src/Server
-        arguments: -c release -o deploy -r win-x64
+        projects: 'src/Server'
+        arguments: '-c release -o deploy -r win-x64'
         zipAfterPublish: false
         modifyOutputPath: false
 
     - task: CopyFiles@2
       displayName: Publish Client
       inputs:
-        sourceFolder: src/Client/public
-        targetFolder: deploy/public
+        sourceFolder: 'src/Client/public'
+        targetFolder: 'deploy/public'
 
     - task: DotNetCoreCLI@2
       displayName: Publish Scraper
       inputs:
         command: publish
         publishWebProjects: false
-        projects: src/Scraper
-        arguments: -c release -o deploy/app_data/Jobs/Continuous/Scraper -r win-x64
+        projects: 'src/Scraper'
+        arguments: '-c release -o deploy/app_data/Jobs/Continuous/Scraper -r win-x64'
         zipAfterPublish: false
         modifyOutputPath: false
 
@@ -85,9 +85,9 @@ stages:
       inputs:
         rootFolderOrFile: deploy
         includeRootFolder: false
-        archiveFile: deploy.zip
+        archiveFile: 'deploy.zip'
 
-    - publish: deploy.zip
+    - publish: 'deploy.zip'
       artifact: WebApp
 
 - stage: Release
@@ -96,7 +96,7 @@ stages:
   - job: Job1
     displayName: Create resources
     pool:
-      vmImage: windows-2019
+      vmImage: 'windows-2019'
     steps:
     - download: current
       artifact: WebApp
@@ -120,7 +120,7 @@ stages:
       inputs:
         command: run
         arguments: $(appName)
-        workingDirectory: deployment/Deployment
+        workingDirectory: 'deployment/Deployment'
     
     - task: AzureResourceGroupDeployment@2
       displayName: Create Application Insights
@@ -128,8 +128,8 @@ stages:
         azureSubscription: $(subscription)
         resourceGroupName: $(appName)
         location: North Europe
-        csmFile: arm-template.json
-        overrideParameters: -appName $(appName) -adminEmail $(adminEmail)
+        csmFile: 'arm-template.json'
+        overrideParameters: '-appName $(appName) -adminEmail $(adminEmail)'
         deploymentName: $(appName)
     
     - task: AzureResourceGroupDeployment@2
@@ -138,7 +138,7 @@ stages:
         azureSubscription: $(subscription)
         resourceGroupName: $(appName)
         location: North Europe
-        csmFile: deployment/Deployment/template.json
+        csmFile: 'deployment/Deployment/template.json'
         deploymentName: $(appName)
 
     - task: AzureCLI@1
@@ -146,20 +146,20 @@ stages:
       inputs:
         azureSubscription: $(subscription)
         scriptLocation: inlineScript
-        inlineScript: az webapp deployment slot create -n $(appName) -g $(appName) -s $(experimentalSlotName)
+        inlineScript: 'az webapp deployment slot create -n $(appName) -g $(appName) -s $(experimentalSlotName)'
 
   - deployment: Job2
     displayName: Deploy to Experimental
     dependsOn: Job1
     pool:
-      vmImage: windows-2019
+      vmImage: 'windows-2019'
     environment: Experimental
     strategy:
       runOnce:
         deploy:
           steps:
           - task: AzureWebApp@1
-            displayName: 'Deploy app'
+            displayName: Deploy app
             inputs:
               azureSubscription: $(subscription)
               appType: webApp
@@ -167,14 +167,14 @@ stages:
               deployToSlotOrASE: true
               resourceGroupName: $(appName)
               slotName: $(experimentalSlotName)
-              package: $(Pipeline.Workspace)/WebApp/deploy.zip
+              package: '$(Pipeline.Workspace)/WebApp/deploy.zip'
               deploymentMethod: zipDeploy
 
   - job: Job3
     displayName: Test Experimental deployment
     dependsOn: Job2
     pool:
-      vmImage: windows-2019
+      vmImage: 'windows-2019'
     steps:
     - task: DotNetCoreCLI@2
       displayName: Restore tools
@@ -196,13 +196,13 @@ stages:
         command: test
         arguments: '--filter FullyQualifiedName~Client.UiTests'
       env:
-        SERVER_URL: https://$(appName)-$(experimentalSlotName).azurewebsites.net/
+        SERVER_URL: 'https://$(appName)-$(experimentalSlotName).azurewebsites.net/'
 
   - deployment: Job4
     displayName: Deploy to Production
     dependsOn: Job3
     pool:
-      vmImage: windows-2019
+      vmImage: 'windows-2019'
     environment: Production
     strategy:
       runOnce:
