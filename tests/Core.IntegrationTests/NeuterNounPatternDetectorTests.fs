@@ -144,7 +144,6 @@ let ``Detects not pattern muzeum`` word =
 
 [<Theory>]
 [<InlineData "faktum">]
-[<InlineData "buly">]
 [<InlineData "břímě">]
 let ``Detects no patterns`` word =
     word
