@@ -30,18 +30,6 @@ stages:
         arguments: restore
 
     - task: DotNetCoreCLI@2
-      displayName: Restore backend packages
-      inputs:
-        command: custom
-        custom: paket
-        arguments: restore
-
-    - task: Yarn@2
-      displayName: Restore frontend packages
-      inputs:
-        arguments: 'install --frozen-lockfile'
-
-    - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: custom

@@ -1,47 +1,7 @@
 {
-    "private": true,
-    "devDependencies": {
-        "@babel/core": "^7.0.0",
-        "@babel/plugin-transform-runtime": "^7.0.0",
-        "@babel/polyfill": "^7.0.0",
-        "@babel/preset-env": "^7.0.0",
-        "@babel/runtime": "^7.0.0",
-        "applicationinsights-js": "^1.0.20",
-        "babel-loader": "^8.0.0",
-        "kind-of": "^6.0.3",
-        "minimist": "^1.2.2",
-        "node-forge": "^1.0.0",
-        "react": "16.5.2",
-        "react-dom": "16.5.2",
-        "remotedev": "0.2.7",
-        "terser-webpack-plugin": "^1.1.0",
-        "webpack": "^4.20.2",
-        "webpack-cli": "^3.3.5",
-        "webpack-dev-server": "^3.1.11",
-        "whatwg-fetch": "^3.0.0",
-        "yargs-parser": "^13.1.2",
-        "glob-parent": "^5.1.2",
-        "trim-newlines": "^3.0.1",
-        "normalize-url": "^4.5.1",
-        "nth-check": "^2.0.1"
-    },
-    "dependencies": {
-        "bulma": "^0.7.5",
-        "clean-webpack-plugin": "^3.0.0",
-        "css-loader": "^2.1.1",
-        "extract-text-webpack-plugin": "^4.0.0-beta.0",
-        "file-loader": "^4.2.0",
-        "html-webpack-plugin": "^3.2.0",
-        "mini-css-extract-plugin": "^0.7.0",
-        "node-sass": "^5.0.0",
-        "sass-loader": "^10.1.0",
-        "serialize-javascript": "^3.1.0",
-        "style-loader": "^0.23.1",
-        "webpack-merge": "^4.2.2",
-        "y18n": "^4.0.1",
-        "sockjs": "^0.3.20",
-        "postcss": "^8.2.10",
-        "tar": "^6.1.9",
-        "set-value": "^4.0.1"
-    }
+  "name": "CheckYourCzech",
+  "packageManager": "yarn@3.1.1",
+  "dependencies": {
+    "sass": "^1.49.8"
+  }
 }

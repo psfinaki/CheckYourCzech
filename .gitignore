@@ -18,3 +18,5 @@ deploy/
 yarn-error.log
 __azurite_db*
 /.paket
+/.yarn*
+/.pnp.cjs
