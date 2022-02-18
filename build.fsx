@@ -67,7 +67,7 @@ let restoreTools() = runDotNet "tool restore"
 
 let restorePackages() = 
     runDotNet "paket restore"
-    Yarn.install id
+    Yarn.install (fun o -> { o with WorkingDirectory = "./" })
 
 Target.create "Build" (fun _ ->
     setEnvironmentVariables()

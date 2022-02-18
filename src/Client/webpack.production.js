@@ -3,7 +3,7 @@ const MinifyPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
-const merge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const commonConfiguration = require("./webpack.common");
 
 module.exports = merge(commonConfiguration, {
