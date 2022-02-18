@@ -1,5 +1,4 @@
 const path = require("path");
-const MinifyPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
@@ -9,7 +8,16 @@ const commonConfiguration = require("./webpack.common");
 module.exports = merge(commonConfiguration, {
     mode: "production",
     optimization: {
-        minimizer: [ new MinifyPlugin() ]
+        minimizer: [
+            (compiler) => {
+              const TerserPlugin = require('terser-webpack-plugin');
+              new TerserPlugin({
+                terserOptions: {
+                  compress: {},
+                }
+              }).apply(compiler);
+            },
+          ]
     },
     output: {
         path: path.join(__dirname, "public"),
