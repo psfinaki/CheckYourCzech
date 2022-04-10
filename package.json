@@ -9,7 +9,7 @@
         "applicationinsights-js": "^1.0.20",
         "babel-loader": "^8.0.0",
         "kind-of": "^6.0.3",
-        "minimist": "^1.2.2",
+        "minimist": "^1.2.6",
         "node-forge": "^1.0.0",
         "react": "16.5.2",
         "react-dom": "16.5.2",
